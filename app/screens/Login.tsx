@@ -1,26 +1,25 @@
 import React, {useState} from 'react';
 import {Box, Button, Center, Divider, Flex, FormControl, Heading, HStack, Input, Text, VStack} from "native-base";
 import {SignIntoAccount} from "../repo/Auth";
+import {saveAuthToken} from "../Util";
 
-export function Login() {
+export function Login(value: string) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleSubmit = () => {
+    async function handleSubmit() {
         setError('');
-        console.log(1223)
         if (!username || !password) {
             setError('Both fields are required.');
             return;
         }
         try {
-            SignIntoAccount(username, password)
-
+            const tokenData = await SignIntoAccount(username, password)
+            await saveAuthToken(tokenData.token)
         } catch (e) {
             console.log(e.message)
             setError(e.message);
-
         }
     };
 
