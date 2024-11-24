@@ -1,10 +1,11 @@
 import {Box, Button, Text} from 'native-base'
 import React, {useEffect, useState} from 'react'
 import {getAuthToken} from "../Util";
+import {useNavigation} from "@react-navigation/native";
 
-export function Home({navigation}: any) {
+export function Home() {
     const [token, setToken] = useState("no token yet")
-
+    const navigation = useNavigation();
     useEffect(() => {
         getToken()
 
@@ -28,7 +29,7 @@ export function Home({navigation}: any) {
             <Button onPress={() => navigation.navigate('login')} my={2}>
                 <Text>Login</Text>
             </Button>
-            <Button onPress={() => navigation.navigate('signup')} my={2}>
+            <Button onPress={() =>  navigation.navigate('signup')} my={2}>
                 <Text>Sing up</Text>
             </Button>
         </Box>

@@ -9,3 +9,22 @@ export async function saveAuthToken(value: string) {
 export async function getAuthToken() {
         return await AsyncStorage.getItem(AUTH_TOKEN_STRING);
 }
+const TIMEOUT = 10000;
+
+
+export function timeoutPromiseFactory<T>(
+    timeout: number = TIMEOUT,
+    errorMessage = 'Request timed out. Please try again later.'
+): Promise<T> {
+        return new Promise<never>((_, reject) =>
+            setTimeout(() => reject(new Error(errorMessage)), timeout)
+        );
+}
+
+
+export class UnauthorizedError extends Error {
+        constructor(message: any) {
+                super(message);
+                this.name = 'UnauthorizedError';
+        }
+}

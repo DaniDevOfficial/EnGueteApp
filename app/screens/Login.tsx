@@ -3,9 +3,9 @@ import {Box, Button, Center, Divider, Flex, FormControl, Heading, HStack, Input,
 import {SignIntoAccount} from "../repo/Auth";
 import {saveAuthToken} from "../Util";
 
-export function Login(value: string) {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+export function Login({navigation}: any ) {
+    const [username, setUsername] = useState('Dani1-123');
+    const [password, setPassword] = useState('Dani1-123');
     const [error, setError] = useState('');
 
     async function handleSubmit() {
@@ -17,9 +17,10 @@ export function Login(value: string) {
         try {
             const tokenData = await SignIntoAccount(username, password)
             await saveAuthToken(tokenData.token)
+            navigation.navigate('user')
         } catch (e) {
-            console.log(e.message)
             setError(e.message);
+            //TODO: Make some toasts
         }
     };
 
