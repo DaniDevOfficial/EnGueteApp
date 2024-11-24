@@ -5,8 +5,14 @@ import {timeoutPromiseFactory, UnauthorizedError} from "../Util";
 export interface User {
     userId: string;
     username: string;
-    profileImageUrl?: string;
+    profilePicture?: string;
     groups: Group[];
+}
+
+export type UserCard = {
+    userName: string;
+    userId: string;
+    profilePicture?: string;
 }
 
 export interface Group {
@@ -23,7 +29,6 @@ export async function GetUserInformation(authToken: string): Promise<User> {
         throw new Error("Failed to decode JWT.");
     }
     const timeoutPromise = timeoutPromiseFactory()
-
     const url = BACKEND_URL + 'users/' + payload['UserId']
     const fetchPromise = await fetch(url, {
         method: 'GET',
