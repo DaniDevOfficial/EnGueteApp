@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {Box, Button, Center, Divider, Flex, FormControl, Heading, HStack, Input, Text, VStack} from "native-base";
+import {Box, Button, Center, Divider, Flex, FormControl, Heading, HStack, Input, Pressable, Text, VStack} from "native-base";
 import {SignIntoAccount} from "../repo/Auth";
 import {saveAuthToken} from "../Util";
 
-export function Login({navigation}: any ) {
+export function Login({navigation}: any) {
     const [username, setUsername] = useState('Dani1-123');
     const [password, setPassword] = useState('Dani1-123');
     const [error, setError] = useState('');
@@ -73,18 +73,23 @@ export function Login({navigation}: any ) {
                         Sign In
                     </Button>
                 </VStack>
-                <Flex justifyContent={"center"} alignItems={"center"}>
-                    <Box w="90%" maxW="290" mt={5}>
-                        <HStack alignItems="center" space={2}>
-                            <Divider flex={1} bg="coolGray.300"/>
-                            <Text fontSize="sm" color="coolGray.400">
-                                Or Create an account
-                            </Text>
-                            <Divider flex={1} bg="coolGray.300"/>
-                        </HStack>
-                    </Box>
-                </Flex>
-
+                <Pressable
+                    onPress={() => {
+                        navigation.navigate('signup')
+                    }}
+                >
+                    <Flex justifyContent={"center"} alignItems={"center"}>
+                        <Box w="90%" maxW="290" mt={5}>
+                            <HStack alignItems="center" space={2}>
+                                <Divider flex={1} bg="coolGray.300"/>
+                                <Text fontSize="sm" color="coolGray.400">
+                                    Or Create an account
+                                </Text>
+                                <Divider flex={1} bg="coolGray.300"/>
+                            </HStack>
+                        </Box>
+                    </Flex>
+                </Pressable>
             </Box>
         </Center>
     );

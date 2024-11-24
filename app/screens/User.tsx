@@ -78,9 +78,19 @@ export function User() {
                 marginY="3px"
             />
             <Text fontWeight={"bold"} fontSize={"2xl"}>Your Groups</Text>
-            {userInformation.groups && userInformation.groups.map((group) => (
+            {userInformation.groups && userInformation.groups.length > 0 ? (userInformation.groups.map((group) => (
                     <GroupCard group={group} key={group.groupId}/>
-                )
+                ))
+            ) : (
+                <Box mt={5}>
+                    <Text color={"gray.500"}>
+                        It looks like you are in no group 😞
+                    </Text>
+
+                    <Text color={"gray.500"}>
+                        Start by joining or creating a group 🦾
+                    </Text>
+                </Box>
             )}
         </Box>
     )
