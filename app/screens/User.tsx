@@ -1,6 +1,6 @@
 import {Box, Text} from 'native-base'
 import React, {useEffect, useState} from 'react'
-import {getAuthToken, UnauthorizedError} from "../Util";
+import {ForbiddenError, getAuthToken, handleLogoutProcedure, UnauthorizedError} from "../Util";
 import {useNavigation} from "@react-navigation/native";
 import {GetUserInformation, User as UserType} from "../repo/User";
 import {useUser} from "../context/userContext";
@@ -33,9 +33,14 @@ export function User() {
             } catch (e) {
 
                 if (e instanceof UnauthorizedError) {
+                    await handleLogoutProcedure()
+                    //TODO: isauthenticated set to false or something like that in the auth context
                     navigation.navigate('home')
                 }
 
+                if (e instanceof ForbiddenError){
+                    console.log('this acction is forbidden for this user')
+                }
                 console.log(e.message)
             }
         }
@@ -83,11 +88,11 @@ export function User() {
                 ))
             ) : (
                 <Box mt={5}>
-                    <Text color={"gray.500"}>
+                    <Text color={"gray.500"} textAlign={"center"}>
                         It looks like you are in no group 😞
                     </Text>
 
-                    <Text color={"gray.500"}>
+                    <Text color={"gray.500"} textAlign={"center"}>
                         Start by joining or creating a group 🦾
                     </Text>
                 </Box>

@@ -11,6 +11,9 @@ export async function getAuthToken() {
 }
 const TIMEOUT = 10000;
 
+export async function handleLogoutProcedure() {
+        await saveAuthToken('')
+}
 
 export function timeoutPromiseFactory<T>(
     timeout: number = TIMEOUT,
@@ -28,3 +31,11 @@ export class UnauthorizedError extends Error {
                 this.name = 'UnauthorizedError';
         }
 }
+
+export class ForbiddenError extends Error {
+        constructor(message: any) {
+                super(message);
+                this.name = 'UnauthorizedError';
+        }
+}
+

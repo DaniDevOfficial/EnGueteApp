@@ -13,7 +13,7 @@ import {
     Text,
     VStack
 } from "native-base";
-import {CreateNewAccount, SignIntoAccount} from "../repo/Auth";
+import {CreateNewAccount} from "../repo/Auth";
 import {saveAuthToken} from "../Util";
 import {useNavigation} from "@react-navigation/native";
 
