@@ -25,7 +25,6 @@ export function User() {
                     return
                 }
                 const userInformationRes = await GetUserInformation(authToken);
-                console.log(userInformationRes)
                 if (userInformationRes) {
                     setUserInformation(userInformationRes)
                     setLoading(false)

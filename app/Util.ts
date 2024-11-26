@@ -12,7 +12,7 @@ export async function getAuthToken() {
 const TIMEOUT = 10000;
 
 export async function handleLogoutProcedure() {
-        await saveAuthToken('')
+       // await saveAuthToken('')
 }
 
 export function timeoutPromiseFactory<T>(

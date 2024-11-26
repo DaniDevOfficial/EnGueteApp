@@ -8,7 +8,6 @@ type GroupCardProps = {
 };
 
 export function GroupCard({group}: GroupCardProps) {
-    console.log(group)
     const navigation = useNavigation();
 
     function handleNavigate() {

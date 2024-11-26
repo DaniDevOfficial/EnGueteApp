@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {Box, Center, Spinner} from 'native-base';
+import {Box, Spinner} from 'native-base';
 import {ForbiddenError, getAuthToken, handleLogoutProcedure, UnauthorizedError} from "../Util";
-import {GetUserInformation} from "../repo/User";
+import {GetGroupInformation} from "../repo/Group";
 
 export function Group() {
     const [groupInformation, setGroupInformation] = useState()
@@ -16,11 +16,12 @@ export function Group() {
         async function getGroupData() {
             try {
                 const authToken = await getAuthToken()
+
                 if (authToken === null) {
                     navigation.navigate('home')
                     return
                 }
-                const userInformationRes = await GetGroupInformation(authToken);
+                const userInformationRes = await GetGroupInformation(groupId, authToken);
                 console.log(userInformationRes)
                 if (userInformationRes) {
                     setLoading(false)
@@ -43,7 +44,7 @@ export function Group() {
     if (loading || groupInformation === undefined) {
         return (
             <Box flex={1} alignItems="center" justifyContent="center">
-                <Spinner size="lg" color="emerald.500" />
+                <Spinner size="lg" color="emerald.500"/>
             </Box>
         )
     }
