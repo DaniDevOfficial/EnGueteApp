@@ -2,12 +2,13 @@ import React, {useState} from 'react';
 import {Box, Button, Center, Divider, Flex, FormControl, Heading, HStack, Input, Pressable, Text, VStack} from "native-base";
 import {SignIntoAccount} from "../repo/Auth";
 import {saveAuthToken} from "../Util";
+import {useNavigation} from "@react-navigation/native";
 
-export function Login({navigation}: any) {
+export function Login() {
     const [username, setUsername] = useState('Dani1-123');
     const [password, setPassword] = useState('Dani1-123');
     const [error, setError] = useState('');
-
+    const navigation = useNavigation()
     async function handleSubmit() {
         setError('');
         if (!username || !password) {

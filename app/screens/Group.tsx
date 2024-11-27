@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {Box, Spinner} from 'native-base';
+import {Box, Spinner, Text} from 'native-base';
 import {ForbiddenError, getAuthToken, handleLogoutProcedure, UnauthorizedError} from "../Util";
-import {GetGroupInformation} from "../repo/Group";
+import {GetGroupInformation, Group as GroupInformationType} from "../repo/Group";
+import {GroupInformationHeader} from "../components/group/GroupInformationHeader";
+import {MealCard} from "../components/group/MealCard";
 
 export function Group() {
-    const [groupInformation, setGroupInformation] = useState()
+    const [groupInformation, setGroupInformation] = useState<GroupInformationType | undefined>()
     const [loading, setLoading] = useState(true)
     const route = useRoute();
     const {groupId} = route.params;
@@ -21,10 +23,11 @@ export function Group() {
                     navigation.navigate('home')
                     return
                 }
-                const userInformationRes = await GetGroupInformation(groupId, authToken);
-                console.log(userInformationRes)
-                if (userInformationRes) {
+                const groupInformation = await GetGroupInformation(groupId, authToken);
+                console.log(groupInformation)
+                if (groupInformation) {
                     setLoading(false)
+                    setGroupInformation(groupInformation)
                 }
             } catch (e) {
 
@@ -50,8 +53,19 @@ export function Group() {
     }
 
     return (
-        <Box flex={1} alignItems="center" justifyContent="center">
-            it loaded
+        <Box flex={1} alignItems="center">
+            <GroupInformationHeader groupInformation={groupInformation.groupInfo}/>
+            {groupInformation.meals && groupInformation.meals.length > 0 ? groupInformation.meals.map((meal) => (
+                    <MealCard meal={meal} key={meal.mealId}/>
+
+                )
+            ) : (
+                <>
+                    <Text>
+                        No meals in this group
+                    </Text>
+                </>
+            )}
         </Box>
     );
 }
