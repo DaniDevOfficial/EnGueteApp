@@ -9,6 +9,7 @@ import { User } from './screens/User';
 import { Group } from './screens/Group';
 import { UserProvider } from './context/userContext';
 import { BaseLayout } from './layout/BaseLayout';
+import {NewMeal} from "./screens/newMeal";
 
 const Stack = createStackNavigator();
 
@@ -43,6 +44,12 @@ const GroupDetailsScreen = () => (
     </BaseLayout>
 );
 
+const NewMealScreen = () => (
+    <BaseLayout>
+        <NewMeal />
+    </BaseLayout>
+);
+
 export function Router() {
     return (
         <UserProvider>
@@ -53,6 +60,7 @@ export function Router() {
                     <Stack.Screen name="signup" component={SignupScreen} />
                     <Stack.Screen name="user" component={UserScreen} />
                     <Stack.Screen name="GroupDetails" component={GroupDetailsScreen} />
+                    <Stack.Screen name="newMeal" component={NewMealScreen} />
                 </Stack.Navigator>
             </NavigationContainer>
         </UserProvider>
