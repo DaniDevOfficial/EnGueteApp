@@ -6,7 +6,7 @@ import {useNavigation} from "@react-navigation/native";
 
 export interface NewMealType {
     title: string,
-    mealType?: string,
+    mealType: string,
     scheduledAt: string,
     notes?: string,
 }
@@ -22,11 +22,13 @@ export function NewMeal() {
     const [touched, setTouched] = useState({
         title: false,
         scheduledAt: false,
+        type: false
     });
 
     const [errors, setErrors] = useState({
         title: '',
         scheduledAt: '',
+        type: '',
     });
 
     const [isDisabledSubmit, setIsDisabledSubmit] = useState(true);
@@ -34,10 +36,12 @@ export function NewMeal() {
     useEffect(() => {
         const titleError = !title?.trim() ? "Meal name is required" : "";
         const scheduledAtError = !scheduledAt?.trim() ? "Scheduled time is required" : "";
+        const typeError = !type?.trim() ? "Meal Type is required" : "";
 
         setErrors({
             title: touched.title ? titleError : "",
             scheduledAt: touched.scheduledAt ? scheduledAtError : "",
+            type: touched.type ? typeError : ''
         });
 
         setIsDisabledSubmit(Boolean(titleError || scheduledAtError));
@@ -56,10 +60,12 @@ export function NewMeal() {
             const data: NewMealType = {
                 // @ts-ignore
                 title: title,
+                // @ts-ignore
                 mealType: type,
                 // @ts-ignore
                 scheduledAt: scheduledAt,
                 notes: notes,
+                groupId: '671b1cf1-205d-4bfe-8020-b3fab43956b3'
             }
 
             const authToken = await getAuthToken()
@@ -69,9 +75,9 @@ export function NewMeal() {
                 return
             }
             const res = await createNewMeal(data, authToken)
-
+            console.log(res)
         } catch (e) {
-
+            console.log(e.message())
         }
         setTitle('');
         setType('');
@@ -96,7 +102,7 @@ export function NewMeal() {
                         leftIcon={<WarningOutlineIcon size="xs"/>}>{errors.title}</FormControl.ErrorMessage>
                 ) : null}
             </FormControl>
-            <FormControl>
+            <FormControl isRequired isInvalid={errors.type !== ''}>
                 <FormControl.Label>Meal Type</FormControl.Label>
                 <Input
                     value={type}
@@ -104,11 +110,15 @@ export function NewMeal() {
                     p={3}
                     placeholder="Type of the meal"
                 />
+                {errors.type ? (
+                    <FormControl.ErrorMessage
+                        leftIcon={<WarningOutlineIcon size="xs"/>}>{errors.type}</FormControl.ErrorMessage>
+                ) : null}
             </FormControl>
             <FormControl isRequired isInvalid={errors.scheduledAt}>
                 <FormControl.Label>Scheduled At</FormControl.Label>
                 <Input
-                    value={scheduledAt}
+                    value={scheduledAt /*TODO DatePicker */}
                     onChangeText={(text) => setScheduledAt(text)}
                     onBlur={() => setTouched((prev) => ({...prev, scheduledAt: true}))}
                     p={3}

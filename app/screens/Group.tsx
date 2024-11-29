@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {Box, Button, Pressable, Spinner, Text} from 'native-base';
+import {Box, Button, Spinner, Text} from 'native-base';
 import {ForbiddenError, getAuthToken, handleLogoutProcedure, UnauthorizedError} from "../Util";
 import {GetGroupInformation, Group as GroupInformationType} from "../repo/Group";
 import {GroupInformationHeader} from "../components/group/GroupInformationHeader";
@@ -37,7 +37,8 @@ export function Group() {
                 }
 
                 if (e instanceof ForbiddenError) {
-                    console.log('this acction is forbidden for this user')
+                    console.log('This action is forbidden for this user')
+                    //TODO: toast
                 }
                 console.log(e.message)
             }
