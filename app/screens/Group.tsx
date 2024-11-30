@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {Box, Button, Spinner, Text} from 'native-base';
+import {Box, Button, ScrollView, Spinner, Text} from 'native-base';
 import {ForbiddenError, getAuthToken, handleLogoutProcedure, UnauthorizedError} from "../Util";
 import {GetGroupInformation, Group as GroupInformationType} from "../repo/Group";
 import {GroupInformationHeader} from "../components/group/GroupInformationHeader";
@@ -56,17 +56,23 @@ export function Group() {
     return (
         <Box flex={1} alignItems="center">
             <GroupInformationHeader groupInformation={groupInformation.groupInfo}/>
-            {groupInformation.meals && groupInformation.meals.length > 0 ? groupInformation.meals.map((meal) => (
-                    <MealCard meal={meal} key={meal.mealId}/>
-                )
-            ) : (
-                <>
-                    <Text>
-                        No meals in this group
-                    </Text>
-                </>
-            )}
-            <Button onPress={() => navigation.navigate('newMeal', {groupId: groupId})}>
+            <ScrollView
+                contentContainerStyle={{ flexGrow: 1 }}
+
+            >
+
+                {groupInformation.meals && groupInformation.meals.length > 0 ? groupInformation.meals.map((meal) => (
+                        <MealCard meal={meal} key={meal.mealId}/>
+                    )
+                ) : (
+                    <>
+                        <Text>
+                            No meals in this group
+                        </Text>
+                    </>
+                )}
+            </ScrollView>
+            <Button my={4} onPress={() => navigation.navigate('newMeal', {groupId: groupId})}>
                 Create New Meal
             </Button>
         </Box>
