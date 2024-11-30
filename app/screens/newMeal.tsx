@@ -2,11 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {Button, FormControl, Input, TextArea, VStack, WarningOutlineIcon} from "native-base";
 import {createNewMeal} from "../repo/Meal";
 import {getAuthToken} from "../Util";
-import {useNavigation} from "@react-navigation/native";
+import {useNavigation, useRoute} from "@react-navigation/native";
 
 export interface NewMealType {
     title: string,
-    mealType: string,
+    type: string,
     scheduledAt: string,
     notes?: string,
 }
@@ -16,6 +16,9 @@ export function NewMeal() {
     const [type, setType] = useState<string | undefined>();
     const [scheduledAt, setScheduledAt] = useState<string | undefined>();
     const [notes, setNotes] = useState<string | undefined>();
+
+    const route = useRoute();
+    const {groupId} = route.params;
 
     const navigation = useNavigation();
 
@@ -61,13 +64,13 @@ export function NewMeal() {
                 // @ts-ignore
                 title: title,
                 // @ts-ignore
-                mealType: type,
+                type: type,
                 // @ts-ignore
-                scheduledAt: scheduledAt,
+                scheduledAt: new Date().toISOString(),
                 notes: notes,
-                groupId: '671b1cf1-205d-4bfe-8020-b3fab43956b3'
+                groupId: groupId
             }
-
+            console.log(data)
             const authToken = await getAuthToken()
 
             if (authToken === null) {
@@ -79,10 +82,7 @@ export function NewMeal() {
         } catch (e) {
             console.log(e.message())
         }
-        setTitle('');
-        setType('');
-        setScheduledAt('');
-        setNotes('');
+
         setTouched({title: false, scheduledAt: false});
     }
 

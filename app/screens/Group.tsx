@@ -66,7 +66,7 @@ export function Group() {
                     </Text>
                 </>
             )}
-            <Button onPress={() => navigation.navigate('newMeal')}>
+            <Button onPress={() => navigation.navigate('newMeal', {groupId: groupId})}>
                 Create New Meal
             </Button>
         </Box>
