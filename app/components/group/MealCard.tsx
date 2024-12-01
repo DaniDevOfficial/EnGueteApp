@@ -3,6 +3,9 @@ import {Box, Flex, Pressable, Text} from 'native-base';
 import {useNavigation} from "@react-navigation/native";
 import {MealCard as MealCardType} from "../../repo/Group";
 import {getFancyTimeDisplay} from "../../utility/Dates";
+import {getParticipantsText} from "../../utility/TextGeneration";
+import {PillTag} from "../UI/Pilltag";
+
 type MealCardProps = {
     meal: MealCardType;
 };
@@ -17,16 +20,17 @@ export function MealCard({meal}: MealCardProps) {
     }
 
     const whenText = getFancyTimeDisplay(meal.dateTime)
-
+    const participantsText = getParticipantsText(meal.participantCount)
     return (
-        <Pressable onPress={handleNavigate}  alignItems={'center'}>
-            <Box alignItems="center" p="4" borderRadius="md" backgroundColor={"coolGray.300"}  width={'90%'} my={2}>
+        <Pressable onPress={handleNavigate} alignItems={'center'}>
+            <Box alignItems="center" p="4" borderRadius="md" backgroundColor={"coolGray.300"} width={'95%'} my={2}>
                 <Flex
                     justifyContent={"space-between"}
                     flexDir={'row'}
                     width={"100%"}
                 >
                     <Flex
+                        w='60%'
                         flexDir={'column'}
                     >
                         <Text>
@@ -34,12 +38,15 @@ export function MealCard({meal}: MealCardProps) {
                         </Text>
                         <Text>{whenText}</Text>
                     </Flex>
-                    <Box>
-
+                    <Flex alignItems={'flex-end'}>
                         <Text>
-                            {meal.participantCount.toString()}
+                            {participantsText}
                         </Text>
-                    </Box>
+                        <Flex flexDir={'row'}>
+                            {meal.isCook && <PillTag text={'test'} />}
+                            <PillTag text={meal.userPreference} colorScheme={'orange'} />
+                        </Flex>
+                    </Flex>
                 </Flex>
             </Box>
         </Pressable>

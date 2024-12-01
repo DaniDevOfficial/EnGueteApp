@@ -18,7 +18,10 @@ export function getFancyTimeDisplay(dateTimeString: string): string {
     const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
     if (nowDate.getTime() === targetDate.getTime()) {
-        if (diffMinutes >= 0 && diffMinutes < 60) {
+        if (diffMinutes === 0) {
+            return 'Now'
+        }
+        if (diffMinutes > 0 && diffMinutes < 60) {
             return `In ${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""}`;
         } else if (diffMinutes < 0 && diffMinutes > -60) {
             return `${Math.abs(diffMinutes)} minute${Math.abs(diffMinutes) !== 1 ? "s" : ""} ago`;
