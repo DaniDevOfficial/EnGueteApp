@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ComponentType, ReactElement} from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -10,45 +10,38 @@ import { Group } from './screens/Group';
 import { UserProvider } from './context/userContext';
 import { BaseLayout } from './layout/BaseLayout';
 import {NewMeal} from "./screens/newMeal";
+import {GroupProvider} from "./context/groupContext";
 
 const Stack = createStackNavigator();
 
-// Create wrapped components outside of Router
-const HomeScreen = () => (
-    <BaseLayout>
-        <Home />
-    </BaseLayout>
-);
+function withBaseLayout<T>(Component: ComponentType<T>) {
+    return function WrappedComponent(props: T): ReactElement {
+        return (
+            <BaseLayout>
+                <Component {...props} />
+            </BaseLayout>
+        );
+    };
+}
 
-const LoginScreen = () => (
-    <BaseLayout>
-        <Login />
-    </BaseLayout>
-);
 
-const SignupScreen = () => (
-    <BaseLayout>
-        <Signup />
-    </BaseLayout>
-);
+const HomeScreen = withBaseLayout(Home);
+const LoginScreen = withBaseLayout(Login);
+const SignupScreen = withBaseLayout(Signup);
+const UserScreen = withBaseLayout(User);
 
-const UserScreen = () => (
-    <BaseLayout>
-        <User />
-    </BaseLayout>
-);
+function GroupContextStack() {
+    const GroupStack = createStackNavigator();
 
-const GroupDetailsScreen = () => (
-    <BaseLayout>
-        <Group />
-    </BaseLayout>
-);
-
-const NewMealScreen = () => (
-    <BaseLayout>
-        <NewMeal />
-    </BaseLayout>
-);
+    return (
+        <GroupProvider>
+            <GroupStack.Navigator screenOptions={{ headerShown: false }}>
+                <GroupStack.Screen name="GroupDetails" component={withBaseLayout(Group)} />
+                <GroupStack.Screen name="NewMeal" component={withBaseLayout(NewMeal)} />
+            </GroupStack.Navigator>
+        </GroupProvider>
+    );
+}
 
 export function Router() {
     return (
@@ -59,8 +52,7 @@ export function Router() {
                     <Stack.Screen name="login" component={LoginScreen} />
                     <Stack.Screen name="signup" component={SignupScreen} />
                     <Stack.Screen name="user" component={UserScreen} />
-                    <Stack.Screen name="GroupDetails" component={GroupDetailsScreen} />
-                    <Stack.Screen name="newMeal" component={NewMealScreen} />
+                    <Stack.Screen name="group" component={GroupContextStack} />
                 </Stack.Navigator>
             </NavigationContainer>
         </UserProvider>

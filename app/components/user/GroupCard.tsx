@@ -11,7 +11,13 @@ export function GroupCard({group}: GroupCardProps) {
     const navigation = useNavigation();
 
     function handleNavigate() {
-        navigation.navigate('GroupDetails', {groupId: group.groupId});
+        // @ts-ignore
+        navigation.navigate('group', {
+            screen: 'GroupDetails',
+            params: {
+                groupId: group.groupId,
+            },
+        });
 
     }
 

@@ -14,9 +14,14 @@ export function MealCard({meal}: MealCardProps) {
     const navigation = useNavigation();
 
     function handleNavigate() {
-        // @ts-ignore
-        navigation.navigate('Meal', {mealId: meal.mealId});
 
+        // @ts-ignore
+        navigation.navigate('group', {
+            screen: 'Meal',
+            params: {
+                mealId: meal.mealId,
+            },
+        });
     }
 
     const whenText = getFancyTimeDisplay(meal.dateTime)

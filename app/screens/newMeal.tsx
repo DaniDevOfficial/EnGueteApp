@@ -3,6 +3,7 @@ import {Button, FormControl, Input, TextArea, VStack, WarningOutlineIcon} from "
 import {createNewMeal} from "../repo/Meal";
 import {getAuthToken} from "../Util";
 import {useNavigation, useRoute} from "@react-navigation/native";
+import {useGroup} from "../context/groupContext";
 
 export interface NewMealType {
     title: string,
@@ -17,9 +18,9 @@ export function NewMeal() {
     const [scheduledAt, setScheduledAt] = useState<string | undefined>();
     const [notes, setNotes] = useState<string | undefined>();
 
-    const route = useRoute();
-    const {groupId} = route.params;
+    const {group} = useGroup()
 
+    const groupId = group.groupId;
     const navigation = useNavigation();
 
     const [touched, setTouched] = useState({

@@ -6,6 +6,8 @@ import {GetGroupInformation, Group as GroupInformationType} from "../repo/Group"
 import {GroupInformationHeader} from "../components/group/GroupInformationHeader";
 import {MealCard} from "../components/group/MealCard";
 import {RefreshControl} from "react-native-gesture-handler";
+import {useUser} from "../context/userContext";
+import {useGroup} from "../context/groupContext";
 
 export function Group() {
     const [groupInformation, setGroupInformation] = useState<GroupInformationType | undefined>()
@@ -13,6 +15,11 @@ export function Group() {
     const [refreshing, setRefreshing] = useState(false)
     const route = useRoute();
     const {groupId} = route.params;
+
+    const {group, setGroup: setGroup} = useGroup();
+
+
+
     const navigation = useNavigation()
     useEffect(() => {
         getGroupData()
@@ -32,6 +39,10 @@ export function Group() {
             if (groupInformation) {
                 setLoading(false)
                 setGroupInformation(groupInformation)
+                setGroup({
+                    groupId: groupInformation.groupInfo.groupId,
+                    userRoles: groupInformation.groupInfo.userRoles,
+                })
             }
         } catch (e) {
 
@@ -64,6 +75,15 @@ export function Group() {
 
     }
 
+    function handleNavigate() {
+
+        // @ts-ignore
+        navigation.navigate('group', {
+            screen: 'NewMeal',
+        });
+    }
+
+
     return (
         <Box flex={1} alignItems="center">
             <GroupInformationHeader groupInformation={groupInformation.groupInfo}/>
@@ -84,7 +104,7 @@ export function Group() {
                     </>
                 )}
             </ScrollView>
-            <Button my={4} onPress={() => navigation.navigate('newMeal', {groupId: groupId})}>
+            <Button my={4} onPress={handleNavigate}>
                 Create New Meal
             </Button>
         </Box>
