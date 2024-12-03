@@ -2,8 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {Button, FormControl, Input, TextArea, VStack, WarningOutlineIcon} from "native-base";
 import {createNewMeal} from "../repo/Meal";
 import {getAuthToken} from "../Util";
-import {useNavigation, useRoute} from "@react-navigation/native";
+import {useNavigation} from "@react-navigation/native";
 import {useGroup} from "../context/groupContext";
+import {PERMISSIONS} from "../utility/Roles";
 
 export interface NewMealType {
     title: string,
@@ -54,12 +55,6 @@ export function NewMeal() {
     async function handleSubmit() {
         if (isDisabledSubmit) return;
 
-        console.log({
-            title,
-            type,
-            scheduledAt,
-            notes,
-        });
         try {
             const data: NewMealType = {
                 // @ts-ignore
@@ -79,13 +74,26 @@ export function NewMeal() {
                 return
             }
             const res = await createNewMeal(data, authToken)
-            console.log(res)
+
+            // @ts-ignore
+            navigation.navigate('group', {
+                screen: 'Meal',
+                params: {
+                    mealId: res.mealId,
+                },
+            });
         } catch (e) {
             console.log(e.message())
         }
 
-        setTouched({title: false, scheduledAt: false});
+        setTouched({type: false, title: false, scheduledAt: false});
     }
+
+    useEffect(() => {
+        if (!group.userRoleRights.includes(PERMISSIONS.CAN_CREATE_MEAL)) {
+            navigation.goBack();
+        }
+    }, []);
 
     return (
         <VStack space={4} padding={4}>

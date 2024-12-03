@@ -11,7 +11,8 @@ export interface GroupInformation {
     groupId: string,
     groupName: string,
     userCount: string,
-    userRoles: string[]
+    userRoles: string[],
+    userRoleRights: string[],
 }
 
 export interface MealCard {

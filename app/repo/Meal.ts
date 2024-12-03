@@ -2,8 +2,11 @@ import {NewMealType} from "../screens/newMeal";
 import {BACKEND_URL} from '@env';
 import {ForbiddenError, timeoutPromiseFactory, UnauthorizedError} from "../Util";
 
+export interface NewMealResponse {
+    mealId: string,
+}
 
-export async function createNewMeal(newMeal: NewMealType, authToken: string): Promise<any> {
+export async function createNewMeal(newMeal: NewMealType, authToken: string): Promise<NewMealResponse> {
     try {
         const url = BACKEND_URL + 'meals'
         console.log(authToken)
@@ -20,7 +23,7 @@ export async function createNewMeal(newMeal: NewMealType, authToken: string): Pr
 
         const res = await Promise.race([fetchPromise, timeoutPromise]);
         const resData = await res.json();
-        console.log(resData)
+
         if (!res.ok) {
             if (res.status === 500) {
                 throw new Error('Internal Server error.');
@@ -40,8 +43,8 @@ export async function createNewMeal(newMeal: NewMealType, authToken: string): Pr
         if (resData) {
             return resData
         }
-
+        throw new Error('123')
     } catch (e) {
-
+        throw new Error(e.message || 'Meal Creation failed. Please try again.');
     }
 } 

@@ -6,18 +6,18 @@ import {GetGroupInformation, Group as GroupInformationType} from "../repo/Group"
 import {GroupInformationHeader} from "../components/group/GroupInformationHeader";
 import {MealCard} from "../components/group/MealCard";
 import {RefreshControl} from "react-native-gesture-handler";
-import {useUser} from "../context/userContext";
 import {useGroup} from "../context/groupContext";
+import {PERMISSIONS} from "../utility/Roles";
 
 export function Group() {
     const [groupInformation, setGroupInformation] = useState<GroupInformationType | undefined>()
     const [loading, setLoading] = useState(true)
     const [refreshing, setRefreshing] = useState(false)
     const route = useRoute();
+    // @ts-ignore
     const {groupId} = route.params;
 
-    const {group, setGroup: setGroup} = useGroup();
-
+    const {setGroup: setGroup} = useGroup();
 
 
     const navigation = useNavigation()
@@ -41,7 +41,7 @@ export function Group() {
                 setGroupInformation(groupInformation)
                 setGroup({
                     groupId: groupInformation.groupInfo.groupId,
-                    userRoles: groupInformation.groupInfo.userRoles,
+                    userRoleRights: groupInformation.groupInfo.userRoleRights,
                 })
             }
         } catch (e) {
@@ -99,14 +99,16 @@ export function Group() {
                 ) : (
                     <>
                         <Text>
-                            No meals in this group
+                            No meals in this group 😞
                         </Text>
                     </>
                 )}
             </ScrollView>
-            <Button my={4} onPress={handleNavigate}>
-                Create New Meal
-            </Button>
+            {groupInformation.groupInfo.userRoleRights.includes(PERMISSIONS.CAN_CREATE_MEAL) && (
+                <Button my={4} onPress={handleNavigate}>
+                    Create New Meal
+                </Button>
+            )}
         </Box>
     );
 }

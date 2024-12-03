@@ -58,10 +58,6 @@ export function User() {
         });
     }, [userInformation]);
 
-    useEffect(() => {
-
-    }, [user]);
-
     if (loading || !userInformation || !user) {
         return (
             <>
