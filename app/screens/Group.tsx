@@ -104,7 +104,7 @@ export function Group() {
                     </>
                 )}
             </ScrollView>
-            {groupInformation.groupInfo.userRoleRights.includes(PERMISSIONS.CAN_CREATE_MEAL) && (
+            {groupInformation.groupInfo.userRoleRights && groupInformation.groupInfo.userRoleRights.includes(PERMISSIONS.CAN_CREATE_MEAL) && (
                 <Button my={4} onPress={handleNavigate}>
                     Create New Meal
                 </Button>

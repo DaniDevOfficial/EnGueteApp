@@ -90,7 +90,7 @@ export function NewMeal() {
     }
 
     useEffect(() => {
-        if (!group.userRoleRights.includes(PERMISSIONS.CAN_CREATE_MEAL)) {
+        if (!group.userRoleRights || !group.userRoleRights.includes(PERMISSIONS.CAN_CREATE_MEAL)) {
             navigation.goBack();
         }
     }, []);

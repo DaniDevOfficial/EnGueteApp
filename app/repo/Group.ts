@@ -41,7 +41,6 @@ export async function GetGroupInformation(groupId: string, authToken: string): P
     })
     const res = await Promise.race([fetchPromise, timeoutPromise]);
     const resData = await res.json();
-    console.log(resData)
     if (!res.ok) {
         if (res.status === 401) {
             throw new UnauthorizedError('Unauthorized');
