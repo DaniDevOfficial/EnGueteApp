@@ -55,3 +55,16 @@ export function getFancyTimeDisplay(dateTimeString: string): string {
         hour12: false,
     })}`;
 }
+
+export function toNormalDateTime(dateTimeString: string) {
+    const target = new Date(dateTimeString);
+
+    return `On ${target.toLocaleDateString(undefined, {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+    })}`
+}

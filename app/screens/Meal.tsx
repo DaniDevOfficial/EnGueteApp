@@ -2,13 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {Box, ScrollView, Spinner, Text} from "native-base";
 import {useGroup} from "../context/groupContext";
 import {useNavigation, useRoute} from "@react-navigation/native";
-import {MealCard} from "../repo/Group";
 import {ForbiddenError, getAuthToken, handleLogoutProcedure, UnauthorizedError} from "../Util";
-import {getMealData} from "../repo/Meal";
+import {getMealData, MealInterface} from "../repo/Meal";
 import {RefreshControl} from "react-native-gesture-handler";
+import {MealHeader} from "../components/meal/MealHeader";
 
 export function Meal() {
-    const [mealInformation, setMealInformation] = useState<MealCard | undefined>();
+    const [mealInformation, setMealInformation] = useState<MealInterface | undefined>();
     const [loading, setLoading] = useState(true)
     const [refreshing, setRefreshing] = useState(false)
 
@@ -22,7 +22,6 @@ export function Meal() {
     useEffect(() => {
         getMealInformation();
     }, []);
-
     async function getMealInformation() {
         try {
             const authToken = await getAuthToken()
@@ -32,6 +31,7 @@ export function Meal() {
                 return
             }
             const res = await getMealData(mealId, authToken)
+            console.log(res)
             setMealInformation(res)
             setLoading(false)
         } catch (e) {
@@ -73,10 +73,12 @@ export function Meal() {
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
             }
         >
-
-        <Text>
-            asdf
-        </Text>
+            <MealHeader mealInformation={mealInformation.mealInformation}/>
+            {mealInformation.mealParticipants && mealInformation.mealParticipants.map((participant) => (
+                <Text>
+                    test
+                </Text>
+            ))}
         </ScrollView>
     );
 }

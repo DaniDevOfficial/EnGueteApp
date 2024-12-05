@@ -39,9 +39,9 @@ export function NewMeal() {
     const [isDisabledSubmit, setIsDisabledSubmit] = useState(true);
 
     useEffect(() => {
-        const titleError = !title?.trim() ? "Meal name is required" : "";
+        const titleError = !title?.trim() ? "meal name is required" : "";
         const scheduledAtError = !scheduledAt?.trim() ? "Scheduled time is required" : "";
-        const typeError = !type?.trim() ? "Meal Type is required" : "";
+        const typeError = !type?.trim() ? "meal Type is required" : "";
 
         setErrors({
             title: touched.title ? titleError : "",

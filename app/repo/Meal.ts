@@ -7,6 +7,18 @@ export interface NewMealResponse {
     mealId: string,
 }
 
+export interface MealInterface {
+    mealInformation: MealCard,
+    mealParticipants: MealParticipants[]
+}
+
+export interface MealParticipants {
+    userId: string,
+    username: string,
+    profilePicture?: string,
+    preference: string,
+    isCook: boolean,
+}
 export async function createNewMeal(newMeal: NewMealType, authToken: string): Promise<NewMealResponse> {
 
     try {
@@ -39,7 +51,7 @@ export async function createNewMeal(newMeal: NewMealType, authToken: string): Pr
                 throw new ForbiddenError('Not allowed')
             }
 
-            throw new Error(resData.error || 'Meal Creation failed. Please try again.');
+            throw new Error(resData.error || 'meal Creation failed. Please try again.');
         }
 
         if (resData) {
@@ -47,11 +59,11 @@ export async function createNewMeal(newMeal: NewMealType, authToken: string): Pr
         }
         throw new Error('123')
     } catch (e) {
-        throw new Error(e.message || 'Meal Creation failed. Please try again.');
+        throw new Error(e.message || 'meal Creation failed. Please try again.');
     }
 }
 
-export async function getMealData(mealId: string, authToken: string): Promise<MealCard> {
+export async function getMealData(mealId: string, authToken: string): Promise<MealInterface> {
         const url = BACKEND_URL + 'meals/' + mealId
 
         const timeoutPromise = timeoutPromiseFactory()
@@ -79,7 +91,7 @@ export async function getMealData(mealId: string, authToken: string): Promise<Me
                 throw new ForbiddenError('Not allowed')
             }
 
-            throw new Error(resData.error || 'Meal Creation failed. Please try again.');
+            throw new Error(resData.error || 'meal Creation failed. Please try again.');
         }
 
         return resData
