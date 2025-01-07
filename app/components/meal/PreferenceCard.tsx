@@ -2,11 +2,14 @@ import React from 'react';
 import {MealParticipants} from "../../repo/Meal";
 import {Box, Flex, Pressable, Text} from "native-base";
 import {PillTag} from "../UI/Pilltag";
+import {useGroup} from "../../context/groupContext";
+import {PERMISSIONS} from "../../utility/Roles";
 
-export function PreferenceCard({mealParticipants}: {mealParticipants: MealParticipants}) {
+export function PreferenceCard({mealParticipants}: { mealParticipants: MealParticipants }) {
     function handlePress() {
-        console.log(123)
+
     }
+    const {group} = useGroup();
 
     return (
         <Pressable onPress={handlePress} alignItems={'center'}>
@@ -24,10 +27,20 @@ export function PreferenceCard({mealParticipants}: {mealParticipants: MealPartic
                             {mealParticipants.username}
                         </Text>
                     </Flex>
-                    <Flex alignItems={'flex-end'}>
-                            <Text>{mealParticipants.isCook ? '👨‍🍳' : ''}</Text>
+                    <Flex>
+                        <Flex alignItems={'flex-end'}>
+                            {mealParticipants.isCook && (
+                                <PillTag text={'👨‍🍳'}/>
+                            )}
                             <Text>{mealParticipants.preference}</Text>
+                        </Flex>
+
                     </Flex>
+                    {group.userRoleRights && group.userRoleRights.includes(PERMISSIONS.CAN_CHANGE_FORCE_MEAL_PREFERENCE_AND_COOKING) && (
+                        <>
+
+                        </>
+                    )}
                 </Flex>
             </Box>
         </Pressable>

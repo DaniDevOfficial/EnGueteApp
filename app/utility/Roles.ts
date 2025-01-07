@@ -4,8 +4,7 @@ export const PERMISSIONS = {
     CAN_CREATE_MEAL: "can_create_meal",
     CAN_CHANGE_MEAL_FLAGS: "can_change_meal_flags",
 
-    CAN_FORCE_ADD_COOK: "can_force_add_cook",
-    CAN_FORCE_REMOVE_COOK: "can_force_remove_cook",
+    CAN_CHANGE_FORCE_MEAL_PREFERENCE_AND_COOKING: "can_force_meal_preference_and_cooking",
 
     CAN_UPDATE_GROUP: "can_update_group",
     CAN_DELETE_GROUP: "can_delete_group",

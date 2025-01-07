@@ -23,7 +23,6 @@ export async function createNewMeal(newMeal: NewMealType, authToken: string): Pr
 
     try {
         const url = BACKEND_URL + 'meals'
-        console.log(authToken)
         const timeoutPromise = timeoutPromiseFactory()
 
         const fetchPromise = fetch(url, {

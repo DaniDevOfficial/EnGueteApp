@@ -6,6 +6,7 @@ import {ForbiddenError, getAuthToken, handleLogoutProcedure, UnauthorizedError} 
 import {getMealData, MealInterface} from "../repo/Meal";
 import {RefreshControl} from "react-native-gesture-handler";
 import {MealHeader} from "../components/meal/MealHeader";
+import {PreferenceCard} from "../components/meal/PreferenceCard";
 
 export function Meal() {
     const [mealInformation, setMealInformation] = useState<MealInterface | undefined>();
@@ -31,7 +32,6 @@ export function Meal() {
                 return
             }
             const res = await getMealData(mealId, authToken)
-            console.log(res)
             setMealInformation(res)
             setLoading(false)
         } catch (e) {
@@ -75,9 +75,7 @@ export function Meal() {
         >
             <MealHeader mealInformation={mealInformation.mealInformation}/>
             {mealInformation.mealParticipants && mealInformation.mealParticipants.map((participant) => (
-                <Text>
-                    test
-                </Text>
+                <PreferenceCard mealParticipants={participant} key={participant.userId} />
             ))}
         </ScrollView>
     );

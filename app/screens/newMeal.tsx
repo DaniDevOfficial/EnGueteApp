@@ -66,7 +66,6 @@ export function NewMeal() {
                 notes: notes,
                 groupId: groupId
             }
-            console.log(data)
             const authToken = await getAuthToken()
 
             if (authToken === null) {
