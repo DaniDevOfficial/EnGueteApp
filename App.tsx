@@ -1,11 +1,11 @@
 import React from 'react';
-import { NativeBaseProvider } from 'native-base';
-import { Router } from './app/Router';
+import {NativeBaseProvider} from 'native-base';
+import {Router} from './app/Router';
 
 export default function App() {
-  return (
-    <NativeBaseProvider>
-        <Router />
-    </NativeBaseProvider>
-  );
+    return (
+        <NativeBaseProvider>
+            <Router/>
+        </NativeBaseProvider>
+    );
 }

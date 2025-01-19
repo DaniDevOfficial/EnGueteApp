@@ -1,26 +1,27 @@
 import React, {useState} from 'react';
-import {Box, Button, Center, Divider, Flex, FormControl, Heading, HStack, Input, Text, VStack} from "native-base";
+import {Box, Button, Center, Divider, Flex, FormControl, Heading, HStack, Input, Pressable, Text, VStack} from "native-base";
 import {SignIntoAccount} from "../repo/Auth";
+import {saveAuthToken} from "../Util";
+import {useNavigation} from "@react-navigation/native";
 
 export function Login() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [username, setUsername] = useState('Dani1-123');
+    const [password, setPassword] = useState('Dani1-123');
     const [error, setError] = useState('');
-
-    const handleSubmit = () => {
+    const navigation = useNavigation()
+    async function handleSubmit() {
         setError('');
-        console.log(1223)
         if (!username || !password) {
             setError('Both fields are required.');
             return;
         }
         try {
-            SignIntoAccount(username, password)
-
+            const tokenData = await SignIntoAccount(username, password)
+            await saveAuthToken(tokenData.token)
+            navigation.navigate('user')
         } catch (e) {
-            console.log(e.message)
             setError(e.message);
-
+            //TODO: Make some toasts
         }
     };
 
@@ -73,18 +74,23 @@ export function Login() {
                         Sign In
                     </Button>
                 </VStack>
-                <Flex justifyContent={"center"} alignItems={"center"}>
-                    <Box w="90%" maxW="290" mt={5}>
-                        <HStack alignItems="center" space={2}>
-                            <Divider flex={1} bg="coolGray.300"/>
-                            <Text fontSize="sm" color="coolGray.400">
-                                Or Create an account
-                            </Text>
-                            <Divider flex={1} bg="coolGray.300"/>
-                        </HStack>
-                    </Box>
-                </Flex>
-
+                <Pressable
+                    onPress={() => {
+                        navigation.navigate('signup')
+                    }}
+                >
+                    <Flex justifyContent={"center"} alignItems={"center"}>
+                        <Box w="90%" maxW="290" mt={5}>
+                            <HStack alignItems="center" space={2}>
+                                <Divider flex={1} bg="coolGray.300"/>
+                                <Text fontSize="sm" color="coolGray.400">
+                                    Or Create an account
+                                </Text>
+                                <Divider flex={1} bg="coolGray.300"/>
+                            </HStack>
+                        </Box>
+                    </Flex>
+                </Pressable>
             </Box>
         </Center>
     );
