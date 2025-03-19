@@ -1,5 +1,6 @@
-import { BACKEND_URL } from '@env';
+import {BACKEND_URL} from '@env';
 import {timeoutPromiseFactory} from "../Util";
+import {handleDefaultResponseAndHeaders} from "../utility/Response";
 
 type ResponseAuth = {
     token: string;
@@ -17,42 +18,20 @@ export async function SignIntoAccount(
         password,
     };
 
-    const timeoutPromise = timeoutPromiseFactory()
+    const timeoutPromise = timeoutPromiseFactory();
 
-    try {
-        console.log('Sending sign-in request:', url, data);
-        const fetchPromise = fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
+    const fetchPromise = fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
 
-        const res = await Promise.race([fetchPromise, timeoutPromise]);
-        const resData = await res.json();
-        if (!res.ok) {
-            if (res.status === 401) {
-                throw new Error('Incorrect username or password.');
-            }
+    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
+    handleDefaultResponseAndHeaders(res)
+    return await res.json();
 
-            throw new Error(resData.error || 'Login failed. Please try again.');
-        }
-
-        return resData;
-    } catch (error: any) {
-        if (error instanceof SyntaxError) {
-            throw new Error('Failed to parse server response. Please try again later.');
-        }
-
-        if (error instanceof TypeError) {
-            throw new Error(
-                'Unable to connect to the server. Please check your internet connection.'
-            );
-        }
-
-        throw new Error(error.message || 'An unexpected error occurred.');
-    }
 }
 
 
@@ -68,40 +47,19 @@ export async function CreateNewAccount(
         email: email,
         password: password,
     };
-    console.log(data)
+
     const timeoutPromise = timeoutPromiseFactory()
 
-    try {
-        const fetchPromise = fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
+    const fetchPromise = fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
 
-        const res = await Promise.race([fetchPromise, timeoutPromise]);
-        const resData = await res.json();
-        if (!res.ok) {
-            if (res.status === 500) {
-                throw new Error('Internal Server error.');
-            }
+    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
+    handleDefaultResponseAndHeaders(res);
+    return await res.json();
 
-            throw new Error(resData.error || 'Login failed. Please try again.');
-        }
-
-        return resData;
-    } catch (error: any) {
-        if (error instanceof SyntaxError) {
-            throw new Error('Failed to parse server response. Please try again later.');
-        }
-
-        if (error instanceof TypeError) {
-            throw new Error(
-                'Unable to connect to the server. Please check your internet connection.'
-            );
-        }
-
-        throw new Error(error.message || 'An unexpected error occurred.');
-    }
 }

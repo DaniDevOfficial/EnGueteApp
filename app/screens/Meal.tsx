@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Box, ScrollView, Spinner, Text} from "native-base";
+import {Box, ScrollView, Spinner} from "native-base";
 import {useGroup} from "../context/groupContext";
 import {useNavigation, useRoute} from "@react-navigation/native";
 import {ForbiddenError, getAuthToken, handleLogoutProcedure, UnauthorizedError} from "../Util";
@@ -32,6 +32,8 @@ export function Meal() {
                 return
             }
             const res = await getMealData(mealId, authToken)
+
+
             setMealInformation(res)
             setLoading(false)
         } catch (e) {

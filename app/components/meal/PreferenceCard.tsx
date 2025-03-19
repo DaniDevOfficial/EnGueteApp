@@ -16,11 +16,13 @@ export function PreferenceCard({mealParticipants}: { mealParticipants: MealParti
             <Box alignItems="center" p="4" borderRadius="md" backgroundColor={"coolGray.300"} width={'95%'} my={2}>
                 <Flex
                     justifyContent={"space-between"}
+                    alignItems={'center'}
                     flexDir={'row'}
                     width={"100%"}
                 >
                     <Flex
-                        w='60%'
+                        w='40%'
+                        overflow={'hidden'}
                         flexDir={'column'}
                     >
                         <Text>
@@ -28,11 +30,11 @@ export function PreferenceCard({mealParticipants}: { mealParticipants: MealParti
                         </Text>
                     </Flex>
                     <Flex>
-                        <Flex alignItems={'flex-end'}>
+                        <Flex flexDir={'row'} alignItems={'center'}>
+                            <PillTag text={mealParticipants.preference}/>
                             {mealParticipants.isCook && (
                                 <PillTag text={'👨‍🍳'}/>
                             )}
-                            <Text>{mealParticipants.preference}</Text>
                         </Flex>
 
                     </Flex>

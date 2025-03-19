@@ -1,5 +1,5 @@
 // @ts-ignore
-import { BACKEND_URL } from '@env';
+import {BACKEND_URL} from '@env';
 import {timeoutPromiseFactory, UnauthorizedError} from "../Util";
 
 export interface User {
@@ -26,28 +26,21 @@ export interface Group {
 export async function GetUserInformation(authToken: string): Promise<User> {
     const payload = decodeJwt(authToken);
     if (!payload) {
-        throw new Error("Failed to decode JWT.");
+        throw new UnauthorizedError('Untauthorized');
     }
     const timeoutPromise = timeoutPromiseFactory()
     const url = BACKEND_URL + 'users/' + payload['UserId']
+
     const fetchPromise = await fetch(url, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': authToken,
         }
-    })
-    const res = await Promise.race([fetchPromise, timeoutPromise]);
-    const resData = await res.json();
+    });
 
-    if (!res.ok) {
-        if (res.status === 401) {
-            throw new UnauthorizedError('Unauthorized');
-        }
-
-        throw new Error(resData.error || 'Login failed. Please try again.');
-    }
-    return resData;
+    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
+    return await res.json();
 }
 
 type JWTPayload = {

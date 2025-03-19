@@ -1,6 +1,7 @@
 // @ts-ignore
 import {BACKEND_URL} from '@env';
-import {ForbiddenError, timeoutPromiseFactory, UnauthorizedError} from "../Util";
+import {timeoutPromiseFactory} from "../Util";
+import {handleAuthorisationKeysFromHeader} from "../utility/Auth";
 
 export interface Group {
     groupInfo: GroupInformation
@@ -38,19 +39,11 @@ export async function GetGroupInformation(groupId: string, authToken: string): P
             'Content-Type': 'application/json',
             'Authorization': authToken,
         }
-    })
-    const res = await Promise.race([fetchPromise, timeoutPromise]);
-    const resData = await res.json();
-    if (!res.ok) {
-        if (res.status === 401) {
-            throw new UnauthorizedError('Unauthorized');
-        }
+    });
 
-        if (res.status === 403) {
-            throw new ForbiddenError('Not allowed')
-        }
+    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
 
-        throw new Error(resData.error || 'Login failed. Please try again.');
-    }
-    return resData;
+    handleAuthorisationKeysFromHeader(res)
+
+    return await res.json();
 }

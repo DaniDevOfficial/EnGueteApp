@@ -1,7 +1,8 @@
 import {NewMealType} from "../screens/newMeal";
 import {BACKEND_URL} from '@env';
-import {ForbiddenError, timeoutPromiseFactory, UnauthorizedError} from "../Util";
+import {timeoutPromiseFactory} from "../Util";
 import {MealCard} from "./Group";
+import {handleDefaultResponseAndHeaders} from "../utility/Response";
 
 export interface NewMealResponse {
     mealId: string,
@@ -19,79 +20,42 @@ export interface MealParticipants {
     preference: string,
     isCook: boolean,
 }
+
 export async function createNewMeal(newMeal: NewMealType, authToken: string): Promise<NewMealResponse> {
 
-    try {
-        const url = BACKEND_URL + 'meals'
-        const timeoutPromise = timeoutPromiseFactory()
+    const url = BACKEND_URL + 'meals'
+    const timeoutPromise = timeoutPromiseFactory()
 
-        const fetchPromise = fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': authToken
-            },
-            body: JSON.stringify(newMeal)
-        });
+    const fetchPromise = fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authToken
+        },
+        body: JSON.stringify(newMeal)
+    });
 
-        const res = await Promise.race([fetchPromise, timeoutPromise]);
-        const resData = await res.json();
+    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
 
-        if (!res.ok) {
-            if (res.status === 500) {
-                throw new Error('Internal Server error.');
-            }
-
-            if (res.status === 401) {
-                throw new UnauthorizedError('Unauthorized');
-            }
-
-            if (res.status === 403) {
-                throw new ForbiddenError('Not allowed')
-            }
-
-            throw new Error(resData.error || 'meal Creation failed. Please try again.');
-        }
-
-        if (resData) {
-            return resData
-        }
-        throw new Error('123')
-    } catch (e) {
-        throw new Error(e.message || 'meal Creation failed. Please try again.');
-    }
+    handleDefaultResponseAndHeaders(res)
+    return await res.json()
 }
 
 export async function getMealData(mealId: string, authToken: string): Promise<MealInterface> {
-        const url = BACKEND_URL + 'meals/' + mealId
+    const url = BACKEND_URL + 'meals/' + mealId
 
-        const timeoutPromise = timeoutPromiseFactory()
+    const timeoutPromise = timeoutPromiseFactory()
 
-        const fetchPromise = fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': authToken
-            },
-        });
-        const res = await Promise.race([fetchPromise, timeoutPromise]);
-        const resData = await res.json();
+    const fetchPromise = fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authToken
+        },
+    });
+    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
 
-        if (!res.ok) {
-            if (res.status === 500) {
-                throw new Error('Internal Server error.');
-            }
+    handleDefaultResponseAndHeaders(res)
 
-            if (res.status === 401) {
-                throw new UnauthorizedError('Unauthorized');
-            }
-
-            if (res.status === 403) {
-                throw new ForbiddenError('Not allowed')
-            }
-
-            throw new Error(resData.error || 'meal Creation failed. Please try again.');
-        }
-
-        return resData
-    }
+    return await res.json()
+}
