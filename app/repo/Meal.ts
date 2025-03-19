@@ -3,6 +3,7 @@ import {BACKEND_URL} from '@env';
 import {timeoutPromiseFactory} from "../Util";
 import {MealCard} from "./Group";
 import {handleDefaultResponseAndHeaders} from "../utility/Response";
+import {getBasicAuthHeader} from "../utility/Auth";
 
 export interface NewMealResponse {
     mealId: string,
@@ -48,10 +49,7 @@ export async function getMealData(mealId: string, authToken: string): Promise<Me
 
     const fetchPromise = fetch(url, {
         method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': authToken
-        },
+        headers: getBasicAuthHeader(),
     });
     const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
 

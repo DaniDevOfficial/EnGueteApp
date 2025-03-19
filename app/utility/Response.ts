@@ -1,6 +1,5 @@
 import {BAD_REQUEST, FORBIDDEN, INTERNAL_SERVER_ERROR, UNAUTHORIZED} from "./HttpResponseCodes";
-import {ForbiddenError, UnauthorizedError} from "../Util";
-import {BadRequestError, InternalServerError} from "./Errors";
+import {BadRequestError, ForbiddenError, InternalServerError, UnauthorizedError} from "./Errors";
 import {handleAuthorisationKeysFromHeader} from "./Auth";
 
 /**

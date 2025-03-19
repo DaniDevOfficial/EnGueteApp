@@ -1,7 +1,7 @@
 // @ts-ignore
 import {BACKEND_URL} from '@env';
 import {timeoutPromiseFactory} from "../Util";
-import {handleAuthorisationKeysFromHeader} from "../utility/Auth";
+import {getBasicAuthHeader, handleAuthorisationKeysFromHeader} from "../utility/Auth";
 
 export interface Group {
     groupInfo: GroupInformation
@@ -35,10 +35,7 @@ export async function GetGroupInformation(groupId: string, authToken: string): P
     const url = BACKEND_URL + 'groups/' + groupId
     const fetchPromise = await fetch(url, {
         method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': authToken,
-        }
+        headers: getBasicAuthHeader(),
     });
 
     const res: Response = await Promise.race([fetchPromise, timeoutPromise]);

@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Box, Button, ScrollView, Spinner, Text} from 'native-base';
-import {ForbiddenError, getAuthToken, handleLogoutProcedure, UnauthorizedError} from "../Util";
+import {getAuthToken, handleLogoutProcedure} from "../Util";
 import {GetGroupInformation, Group as GroupInformationType} from "../repo/Group";
 import {GroupInformationHeader} from "../components/group/GroupInformationHeader";
 import {MealCard} from "../components/group/MealCard";
 import {RefreshControl} from "react-native-gesture-handler";
 import {useGroup} from "../context/groupContext";
 import {PERMISSIONS} from "../utility/Roles";
+import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
 
 export function Group() {
     const [groupInformation, setGroupInformation] = useState<GroupInformationType | undefined>()

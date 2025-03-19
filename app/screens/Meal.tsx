@@ -2,11 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {Box, ScrollView, Spinner} from "native-base";
 import {useGroup} from "../context/groupContext";
 import {useNavigation, useRoute} from "@react-navigation/native";
-import {ForbiddenError, getAuthToken, handleLogoutProcedure, UnauthorizedError} from "../Util";
+import {getAuthToken, handleLogoutProcedure} from "../Util";
 import {getMealData, MealInterface} from "../repo/Meal";
 import {RefreshControl} from "react-native-gesture-handler";
 import {MealHeader} from "../components/meal/MealHeader";
 import {PreferenceCard} from "../components/meal/PreferenceCard";
+import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
 
 export function Meal() {
     const [mealInformation, setMealInformation] = useState<MealInterface | undefined>();

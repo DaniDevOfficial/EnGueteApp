@@ -38,7 +38,7 @@ export function Signup() {
             setError(e.message);
             //TODO: Make some toasts
         }
-    };
+    }
 
     return (
         <Center flex={1} bg="coolGray.100">

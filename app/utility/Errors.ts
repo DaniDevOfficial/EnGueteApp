@@ -29,6 +29,6 @@ export class DoNothingError extends Error {
 export class ForbiddenError extends Error {
     constructor(message: any) {
         super(message);
-        this.name = 'UnauthorizedError';
+        this.name = 'ForbiddenError';
     }
 }

@@ -1,11 +1,12 @@
 import {Box, Text} from 'native-base'
 import React, {useEffect, useState} from 'react'
-import {ForbiddenError, getAuthToken, handleLogoutProcedure, UnauthorizedError} from "../Util";
+import {getAuthToken, handleLogoutProcedure} from "../Util";
 import {useNavigation} from "@react-navigation/native";
 import {GetUserInformation, User as UserType} from "../repo/User";
 import {useUser} from "../context/userContext";
 import {UserCard} from "../components/user/UserCard";
 import {GroupCard} from "../components/user/GroupCard";
+import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
 
 export function User() {
     const [userInformation, setUserInformation] = useState<UserType | undefined>()

@@ -1,6 +1,8 @@
 // @ts-ignore
 import {BACKEND_URL} from '@env';
-import {timeoutPromiseFactory, UnauthorizedError} from "../Util";
+import {timeoutPromiseFactory} from "../Util";
+import {getBasicAuthHeader} from "../utility/Auth";
+import {UnauthorizedError} from "../utility/Errors";
 
 export interface User {
     userId: string;
@@ -33,10 +35,7 @@ export async function GetUserInformation(authToken: string): Promise<User> {
 
     const fetchPromise = await fetch(url, {
         method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': authToken,
-        }
+        headers: getBasicAuthHeader(),
     });
 
     const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
@@ -61,7 +60,6 @@ function decodeJwt(token: string): JWTPayload {
         const payload = parts[1];
         return JSON.parse(atob(payload));
     } catch (error) {
-        console.error("Failed to decode JWT:", error);
         return null;
     }
 }
