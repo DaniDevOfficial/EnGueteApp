@@ -40,7 +40,7 @@ export async function GetUserInformation(authToken: string): Promise<User> {
     });
 
     const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
-    handleDefaultResponseAndHeaders(res)
+    await handleDefaultResponseAndHeaders(res)
     return await res.json();
 }
 

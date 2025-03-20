@@ -29,7 +29,9 @@ export async function SignIntoAccount(
     });
 
     const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
-    handleDefaultResponseAndHeaders(res)
+    await handleDefaultResponseAndHeaders(res)
+    console.log('signIntoAccount')
+    console.log(res)
     return await res.json();
 
 }
@@ -59,7 +61,7 @@ export async function CreateNewAccount(
     });
 
     const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
-    handleDefaultResponseAndHeaders(res);
+    await handleDefaultResponseAndHeaders(res);
     return await res.json();
 
 }

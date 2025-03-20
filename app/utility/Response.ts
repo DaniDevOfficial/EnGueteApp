@@ -6,7 +6,7 @@ import {handleAuthorisationKeysFromHeader} from "./Auth";
  * This function checks if a response is okay or not. If its okay it also handles the auth headers. this is just a template function, which handles basic errors and headers.
  * @param response
  */
-export function handleDefaultResponseAndHeaders(response: Response) {
+export async function handleDefaultResponseAndHeaders(response: Response) {
     if (!response.ok) {
         if (response.status === UNAUTHORIZED) {
             throw new UnauthorizedError('Not authorized');
@@ -23,6 +23,6 @@ export function handleDefaultResponseAndHeaders(response: Response) {
         throw new Error('An unexpected error occurred');
     }
 
-    handleAuthorisationKeysFromHeader(response.headers);
+    await handleAuthorisationKeysFromHeader(response.headers);
 }
 

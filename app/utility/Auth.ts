@@ -4,10 +4,15 @@ const AUTH_TOKEN_STRING = 'authToken';
 const REFRESH_TOKEN_STRING = 'refreshToken';
 
 
-export function handleAuthorisationKeysFromHeader(header: Headers) {
-    const authToken = header.get('Authorization') ?? '';
-    const refreshToken = header.get('RefreshToken') ?? '';
+export async function handleAuthorisationKeysFromHeader(header: Headers) {
+    console.log('here')
+    const authToken = header.get('Authorization');
+    const refreshToken = header.get('RefreshToken');
+    console.log({
+        handelingHeaderAuth: authToken,
+        handelingHeaderRefresh: refreshToken,
 
+    })
     if (authToken !== null) {
         saveAuthToken(authToken);
     }
@@ -38,14 +43,21 @@ export interface SimpleAuthHeaderWithJson extends Record<string, string> {
 
 
 export async function saveAuthToken(value: string) {
+    console.log('AuthToken: ' + value)
     await AsyncStorage.setItem(AUTH_TOKEN_STRING, value);
 }
 export async function saveRefreshToken(value: string) {
+    console.log('RefreshToken: ' + value)
     await AsyncStorage.setItem(REFRESH_TOKEN_STRING, value);
+
 }
 
 export async function getAuthToken() {
     return await AsyncStorage.getItem(AUTH_TOKEN_STRING);
+}
+
+export async function getTesting() {
+    return await AsyncStorage.getItem('testing')
 }
 
 export async function getRefreshToken() {

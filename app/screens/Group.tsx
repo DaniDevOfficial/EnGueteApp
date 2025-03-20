@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Box, Button, ScrollView, Spinner, Text} from 'native-base';
-import {getAuthToken, handleLogoutProcedure} from "../Util";
+import {handleLogoutProcedure} from "../Util";
 import {GetGroupInformation, Group as GroupInformationType} from "../repo/Group";
 import {GroupInformationHeader} from "../components/group/GroupInformationHeader";
 import {MealCard} from "../components/group/MealCard";
@@ -29,14 +29,9 @@ export function Group() {
 
     async function getGroupData() {
         try {
-            const authToken = await getAuthToken()
 
-            if (authToken === null) {
-                navigation.navigate('home')
-                return
-            }
-            const groupInformation = await GetGroupInformation(groupId, authToken);
-
+            const groupInformation = await GetGroupInformation(groupId);
+            console.log(groupInformation)
             if (groupInformation) {
                 setLoading(false)
                 setGroupInformation(groupInformation)

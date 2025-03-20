@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Button, FormControl, Input, TextArea, VStack, WarningOutlineIcon} from "native-base";
 import {createNewMeal} from "../repo/Meal";
-import {getAuthToken} from "../Util";
 import {useNavigation} from "@react-navigation/native";
 import {useGroup} from "../context/groupContext";
 import {PERMISSIONS} from "../utility/Roles";
+import {getAuthToken} from "../utility/Auth";
 
 export interface NewMealType {
     title: string,
@@ -58,6 +58,7 @@ export function NewMeal() {
         try {
             const data: NewMealType = {
                 // @ts-ignore
+                title: title,
                 title: title,
                 // @ts-ignore
                 type: type,

@@ -38,7 +38,7 @@ export async function createNewMeal(newMeal: NewMealType, authToken: string): Pr
 
     const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
 
-    handleDefaultResponseAndHeaders(res)
+    await handleDefaultResponseAndHeaders(res)
     return await res.json()
 }
 
@@ -53,7 +53,7 @@ export async function getMealData(mealId: string, authToken: string): Promise<Me
     });
     const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
 
-    handleDefaultResponseAndHeaders(res)
+    await handleDefaultResponseAndHeaders(res)
 
     return await res.json()
 }

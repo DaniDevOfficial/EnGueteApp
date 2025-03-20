@@ -39,8 +39,8 @@ export async function GetGroupInformation(groupId: string): Promise<Group> {
     });
 
     const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
-
-    handleAuthorisationKeysFromHeader(res)
+    console.log('here')
+    await handleAuthorisationKeysFromHeader(res)
 
     return await res.json();
 }

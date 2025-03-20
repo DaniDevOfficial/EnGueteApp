@@ -1,13 +1,13 @@
 import {Box, Pressable, Text} from 'native-base'
 import React, {useEffect, useState} from 'react'
-import {getAuthToken, handleLogoutProcedure} from "../Util";
+import {handleLogoutProcedure} from "../Util";
 import {useNavigation} from "@react-navigation/native";
 import {GetUserInformation, User as UserType} from "../repo/User";
 import {useUser} from "../context/userContext";
 import {UserCard} from "../components/user/UserCard";
 import {GroupCard} from "../components/user/GroupCard";
 import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
-import {getRefreshToken} from "../utility/Auth";
+import {getAuthToken, getRefreshToken, getTesting} from "../utility/Auth";
 
 export function User() {
     const [userInformation, setUserInformation] = useState<UserType | undefined>()
@@ -19,8 +19,9 @@ export function User() {
     async function testing() {
         const refreshToken = await getRefreshToken();
         const authToken = await getAuthToken();
-
+        const testing = await getTesting();
         console.log({
+            testing: testing,
             refreshToken: refreshToken,
             authToken: authToken
         })

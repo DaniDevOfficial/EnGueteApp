@@ -31,8 +31,7 @@ export function Signup() {
             return;
         }
         try {
-            const tokenData = await CreateNewAccount(username, email ,password)
-            await saveAuthToken(tokenData.token)
+            const response = await CreateNewAccount(username, email ,password)
             navigation.navigate('user')
         } catch (e) {
             setError(e.message);

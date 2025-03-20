@@ -1,7 +1,8 @@
 import {Box, Button, Text} from 'native-base'
 import React, {useEffect, useState} from 'react'
-import {getAuthToken} from "../Util";
 import {useNavigation} from "@react-navigation/native";
+import {getAuthToken} from "../utility/Auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function Home() {
     const [token, setToken] = useState("no token yet")
@@ -11,6 +12,7 @@ export function Home() {
 
         async function getToken() {
             try {
+                await AsyncStorage.setItem('testing', 'tesing')
                 const authToken = await getAuthToken();
                 console.log(authToken)
                 if (authToken) {
