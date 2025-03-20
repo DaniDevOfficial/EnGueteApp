@@ -29,13 +29,13 @@ export interface MealCard {
     isCook: boolean,
 }
 
-export async function GetGroupInformation(groupId: string, authToken: string): Promise<Group> {
+export async function GetGroupInformation(groupId: string): Promise<Group> {
 
     const timeoutPromise = timeoutPromiseFactory()
     const url = BACKEND_URL + 'groups/' + groupId
     const fetchPromise = await fetch(url, {
         method: 'GET',
-        headers: getBasicAuthHeader(),
+        headers: await getBasicAuthHeader(),
     });
 
     const res: Response = await Promise.race([fetchPromise, timeoutPromise]);

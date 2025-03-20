@@ -16,8 +16,8 @@ export function Login() {
             return;
         }
         try {
-            const tokenData = await SignIntoAccount(username, password)
-            await saveAuthToken(tokenData.token)
+            const res = await SignIntoAccount(username, password)
+            console.log(res)
             navigation.navigate('user')
         } catch (e) {
             setError(e.message);

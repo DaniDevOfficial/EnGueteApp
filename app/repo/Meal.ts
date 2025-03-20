@@ -49,7 +49,7 @@ export async function getMealData(mealId: string, authToken: string): Promise<Me
 
     const fetchPromise = fetch(url, {
         method: 'GET',
-        headers: getBasicAuthHeader(),
+        headers: await getBasicAuthHeader(),
     });
     const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
 

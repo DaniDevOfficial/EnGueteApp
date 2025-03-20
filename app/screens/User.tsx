@@ -1,4 +1,4 @@
-import {Box, Text} from 'native-base'
+import {Box, Pressable, Text} from 'native-base'
 import React, {useEffect, useState} from 'react'
 import {getAuthToken, handleLogoutProcedure} from "../Util";
 import {useNavigation} from "@react-navigation/native";
@@ -7,6 +7,7 @@ import {useUser} from "../context/userContext";
 import {UserCard} from "../components/user/UserCard";
 import {GroupCard} from "../components/user/GroupCard";
 import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
+import {getRefreshToken} from "../utility/Auth";
 
 export function User() {
     const [userInformation, setUserInformation] = useState<UserType | undefined>()
@@ -15,17 +16,30 @@ export function User() {
 
     const {user, setUser: setUser} = useUser();
 
+    async function testing() {
+        const refreshToken = await getRefreshToken();
+        const authToken = await getAuthToken();
+
+        console.log({
+            refreshToken: refreshToken,
+            authToken: authToken
+        })
+    }
+
+
     useEffect(() => {
         getUserData()
 
         async function getUserData() {
             try {
                 const authToken = await getAuthToken()
+                console.log(authToken + ' :AuthToken');
                 if (authToken === null) {
                     navigation.navigate('home')
                     return
                 }
                 const userInformationRes = await GetUserInformation(authToken);
+                console.log(userInformationRes)
                 if (userInformationRes) {
                     setUserInformation(userInformationRes)
                     setLoading(false)
@@ -78,6 +92,11 @@ export function User() {
                 backgroundColor="coolGray.300"
                 marginY="3px"
             />
+            <Pressable onPress={testing}>
+                <Text>
+                    Testing
+                </Text>
+            </Pressable>
             <Text fontWeight={"bold"} fontSize={"2xl"}>Your Groups</Text>
             {userInformation.groups && userInformation.groups.length > 0 ? (userInformation.groups.map((group) => (
                     <GroupCard group={group} key={group.groupId}/>

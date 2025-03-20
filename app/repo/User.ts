@@ -1,8 +1,9 @@
 // @ts-ignore
 import {BACKEND_URL} from '@env';
 import {timeoutPromiseFactory} from "../Util";
-import {getBasicAuthHeader} from "../utility/Auth";
+import {getBasicAuthHeader, handleAuthorisationKeysFromHeader} from "../utility/Auth";
 import {UnauthorizedError} from "../utility/Errors";
+import {handleDefaultResponseAndHeaders} from "../utility/Response";
 
 export interface User {
     userId: string;
@@ -28,17 +29,18 @@ export interface Group {
 export async function GetUserInformation(authToken: string): Promise<User> {
     const payload = decodeJwt(authToken);
     if (!payload) {
-        throw new UnauthorizedError('Untauthorized');
+        throw new UnauthorizedError('Unauthorized');
     }
     const timeoutPromise = timeoutPromiseFactory()
     const url = BACKEND_URL + 'users/' + payload['UserId']
 
     const fetchPromise = await fetch(url, {
         method: 'GET',
-        headers: getBasicAuthHeader(),
+        headers: await getBasicAuthHeader(),
     });
 
     const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
+    handleDefaultResponseAndHeaders(res)
     return await res.json();
 }
 
