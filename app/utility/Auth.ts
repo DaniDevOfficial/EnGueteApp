@@ -5,19 +5,14 @@ const REFRESH_TOKEN_STRING = 'refreshToken';
 
 
 export async function handleAuthorisationKeysFromHeader(header: Headers) {
-    console.log('here')
     const authToken = header.get('Authorization');
     const refreshToken = header.get('RefreshToken');
-    console.log({
-        handelingHeaderAuth: authToken,
-        handelingHeaderRefresh: refreshToken,
 
-    })
     if (authToken !== null) {
-        saveAuthToken(authToken);
+        await saveAuthToken(authToken);
     }
     if (refreshToken !== null) {
-        saveRefreshToken(refreshToken)
+        await saveRefreshToken(refreshToken)
     }
 }
 

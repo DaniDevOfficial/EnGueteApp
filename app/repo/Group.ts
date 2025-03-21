@@ -2,6 +2,7 @@
 import {BACKEND_URL} from '@env';
 import {timeoutPromiseFactory} from "../Util";
 import {getBasicAuthHeader, handleAuthorisationKeysFromHeader} from "../utility/Auth";
+import {handleDefaultResponseAndHeaders} from "../utility/Response";
 
 export interface Group {
     groupInfo: GroupInformation
@@ -39,8 +40,6 @@ export async function GetGroupInformation(groupId: string): Promise<Group> {
     });
 
     const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
-    console.log('here')
-    await handleAuthorisationKeysFromHeader(res)
-
+    await handleDefaultResponseAndHeaders(res)
     return await res.json();
 }

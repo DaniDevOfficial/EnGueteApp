@@ -52,6 +52,7 @@ export function Group() {
                 //TODO: toast
             }
             console.log(e.message)
+            setLoading(false)
         }
     }
 

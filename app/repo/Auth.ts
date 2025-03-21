@@ -30,8 +30,6 @@ export async function SignIntoAccount(
 
     const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
     await handleDefaultResponseAndHeaders(res)
-    console.log('signIntoAccount')
-    console.log(res)
     return await res.json();
 
 }
