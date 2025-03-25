@@ -33,7 +33,7 @@ export interface MealCard {
 export async function GetGroupInformation(groupId: string): Promise<Group> {
 
     const timeoutPromise = timeoutPromiseFactory()
-    const url = BACKEND_URL + 'groups/' + groupId
+    const url = BACKEND_URL + 'groups?groupId=' + groupId
     const fetchPromise = await fetch(url, {
         method: 'GET',
         headers: await getBasicAuthHeader(),

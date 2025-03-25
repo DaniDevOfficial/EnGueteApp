@@ -27,30 +27,22 @@ export function Meal() {
     }, []);
     async function getMealInformation() {
         try {
-            const authToken = await getAuthToken()
-            if (!authToken) {
-                await handleLogoutProcedure()
-                navigation.navigate('home')
-                return
-            }
-            const res = await getMealData(mealId, authToken)
-
-
+            const res = await getMealData(mealId)
             setMealInformation(res)
             setLoading(false)
         } catch (e) {
             if (e instanceof UnauthorizedError) {
                 await handleLogoutProcedure()
                 navigation.navigate('home')
-                return;
             }
 
             if (e instanceof ForbiddenError) {
                 console.log('This action is forbidden for this user')
                 //TODO: toast
-
-                return
             }
+
+
+            setLoading(false)
             console.log(e.message)
         }
     }

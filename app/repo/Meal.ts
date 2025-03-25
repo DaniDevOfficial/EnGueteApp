@@ -42,8 +42,8 @@ export async function createNewMeal(newMeal: NewMealType, authToken: string): Pr
     return await res.json()
 }
 
-export async function getMealData(mealId: string, authToken: string): Promise<MealInterface> {
-    const url = BACKEND_URL + 'meals/' + mealId
+export async function getMealData(mealId: string): Promise<MealInterface> {
+    const url = BACKEND_URL + 'meals?mealId=' + mealId
 
     const timeoutPromise = timeoutPromiseFactory()
 
