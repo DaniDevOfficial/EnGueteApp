@@ -34,6 +34,7 @@ export function Meal() {
             if (e instanceof UnauthorizedError) {
                 await handleLogoutProcedure()
                 navigation.navigate('home')
+                return;
             }
 
             if (e instanceof ForbiddenError) {
@@ -43,6 +44,7 @@ export function Meal() {
 
 
             setLoading(false)
+            navigation.goBack();
             console.log(e.message)
         }
     }

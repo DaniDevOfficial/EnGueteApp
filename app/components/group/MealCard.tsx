@@ -17,7 +17,6 @@ export function MealCard({meal}: MealCardProps) {
 
         // @ts-ignore
         navigation.navigate('Meal', { mealId: meal.mealId });
-
     }
 
     const whenText = getFancyTimeDisplay(meal.dateTime)

@@ -44,6 +44,7 @@ export function Group() {
             if (e instanceof UnauthorizedError) {
                 await handleLogoutProcedure()
                 navigation.navigate('home')
+                return;
             }
 
             if (e instanceof ForbiddenError) {
@@ -51,6 +52,7 @@ export function Group() {
                 //TODO: toast
             }
             console.log(e.message)
+            navigation.goBack();
             setLoading(false)
         }
     }
