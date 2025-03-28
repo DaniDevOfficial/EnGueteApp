@@ -1,51 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
+import {Modal, Button, FormControl, Input, Box, Text, Pressable, Flex} from 'native-base';
 import {MealParticipants} from "../../repo/Meal";
-import {Box, Flex, Pressable, Text} from "native-base";
-import {PillTag} from "../UI/Pilltag";
-import {useGroup} from "../../context/groupContext";
-import {PERMISSIONS} from "../../utility/Roles";
 
-export function PreferenceCard({mealParticipants}: { mealParticipants: MealParticipants }) {
+export function PreferenceCard({ mealParticipants }: { mealParticipants: MealParticipants }) {
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [newPreference, setNewPreference] = useState(mealParticipants.preference);
+
     function handlePress() {
-
+        setModalVisible(true);
     }
-    const {group} = useGroup();
+
+    function handleSave() {
+        setModalVisible(false);
+    }
 
     return (
-        <Pressable onPress={handlePress} alignItems={'center'}>
+        <Pressable onPress={handlePress} alignItems="center">
             <Box alignItems="center" p="4" borderRadius="md" backgroundColor={"coolGray.300"} width={'95%'} my={2}>
-                <Flex
-                    justifyContent={"space-between"}
-                    alignItems={'center'}
-                    flexDir={'row'}
-                    width={"100%"}
-                >
-                    <Flex
-                        w='40%'
-                        overflow={'hidden'}
-                        flexDir={'column'}
-                    >
-                        <Text>
-                            {mealParticipants.username}
-                        </Text>
-                    </Flex>
-                    <Flex>
-                        <Flex flexDir={'row'} alignItems={'center'}>
-                            <PillTag text={mealParticipants.preference}/>
-                            {mealParticipants.isCook && (
-                                <PillTag text={'👨‍🍳'}/>
-                            )}
-                        </Flex>
-
-                    </Flex>
-                    {group.userRoleRights && group.userRoleRights.includes(PERMISSIONS.CAN_CHANGE_FORCE_MEAL_PREFERENCE_AND_COOKING) && (
-                        <>
-
-                        </>
-                    )}
+                <Flex justifyContent={"space-between"} alignItems={'center'} flexDir={'row'} width={"100%"}>
+                    <Text>{mealParticipants.username}</Text>
+                    <Text>{mealParticipants.preference}</Text>
+                    {mealParticipants.isCook && <Text>👨‍🍳</Text>}
                 </Flex>
             </Box>
+
+            <Modal isOpen={isModalVisible} onClose={() => setModalVisible(false)}>
+                <Modal.Content>
+                    <Modal.Header>Edit Meal Preference</Modal.Header>
+                    <Modal.Body>
+                        <FormControl>
+                            <FormControl.Label>New Preference</FormControl.Label>
+                            <Input
+                                value={newPreference}
+                                onChangeText={setNewPreference}
+                                placeholder="Enter new meal preference"
+                            />
+                        </FormControl>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onPress={handleSave}>Save</Button>
+                        <Button variant="ghost" onPress={() => setModalVisible(false)}>
+                            Cancel
+                        </Button>
+                    </Modal.Footer>
+                </Modal.Content>
+            </Modal>
         </Pressable>
     );
 }
-
