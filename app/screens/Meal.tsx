@@ -33,8 +33,7 @@ export function Meal() {
             setLoading(false)
         } catch (e) {
             if (e instanceof UnauthorizedError) {
-                await handleLogoutProcedure()
-                resetToHomeScreen(navigation)
+                await handleLogoutProcedure(navigation)
                 return;
             }
 

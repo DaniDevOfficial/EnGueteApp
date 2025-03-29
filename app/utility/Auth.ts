@@ -37,23 +37,26 @@ export interface SimpleAuthHeaderWithJson extends Record<string, string> {
 }
 
 
+// GET
+export async function getAuthToken() {
+    return await AsyncStorage.getItem(AUTH_TOKEN_STRING);
+}
+export async function getRefreshToken() {
+    return AsyncStorage.getItem(REFRESH_TOKEN_STRING);
+}
+
+// SAVE
 export async function saveAuthToken(value: string) {
     await AsyncStorage.setItem(AUTH_TOKEN_STRING, value);
 }
 export async function saveRefreshToken(value: string) {
     await AsyncStorage.setItem(REFRESH_TOKEN_STRING, value);
-
 }
 
-export async function getAuthToken() {
-    return await AsyncStorage.getItem(AUTH_TOKEN_STRING);
+// DELETE
+export async function removeAuthToken() {
+    await AsyncStorage.removeItem(AUTH_TOKEN_STRING);
 }
-
-export async function getTesting() {
-    return await AsyncStorage.getItem('testing')
+export async function removeRefreshToken() {
+    await AsyncStorage.removeItem(REFRESH_TOKEN_STRING);
 }
-
-export async function getRefreshToken() {
-    return AsyncStorage.getItem(REFRESH_TOKEN_STRING);
-}
-

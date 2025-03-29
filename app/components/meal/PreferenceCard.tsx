@@ -40,8 +40,7 @@ export function PreferenceCard({mealParticipants}: { mealParticipants: MealParti
         //TODO: some logic for fancy update of the cah
         } catch (e) {
             if (e instanceof UnauthorizedError) {
-                await handleLogoutProcedure()
-                resetToHomeScreen(navigation)
+                await handleLogoutProcedure(navigation)
                 return;
             }
 

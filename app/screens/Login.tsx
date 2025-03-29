@@ -3,6 +3,7 @@ import {Box, Button, Center, Divider, Flex, FormControl, Heading, HStack, Input,
 import {SignIntoAccount} from "../repo/Auth";
 import {saveAuthToken} from "../Util";
 import {useNavigation} from "@react-navigation/native";
+import {resetToUserScreen} from "../utility/navigation";
 
 export function Login() {
     const [username, setUsername] = useState('Dani1-123');
@@ -18,7 +19,7 @@ export function Login() {
         try {
             const res = await SignIntoAccount(username, password)
             console.log(res)
-            navigation.navigate('user')
+            resetToUserScreen(navigation)
         } catch (e) {
             setError(e.message);
             //TODO: Make some toasts

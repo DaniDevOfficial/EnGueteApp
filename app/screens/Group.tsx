@@ -43,8 +43,7 @@ export function Group() {
         } catch (e) {
 
             if (e instanceof UnauthorizedError) {
-                await handleLogoutProcedure()
-                resetToHomeScreen(navigation)
+                await handleLogoutProcedure(navigation)
                 return;
             }
 

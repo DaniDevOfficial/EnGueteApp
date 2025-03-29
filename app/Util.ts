@@ -1,7 +1,14 @@
+import {NavigationProp} from "@react-navigation/native";
+import {removeAuthToken, removeRefreshToken, saveAuthToken} from "./utility/Auth";
+import {resetToHomeScreen} from "./utility/navigation";
+
 const TIMEOUT = 10000;
 
-export async function handleLogoutProcedure() {
-    // await saveAuthToken('')
+export async function handleLogoutProcedure(navigation: NavigationProp<any>) {
+    await removeAuthToken()
+    await removeRefreshToken()
+
+    resetToHomeScreen(navigation);
 }
 
 export function timeoutPromiseFactory<T>(

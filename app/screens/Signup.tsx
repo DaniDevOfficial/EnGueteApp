@@ -16,6 +16,7 @@ import {
 import {CreateNewAccount} from "../repo/Auth";
 import {saveAuthToken} from "../Util";
 import {useNavigation} from "@react-navigation/native";
+import {resetToUserScreen} from "../utility/navigation";
 
 export function Signup() {
     const [username, setUsername] = useState('Dani1-123');
@@ -32,7 +33,7 @@ export function Signup() {
         }
         try {
             const response = await CreateNewAccount(username, email ,password)
-            navigation.navigate('user')
+            resetToUserScreen(navigation)
         } catch (e) {
             setError(e.message);
             //TODO: Make some toasts
