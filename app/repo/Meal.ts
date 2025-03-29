@@ -63,7 +63,7 @@ export async function saveMealPreference(userId: string, mealId: string, prefere
     const timeoutPromise = timeoutPromiseFactory()
 
     const fetchPromise = fetch(url, {
-        method: 'POST',
+        method: 'PUT',
         headers: await getBasicAuthHeader(),
         body: JSON.stringify({
             userId: userId,

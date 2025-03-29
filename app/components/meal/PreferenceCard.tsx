@@ -37,6 +37,7 @@ export function PreferenceCard({mealParticipants}: { mealParticipants: MealParti
 
         try {
         const res = await saveMealPreference(mealParticipants.userId, mealParticipants.mealId, preferenceParam, isCookParam);
+        //TODO: some logic for fancy update of the cah
         } catch (e) {
             if (e instanceof UnauthorizedError) {
                 await handleLogoutProcedure()
@@ -48,6 +49,7 @@ export function PreferenceCard({mealParticipants}: { mealParticipants: MealParti
                 console.log('This action is forbidden for this user')
                 //TODO: toast
             }
+            console.log(e.message)
 
         }
 

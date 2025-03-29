@@ -19,6 +19,16 @@ export function MealCard({meal}: MealCardProps) {
         navigation.navigate('Meal', { mealId: meal.mealId });
     }
 
+    let preferenceText = meal.userPreference;
+    if (preferenceText.length > 10) {
+        preferenceText = preferenceText.substring(0, 10) + '...';
+    }
+    let mealTitle = meal.title;
+    if (mealTitle.length > 10) {
+        mealTitle = mealTitle.substring(0, 20) + '...';
+    }
+
+
     const whenText = getFancyTimeDisplay(meal.dateTime)
     const participantsText = getParticipantsText(meal.participantCount)
     return (
@@ -30,11 +40,11 @@ export function MealCard({meal}: MealCardProps) {
                     width={"100%"}
                 >
                     <Flex
-                        w='60%'
+                        w='50%'
                         flexDir={'column'}
                     >
                         <Text>
-                            {meal.title}
+                            {mealTitle}
                         </Text>
                         <Text>{whenText}</Text>
                     </Flex>
@@ -43,8 +53,8 @@ export function MealCard({meal}: MealCardProps) {
                             {participantsText}
                         </Text>
                         <Flex flexDir={'row'}>
-                            {meal.isCook && <PillTag text={'test'} />}
-                            <PillTag text={meal.userPreference} colorScheme={'orange'} />
+                            {meal.isCook && <PillTag text={'‍👨‍🍳'} />}
+                            <PillTag text={preferenceText} colorScheme={'orange'} />
                         </Flex>
                     </Flex>
                 </Flex>
