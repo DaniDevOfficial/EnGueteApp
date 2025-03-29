@@ -38,11 +38,9 @@ export interface SimpleAuthHeaderWithJson extends Record<string, string> {
 
 
 export async function saveAuthToken(value: string) {
-    console.log('AuthToken: ' + value)
     await AsyncStorage.setItem(AUTH_TOKEN_STRING, value);
 }
 export async function saveRefreshToken(value: string) {
-    console.log('RefreshToken: ' + value)
     await AsyncStorage.setItem(REFRESH_TOKEN_STRING, value);
 
 }

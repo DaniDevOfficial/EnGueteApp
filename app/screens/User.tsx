@@ -8,6 +8,7 @@ import {UserCard} from "../components/user/UserCard";
 import {GroupCard} from "../components/user/GroupCard";
 import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
 import {getAuthToken, getRefreshToken, getTesting} from "../utility/Auth";
+import {resetToHomeScreen} from "../utility/navigation";
 
 export function User() {
     const [userInformation, setUserInformation] = useState<UserType | undefined>()
@@ -50,7 +51,8 @@ export function User() {
                 if (e instanceof UnauthorizedError) {
                     await handleLogoutProcedure()
                     //TODO: isauthenticated set to false or something like that in the auth context
-                    navigation.navigate('home')
+                    resetToHomeScreen(navigation)
+
                 }
 
                 if (e instanceof ForbiddenError){

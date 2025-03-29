@@ -1,16 +1,57 @@
-import React, { useState } from 'react';
-import {Modal, Button, FormControl, Input, Box, Text, Pressable, Flex} from 'native-base';
-import {MealParticipants} from "../../repo/Meal";
+import React, {useState} from 'react';
+import {Modal, Button, FormControl, Input, Box, Text, Pressable, Flex, Switch} from 'native-base';
+import {MealParticipants, saveMealPreference} from "../../repo/Meal";
+import {ForbiddenError, UnauthorizedError} from "../../utility/Errors";
+import {CommonActions, NavigationProp, useNavigation} from "@react-navigation/native";
+import {handleLogoutProcedure} from "../../Util";
+import {resetToHomeScreen} from "../../utility/navigation";
 
-export function PreferenceCard({ mealParticipants }: { mealParticipants: MealParticipants }) {
+
+export function PreferenceCard({mealParticipants}: { mealParticipants: MealParticipants }) {
     const [isModalVisible, setModalVisible] = useState(false);
-    const [newPreference, setNewPreference] = useState(mealParticipants.preference);
+    const [newPreference, setNewPreference] = useState<null|string>(mealParticipants.preference);
+    const [newIsCook, setNewIsCook] = useState<null|boolean>(mealParticipants.isCook);
+
+    const navigation = useNavigation();
 
     function handlePress() {
         setModalVisible(true);
     }
 
-    function handleSave() {
+    async function handleSave() {
+
+        if (mealParticipants.isCook === newIsCook &&  mealParticipants.preference === newPreference) {
+            setModalVisible(false);
+            return;
+        }
+
+        let preferenceParam = newPreference;
+        if (mealParticipants.preference === newPreference) {
+            preferenceParam = null;
+        }
+
+        let isCookParam = newIsCook;
+        if (mealParticipants.isCook === newIsCook) {
+            isCookParam = null;
+        }
+
+        try {
+        const res = await saveMealPreference(mealParticipants.userId, mealParticipants.mealId, preferenceParam, isCookParam);
+        } catch (e) {
+            if (e instanceof UnauthorizedError) {
+                await handleLogoutProcedure()
+                resetToHomeScreen(navigation)
+                return;
+            }
+
+            if (e instanceof ForbiddenError) {
+                console.log('This action is forbidden for this user')
+                //TODO: toast
+            }
+
+        }
+
+
         setModalVisible(false);
     }
 
@@ -34,6 +75,13 @@ export function PreferenceCard({ mealParticipants }: { mealParticipants: MealPar
                                 value={newPreference}
                                 onChangeText={setNewPreference}
                                 placeholder="Enter new meal preference"
+                            />
+                        </FormControl>
+                        <FormControl>
+                            <FormControl.Label>Is Cook 👨‍🍳</FormControl.Label>
+                            <Switch
+                                isChecked={newIsCook}
+                                onChange={(e) => setNewIsCook(e.nativeEvent.value)}
                             />
                         </FormControl>
                     </Modal.Body>

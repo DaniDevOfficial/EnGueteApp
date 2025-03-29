@@ -9,6 +9,7 @@ import {MealHeader} from "../components/meal/MealHeader";
 import {PreferenceCard} from "../components/meal/PreferenceCard";
 import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
 import {getAuthToken} from "../utility/Auth";
+import {resetToHomeScreen} from "../utility/navigation";
 
 export function Meal() {
     const [mealInformation, setMealInformation] = useState<MealInterface | undefined>();
@@ -33,7 +34,7 @@ export function Meal() {
         } catch (e) {
             if (e instanceof UnauthorizedError) {
                 await handleLogoutProcedure()
-                navigation.navigate('home')
+                resetToHomeScreen(navigation)
                 return;
             }
 

@@ -9,6 +9,7 @@ import {RefreshControl} from "react-native-gesture-handler";
 import {useGroup} from "../context/groupContext";
 import {PERMISSIONS} from "../utility/Roles";
 import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
+import {resetToHomeScreen} from "../utility/navigation";
 
 export function Group() {
     const [groupInformation, setGroupInformation] = useState<GroupInformationType | undefined>()
@@ -43,7 +44,7 @@ export function Group() {
 
             if (e instanceof UnauthorizedError) {
                 await handleLogoutProcedure()
-                navigation.navigate('home')
+                resetToHomeScreen(navigation)
                 return;
             }
 
