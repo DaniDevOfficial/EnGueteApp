@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 import {Modal, Button, FormControl, Input, Box, Text, Pressable, Flex, Switch} from 'native-base';
 import {MealParticipants, saveMealPreference} from "../../repo/Meal";
 import {ForbiddenError, UnauthorizedError} from "../../utility/Errors";
-import {CommonActions, NavigationProp, useNavigation} from "@react-navigation/native";
+import {useNavigation} from "@react-navigation/native";
 import {handleLogoutProcedure} from "../../Util";
-import {resetToHomeScreen} from "../../utility/navigation";
+import {PillTag} from "../UI/Pilltag";
 
 
 export function PreferenceCard({mealParticipants}: { mealParticipants: MealParticipants }) {
@@ -61,8 +61,11 @@ export function PreferenceCard({mealParticipants}: { mealParticipants: MealParti
             <Box alignItems="center" p="4" borderRadius="md" backgroundColor={"coolGray.300"} width={'95%'} my={2}>
                 <Flex justifyContent={"space-between"} alignItems={'center'} flexDir={'row'} width={"100%"}>
                     <Text>{mealParticipants.username}</Text>
-                    <Text>{mealParticipants.preference}</Text>
-                    {mealParticipants.isCook && <Text>👨‍🍳</Text>}
+                    {/*@ts-ignore*/}
+                    <Flex gap={4} flexDir={'row'} alignItems={'center'}>
+                        {mealParticipants.isCook && <Text>👨‍🍳</Text>}
+                        <PillTag text={mealParticipants.preference} />
+                    </Flex>
                 </Flex>
             </Box>
 
@@ -73,7 +76,7 @@ export function PreferenceCard({mealParticipants}: { mealParticipants: MealParti
                         <FormControl>
                             <FormControl.Label>New Preference</FormControl.Label>
                             <Input
-                                value={newPreference}
+                                value={newPreference ?? ''}
                                 onChangeText={setNewPreference}
                                 placeholder="Enter new meal preference"
                             />
@@ -81,7 +84,7 @@ export function PreferenceCard({mealParticipants}: { mealParticipants: MealParti
                         <FormControl>
                             <FormControl.Label>Is Cook 👨‍🍳</FormControl.Label>
                             <Switch
-                                isChecked={newIsCook}
+                                isChecked={newIsCook ?? false}
                                 onChange={(e) => setNewIsCook(e.nativeEvent.value)}
                             />
                         </FormControl>

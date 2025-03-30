@@ -8,8 +8,7 @@ import {RefreshControl} from "react-native-gesture-handler";
 import {MealHeader} from "../components/meal/MealHeader";
 import {PreferenceCard} from "../components/meal/PreferenceCard";
 import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
-import {getAuthToken} from "../utility/Auth";
-import {resetToHomeScreen} from "../utility/navigation";
+import {BackButton} from "../components/UI/BackButton";
 
 export function Meal() {
     const [mealInformation, setMealInformation] = useState<MealInterface | undefined>();
@@ -26,6 +25,7 @@ export function Meal() {
     useEffect(() => {
         getMealInformation();
     }, []);
+
     async function getMealInformation() {
         try {
             const res = await getMealData(mealId)
@@ -65,17 +65,20 @@ export function Meal() {
     }
 
     return (
-        <ScrollView
-            contentContainerStyle={{flexGrow: 1}}
-            refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
-            }
-        >
-            <MealHeader mealInformation={mealInformation.mealInformation}/>
-            {mealInformation.mealParticipants && mealInformation.mealParticipants.map((participant) => (
-                <PreferenceCard mealParticipants={participant} key={participant.userId} />
-            ))}
-        </ScrollView>
+        <>
+            <BackButton />
+            <ScrollView
+                contentContainerStyle={{flexGrow: 1}}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+                }
+            >
+                <MealHeader mealInformation={mealInformation.mealInformation}/>
+                {mealInformation.mealParticipants && mealInformation.mealParticipants.map((participant) => (
+                    <PreferenceCard mealParticipants={participant} key={participant.userId}/>
+                ))}
+            </ScrollView>
+        </>
     );
 }
 

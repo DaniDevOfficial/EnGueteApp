@@ -9,7 +9,7 @@ import {RefreshControl} from "react-native-gesture-handler";
 import {useGroup} from "../context/groupContext";
 import {PERMISSIONS} from "../utility/Roles";
 import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
-import {resetToHomeScreen} from "../utility/navigation";
+import {BackButton} from "../components/UI/BackButton";
 
 export function Group() {
     const [groupInformation, setGroupInformation] = useState<GroupInformationType | undefined>()
@@ -83,30 +83,33 @@ export function Group() {
 
 
     return (
-        <Box flex={1} alignItems="center">
-            <GroupInformationHeader groupInformation={groupInformation.groupInfo}/>
-            <ScrollView
-                contentContainerStyle={{flexGrow: 1}}
-                refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
-                }
-            >
-                {groupInformation.meals && groupInformation.meals.length > 0 ? groupInformation.meals.map((meal) => (
-                        <MealCard meal={meal} key={meal.mealId}/>
-                    )
-                ) : (
-                    <>
-                        <Text>
-                            No meals in this group 😞
-                        </Text>
-                    </>
+        <>
+            <BackButton color={'green'}/>
+            <Box flex={1} alignItems="center">
+                <GroupInformationHeader groupInformation={groupInformation.groupInfo}/>
+                <ScrollView
+                    contentContainerStyle={{flexGrow: 1}}
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+                    }
+                >
+                    {groupInformation.meals && groupInformation.meals.length > 0 ? groupInformation.meals.map((meal) => (
+                            <MealCard meal={meal} key={meal.mealId}/>
+                        )
+                    ) : (
+                        <>
+                            <Text>
+                                No meals in this group 😞
+                            </Text>
+                        </>
+                    )}
+                </ScrollView>
+                {groupInformation.groupInfo.userRoleRights && groupInformation.groupInfo.userRoleRights.includes(PERMISSIONS.CAN_CREATE_MEAL) && (
+                    <Button my={4} onPress={handleNavigate}>
+                        Create New Meal
+                    </Button>
                 )}
-            </ScrollView>
-            {groupInformation.groupInfo.userRoleRights && groupInformation.groupInfo.userRoleRights.includes(PERMISSIONS.CAN_CREATE_MEAL) && (
-                <Button my={4} onPress={handleNavigate}>
-                    Create New Meal
-                </Button>
-            )}
-        </Box>
+            </Box>
+        </>
     );
 }
