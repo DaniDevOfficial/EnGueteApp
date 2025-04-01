@@ -78,7 +78,13 @@ export function User() {
                 backgroundColor="coolGray.300"
                 marginY="3px"
             />
-
+            <Pressable
+                onPress={() => {
+                    navigation.navigate('test')
+                }}
+            >
+                <Text>Test</Text>
+            </Pressable>
             <Text fontWeight={"bold"} fontSize={"2xl"}>Your Groups</Text>
             {userInformation.groups && userInformation.groups.length > 0 ? (userInformation.groups.map((group) => (
                     <GroupCard group={group} key={group.groupId}/>
