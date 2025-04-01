@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Button, FormControl, Input, Text, TextArea, VStack, WarningOutlineIcon} from "native-base";
+import {Button, FormControl, Icon, Input, Text, TextArea, VStack, WarningOutlineIcon} from "native-base";
 import {createNewMeal} from "../repo/Meal";
 import {useNavigation} from "@react-navigation/native";
 import {useGroup} from "../context/groupContext";
 import {PERMISSIONS} from "../utility/Roles";
 import {DateTimePickerAndroid} from "@react-native-community/datetimepicker";
 import {getSwissDateTimeDisplay} from "../utility/Dates";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 export interface NewMealType {
     title: string,
@@ -153,10 +154,12 @@ export function NewMeal() {
                     isReadOnly={true}
                     p={3}
                     placeholder="When the meal will take place"
+                    InputRightElement={
+                        <Button onPress={() => {showDatepicker()}} size="xs" p={3}>
+                            <Icon as={Ionicons} name="calendar" size={5} color={`white`} />
+                        </Button>
+                    }
                 />
-                <Button onPress={() => {showDatepicker()}} >
-                    <Text>Show date picker!</Text>
-                </Button>
                 {errors.scheduledAt ? (
                     <FormControl.ErrorMessage
                         leftIcon={<WarningOutlineIcon size="xs"/>}>{errors.scheduledAt}</FormControl.ErrorMessage>
