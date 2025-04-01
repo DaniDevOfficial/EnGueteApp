@@ -68,3 +68,10 @@ export function toNormalDateTime(dateTimeString: string) {
         hour12: false,
     })}`
 }
+
+export function getSwissDateTimeDisplay(dateTime: Date) {
+    const date = dateTime.toLocaleDateString("de-CH");
+    const time = dateTime.toLocaleTimeString("de-CH", { hour: "2-digit", minute: "2-digit", hour12: false });
+
+    return `${date} ${time}`;
+}

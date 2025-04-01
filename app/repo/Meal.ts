@@ -23,7 +23,7 @@ export interface MealParticipants {
     isCook: boolean,
 }
 
-export async function createNewMeal(newMeal: NewMealType, authToken: string): Promise<NewMealResponse> {
+export async function createNewMeal(newMeal: NewMealType): Promise<NewMealResponse> {
 
     const url = BACKEND_URL + 'meals'
     const timeoutPromise = timeoutPromiseFactory()

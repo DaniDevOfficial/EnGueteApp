@@ -12,6 +12,7 @@ import {BaseLayout} from './layout/BaseLayout';
 import {NewMeal} from "./screens/newMeal";
 import {GroupProvider} from "./context/groupContext";
 import {Meal} from "./screens/Meal";
+import {Test} from "./screens/Test";
 
 const Stack = createStackNavigator();
 
@@ -54,6 +55,7 @@ export function Router() {
                     <Stack.Screen name="login" component={LoginScreen}/>
                     <Stack.Screen name="signup" component={SignupScreen}/>
                     <Stack.Screen name="user" component={UserScreen}/>
+                    <Stack.Screen name="test" component={Test}/>
                     <Stack.Screen name="group" component={GroupContextStack}/>
                 </Stack.Navigator>
             </NavigationContainer>

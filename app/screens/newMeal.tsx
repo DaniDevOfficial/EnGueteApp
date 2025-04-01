@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Button, FormControl, Input, TextArea, VStack, WarningOutlineIcon} from "native-base";
+import {Button, FormControl, Input, Text, TextArea, VStack, WarningOutlineIcon} from "native-base";
 import {createNewMeal} from "../repo/Meal";
 import {useNavigation} from "@react-navigation/native";
 import {useGroup} from "../context/groupContext";
 import {PERMISSIONS} from "../utility/Roles";
-import {getAuthToken} from "../utility/Auth";
+import {DateTimePickerAndroid} from "@react-native-community/datetimepicker";
+import {getSwissDateTimeDisplay} from "../utility/Dates";
 
 export interface NewMealType {
     title: string,
@@ -17,6 +18,7 @@ export function NewMeal() {
     const [title, setTitle] = useState<string | undefined>();
     const [type, setType] = useState<string | undefined>();
     const [scheduledAt, setScheduledAt] = useState<string | undefined>();
+    const [scheduledAtDate, setScheduledAtDate] = useState<Date>(new Date());
     const [notes, setNotes] = useState<string | undefined>();
 
     const {group} = useGroup()
@@ -59,21 +61,14 @@ export function NewMeal() {
             const data: NewMealType = {
                 // @ts-ignore
                 title: title,
-                title: title,
                 // @ts-ignore
                 type: type,
                 // @ts-ignore
-                scheduledAt: new Date().toISOString(),
+                scheduledAt: scheduledAtDate.toISOString(),
                 notes: notes,
                 groupId: groupId
             }
-            const authToken = await getAuthToken()
-
-            if (authToken === null) {
-                navigation.navigate('home')
-                return
-            }
-            const res = await createNewMeal(data, authToken)
+            const res = await createNewMeal(data)
 
             // @ts-ignore
             navigation.navigate('group', {
@@ -94,9 +89,36 @@ export function NewMeal() {
             navigation.goBack();
         }
     }, []);
+    function onChangeDatePicker(event: any, selectedDate?: Date) {
+        if (!selectedDate) return;
+
+        setScheduledAtDate(selectedDate);
+        const text = getSwissDateTimeDisplay(selectedDate);
+        setScheduledAt(text);
+    }
+
+    function showMode (currentMode: "date" | "time", onChange = onChangeDatePicker, selectedDate: Date) {
+        DateTimePickerAndroid.open({
+            value: selectedDate,
+            onChange,
+            mode: currentMode,
+            is24Hour: true,
+        });
+    };
+
+    function showDatepicker() {
+        showMode("date", (event, selectedDate) => {
+            if (selectedDate) {
+                onChangeDatePicker(event, selectedDate);
+                showMode("time", onChangeDatePicker, selectedDate);
+            }
+        }, scheduledAtDate);
+    }
 
     return (
         <VStack space={4} padding={4}>
+            <Text>selected: {scheduledAtDate.toLocaleString()}</Text>
+
             <FormControl isRequired isInvalid={errors.title}>
                 <FormControl.Label>Meal Name</FormControl.Label>
                 <Input
@@ -128,11 +150,13 @@ export function NewMeal() {
                 <FormControl.Label>Scheduled At</FormControl.Label>
                 <Input
                     value={scheduledAt /*TODO DatePicker */}
-                    onChangeText={(text) => setScheduledAt(text)}
-                    onBlur={() => setTouched((prev) => ({...prev, scheduledAt: true}))}
+                    isReadOnly={true}
                     p={3}
                     placeholder="When the meal will take place"
                 />
+                <Button onPress={() => {showDatepicker()}} >
+                    <Text>Show date picker!</Text>
+                </Button>
                 {errors.scheduledAt ? (
                     <FormControl.ErrorMessage
                         leftIcon={<WarningOutlineIcon size="xs"/>}>{errors.scheduledAt}</FormControl.ErrorMessage>
