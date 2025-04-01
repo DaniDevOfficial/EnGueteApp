@@ -18,7 +18,6 @@ export function Login() {
         }
         try {
             const res = await SignIntoAccount(username, password)
-            console.log(res)
             resetToUserScreen(navigation)
         } catch (e) {
             setError(e.message);

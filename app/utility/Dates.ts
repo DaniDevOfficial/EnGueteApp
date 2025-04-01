@@ -43,7 +43,7 @@ export function getFancyTimeDisplay(dateTimeString: string): string {
     }
 
     if (diffDays > 1 && diffDays <= 7) {
-        return `This ${dayNames[target.getDay()]} at ${target.toLocaleTimeString([], options)}`;
+        return `${dayNames[target.getDay()]} at ${target.toLocaleTimeString([], options)}`;
     }
 
     return `On ${target.toLocaleDateString(undefined, {

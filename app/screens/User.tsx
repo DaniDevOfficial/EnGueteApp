@@ -1,4 +1,4 @@
-import {Box, Pressable, Text} from 'native-base'
+import {Box, Pressable, Spinner, Text} from 'native-base'
 import React, {useEffect, useState} from 'react'
 import {handleLogoutProcedure} from "../Util";
 import {useNavigation} from "@react-navigation/native";
@@ -61,11 +61,9 @@ export function User() {
 
     if (loading || !userInformation || !user) {
         return (
-            <>
-                <Text>
-                    Is loading...
-                </Text>
-            </>
+            <Box flex={1} alignItems="center" justifyContent="center">
+                <Spinner size="lg" color="emerald.500"/>
+            </Box>
         )
     }
 
