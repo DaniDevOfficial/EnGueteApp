@@ -1,8 +1,52 @@
-function getText(textKey: string, replaceData?: Record<string, string>): string {
-    return textKey;
+import * as Localization from 'expo-localization';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+let currentLanguage = Localization.locale.split('-')[0] || 'en'; // Default to system language
+
+export async function getLanguageFromAsyncStorage() {
+    return AsyncStorage.getItem('language');
+}
+export async function setLanguageToAsyncStorage(language: string) {
+    await AsyncStorage.setItem('language', language);
 }
 
-const TextKeys = {
+export function setLanguage(lang: string) {
+    currentLanguage = lang;
+}
+
+export function getLanguage(): 'german' | 'english' {
+    if (currentLanguage === 'german') {
+        return 'german';
+    }
+
+    return 'english';
+}
+
+export function getText(textKey: string, replaceData?: Record<string, string>): string {
+    if (!textKeys[textKey]) {
+        return textKey;
+    }
+    const language = getLanguage();
+
+    let text = textKeys[textKey][language];
+    if (!replaceData) {
+        return text;
+    }
+    for (const [key, value] of Object.entries(replaceData)) {
+        text = text.replace(`[${key}]`, value);
+    }
+
+    return text;
+}
+
+interface TextKeysInterface {
+    [key: string]: {
+        german: string;
+        english: string;
+    };
+}
+
+const textKeys: TextKeysInterface = {
     'noParticipants': {
         german: 'Keine Teilnehmer 😞',
         english: 'No Participants 😞',
@@ -214,5 +258,33 @@ const TextKeys = {
     'cancel': {
         german: 'Abbrechen',
         english: 'Cancel',
+    },
+    'monday': {
+        german: 'Montag',
+        english: 'Monday',
+    },
+    'tuesday': {
+        german: 'Dienstag',
+        english: 'Tuesday',
+    },
+    'wednesday': {
+        german: 'Mittwoch',
+        english: 'Wednesday',
+    },
+    'thursday': {
+        german: 'Donnerstag',
+        english: 'Thursday',
+    },
+    'friday': {
+        german: 'Freitag',
+        english: 'Friday',
+    },
+    'saturday': {
+        german: 'Samstag',
+        english: 'Saturday',
+    },
+    'sunday': {
+        german: 'Sonntag',
+        english: 'Sunday',
     },
 }
