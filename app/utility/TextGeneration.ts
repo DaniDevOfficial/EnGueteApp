@@ -1,10 +1,12 @@
+import {getText} from "./TextKeys/TextKeys";
+
 export function getParticipantsText(count: number): string {
     if (count <= 0) {
-        return 'No Participants 😞'
+        return getText('noParticipants')
     }
     if (count == 1) {
-        return 'One Participant'
+        return getText('oneParticipant');
     }
-    return `${count} Participants`
+    return `${count} ${getText('participants')}`;
 
 }

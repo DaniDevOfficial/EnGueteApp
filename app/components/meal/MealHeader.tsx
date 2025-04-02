@@ -2,6 +2,7 @@ import React from 'react';
 import {Flex, Heading, Text} from "native-base";
 import {MealCard} from "../../repo/Group";
 import {toNormalDateTime} from "../../utility/Dates";
+import {getText} from "../../utility/TextKeys/TextKeys";
 
 export function MealHeader({mealInformation}: { mealInformation: MealCard }) {
     const whenText = toNormalDateTime(mealInformation.dateTime)
@@ -21,7 +22,7 @@ export function MealHeader({mealInformation}: { mealInformation: MealCard }) {
                 fontStyle={mealInformation.notes ? "normal" : "italic"}
                 color={mealInformation.notes ? "black" : "gray.500"}
             >
-                {mealInformation.notes || "No additional notes."}
+                {mealInformation.notes || getText('noNotes')}
             </Text>
 
         </Flex>

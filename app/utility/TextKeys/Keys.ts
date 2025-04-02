@@ -1,52 +1,93 @@
-import * as Localization from 'expo-localization';
-import AsyncStorage from "@react-native-async-storage/async-storage";
+export type TextKey =
+    | 'noParticipants'
+    | 'login'
+    | 'signup'
+    | 'welcomeBack'
+    | 'pleaseSignIn'
+    | 'newAccountGreetingsText'
+    | 'createNewAccount'
+    | 'createAccount'
+    | 'username'
+    | 'password'
+    | 'email'
+    | 'enterUsername'
+    | 'enterPassword'
+    | 'enterEmail'
+    | 'orCreateAnAccount'
+    | 'orLogin'
+    | 'welcomeBackUsername'
+    | 'youAreInNoGroup'
+    | 'startByJoiningOrCreating'
+    | 'yourGroups'
+    | 'noQuantity'
+    | 'oneParticipant'
+    | 'participants'
+    | 'noMealsInThisGroup'
+    | 'createNewMeal'
+    | 'undecided'
+    | 'now'
+    | 'in'
+    | 'minute'
+    | 'minutes'
+    | 'todayAt'
+    | 'agoTimeUnit'
+    | 'yesterdayAt'
+    | 'tomorrowAt'
+    | 'last'
+    | 'thisWeekdayAtTime'
+    | 'onMonthDayAtTime'
+    | 'at'
+    | 'on'
+    | 'mealName'
+    | 'mealNamePlaceholder'
+    | 'mealType'
+    | 'mealTypePlaceholder'
+    | 'scheduledAt'
+    | 'scheduledAtPlaceholder'
+    | 'mealDescription'
+    | 'mealDescriptionPlaceholder'
+    | 'placeholderIsRequired'
+    | 'placeholderIsInvalid'
+    | 'noNotes'
+    | 'editPreferences'
+    | 'preference'
+    | 'isCook'
+    | 'save'
+    | 'cancel'
+    | 'monday'
+    | 'tuesday'
+    | 'wednesday'
+    | 'thursday'
+    | 'friday'
+    | 'saturday'
+    | 'sunday'
+    | 'morning'
+    | 'day'
+    | 'afternoon'
+    | 'evening'
+    | 'january'
+    | 'february'
+    | 'march'
+    | 'april'
+    | 'may'
+    | 'june'
+    | 'july'
+    | 'august'
+    | 'september'
+    | 'october'
+    | 'november'
+    | 'december';
 
-let currentLanguage = Localization.locale.split('-')[0] || 'en'; // Default to system language
-
-export async function getLanguageFromAsyncStorage() {
-    return AsyncStorage.getItem('language');
-}
-export async function setLanguageToAsyncStorage(language: string) {
-    await AsyncStorage.setItem('language', language);
-}
-
-export function setLanguage(lang: string) {
-    currentLanguage = lang;
-}
-
-export function getLanguage(): 'german' | 'english' {
-    if (currentLanguage === 'german') {
-        return 'german';
-    }
-
-    return 'english';
-}
-
-export function getText(textKey: string, replaceData?: Record<string, string>): string {
-    if (!textKeys[textKey]) {
-        return textKey;
-    }
-    const language = getLanguage();
-
-    let text = textKeys[textKey][language];
-    if (!replaceData) {
-        return text;
-    }
-    for (const [key, value] of Object.entries(replaceData)) {
-        text = text.replace(`[${key}]`, value);
-    }
-
-    return text;
-}
-
-interface TextKeysInterface {
-    [key: string]: {
+export interface TextKeysInterface {
+    // @ts-ignore
+    [key in TextKey]: {
         german: string;
         english: string;
     };
 }
 
-const textKeys: TextKeysInterface = {
+
+export const textKeys: TextKeysInterface = {
     'noParticipants': {
         german: 'Keine Teilnehmer 😞',
         english: 'No Participants 😞',
@@ -131,9 +172,9 @@ const textKeys: TextKeysInterface = {
         german: 'Keine',
         english: 'No',
     },
-    'participant': {
-        german: 'Teilnehmer',
-        english: 'Participants',
+    'oneParticipant': {
+        german: 'Ein Teilnehmer',
+        english: 'One Participant',
     },
     'participants': {
         german: 'Teilnehmer',
@@ -190,6 +231,14 @@ const textKeys: TextKeysInterface = {
     'thisWeekdayAtTime': {
         german: 'Dieser [weekday] um [time]',
         english: 'This [weekday] at [time]',
+    },
+    'onMonthDayAtTime': {
+        german: 'Am  [day]. [month] um [time]',
+        english: 'On [month] [day] at [time]',
+    },
+    'at': {
+        german: 'Um',
+        english: 'at',
     },
     'on': {
         german: 'Am',
@@ -287,4 +336,69 @@ const textKeys: TextKeysInterface = {
         german: 'Sonntag',
         english: 'Sunday',
     },
+    'morning': {
+        german: 'Morgen',
+        english: 'Morning',
+    },
+    'day': {
+        german: 'Tag',
+        english: 'Day',
+    },
+    'afternoon': {
+        german: 'Nachmittag',
+        english: 'Afternoon',
+    },
+    'evening': {
+        german: 'Abend',
+        english: 'Evening',
+    },
+    'january': {
+        german: 'Januar',
+        english: 'January',
+    },
+    'february': {
+        german: 'Februar',
+        english: 'February',
+    },
+    'march': {
+        german: 'März',
+        english: 'March',
+    },
+    'april': {
+        german: 'April',
+        english: 'April',
+    },
+    'may': {
+        german: 'Mai',
+        english: 'May',
+    },
+    'june': {
+        german: 'Juni',
+        english: 'June',
+    },
+    'july': {
+        german: 'Juli',
+        english: 'July',
+    },
+    'august': {
+        german: 'August',
+        english: 'August',
+    },
+    'september': {
+        german: 'September',
+        english: 'September',
+    },
+    'october': {
+        german: 'Oktober',
+        english: 'October',
+    },
+    'november': {
+        german: 'November',
+        english: 'November',
+    },
+    'december': {
+        german: 'Dezember',
+        english: 'December',
+    },
 }
+
