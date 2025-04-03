@@ -5,6 +5,7 @@ import {MealCard as MealCardType} from "../../repo/Group";
 import {getFancyTimeDisplay} from "../../utility/Dates";
 import {getParticipantsText} from "../../utility/TextGeneration";
 import {PillTag} from "../UI/Pilltag";
+import {mealPreferenceText} from "../../utility/TextKeys/TextKeys";
 
 type MealCardProps = {
     meal: MealCardType;
@@ -54,7 +55,7 @@ export function MealCard({meal}: MealCardProps) {
                         </Text>
                         <Flex flexDir={'row'}>
                             {meal.isCook && <PillTag text={'‍👨‍🍳'} />}
-                            <PillTag text={preferenceText} colorScheme={'orange'} />
+                            <PillTag text={mealPreferenceText(preferenceText)} colorScheme={'orange'} />
                         </Flex>
                     </Flex>
                 </Flex>

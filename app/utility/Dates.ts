@@ -1,3 +1,10 @@
+import {getText} from "./TextKeys/TextKeys";
+
+
+const dayNames: ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+const monthNames: ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"] = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+
+
 export function getFancyTimeDisplay(dateTimeString: string): string {
     const now = new Date();
     const target = new Date(dateTimeString);
@@ -15,8 +22,6 @@ export function getFancyTimeDisplay(dateTimeString: string): string {
         hour12: false,
     };
 
-    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
     if (nowDate.getTime() === targetDate.getTime()) {
         if (diffMinutes === 0) {
             return 'Now'
@@ -31,42 +36,37 @@ export function getFancyTimeDisplay(dateTimeString: string): string {
     }
 
     if (diffDays === -1) {
-        return `Yesterday at ${target.toLocaleTimeString([], options)}`;
+
+        return `${getText('yesterdayAt')} ${target.toLocaleTimeString([], options)}`;
     }
 
     if (diffDays === 1) {
-        return `Tomorrow at ${target.toLocaleTimeString([], options)}`;
+        return `${getText('tomorrowAt')} ${target.toLocaleTimeString([], options)}`;
     }
 
     if (diffDays < -1 && diffDays >= -7) {
-        return `Last ${dayNames[target.getDay()]}`;
+        return `${getText('last')} ${getText(dayNames[target.getDay()])}`;
     }
 
     if (diffDays > 1 && diffDays <= 7) {
-        return `This ${dayNames[target.getDay()]} at ${target.toLocaleTimeString([], options)}`;
-    }
 
-    return `On ${target.toLocaleDateString(undefined, {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-    })}`;
+        return getText('thisWeekdayAtTime', {'weekday': getText(dayNames[target.getDay()]), 'time': target.toLocaleTimeString([], options)});
+    }
+    const month = monthNames[target.getMonth()];
+    return `${getText('onMonthDayAtTime', {month: getText(month), day: target.getDate().toString(), time: target.toLocaleTimeString([], options)})}`;
 }
 
 export function toNormalDateTime(dateTimeString: string) {
     const target = new Date(dateTimeString);
-
-    return `On ${target.toLocaleDateString(undefined, {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
+    const options: Intl.DateTimeFormatOptions = {
         hour: "2-digit",
         minute: "2-digit",
         hour12: false,
-    })}`
+    };
+    const month = monthNames[target.getMonth()];
+
+
+    return `${getText('onMonthDayAtTime', {month: getText(month), day: target.getDate().toString(), time: target.toLocaleTimeString([], options)})}`;
 }
 
 export function getSwissDateTimeDisplay(dateTime: Date) {
@@ -74,4 +74,19 @@ export function getSwissDateTimeDisplay(dateTime: Date) {
     const time = dateTime.toLocaleTimeString("de-CH", { hour: "2-digit", minute: "2-digit", hour12: false });
 
     return `${date} ${time}`;
+}
+
+export function getGreetingBasedOnTime(): 'morning' | 'day' | 'afternoon' | 'evening' {
+    const date = new Date();
+    const hours = date.getHours();
+
+    if (hours >= 0 && hours < 7) {
+        return 'morning';
+    } else if (hours >= 7 && hours < 12) {
+        return 'day';
+    } else if (hours >= 12 && hours < 18) {
+        return 'afternoon';
+    } else {
+        return 'evening';
+    }
 }

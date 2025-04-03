@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Box, Button, Center, Divider, Flex, FormControl, Heading, HStack, Input, Pressable, Text, VStack} from "native-base";
 import {SignIntoAccount} from "../repo/Auth";
-import {saveAuthToken} from "../Util";
 import {useNavigation} from "@react-navigation/native";
 import {resetToUserScreen} from "../utility/navigation";
+import {getText} from "../utility/TextKeys/TextKeys";
 
 export function Login() {
     const [username, setUsername] = useState('Dani1-123');
@@ -18,7 +18,6 @@ export function Login() {
         }
         try {
             const res = await SignIntoAccount(username, password)
-            console.log(res)
             resetToUserScreen(navigation)
         } catch (e) {
             setError(e.message);
@@ -30,10 +29,10 @@ export function Login() {
         <Center flex={1} bg="coolGray.100">
             <Box safeArea p="5" py="8" w="90%" maxW="290" bg="white" rounded="lg" shadow={2}>
                 <Heading size="lg" fontWeight="600" color="coolGray.800" textAlign="center">
-                    Welcome Back
+                    {getText('welcomeBack')}
                 </Heading>
                 <Heading mt="1" color="coolGray.600" fontWeight="medium" size="xs" textAlign="center">
-                    Please sign in to continue
+                    {getText('pleaseSignIn')}
                 </Heading>
 
                 <VStack space={4} mt="5">
@@ -44,13 +43,13 @@ export function Login() {
                     ) : null}
 
                     <FormControl>
-                        <FormControl.Label>Username</FormControl.Label>
+                        <FormControl.Label>{getText('username')}</FormControl.Label>
                         <Input
                             value={username}
                             onChangeText={(text) => setUsername(text)}
                             variant="filled"
                             p={3}
-                            placeholder="Enter your username"
+                            placeholder={getText('enterUsername')}
                             rounded="md"
                         />
                     </FormControl>
@@ -61,7 +60,7 @@ export function Login() {
                             onChangeText={(text) => setPassword(text)}
                             variant="filled"
                             p={3}
-                            placeholder="Enter your password"
+                            placeholder={getText('enterPassword')}
                             type="password"
                             rounded="md"
                         />
@@ -72,7 +71,7 @@ export function Login() {
                         _text={{fontSize: "md"}}
                         onPress={handleSubmit}
                     >
-                        Sign In
+                        {getText('login')}
                     </Button>
                 </VStack>
                 <Pressable
@@ -85,7 +84,7 @@ export function Login() {
                             <HStack alignItems="center" space={2}>
                                 <Divider flex={1} bg="coolGray.300"/>
                                 <Text fontSize="sm" color="coolGray.400">
-                                    Or Create an account
+                                    {getText('orCreateAnAccount')}
                                 </Text>
                                 <Divider flex={1} bg="coolGray.300"/>
                             </HStack>

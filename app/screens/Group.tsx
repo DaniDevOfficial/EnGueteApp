@@ -10,6 +10,7 @@ import {useGroup} from "../context/groupContext";
 import {PERMISSIONS} from "../utility/Roles";
 import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
 import {BackButton} from "../components/UI/BackButton";
+import {getText} from "../utility/TextKeys/TextKeys";
 
 export function Group() {
     const [groupInformation, setGroupInformation] = useState<GroupInformationType | undefined>()
@@ -99,14 +100,14 @@ export function Group() {
                     ) : (
                         <>
                             <Text>
-                                No meals in this group 😞
+                                {getText('noMealsInThisGroup')}
                             </Text>
                         </>
                     )}
                 </ScrollView>
                 {groupInformation.groupInfo.userRoleRights && groupInformation.groupInfo.userRoleRights.includes(PERMISSIONS.CAN_CREATE_MEAL) && (
                     <Button my={4} onPress={handleNavigate}>
-                        Create New Meal
+                        {getText('createNewMeal')}
                     </Button>
                 )}
             </Box>

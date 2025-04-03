@@ -13,6 +13,7 @@ import {NewMeal} from "./screens/newMeal";
 import {GroupProvider} from "./context/groupContext";
 import {Meal} from "./screens/Meal";
 import {Test} from "./screens/Test";
+import {getLanguageFromAsyncStorage, setLanguage, setLanguageToAsyncStorage} from "./utility/TextKeys/TextKeys";
 
 const Stack = createStackNavigator();
 
@@ -47,6 +48,17 @@ function GroupContextStack() {
 }
 
 export function Router() {
+
+    async function initializeLanguage() {
+        const language = await getLanguageFromAsyncStorage()
+        if (language) {
+            setLanguage(language)
+        } else {
+            await setLanguageToAsyncStorage('german');
+        }
+    }
+
+    initializeLanguage()
     return (
         <UserProvider>
             <NavigationContainer>

@@ -2,10 +2,11 @@ import {Button, Text} from "native-base";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {DateTimePickerAndroid} from "@react-native-community/datetimepicker";
 import {SetStateAction, useState} from "react";
+import {getLanguageFromAsyncStorage} from "../utility/TextKeys/TextKeys";
 
 export function Test() {
     const [date, setDate] = useState(new Date(1598051730000));
-
+    const [language, setLanguage] = useState('none');
     const onChange = (event: any, selectedDate: SetStateAction<Date>) => {
         setDate(selectedDate);
     };
@@ -27,6 +28,10 @@ export function Test() {
         showMode('time');
     };
 
+    async function showLanguage() {
+        setLanguage(await getLanguageFromAsyncStorage());
+    }
+
     return (
         <SafeAreaView>
             <Button onPress={showDatepicker} >
@@ -34,6 +39,9 @@ export function Test() {
             </Button>
             <Button onPress={showTimepicker} >
                 <Text>Show time picker!</Text>
+            </Button>
+            <Button onPress={showLanguage} >
+                <Text>Get Language: {language}</Text>
             </Button>
             <Text>selected: {date.toLocaleString()}</Text>
         </SafeAreaView>

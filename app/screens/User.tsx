@@ -1,4 +1,4 @@
-import {Box, Pressable, Text} from 'native-base'
+import {Box, Pressable, Spinner, Text} from 'native-base'
 import React, {useEffect, useState} from 'react'
 import {handleLogoutProcedure} from "../Util";
 import {useNavigation} from "@react-navigation/native";
@@ -8,6 +8,7 @@ import {UserCard} from "../components/user/UserCard";
 import {GroupCard} from "../components/user/GroupCard";
 import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
 import {getAuthToken} from "../utility/Auth";
+import {getText} from "../utility/TextKeys/TextKeys";
 
 export function User() {
     const [userInformation, setUserInformation] = useState<UserType | undefined>()
@@ -61,11 +62,9 @@ export function User() {
 
     if (loading || !userInformation || !user) {
         return (
-            <>
-                <Text>
-                    Is loading...
-                </Text>
-            </>
+            <Box flex={1} alignItems="center" justifyContent="center">
+                <Spinner size="lg" color="emerald.500"/>
+            </Box>
         )
     }
 
@@ -85,18 +84,18 @@ export function User() {
             >
                 <Text>Test</Text>
             </Pressable>
-            <Text fontWeight={"bold"} fontSize={"2xl"}>Your Groups</Text>
+            <Text fontWeight={"bold"} fontSize={"2xl"}>{getText('yourGroups')}</Text>
             {userInformation.groups && userInformation.groups.length > 0 ? (userInformation.groups.map((group) => (
                     <GroupCard group={group} key={group.groupId}/>
                 ))
             ) : (
                 <Box mt={5}>
                     <Text color={"gray.500"} textAlign={"center"}>
-                        It looks like you are in no group 😞
+                        {getText('youAreInNoGroup')}
                     </Text>
 
                     <Text color={"gray.500"} textAlign={"center"}>
-                        Start by joining or creating a group 🦾
+                        {getText('startByJoiningOrCreating')}
                     </Text>
                 </Box>
             )}

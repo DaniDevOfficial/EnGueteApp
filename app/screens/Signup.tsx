@@ -17,6 +17,7 @@ import {CreateNewAccount} from "../repo/Auth";
 import {saveAuthToken} from "../Util";
 import {useNavigation} from "@react-navigation/native";
 import {resetToUserScreen} from "../utility/navigation";
+import {getText} from "../utility/TextKeys/TextKeys";
 
 export function Signup() {
     const [username, setUsername] = useState('Dani1-123');
@@ -44,10 +45,10 @@ export function Signup() {
         <Center flex={1} bg="coolGray.100">
             <Box safeArea p="5" py="8" w="90%" maxW="290" bg="white" rounded="lg" shadow={2}>
                 <Heading size="lg" fontWeight="600" color="coolGray.800" textAlign="center">
-                    Glad to see a new Face 😊
+                    {getText('newAccountGreetingsText')}
                 </Heading>
                 <Heading mt="1" color="coolGray.600" fontWeight="medium" size="xs" textAlign="center">
-                    Please create a new account
+                    {getText('createNewAccount')}
                 </Heading>
 
                 <VStack space={4} mt="5">
@@ -58,36 +59,36 @@ export function Signup() {
                     ) : null}
 
                     <FormControl>
-                        <FormControl.Label>Username</FormControl.Label>
+                        <FormControl.Label>{getText('username')}</FormControl.Label>
                         <Input
                             value={username}
                             onChangeText={(text) => setUsername(text)}
                             variant="filled"
                             p={3}
-                            placeholder="Enter a username"
+                            placeholder={getText('enterUsername')}
                             rounded="md"
                         />
                     </FormControl>
                     <FormControl>
-                        <FormControl.Label>Email</FormControl.Label>
+                        <FormControl.Label>{getText('email')}</FormControl.Label>
                         <Input
                             value={email}
                             onChangeText={(text) => setEmail(text)}
                             variant="filled"
                             p={3}
-                            placeholder="Enter a email"
+                            placeholder={getText('enterEmail')}
                             type="text"
                             rounded="md"
                         />
                     </FormControl>
                     <FormControl>
-                        <FormControl.Label>Password</FormControl.Label>
+                        <FormControl.Label>{getText('password')}</FormControl.Label>
                         <Input
                             value={password}
                             onChangeText={(text) => setPassword(text)}
                             variant="filled"
                             p={3}
-                            placeholder="Enter a password"
+                            placeholder={getText('enterPassword')}
                             type="password"
                             rounded="md"
                         />
@@ -98,7 +99,7 @@ export function Signup() {
                         _text={{fontSize: "md"}}
                         onPress={handleSubmit}
                     >
-                        Create account
+                        {getText('createNewAccount')}
                     </Button>
                 </VStack>
                 <Pressable
@@ -109,7 +110,7 @@ export function Signup() {
                             <HStack alignItems="center" space={2}>
                                 <Divider flex={1} bg="coolGray.300"/>
                                 <Text fontSize="sm" color="coolGray.400">
-                                    Or Sign in
+                                    {getText('orLogin')}
                                 </Text>
                                 <Divider flex={1} bg="coolGray.300"/>
                             </HStack>

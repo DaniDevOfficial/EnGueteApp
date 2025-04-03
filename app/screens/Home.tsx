@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react'
 import {useNavigation} from "@react-navigation/native";
 import {getAuthToken} from "../utility/Auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {getText} from "../utility/TextKeys/TextKeys";
 
 export function Home() {
     const [token, setToken] = useState("no token yet")
@@ -29,10 +30,10 @@ export function Home() {
             {token}
             <Text fontSize="2xl" mb={4}>Welcome to EnGuete!</Text>
             <Button onPress={() => navigation.navigate('login')} my={2}>
-                <Text>Login</Text>
+                <Text>{getText('login')}</Text>
             </Button>
             <Button onPress={() =>  navigation.navigate('signup')} my={2}>
-                <Text>Sing up</Text>
+                <Text>{getText('signup')}</Text>
             </Button>
         </Box>
     )
