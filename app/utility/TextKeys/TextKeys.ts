@@ -50,3 +50,10 @@ export function getText(textKey: TextKey, replaceData?: Record<string, string>):
 
     return text;
 }
+
+export function mealPreferenceText(preferenceText: string): string {
+    if (preferenceText === 'undecided') {
+        return getText('undecided');
+    }
+    return preferenceText;
+}

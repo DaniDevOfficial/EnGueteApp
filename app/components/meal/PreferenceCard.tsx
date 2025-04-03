@@ -5,6 +5,7 @@ import {ForbiddenError, UnauthorizedError} from "../../utility/Errors";
 import {useNavigation} from "@react-navigation/native";
 import {handleLogoutProcedure} from "../../Util";
 import {PillTag} from "../UI/Pilltag";
+import { mealPreferenceText} from "../../utility/TextKeys/TextKeys";
 
 
 export function PreferenceCard({mealParticipants}: { mealParticipants: MealParticipants }) {
@@ -64,7 +65,7 @@ export function PreferenceCard({mealParticipants}: { mealParticipants: MealParti
                     {/*@ts-ignore*/}
                     <Flex gap={4} flexDir={'row'} alignItems={'center'}>
                         {mealParticipants.isCook && <Text>👨‍🍳</Text>}
-                        <PillTag text={mealParticipants.preference} />
+                        <PillTag text={mealPreferenceText(mealParticipants.preference)} />
                     </Flex>
                 </Flex>
             </Box>
