@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {TextKey, textKeys} from "./Keys";
 
 let currentLanguage =  'english'; // Default to system language
-setLanguageFromAsyncStorage() // this is a hack to set the language from async storage, otherwise development wil always be in english
+
 // @ts-ignore
 export async function getLanguageFromAsyncStorage(): Promise<null, 'german' | 'english'> {
     return AsyncStorage.getItem('language');
