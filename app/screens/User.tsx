@@ -9,6 +9,7 @@ import {GroupCard} from "../components/user/GroupCard";
 import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
 import {getAuthToken} from "../utility/Auth";
 import {getText} from "../utility/TextKeys/TextKeys";
+import {EditButton} from "../components/UI/EditButton";
 
 export function User() {
     const [userInformation, setUserInformation] = useState<UserType | undefined>()
@@ -39,7 +40,7 @@ export function User() {
                     await handleLogoutProcedure(navigation)
                 }
 
-                if (e instanceof ForbiddenError){
+                if (e instanceof ForbiddenError) {
                     console.log('this acction is forbidden for this user')
                 }
                 console.log(e.message)
@@ -57,6 +58,7 @@ export function User() {
             userName: userInformation.username,
             userId: userInformation.userId,
             profilePicture: userInformation?.profilePicture ?? 'https://imebehavioralhealth.com/wp-content/uploads/2021/10/user-icon-placeholder-1.png',
+            email: '',
         });
     }, [userInformation]);
 
@@ -69,36 +71,39 @@ export function User() {
     }
 
     return (
-        <Box flex={1} alignItems="center" p={"30px 5px"}>
-            <UserCard user={user} />
-            <Box
-                height="1px"
-                width="90%"
-                backgroundColor="coolGray.300"
-                marginY="3px"
-            />
-            <Pressable
-                onPress={() => {
-                    navigation.navigate('test')
-                }}
-            >
-                <Text>Test</Text>
-            </Pressable>
-            <Text fontWeight={"bold"} fontSize={"2xl"}>{getText('yourGroups')}</Text>
-            {userInformation.groups && userInformation.groups.length > 0 ? (userInformation.groups.map((group) => (
-                    <GroupCard group={group} key={group.groupId}/>
-                ))
-            ) : (
-                <Box mt={5}>
-                    <Text color={"gray.500"} textAlign={"center"}>
-                        {getText('youAreInNoGroup')}
-                    </Text>
+        <>
+            <EditButton navigateTo={'userSettings'}/>
+            <Box flex={1} alignItems="center" p={"10px 5px"}>
+                <UserCard user={user}/>
+                <Box
+                    height="1px"
+                    width="90%"
+                    backgroundColor="coolGray.300"
+                    marginY="3px"
+                />
+                <Pressable
+                    onPress={() => {
+                        navigation.navigate('test')
+                    }}
+                >
+                    <Text>Test</Text>
+                </Pressable>
+                <Text fontWeight={"bold"} fontSize={"2xl"}>{getText('yourGroups')}</Text>
+                {userInformation.groups && userInformation.groups.length > 0 ? (userInformation.groups.map((group) => (
+                        <GroupCard group={group} key={group.groupId}/>
+                    ))
+                ) : (
+                    <Box mt={5}>
+                        <Text color={"gray.500"} textAlign={"center"}>
+                            {getText('youAreInNoGroup')}
+                        </Text>
 
-                    <Text color={"gray.500"} textAlign={"center"}>
-                        {getText('startByJoiningOrCreating')}
-                    </Text>
-                </Box>
-            )}
-        </Box>
+                        <Text color={"gray.500"} textAlign={"center"}>
+                            {getText('startByJoiningOrCreating')}
+                        </Text>
+                    </Box>
+                )}
+            </Box>
+        </>
     )
 }

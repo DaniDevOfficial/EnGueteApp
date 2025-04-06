@@ -16,6 +16,7 @@ import {Test} from "./screens/Test";
 import {
     setLanguageFromAsyncStorage,
 } from "./utility/TextKeys/TextKeys";
+import {UserSettings} from "./screens/UserSettings";
 
 const Stack = createStackNavigator();
 
@@ -34,7 +35,7 @@ const HomeScreen = withBaseLayout(Home);
 const LoginScreen = withBaseLayout(Login);
 const SignupScreen = withBaseLayout(Signup);
 const UserScreen = withBaseLayout(User);
-
+const UserSettingsScreen = withBaseLayout(UserSettings);
 function GroupContextStack() {
     const GroupStack = createStackNavigator();
 
@@ -63,6 +64,7 @@ export function Router() {
                     <Stack.Screen name="login" component={LoginScreen}/>
                     <Stack.Screen name="signup" component={SignupScreen}/>
                     <Stack.Screen name="user" component={UserScreen}/>
+                    <Stack.Screen name="userSettings" component={UserSettingsScreen}/>
                     <Stack.Screen name="test" component={Test}/>
                     <Stack.Screen name="group" component={GroupContextStack}/>
                 </Stack.Navigator>

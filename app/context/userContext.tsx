@@ -4,6 +4,7 @@ export type User = {
     userName: string;
     userId: string;
     profilePicture: string;
+    email: string;
 };
 
 type UserContextType = {
@@ -30,6 +31,7 @@ export function UserProvider({ children }: UserProviderProps): JSX.Element {
         userName: '',
         userId: '',
         profilePicture: '',
+        email: '',
     });
 
     return (
