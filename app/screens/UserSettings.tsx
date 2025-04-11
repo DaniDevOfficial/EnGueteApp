@@ -1,12 +1,13 @@
 import React, {useState} from "react";
 import {BackButton} from "../components/UI/BackButton";
-import {Box, HStack, Icon, Image, Pressable, Text} from "native-base";
+import {Box, HStack, Icon, Image, Pressable, Select, Text} from "native-base";
 import {useUser} from "../context/userContext";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {TouchableOpacity} from "react-native";
 import {TextUpdate} from "../components/settings/TextUpdate";
 import {getText} from "../utility/TextKeys/TextKeys";
 import {updateUsername} from "../repo/settings/User";
+import {LanguageSelector} from "../components/settings/LanguageSelector";
 
 
 export function UserSettings() {
@@ -60,7 +61,7 @@ export function UserSettings() {
                     </TouchableOpacity>
                 </Box>
                 <TextUpdate text={user.user.userName} title={getText('updateUsername')} onSuccess={handleEditUsername}/>
-
+                <LanguageSelector />
 
             </Box>
         </>
