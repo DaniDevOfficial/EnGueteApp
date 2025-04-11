@@ -3,6 +3,10 @@ import {BackButton} from "../components/UI/BackButton";
 import {Box, HStack, Icon, Image, Pressable, Text} from "native-base";
 import {useUser} from "../context/userContext";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import {TouchableOpacity} from "react-native";
+import {TextUpdate} from "../components/settings/TextUpdate";
+import {getText} from "../utility/TextKeys/TextKeys";
+import {updateUsername} from "../repo/settings/User";
 
 
 export function UserSettings() {
@@ -12,6 +16,18 @@ export function UserSettings() {
     function handleEditImage() {
     }
 
+    async function handleEditUsername(newUsername: string) {
+        try {
+            const response = await updateUsername(newUsername)
+            user.setUser({
+                ...user.user,
+                userName: newUsername,
+            });
+
+        } catch (e) {
+            console.log(e.message)
+        }
+    }
 
     return (
         <>
@@ -31,7 +47,7 @@ export function UserSettings() {
                         borderRadius="full"
                     />
 
-                    <Pressable onPress={handleEditImage}>
+                    <TouchableOpacity onPress={handleEditImage}>
                         <Icon
                             as={Ionicons}
                             name="create-outline"
@@ -41,16 +57,9 @@ export function UserSettings() {
                             bottom={0}
                             right={-15}
                         />
-                    </Pressable>
+                    </TouchableOpacity>
                 </Box>
-                <HStack alignItems="center" space={4} mt={4} mb={2}>
-                    <Text fontSize="xl" fontWeight="bold">
-                        {user.user.userName}
-                    </Text>
-                    <Pressable onPress={() => console.log('yayyy')}>
-                        <Icon as={Ionicons} name="create-outline" size={6} color="black"/>
-                    </Pressable>
-                </HStack>
+                <TextUpdate text={user.user.userName} title={getText('updateUsername')} onSuccess={handleEditUsername}/>
 
 
             </Box>
