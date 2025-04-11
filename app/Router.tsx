@@ -13,10 +13,8 @@ import {NewMeal} from "./screens/newMeal";
 import {GroupProvider} from "./context/groupContext";
 import {Meal} from "./screens/Meal";
 import {Test} from "./screens/Test";
-import {
-    setLanguageFromAsyncStorage,
-} from "./utility/TextKeys/TextKeys";
 import {UserSettings} from "./screens/UserSettings";
+import {LanguageProvider} from "./context/languageContext";
 
 const Stack = createStackNavigator();
 
@@ -36,6 +34,7 @@ const LoginScreen = withBaseLayout(Login);
 const SignupScreen = withBaseLayout(Signup);
 const UserScreen = withBaseLayout(User);
 const UserSettingsScreen = withBaseLayout(UserSettings);
+
 function GroupContextStack() {
     const GroupStack = createStackNavigator();
 
@@ -52,23 +51,21 @@ function GroupContextStack() {
 
 export function Router() {
 
-    useEffect(() => {
-        setLanguageFromAsyncStorage()
-    }, []);
-
     return (
-        <UserProvider>
-            <NavigationContainer>
-                <Stack.Navigator initialRouteName="home" screenOptions={{headerShown: false}}>
-                    <Stack.Screen name="home" component={HomeScreen}/>
-                    <Stack.Screen name="login" component={LoginScreen}/>
-                    <Stack.Screen name="signup" component={SignupScreen}/>
-                    <Stack.Screen name="user" component={UserScreen}/>
-                    <Stack.Screen name="userSettings" component={UserSettingsScreen}/>
-                    <Stack.Screen name="test" component={Test}/>
-                    <Stack.Screen name="group" component={GroupContextStack}/>
-                </Stack.Navigator>
-            </NavigationContainer>
-        </UserProvider>
+        <LanguageProvider>
+            <UserProvider>
+                <NavigationContainer>
+                    <Stack.Navigator initialRouteName="home" screenOptions={{headerShown: false}}>
+                        <Stack.Screen name="home" component={HomeScreen}/>
+                        <Stack.Screen name="login" component={LoginScreen}/>
+                        <Stack.Screen name="signup" component={SignupScreen}/>
+                        <Stack.Screen name="user" component={UserScreen}/>
+                        <Stack.Screen name="userSettings" component={UserSettingsScreen}/>
+                        <Stack.Screen name="test" component={Test}/>
+                        <Stack.Screen name="group" component={GroupContextStack}/>
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </UserProvider>
+        </LanguageProvider>
     );
 }

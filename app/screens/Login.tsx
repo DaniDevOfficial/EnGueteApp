@@ -3,7 +3,7 @@ import {Box, Button, Center, Divider, Flex, FormControl, Heading, HStack, Input,
 import {SignIntoAccount} from "../repo/Auth";
 import {useNavigation} from "@react-navigation/native";
 import {resetToUserScreen} from "../utility/navigation";
-import {getText} from "../utility/TextKeys/TextKeys";
+import {useText} from "../utility/TextKeys/TextKeys";
 
 export function Login() {
     const [username, setUsername] = useState('Dani1-123');
@@ -29,10 +29,10 @@ export function Login() {
         <Center flex={1} bg="coolGray.100">
             <Box safeArea p="5" py="8" w="90%" maxW="290" bg="white" rounded="lg" shadow={2}>
                 <Heading size="lg" fontWeight="600" color="coolGray.800" textAlign="center">
-                    {getText('welcomeBack')}
+                    {useText('welcomeBack')}
                 </Heading>
                 <Heading mt="1" color="coolGray.600" fontWeight="medium" size="xs" textAlign="center">
-                    {getText('pleaseSignIn')}
+                    {useText('pleaseSignIn')}
                 </Heading>
 
                 <VStack space={4} mt="5">
@@ -43,13 +43,13 @@ export function Login() {
                     ) : null}
 
                     <FormControl>
-                        <FormControl.Label>{getText('username')}</FormControl.Label>
+                        <FormControl.Label>{useText('username')}</FormControl.Label>
                         <Input
                             value={username}
                             onChangeText={(text) => setUsername(text)}
                             variant="filled"
                             p={3}
-                            placeholder={getText('enterUsername')}
+                            placeholder={useText('enterUsername')}
                             rounded="md"
                         />
                     </FormControl>
@@ -60,7 +60,7 @@ export function Login() {
                             onChangeText={(text) => setPassword(text)}
                             variant="filled"
                             p={3}
-                            placeholder={getText('enterPassword')}
+                            placeholder={useText('enterPassword')}
                             type="password"
                             rounded="md"
                         />
@@ -71,7 +71,7 @@ export function Login() {
                         _text={{fontSize: "md"}}
                         onPress={handleSubmit}
                     >
-                        {getText('login')}
+                        {useText('login')}
                     </Button>
                 </VStack>
                 <Pressable
@@ -84,7 +84,7 @@ export function Login() {
                             <HStack alignItems="center" space={2}>
                                 <Divider flex={1} bg="coolGray.300"/>
                                 <Text fontSize="sm" color="coolGray.400">
-                                    {getText('orCreateAnAccount')}
+                                    {useText('orCreateAnAccount')}
                                 </Text>
                                 <Divider flex={1} bg="coolGray.300"/>
                             </HStack>

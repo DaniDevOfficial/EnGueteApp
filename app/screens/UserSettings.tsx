@@ -5,7 +5,7 @@ import {useUser} from "../context/userContext";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {TouchableOpacity} from "react-native";
 import {TextUpdate} from "../components/settings/TextUpdate";
-import {getText} from "../utility/TextKeys/TextKeys";
+import {useText} from "../utility/TextKeys/TextKeys";
 import {updateUsername} from "../repo/settings/User";
 import {LanguageSelector} from "../components/settings/LanguageSelector";
 
@@ -60,7 +60,7 @@ export function UserSettings() {
                         />
                     </TouchableOpacity>
                 </Box>
-                <TextUpdate text={user.user.userName} title={getText('updateUsername')} onSuccess={handleEditUsername}/>
+                <TextUpdate text={user.user.userName} title={useText('updateUsername')} onSuccess={handleEditUsername}/>
                 <LanguageSelector />
 
             </Box>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { UserCard as UserCardType } from '../../repo/User';
 import { Box, Image, Text } from 'native-base';
-import {getText} from "../../utility/TextKeys/TextKeys";
+import {useText} from "../../utility/TextKeys/TextKeys";
 import {getGreetingBasedOnTime} from "../../utility/Dates";
 
 type UserCardProps = {
@@ -24,7 +24,7 @@ export function UserCard({ user }: UserCardProps) {
                 borderRadius="full"
             />
             <Text fontSize="lg" mt="4" bold>
-                {getText('welcomeBackUsername', {username: user.userName, timeOfDay: getText(getGreetingBasedOnTime())})}
+                {useText('welcomeBackUsername', {username: user.userName, timeOfDay: useText(getGreetingBasedOnTime())})}
             </Text>
         </Box>
     );

@@ -2,7 +2,7 @@ import {Button, FormControl, HStack, Icon, Input, Modal, Switch, Text} from "nat
 import {TouchableOpacity} from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import React, {useState} from "react";
-import {getText} from "../../utility/TextKeys/TextKeys";
+import {useText} from "../../utility/TextKeys/TextKeys";
 
 
 interface TextUpdateProps {
@@ -51,9 +51,9 @@ export function TextUpdate({title, text,  onSuccess}: TextUpdateProps) {
                         </FormControl>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button isLoading={isSaving} onPress={handleSave}>{getText('save')}</Button>
+                        <Button isLoading={isSaving} onPress={handleSave}>{useText('save')}</Button>
                         <Button variant="ghost" onPress={() => setModalVisible(false)}>
-                            {getText('cancel')}
+                            {useText('cancel')}
                         </Button>
                     </Modal.Footer>
                 </Modal.Content>

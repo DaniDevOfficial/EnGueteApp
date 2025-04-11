@@ -1,16 +1,18 @@
-import { Box, Image, Pressable, Text, HStack } from "native-base";
+import { Box, Pressable, Text, HStack } from "native-base";
 import React, {useEffect, useRef} from "react";
-import { getLanguage, getText } from "../../utility/TextKeys/TextKeys";
+import {useText} from "../../utility/TextKeys/TextKeys";
 import germanFlag from '../../assets/flags/german.png';
 import englishFlag from '../../assets/flags/english.png';
 import { Animated } from "react-native";
+import {useLanguage} from "../../context/languageContext";
 
 export function LanguageSelector() {
-    const [selectedLanguage, setSelectedLanguage] = React.useState(getLanguage());
+    const [selectedLanguage, setSelectedLanguage] = React.useState('english');
 
-    function selectLanguage(language: string) {
+    const languageContext = useLanguage();
+    function selectLanguage(language: 'german' | 'english') {
         setSelectedLanguage(language);
-
+        languageContext.setLanguage(language);
     };
 
     const renderLanguageOption = (languageCode: string, flagSource: string, label: string) => {
@@ -65,7 +67,7 @@ export function LanguageSelector() {
     return (
         <Box>
             <Text mb={2}>
-                {getText('language')}
+                {useText('language')}
             </Text>
             <HStack space={2}>
                 {renderLanguageOption('german', germanFlag, 'Deutsch')}
