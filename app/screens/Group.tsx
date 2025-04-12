@@ -10,13 +10,15 @@ import {useGroup} from "../context/groupContext";
 import {PERMISSIONS} from "../utility/Roles";
 import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
 import {BackButton} from "../components/UI/BackButton";
-import {useText} from "../utility/TextKeys/TextKeys";
+import {useText, useTexts} from "../utility/TextKeys/TextKeys";
 
 export function Group() {
     const [groupInformation, setGroupInformation] = useState<GroupInformationType | undefined>()
     const [loading, setLoading] = useState(true)
     const [refreshing, setRefreshing] = useState(false)
     const route = useRoute();
+    const texts = useTexts(['noMealsInThisGroup', 'createNewMeal']);
+
     // @ts-ignore
     const {groupId} = route.params;
 
@@ -100,14 +102,14 @@ export function Group() {
                     ) : (
                         <>
                             <Text>
-                                {useText('noMealsInThisGroup')}
+                                {texts.noMealsInThisGroup}
                             </Text>
                         </>
                     )}
                 </ScrollView>
                 {groupInformation.groupInfo.userRoleRights && groupInformation.groupInfo.userRoleRights.includes(PERMISSIONS.CAN_CREATE_MEAL) && (
                     <Button my={4} onPress={handleNavigate}>
-                        {useText('createNewMeal')}
+                        {texts.createNewMeal}
                     </Button>
                 )}
             </Box>
