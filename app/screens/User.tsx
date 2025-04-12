@@ -8,12 +8,14 @@ import {UserCard} from "../components/user/UserCard";
 import {GroupCard} from "../components/user/GroupCard";
 import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
 import {getAuthToken} from "../utility/Auth";
-import {useText} from "../utility/TextKeys/TextKeys";
+import {useTexts} from "../utility/TextKeys/TextKeys";
 import {EditButton} from "../components/UI/EditButton";
 
 export function User() {
     const [userInformation, setUserInformation] = useState<UserType | undefined>()
     const [loading, setLoading] = useState(true)
+    const text = useTexts(['youAreInNoGroup', 'startByJoiningOrCreating', 'yourGroups']);
+
     const navigation = useNavigation();
 
     const {user, setUser: setUser} = useUser();
@@ -88,18 +90,18 @@ export function User() {
                 >
                     <Text>Test</Text>
                 </Pressable>
-                <Text fontWeight={"bold"} fontSize={"2xl"}>{useText('yourGroups')}</Text>
+                <Text fontWeight={"bold"} fontSize={"2xl"}>{text.yourGroups}asdf</Text>
                 {userInformation.groups && userInformation.groups.length > 0 ? (userInformation.groups.map((group) => (
                         <GroupCard group={group} key={group.groupId}/>
                     ))
                 ) : (
                     <Box mt={5}>
                         <Text color={"gray.500"} textAlign={"center"}>
-                            {useText('youAreInNoGroup')}
+                            {text.youAreInNoGroup}
                         </Text>
 
                         <Text color={"gray.500"} textAlign={"center"}>
-                            {useText('startByJoiningOrCreating')}
+                            {text.startByJoiningOrCreating}
                         </Text>
                     </Box>
                 )}

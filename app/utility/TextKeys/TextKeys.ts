@@ -16,6 +16,15 @@ export function useText(textKey: TextKey, replaceData?: Record<string, string>):
 }
 
 
+export function useTexts<T extends readonly TextKey[]>(textKeys: T): {[K in T[number]]: string} {
+    const result = {} as { [K in T[number]]: string };
+
+    textKeys.forEach(textKey => {
+        result[textKey] = useText(textKey);
+    });
+    return result;
+}
+
 
 export function mealPreferenceText(preferenceText: string): string {
     if (preferenceText === 'undecided') {

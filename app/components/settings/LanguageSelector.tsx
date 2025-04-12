@@ -7,16 +7,14 @@ import { Animated } from "react-native";
 import {useLanguage} from "../../context/languageContext";
 
 export function LanguageSelector() {
-    const [selectedLanguage, setSelectedLanguage] = React.useState('english');
-
+    const { language } = useLanguage();
     const languageContext = useLanguage();
     function selectLanguage(language: 'german' | 'english') {
-        setSelectedLanguage(language);
         languageContext.setLanguage(language);
-    };
+    }
 
     const renderLanguageOption = (languageCode: string, flagSource: string, label: string) => {
-        const isSelected = selectedLanguage === languageCode;
+        const isSelected = language === languageCode;
         const sizeAnim = useRef(new Animated.Value(isSelected ? 60 : 50)).current;
         const bgAnim = useRef(new Animated.Value(isSelected ? 1 : 0)).current;
 
