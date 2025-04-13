@@ -1,4 +1,4 @@
-import { Box, Pressable, Text, HStack } from "native-base";
+import {Box, Pressable, Text, HStack, ScrollView} from "native-base";
 import React, {useEffect, useRef} from "react";
 import {useText} from "../../utility/TextKeys/TextKeys";
 import germanFlag from '../../assets/flags/german.png';
@@ -63,14 +63,17 @@ export function LanguageSelector() {
     };
 
     return (
-        <Box>
-            <Text mb={2}>
+        <Box flex={1} alignItems={'center'}>
+            <Text mb={2} fontSize={'xl'}  fontWeight="bold" >
                 {useText('language')}
             </Text>
-            <HStack space={2}>
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            <HStack space={2} overflow={'auto'}>
                 {renderLanguageOption('german', germanFlag, 'Deutsch')}
                 {renderLanguageOption('english', englishFlag, 'English')}
             </HStack>
+
+            </ScrollView>
         </Box>
     );
 }

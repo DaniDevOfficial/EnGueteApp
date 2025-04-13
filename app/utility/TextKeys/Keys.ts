@@ -76,7 +76,9 @@ export type TextKey =
     | 'september'
     | 'october'
     | 'november'
-    | 'december';
+    | 'december'
+    | 'language'
+    ;
 
 export interface TextKeysInterface {
     // @ts-ignore
@@ -399,6 +401,10 @@ export const textKeys: TextKeysInterface = {
     'december': {
         german: 'Dezember',
         english: 'December',
+    },
+    'language': {
+        german: 'Sprache',
+        english: 'Language',
     },
 }
 

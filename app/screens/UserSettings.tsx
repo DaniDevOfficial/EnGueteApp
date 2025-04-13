@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {BackButton} from "../components/UI/BackButton";
-import {Box, HStack, Icon, Image, Pressable, Select, Text} from "native-base";
+import {Box, Icon, Image, Select, Text, VStack} from "native-base";
 import {useUser} from "../context/userContext";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {TouchableOpacity} from "react-native";
@@ -33,7 +33,8 @@ export function UserSettings() {
     return (
         <>
             <BackButton/>
-            <Box flex={1} alignItems="center" p={"10px 5px"}>
+            <VStack flex={1} alignItems="center" p={"10px 5px"} space={4}>
+
                 <Box position="relative" width="70px" height="70px">
                     <Image
                         source={{uri: imageSrc}}
@@ -60,10 +61,12 @@ export function UserSettings() {
                         />
                     </TouchableOpacity>
                 </Box>
-                <TextUpdate text={user.user.userName} title={useText('updateUsername')} onSuccess={handleEditUsername}/>
-                <LanguageSelector />
+                <TextUpdate text={user.user.userName} title={useText('updateUsername')}
+                            onSuccess={handleEditUsername}/>
 
-            </Box>
+                <LanguageSelector/>
+
+            </VStack>
         </>
     )
 }
