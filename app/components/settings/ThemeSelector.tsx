@@ -1,21 +1,17 @@
-import {Box, Pressable, Text, HStack, ScrollView} from "native-base";
-import React, {useEffect, useRef} from "react";
-import {useText} from "../../utility/TextKeys/TextKeys";
-import germanFlag from '../../assets/flags/german.png';
-import englishFlag from '../../assets/flags/english.png';
+import React, {useEffect, useRef, useState} from "react";
+import {Box, HStack, Pressable, ScrollView, Text} from "native-base";
 import {Animated} from "react-native";
-import {useLanguage} from "../../context/languageContext";
+import {useText} from "../../utility/TextKeys/TextKeys";
+import lightMode from "../../assets/icons/lightmode.png";
+import darkMode from "../../assets/icons/darkmode.png";
 
-export function LanguageSelector() {
-    const {language} = useLanguage();
-    const languageContext = useLanguage();
 
-    function selectLanguage(language: 'german' | 'english') {
-        languageContext.setLanguage(language);
-    }
+export function ThemeSelector() {
+    const [theme, setTheme] = useState('light');
 
-    const renderLanguageOption = (languageCode: string, flagSource: string, label: string) => {
-        const isSelected = language === languageCode;
+
+    const renderImageOption = (thisTheme: string, imageSource: string, label: string) => {
+        const isSelected = theme === thisTheme;
         const sizeAnim = useRef(new Animated.Value(isSelected ? 60 : 50)).current;
         const bgAnim = useRef(new Animated.Value(isSelected ? 1 : 0)).current;
 
@@ -35,11 +31,11 @@ export function LanguageSelector() {
 
         const backgroundColor = bgAnim.interpolate({
             inputRange: [0, 1],
-            outputRange: ['transparent', '#bfdbfe'], // blue.200 equivalent
+            outputRange: ['transparent', '#bfdbfe'],
         });
 
         return (
-            <Pressable key={languageCode} onPress={() => selectLanguage(languageCode)}>
+            <Pressable key={thisTheme} onPress={() => setTheme(thisTheme)}>
                 <Animated.View
                     style={{
                         backgroundColor,
@@ -50,7 +46,7 @@ export function LanguageSelector() {
                     }}
                 >
                     <Animated.Image
-                        source={flagSource}
+                        source={imageSource}
                         alt={label}
                         style={{
                             width: sizeAnim,
@@ -63,15 +59,17 @@ export function LanguageSelector() {
         );
     };
 
+
+
     return (
         <Box flex={1} alignItems={'center'}>
-            <Text mb={2} fontSize={'xl'} fontWeight="bold">
+            <Text mb={2} fontSize={'xl'}  fontWeight="bold" >
                 {useText('language')}
             </Text>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                 <HStack space={2} overflow={'auto'}>
-                    {renderLanguageOption('german', germanFlag, 'Deutsch')}
-                    {renderLanguageOption('english', englishFlag, 'English')}
+                    {renderImageOption('german', lightMode, 'Deutsch')}
+                    {renderImageOption('english', darkMode, 'English')}
                 </HStack>
 
             </ScrollView>
