@@ -4,18 +4,17 @@ import {useText} from "../../utility/TextKeys/TextKeys";
 import germanFlag from '../../assets/flags/german.png';
 import englishFlag from '../../assets/flags/english.png';
 import {Animated} from "react-native";
-import {useLanguage} from "../../context/languageContext";
+import {Language, useSettings} from "../../context/settingsContext";
 
 export function LanguageSelector() {
-    const {language} = useLanguage();
-    const languageContext = useLanguage();
+    const settings = useSettings();
 
-    function selectLanguage(language: 'german' | 'english') {
-        languageContext.setLanguage(language);
+    function selectLanguage(language: Language) {
+        settings.setLanguage(language);
     }
 
-    const renderLanguageOption = (languageCode: string, flagSource: string, label: string) => {
-        const isSelected = language === languageCode;
+    const renderLanguageOption = (languageCode: Language, flagSource: string, label: string) => {
+        const isSelected = settings.language === languageCode;
         const sizeAnim = useRef(new Animated.Value(isSelected ? 60 : 50)).current;
         const bgAnim = useRef(new Animated.Value(isSelected ? 1 : 0)).current;
 

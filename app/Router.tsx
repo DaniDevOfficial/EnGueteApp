@@ -14,7 +14,7 @@ import {GroupProvider} from "./context/groupContext";
 import {Meal} from "./screens/Meal";
 import {Test} from "./screens/Test";
 import {UserSettings} from "./screens/UserSettings";
-import {LanguageProvider} from "./context/languageContext";
+import {SettingsProvider} from "./context/settingsContext";
 
 const Stack = createStackNavigator();
 
@@ -52,7 +52,7 @@ function GroupContextStack() {
 export function Router() {
 
     return (
-        <LanguageProvider>
+        <SettingsProvider>
             <UserProvider>
                 <NavigationContainer>
                     <Stack.Navigator initialRouteName="home" screenOptions={{headerShown: false}}>
@@ -66,6 +66,6 @@ export function Router() {
                     </Stack.Navigator>
                 </NavigationContainer>
             </UserProvider>
-        </LanguageProvider>
+        </SettingsProvider>
     );
 }

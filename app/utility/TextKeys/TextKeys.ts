@@ -1,8 +1,8 @@
-import { useLanguage } from "../../context/languageContext";
+import { useSettings } from "../../context/settingsContext";
 import { TextKey, textKeys } from "./Keys";
 
 export function useText(textKey: TextKey, replaceData?: Record<string, string>): string {
-    const { language } = useLanguage();
+    const { language } = useSettings();
 
     let text = textKeys[textKey]?.[language] ?? textKey;
 

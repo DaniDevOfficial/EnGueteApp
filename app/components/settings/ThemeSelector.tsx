@@ -4,14 +4,17 @@ import {Animated} from "react-native";
 import {useText} from "../../utility/TextKeys/TextKeys";
 import lightMode from "../../assets/icons/lightmode.png";
 import darkMode from "../../assets/icons/darkmode.png";
+import {Theme, useSettings} from "../../context/settingsContext";
 
 
 export function ThemeSelector() {
-    const [theme, setTheme] = useState('light');
+    const settings = useSettings();
+    function selectLanguage(theme: Theme) {
+        settings.setTheme(theme);
+    }
 
-
-    const renderImageOption = (thisTheme: string, imageSource: string, label: string) => {
-        const isSelected = theme === thisTheme;
+    const renderImageOption = (theme: Theme, imageSource: string, label: string) => {
+        const isSelected = settings.theme === theme;
         const sizeAnim = useRef(new Animated.Value(isSelected ? 60 : 50)).current;
         const bgAnim = useRef(new Animated.Value(isSelected ? 1 : 0)).current;
 
@@ -35,7 +38,7 @@ export function ThemeSelector() {
         });
 
         return (
-            <Pressable key={thisTheme} onPress={() => setTheme(thisTheme)}>
+            <Pressable key={theme} onPress={() => selectLanguage(theme)}>
                 <Animated.View
                     style={{
                         backgroundColor,
