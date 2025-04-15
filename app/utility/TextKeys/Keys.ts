@@ -78,6 +78,7 @@ export type TextKey =
     | 'november'
     | 'december'
     | 'language'
+    | 'theme'
     ;
 
 export interface TextKeysInterface {
@@ -405,6 +406,10 @@ export const textKeys: TextKeysInterface = {
     'language': {
         german: 'Sprache',
         english: 'Language',
+    },
+    'theme': {
+        german: 'Farbschema',
+        english: 'Color Theme',
     },
 }
 

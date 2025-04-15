@@ -67,7 +67,7 @@ export function ThemeSelector() {
     return (
         <Box flex={1} alignItems={'center'}>
             <Text mb={2} fontSize={'xl'}  fontWeight="bold" >
-                {useText('language')}
+                {useText('theme')}
             </Text>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                 <HStack space={2} overflow={'auto'}>
