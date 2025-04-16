@@ -9,6 +9,7 @@ import {useText} from "../utility/TextKeys/TextKeys";
 import {updateUsername} from "../repo/settings/User";
 import {LanguageSelector} from "../components/settings/LanguageSelector";
 import {ThemeSelector} from "../components/settings/ThemeSelector";
+import {DangerZone} from "../components/settings/DangerZone";
 
 
 export function UserSettings() {
@@ -68,6 +69,7 @@ export function UserSettings() {
 
                     <LanguageSelector/>
                     <ThemeSelector/>
+                    <DangerZone/>
                 </VStack>
             </ScrollView>
         </>
