@@ -79,6 +79,11 @@ export type TextKey =
     | 'december'
     | 'language'
     | 'theme'
+    | 'updateUsername'
+    | 'deleteAccount'
+    | 'deleteAccountRequiredText'
+    | 'thisActionCannotBeUndone'
+    | 'pleaseEnterTextToConfirm'
     ;
 
 export interface TextKeysInterface {
@@ -411,5 +416,25 @@ export const textKeys: TextKeysInterface = {
         german: 'Farbschema',
         english: 'Color Theme',
     },
+    'updateUsername': {
+        german: 'Nutzernamen aktualisieren',
+        english: 'Update username',
+    },
+    'deleteAccount': {
+        german: 'Account löschen',
+        english: 'Delete account',
+    },
+    'deleteAccountRequiredText': {
+        german: '[username] Löschen',
+        english: 'Delete [username]',
+    },
+    'thisActionCannotBeUndone': {
+        german: 'Diese Aktion kann nicht rückgängig gemacht werden',
+        english: 'This action cannot be undone',
+    },
+    'pleaseEnterTextToConfirm': {
+        german: 'Bitte geben Sie den Text ein, um zu bestätigen: [text]',
+        english: 'Please enter the text to confirm: [text]',
+    }
 }
 
