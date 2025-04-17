@@ -1,23 +1,24 @@
 import {Button, FormControl, Input, Modal, Text, useToast} from "native-base";
 import React, {useState} from "react";
-import {useText, useTexts} from "../../utility/TextKeys/TextKeys";
+import {useText} from "../../utility/TextKeys/TextKeys";
 import {useUser} from "../../context/userContext";
+import {showToast} from "../UI/Toast";
 
 export function DeleteUser() {
     const user = useUser();
     const toast = useToast();
     const [isModalVisible, setModalVisible] = useState(false);
-    const [value, setValue] = useState<string>('');
+    const [requiredText, setRequiredText] = useState<string>(useText('deleteAccountRequiredText', {'username': user.user.userName}));
+    const [value, setValue] = useState<string>(requiredText);
     const [isSaving, setIsSaving] = useState(false);
 
-    const [requiredText, setRequiredText] = useState<string>(useText('deleteAccountRequiredText', {'username': user.user.userName}));
 
     const title = useText('deleteAccount');
     const pleaseEnterText = useText('pleaseEnterTextToConfirm', {'text': requiredText});
 
     async function handleSave() {
 
-        if (value !== user.user.userName) {
+        if (value !== requiredText) {
             setRequiredText(useText('deleteAccountRequiredText', {'username': user.user.userName}));
             return;
         }
@@ -25,8 +26,15 @@ export function DeleteUser() {
         try {
             setIsSaving(true);
             setModalVisible(false);
+
+            throw new Error('Not implemented');
         } catch (err) {
-            console.error('Failed to save:', err); // TODO: error handling
+            showToast({
+                toast,
+                title: title,
+                description: title,
+                status: 'error',
+            });
         } finally {
             setIsSaving(false);
         }
@@ -54,7 +62,7 @@ export function DeleteUser() {
                         </FormControl>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button isLoading={isSaving} onPress={handleSave}>{useText('save')}</Button>
+                        <Button isLoading={isSaving} colorScheme={value !== requiredText ? "coolGray" : 'primary'} disabled={value !== requiredText} onPress={handleSave}>{useText('save')}</Button>
                         <Button variant="ghost" onPress={() => setModalVisible(false)}>
                             {useText('cancel')}
                         </Button>

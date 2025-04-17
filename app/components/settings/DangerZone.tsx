@@ -15,7 +15,6 @@ export function DangerZone() {
                 <Box flex={1} height="1px" bg="red.500"/>
             </HStack>
             <DeleteUser />
-
         </>
     );
 }
