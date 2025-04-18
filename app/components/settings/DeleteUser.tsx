@@ -1,42 +1,53 @@
 import {Button, FormControl, Input, Modal, Text, useToast} from "native-base";
 import React, {useState} from "react";
-import {useText} from "../../utility/TextKeys/TextKeys";
+import {useText, useTexts} from "../../utility/TextKeys/TextKeys";
 import {useUser} from "../../context/userContext";
 import {showToast} from "../UI/Toast";
+import {deleteCurrentUser} from "../../repo/settings/User";
+import {handleLogoutProcedure} from "../../Util";
+import {useNavigation} from "@react-navigation/native";
 
 export function DeleteUser() {
     const user = useUser();
+    const navigation = useNavigation();
     const toast = useToast();
     const [isModalVisible, setModalVisible] = useState(false);
-    const [requiredText, setRequiredText] = useState<string>(useText('deleteAccountRequiredText', {'username': user.user.userName}));
+    const [requiredText] = useState<string>(useText('deleteAccountRequiredText', {'username': user.user.userName}));
     const [value, setValue] = useState<string>(requiredText);
     const [isSaving, setIsSaving] = useState(false);
-
 
     const title = useText('deleteAccount');
     const pleaseEnterText = useText('pleaseEnterTextToConfirm', {'text': requiredText});
 
+    const texts = useTexts(['deleteAccount', 'error', 'errorPleaseEnterCorrectText'])
+
+
     async function handleSave() {
 
         if (value !== requiredText) {
-            setRequiredText(useText('deleteAccountRequiredText', {'username': user.user.userName}));
+            showToast({
+                toast,
+                title: texts.error,
+                description: texts.errorPleaseEnterCorrectText,
+                status: 'error',
+            });
             return;
         }
 
         try {
             setIsSaving(true);
-            setModalVisible(false);
-
-            throw new Error('Not implemented');
+            await deleteCurrentUser();
+            await handleLogoutProcedure(navigation);
         } catch (err) {
             showToast({
                 toast,
-                title: title,
-                description: title,
+                title: texts.error,
+                description: 'test',
                 status: 'error',
             });
         } finally {
             setIsSaving(false);
+
         }
     }
     return (

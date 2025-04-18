@@ -84,6 +84,8 @@ export type TextKey =
     | 'deleteAccountRequiredText'
     | 'thisActionCannotBeUndone'
     | 'pleaseEnterTextToConfirm'
+    | 'error'
+    | 'errorPleaseEnterCorrectText'
     ;
 
 export interface TextKeysInterface {
@@ -435,6 +437,14 @@ export const textKeys: TextKeysInterface = {
     'pleaseEnterTextToConfirm': {
         german: 'Bitte geben Sie den Text ein, um zu bestätigen: [text]',
         english: 'Please enter the text to confirm: [text]',
-    }
+    },
+    'error': {
+        german: 'Fehler',
+        english: 'Error',
+    },
+    'errorPleaseEnterCorrectText': {
+        german: 'Bitte geben Sie den richtigen Text ein',
+        english: 'Please enter the text to confirm:',
+    },
 }
 

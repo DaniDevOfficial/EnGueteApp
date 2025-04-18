@@ -7,7 +7,8 @@ const TIMEOUT = 10000;
 export async function handleLogoutProcedure(navigation: NavigationProp<any>) {
     await removeAuthToken()
     await removeRefreshToken()
-
+    //TODO: remove user data from context
+    //TODO: delte userdata from sqlite
     resetToHomeScreen(navigation);
 }
 
