@@ -20,6 +20,7 @@ export function useTexts<T extends readonly TextKey[]>(textKeys: T): {[K in T[nu
     const result = {} as { [K in T[number]]: string };
 
     textKeys.forEach(textKey => {
+        // @ts-ignore
         result[textKey] = useText(textKey);
     });
     return result;
