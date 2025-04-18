@@ -86,6 +86,8 @@ export type TextKey =
     | 'pleaseEnterTextToConfirm'
     | 'error'
     | 'errorPleaseEnterCorrectText'
+    | 'errorNoOfflineLogout'
+    | 'logout'
     ;
 
 export interface TextKeysInterface {
@@ -445,6 +447,14 @@ export const textKeys: TextKeysInterface = {
     'errorPleaseEnterCorrectText': {
         german: 'Bitte geben Sie den richtigen Text ein',
         english: 'Please enter the text to confirm:',
+    },
+    'logout': {
+        german: 'Ausloggen',
+        english: 'Logout',
+    },
+    'errorNoOfflineLogout': {
+        german: 'Für sicheres Ausloggen funktioniert es nur wenn man online ist.',
+        english: 'For secure logout it only works when you are online.',
     },
 }
 

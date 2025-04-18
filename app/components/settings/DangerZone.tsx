@@ -1,6 +1,7 @@
 import React from "react";
 import {Box, HStack, Text} from "native-base";
 import {DeleteUser} from "./DeleteUser";
+import {Logout} from "./Logout";
 
 export function DangerZone() {
 
@@ -15,6 +16,7 @@ export function DangerZone() {
                 <Box flex={1} height="1px" bg="red.500"/>
             </HStack>
             <DeleteUser />
+            <Logout />
         </>
     );
 }

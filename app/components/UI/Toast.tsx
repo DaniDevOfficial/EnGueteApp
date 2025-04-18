@@ -58,11 +58,12 @@ export function showToast({
     });
 
 }
+type ToastType = ReturnType<typeof useToast>;
 
 
 export interface ToastParams {
     id: string;
-    toast: any;
+    toast: ToastType;
     status?: 'info' | 'success' | 'warning' | 'error';
     variant?: 'left-accent' | 'top-accent' | 'solid' | 'subtle' | 'outline';
     title: string;
