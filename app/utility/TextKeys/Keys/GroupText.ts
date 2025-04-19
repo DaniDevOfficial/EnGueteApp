@@ -10,6 +10,8 @@ export type GroupTextType =
     | 'participants'
     | 'noMealsInThisGroup'
     | 'createNewMeal'
+    | 'createNewGroup'
+    | 'groupName'
 
     ;
 
@@ -56,6 +58,14 @@ export const GroupTextKey: GroupTextKeyType = {
     'createNewMeal': {
         german: 'Neue Mahlzeit erstellen',
         english: 'Create new meal',
+    },
+    'createNewGroup': {
+        german: 'Neue Gruppe erstellen',
+        english: 'Create new group',
+    },
+    'groupName': {
+        german: 'Gruppenname',
+        english: 'Group name',
     },
 
 }

@@ -15,6 +15,7 @@ import {Meal} from "./screens/Meal";
 import {Test} from "./screens/Test";
 import {UserSettings} from "./screens/UserSettings";
 import {SettingsProvider} from "./context/settingsContext";
+import {NewGroup} from "./screens/newGroup";
 
 const Stack = createStackNavigator();
 
@@ -34,7 +35,7 @@ const LoginScreen = withBaseLayout(Login);
 const SignupScreen = withBaseLayout(Signup);
 const UserScreen = withBaseLayout(User);
 const UserSettingsScreen = withBaseLayout(UserSettings);
-
+const NewGroupScreen = withBaseLayout(NewGroup);
 function GroupContextStack() {
     const GroupStack = createStackNavigator();
 
@@ -61,6 +62,7 @@ export function Router() {
                         <Stack.Screen name="signup" component={SignupScreen}/>
                         <Stack.Screen name="user" component={UserScreen}/>
                         <Stack.Screen name="userSettings" component={UserSettingsScreen}/>
+                        <Stack.Screen name="newGroup" component={NewGroupScreen}/>
                         <Stack.Screen name="test" component={Test}/>
                         <Stack.Screen name="group" component={GroupContextStack}/>
                     </Stack.Navigator>

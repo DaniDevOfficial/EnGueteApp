@@ -1,4 +1,4 @@
-import {Box, Pressable, Spinner, Text} from 'native-base'
+import {Box, Button, Pressable, Spinner, Text} from 'native-base'
 import React, {useEffect, useState} from 'react'
 import {handleLogoutProcedure} from "../Util";
 import {useNavigation} from "@react-navigation/native";
@@ -14,7 +14,7 @@ import {EditButton} from "../components/UI/EditButton";
 export function User() {
     const [userInformation, setUserInformation] = useState<UserType | undefined>()
     const [loading, setLoading] = useState(true)
-    const text = useTexts(['youAreInNoGroup', 'startByJoiningOrCreating', 'yourGroups']);
+    const text = useTexts(['youAreInNoGroup', 'startByJoiningOrCreating', 'yourGroups', 'createNewGroup']);
 
     const navigation = useNavigation();
 
@@ -72,6 +72,11 @@ export function User() {
         )
     }
 
+    function handleNavigate() {
+
+        // @ts-ignore
+        navigation.navigate('newGroup');
+    }
     return (
         <>
             <EditButton navigateTo={'userSettings'}/>
@@ -90,7 +95,7 @@ export function User() {
                 >
                     <Text>Test</Text>
                 </Pressable>
-                <Text fontWeight={"bold"} fontSize={"2xl"}>{text.yourGroups}asdf</Text>
+                <Text fontWeight={"bold"} fontSize={"2xl"}>{text.yourGroups}</Text>
                 {userInformation.groups && userInformation.groups.length > 0 ? (userInformation.groups.map((group) => (
                         <GroupCard group={group} key={group.groupId}/>
                     ))
@@ -106,6 +111,9 @@ export function User() {
                     </Box>
                 )}
             </Box>
+                <Button my={4} onPress={handleNavigate}>
+                    {text.createNewGroup}
+                </Button>
         </>
     )
 }
