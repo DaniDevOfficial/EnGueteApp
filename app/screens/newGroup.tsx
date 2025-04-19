@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Button, FormControl, Input, VStack} from "native-base";
-import {useNavigation} from "@react-navigation/native";
+import {StackActions, useNavigation} from "@react-navigation/native";
 import {BackButton} from "../components/UI/BackButton";
 import {CreateNewGroup, NewGroupType} from "../repo/Group";
 import {useTexts} from "../utility/TextKeys/TextKeys";
@@ -19,12 +19,14 @@ export function NewGroup() {
             const res = await CreateNewGroup(data)
 
             // @ts-ignore
-            navigation.navigate('group', {
-                screen: 'GroupDetails',
-                params: {
-                    groupId: res.groupId,
-                },
-            });
+            navigation.dispatch(
+                StackActions.replace('group', {
+                    screen: 'GroupDetails',
+                    params: {
+                        groupId: res.groupId,
+                    },
+                })
+            );
         } catch (e) {
             console.log(e.message());
         }
