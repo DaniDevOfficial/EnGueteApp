@@ -74,7 +74,7 @@ export function NewMeal() {
 
             // @ts-ignore
             navigation.dispatch(
-                StackActions.replace('Meal', {
+                StackActions.replace('meal', {
                     mealId: res.mealId,
                 })
             );

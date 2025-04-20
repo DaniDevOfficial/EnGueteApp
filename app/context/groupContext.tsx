@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 export type Group = {
     groupId: string;
+    groupName: string;
     userRoleRights: string[];
 };
 
@@ -27,6 +28,7 @@ type GroupProviderProps = {
 export function GroupProvider({ children }: GroupProviderProps): JSX.Element {
     const [group, setGroup] = useState<Group>({
         groupId: '',
+        groupName: '',
         userRoleRights: [],
     });
 

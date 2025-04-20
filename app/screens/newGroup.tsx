@@ -21,7 +21,7 @@ export function NewGroup() {
             // @ts-ignore
             navigation.dispatch(
                 StackActions.replace('group', {
-                    screen: 'GroupDetails',
+                    screen: 'groupDetails',
                     params: {
                         groupId: res.groupId,
                     },

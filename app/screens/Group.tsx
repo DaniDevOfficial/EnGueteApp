@@ -11,6 +11,7 @@ import {PERMISSIONS} from "../utility/Roles";
 import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
 import {BackButton} from "../components/UI/BackButton";
 import {useText, useTexts} from "../utility/TextKeys/TextKeys";
+import {EditButton} from "../components/UI/EditButton";
 
 export function Group() {
     const [groupInformation, setGroupInformation] = useState<GroupInformationType | undefined>()
@@ -40,6 +41,7 @@ export function Group() {
                 setGroupInformation(groupInformation)
                 setGroup({
                     groupId: groupInformation.groupInfo.groupId,
+                    groupName: groupInformation.groupInfo.groupName,
                     userRoleRights: groupInformation.groupInfo.userRoleRights,
                 })
             }
@@ -80,7 +82,7 @@ export function Group() {
 
         // @ts-ignore
         navigation.navigate('group', {
-            screen: 'NewMeal',
+            screen: 'newMeal',
         });
     }
 
@@ -88,6 +90,8 @@ export function Group() {
     return (
         <>
             <BackButton color={'green'}/>
+            <EditButton navigateTo={'groupSettings'}/>
+
             <Box flex={1} alignItems="center">
                 <GroupInformationHeader groupInformation={groupInformation.groupInfo}/>
                 <ScrollView

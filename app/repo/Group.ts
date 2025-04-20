@@ -62,3 +62,22 @@ export async function CreateNewGroup(groupInformation: NewGroupType): Promise<Gr
     await handleDefaultResponseAndHeaders(res)
     return await res.json();
 }
+
+export interface UpdateGroupNameType {
+    groupId: string,
+    groupName: string,
+}
+
+export async function UpdateGroupName(groupInformation: UpdateGroupNameType): Promise<GroupIdResponse> {
+    const url = BACKEND_URL + 'groups/name';
+    const timeoutPromise = timeoutPromiseFactory()
+    const fetchPromise = await fetch(url, {
+        method: 'PUT',
+        headers: await getBasicAuthHeader(),
+        body: JSON.stringify(groupInformation),
+    });
+
+    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
+    await handleDefaultResponseAndHeaders(res)
+    return await res.json();
+}
