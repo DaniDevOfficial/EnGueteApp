@@ -12,6 +12,8 @@ export type GroupTextType =
     | 'createNewMeal'
     | 'createNewGroup'
     | 'groupName'
+    | 'deleteGroup'
+    | 'deleteGroupRequiredText'
 
     ;
 
@@ -67,5 +69,13 @@ export const GroupTextKey: GroupTextKeyType = {
         german: 'Gruppenname',
         english: 'Group name',
     },
+    'deleteGroup': {
+        german: 'Gruppe löschen',
+        english: 'Delete group',
+    },
+    'deleteGroupRequiredText': {
+        german: '[groupName] löschen',
+        english: 'Delete [groupName]',
+    }
 
 }

@@ -10,6 +10,7 @@ import {DangerZone} from "../components/settings/DangerZone";
 import {useGroup} from "../context/groupContext";
 import {UpdateGroupName, UpdateGroupNameType} from "../repo/Group";
 import {PERMISSIONS} from "../utility/Roles";
+import {GroupDangerZone} from "../components/settings/GroupDangerZone";
 
 
 export function GroupSettings() {
@@ -17,7 +18,6 @@ export function GroupSettings() {
     const [imageSrc, setImageSrc] = useState(user.user.profilePicture || 'https://imebehavioralhealth.com/wp-content/uploads/2021/10/user-icon-placeholder-1.png');
     const group = useGroup();
     const text = useTexts(['updateGroupName']);
-
 
 
     async function handleEditGroupName(newGroupName: string) {
@@ -45,9 +45,10 @@ export function GroupSettings() {
 
                     <TextUpdate text={group.group.groupName} title={text.groupName}
                                 onSuccess={handleEditGroupName}
-                                readonly={group.group.userRoleRights.includes(PERMISSIONS.CAN_UPDATE_GROUP)}/>
-
-                    <DangerZone/>
+                                readonly={!group.group.userRoleRights.includes(PERMISSIONS.CAN_UPDATE_GROUP)}/>
+                    {group.group.userRoleRights.includes(PERMISSIONS.CAN_DELETE_GROUP) && (
+                        <GroupDangerZone/>
+                    )}
                 </VStack>
             </ScrollView>
         </>
