@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {BackButton} from "../components/UI/BackButton";
-import {Box, Icon, Image, ScrollView, VStack} from "native-base";
+import {Box, Button, Icon, Image, ScrollView, VStack} from "native-base";
 import {useUser} from "../context/userContext";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {TouchableOpacity} from "react-native";
@@ -11,12 +11,13 @@ import {useGroup} from "../context/groupContext";
 import {UpdateGroupName, UpdateGroupNameType} from "../repo/Group";
 import {PERMISSIONS} from "../utility/Roles";
 import {GroupDangerZone} from "../components/settings/GroupDangerZone";
+import {useNavigation} from "@react-navigation/native";
 
 
 export function GroupSettings() {
     const user = useUser();
-    const [imageSrc, setImageSrc] = useState(user.user.profilePicture || 'https://imebehavioralhealth.com/wp-content/uploads/2021/10/user-icon-placeholder-1.png');
     const group = useGroup();
+    const navigation = useNavigation();
     const text = useTexts(['updateGroupName']);
 
 
@@ -46,6 +47,9 @@ export function GroupSettings() {
                     <TextUpdate text={group.group.groupName} title={text.groupName}
                                 onSuccess={handleEditGroupName}
                                 readonly={!group.group.userRoleRights.includes(PERMISSIONS.CAN_UPDATE_GROUP)}/>
+                    <Button onPress={() => navigation.navigate('memberList')}>
+                        asdf
+                    </Button>
                     {group.group.userRoleRights.includes(PERMISSIONS.CAN_DELETE_GROUP) && (
                         <GroupDangerZone/>
                     )}

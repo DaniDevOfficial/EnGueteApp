@@ -17,6 +17,7 @@ import {UserSettings} from "./screens/UserSettings";
 import {SettingsProvider} from "./context/settingsContext";
 import {NewGroup} from "./screens/newGroup";
 import {GroupSettings} from "./screens/GroupSettings";
+import {GroupMemberList} from "./screens/GroupMemberList";
 
 const Stack = createStackNavigator();
 
@@ -45,6 +46,7 @@ function GroupContextStack() {
             <GroupStack.Navigator screenOptions={{headerShown: false}}>
                 <GroupStack.Screen name="groupDetails" component={withBaseLayout(Group)}/>
                 <GroupStack.Screen name="groupSettings" component={withBaseLayout(GroupSettings)}/>
+                <GroupStack.Screen name="memberList" component={withBaseLayout(GroupMemberList)}/>
                 <GroupStack.Screen name="newMeal" component={withBaseLayout(NewMeal)}/>
                 <GroupStack.Screen name="Meal" component={withBaseLayout(Meal)}/>
             </GroupStack.Navigator>

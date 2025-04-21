@@ -35,6 +35,12 @@ export interface NewGroupType {
 export interface GroupIdResponse {
     groupId: string,
 }
+export interface GroupMember {
+    groupId: string,
+    userId: string,
+    userName: string,
+    userRole: string[],
+}
 export async function GetGroupInformation(groupId: string): Promise<Group> {
 
     const timeoutPromise = timeoutPromiseFactory()
@@ -87,6 +93,19 @@ export async function DeleteGroupRequest(groupId: string): Promise<GroupIdRespon
     const timeoutPromise = timeoutPromiseFactory()
     const fetchPromise = await fetch(url, {
         method: 'DELETE',
+        headers: await getBasicAuthHeader(),
+    });
+
+    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
+    await handleDefaultResponseAndHeaders(res)
+    return await res.json();
+}
+
+export async function GetGroupMemberList(groupId: string): Promise<GroupMember[]> {
+    const url = BACKEND_URL + 'groups/members?groupId=' + groupId;
+    const timeoutPromise = timeoutPromiseFactory()
+    const fetchPromise = await fetch(url, {
+        method: 'GET',
         headers: await getBasicAuthHeader(),
     });
 

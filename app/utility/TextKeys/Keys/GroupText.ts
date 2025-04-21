@@ -14,7 +14,7 @@ export type GroupTextType =
     | 'groupName'
     | 'deleteGroup'
     | 'deleteGroupRequiredText'
-
+    | 'memberList'
     ;
 
 export type GroupTextKeyType = {
@@ -76,6 +76,10 @@ export const GroupTextKey: GroupTextKeyType = {
     'deleteGroupRequiredText': {
         german: '[groupName] löschen',
         english: 'Delete [groupName]',
+    },
+    'memberList': {
+        german: 'Mitgliederliste',
+        english: 'Member list',
     }
 
 }
