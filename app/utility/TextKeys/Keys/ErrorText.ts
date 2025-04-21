@@ -4,6 +4,7 @@ export type ErrorTextType =
     | 'error'
     | 'errorPleaseEnterCorrectText'
     | 'errorNoOfflineLogout'
+    | 'ifYouSeeThisPleaseReport'
     ;
 
 export type ErrorTextKeyType = {
@@ -26,4 +27,8 @@ export const ErrorTextKey: ErrorTextKeyType = {
         german: 'Offline-Logout ist nicht möglich',
         english: 'Offline logout is not possible',
     },
+    'ifYouSeeThisPleaseReport': {
+        german: 'Wenn Sie dies sehen, melden Sie es bitte',
+        english: 'If you see this, please report it',
+    }
 }

@@ -48,7 +48,7 @@ function GroupContextStack() {
                 <GroupStack.Screen name="groupSettings" component={withBaseLayout(GroupSettings)}/>
                 <GroupStack.Screen name="memberList" component={withBaseLayout(GroupMemberList)}/>
                 <GroupStack.Screen name="newMeal" component={withBaseLayout(NewMeal)}/>
-                <GroupStack.Screen name="Meal" component={withBaseLayout(Meal)}/>
+                <GroupStack.Screen name="meal" component={withBaseLayout(Meal)}/>
             </GroupStack.Navigator>
         </GroupProvider>
     );

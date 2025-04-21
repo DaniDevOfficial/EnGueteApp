@@ -38,8 +38,8 @@ export interface GroupIdResponse {
 export interface GroupMember {
     groupId: string,
     userId: string,
-    userName: string,
-    userRole: string[],
+    username: string,
+    userRoles: string[],
 }
 export async function GetGroupInformation(groupId: string): Promise<Group> {
 

@@ -1,14 +1,15 @@
-import {Box, Spinner, VStack} from "native-base";
+import {Box, Spinner, Text, VStack} from "native-base";
 import React, {useEffect, useState} from "react";
 import {useGroup} from "../context/groupContext";
 import {BackButton} from "../components/UI/BackButton";
 import {PageTitleSection} from "../components/UI/PageTitleSection";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 import {GetGroupMemberList, GroupMember} from "../repo/Group";
+import {MemberCard} from "../components/group/MemberCard";
 
 export function GroupMemberList() {
     const group = useGroup();
-    const text = useTexts(['memberList']);
+    const text = useTexts(['memberList', 'noMembers', 'ifYouSeeThisPleaseReport']);
     const [loading, setLoading] = useState(true);
     const [groupMembers, setGroupMembers] = useState<GroupMember[]>([]);
 
@@ -24,8 +25,9 @@ export function GroupMemberList() {
                 setLoading(false);
             }
         }
+
         loadGroupMembers();
-    },[group.group.groupId]);
+    }, [group.group.groupId]);
 
     if (loading) {
         return (
@@ -40,6 +42,21 @@ export function GroupMemberList() {
             <BackButton/>
             <VStack alignItems="center" space={4}>
                 <PageTitleSection title={text.memberList}/>
+                {groupMembers && groupMembers.length > 0 ? (groupMembers.map((member, index) => (
+                        <>
+                            <MemberCard {...member} key={index}  canKickUser={true} canPromoteToAdmin={true} canPromoteToManager={true}/>
+                        </>
+                    ))
+                ) : (
+                    <Box mt={5}>
+                        <Text color={"gray.500"} textAlign={"center"}>
+                            {text.noMembers}
+                        </Text>
+                        <Text color={"gray.500"} textAlign={"center"}>
+                            {text.ifYouSeeThisPleaseReport}
+                        </Text>
+                    </Box>
+                )}
             </VStack>
         </>
     )

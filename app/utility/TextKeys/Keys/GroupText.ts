@@ -15,6 +15,15 @@ export type GroupTextType =
     | 'deleteGroup'
     | 'deleteGroupRequiredText'
     | 'memberList'
+    | 'noMembers'
+    | 'promoteAdmin'
+    | 'promoteToManager'
+    | 'demoteAdmin'
+    | 'demoteManager'
+    | 'kickFromGroup'
+    | 'member'
+    | 'manager'
+    | 'admin'
     ;
 
 export type GroupTextKeyType = {
@@ -80,6 +89,44 @@ export const GroupTextKey: GroupTextKeyType = {
     'memberList': {
         german: 'Mitgliederliste',
         english: 'Member list',
-    }
+    },
+    'noMembers': {
+        german: 'Keine Mitglieder gefunden 😞',
+        english: 'No members found 😞',
+    },
+    'promoteAdmin': {
+        german: 'Zum Admin befördern',
+        english: 'Promote to Admin',
+    },
+    'promoteToManager': {
+        german: 'Zum Manager befördern',
+        english: 'Promote to Manager',
+    },
+    'demoteAdmin': {
+        german: 'Vom Admin zurückstufen',
+        english: 'Demote from Admin',
+    },
+    'demoteManager': {
+        german: 'Vom Manager zurückstufen',
+        english: 'Demote from Manager',
+    },
+    'kickFromGroup': {
+        german: 'Aus der Gruppe werfen',
+        english: 'Kick from the group',
+    },
+    'member': {
+        german: 'Mitglied',
+        english: 'Member',
+    },
+    'manager': {
+        german: 'Manager',
+        english: 'Manager',
+    },
+    'admin': {
+        german: 'Admin',
+        english: 'Admin',
+    },
 
 }
+
+type tmp = string
