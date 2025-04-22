@@ -39,10 +39,14 @@ export function Group() {
             if (groupInformation) {
                 setLoading(false)
                 setGroupInformation(groupInformation)
+                let userRoleRights: string[] = [];
+                if (groupInformation.groupInfo.userRoleRights) {
+                    userRoleRights = groupInformation.groupInfo.userRoleRights;
+                }
                 setGroup({
                     groupId: groupInformation.groupInfo.groupId,
                     groupName: groupInformation.groupInfo.groupName,
-                    userRoleRights: groupInformation.groupInfo.userRoleRights,
+                    userRoleRights,
                 })
             }
         } catch (e) {
@@ -111,7 +115,7 @@ export function Group() {
                         </>
                     )}
                 </ScrollView>
-                {groupInformation.groupInfo.userRoleRights && groupInformation.groupInfo.userRoleRights.includes(PERMISSIONS.CAN_CREATE_MEAL) && (
+                {groupInformation.groupInfo.userRoleRights.includes(PERMISSIONS.CAN_CREATE_MEAL) && (
                     <Button my={4} onPress={handleNavigate}>
                         {texts.createNewMeal}
                     </Button>

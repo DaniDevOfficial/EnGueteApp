@@ -17,7 +17,7 @@ export function GroupDangerZone() {
                 </Text>
                 <Box flex={1} height="1px" bg="red.500"/>
             </HStack>
-            {group.userRoleRights.includes(PERMISSIONS.CAN_DELETE_GROUP) && (
+            {group.userRoleRights && group.userRoleRights.includes(PERMISSIONS.CAN_DELETE_GROUP) && (
                 <DeleteGroup/>
             )}
 

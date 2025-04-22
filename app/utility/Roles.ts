@@ -24,3 +24,10 @@ export const PERMISSIONS = {
     CAN_PROMOTE_TO_MANAGER: "can_promote_to_manager",
     CAN_DEMOTE_FROM_MANAGER: "can_demote_from_manager",
 };
+
+export function CanPerformAction(
+    userRoleRights: string[],
+    action: string,
+): boolean {
+    return userRoleRights.includes(action);
+}

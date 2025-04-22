@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {Box, Text, IconButton, Popover, Button, HStack, CheckIcon, VStack} from "native-base";
+import {Box, CheckIcon, IconButton, Popover, Text} from "native-base";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {MemberActions} from "./MemberActions";
+import {ChangeRole, KickUserFromGroup, KickUserRequest, RoleChange, RoleChangeRequest} from "../../repo/Group";
+import {useGroup} from "../../context/groupContext";
 
 interface MemberCardProps {
     userId: string;
@@ -21,51 +23,60 @@ export function MemberCard({
                                canPromoteToManager,
                            }: MemberCardProps) {
     const hasActions = canKickUser || canPromoteToAdmin || canPromoteToManager;
-    const [prettyRoles, setPrettyRoles] = useState<string[]>(userRoles);
+    const group = useGroup();
+    const [prettyRoles, setPrettyRoles] = useState<string[]>([]);
     const text = useTexts(['member', 'admin', 'manager',])
 
     useEffect(() => {
         setPrettyRoles([]);
+        const tmpRoles: string[] = [];
         userRoles.forEach((role) => {
-            console.log(role)
-            console.log(text)
             switch (role) {
                 case "admin":
-                    setPrettyRoles((prev) => [...prev, text.admin]);
+                    tmpRoles.push(text.admin);
                     break;
                 case "manager":
-                    setPrettyRoles((prev) => [...prev, text.manager]);
+                    tmpRoles.push(text.manager);
                     break;
                 default:
-                    setPrettyRoles((prev) => [...prev, text.member]);
+                    tmpRoles.push(text.member);
             }
         })
+        setPrettyRoles(tmpRoles);
     }, []);
 
     async function handleActionPress(action: string) {
-        switch (action) {
-            case "kick":
-                // Handle kick action
-                console.log(`Kicking user ${userId}`);
-                break;
-            case "promote_admin":
-                // Handle promote to admin action
-                console.log(`Promoting user ${userId} to admin`);
-                break;
-            case "demote_admin":
-                // Handle demote from admin action
-                console.log(`Demoting user ${userId} from admin`);
-                break;
-            case "promote_manager":
-                // Handle promote to manager action
-                console.log(`Promoting user ${userId} to manager`);
-                break;
-            case "demote_manager":
-                // Handle demote from manager action
-                console.log(`Demoting user ${userId} from manager`);
-                break;
-            default:
-                console.log("Unknown action");
+        try {
+            const groupId = group.group.groupId;
+
+            switch (action) {
+                case "kick": {
+                    const kickRequest: KickUserRequest = { groupId, userId };
+                    await KickUserFromGroup(kickRequest);
+                    console.log(`✅ User ${userId} was kicked from the group.`);
+                    break;
+                }
+                case "promote_admin":
+                case "demote_admin":
+                case "promote_manager":
+                case "demote_manager": {
+                    const role = action.includes("admin") ? "admin" : "manager";
+                    const isPromotion = action.includes("promote");
+
+                    const changeRole: RoleChangeRequest = {
+                        groupId,
+                        userId,
+                        role,
+                    };
+
+                    await ChangeRole(changeRole, isPromotion ? RoleChange.PROMOTION : RoleChange.DEMOTION);
+                    console.log(`✅ ${isPromotion ? "Promoted" : "Demoted"} user ${userId} ${isPromotion ? "to" : "from"} ${role}.`);
+                    break;
+                }
+            }
+        } catch (error) {
+            console.error(`❌ Failed to handle action "${action}" for user ${userId}:`, error);
+            // Optionally: show some user-facing error here
         }
     }
 
@@ -104,7 +115,8 @@ export function MemberCard({
                         <Popover.Header>Actions</Popover.Header>
                         <Popover.Body>
                             <MemberActions canKickUser={canKickUser} canPromoteToAdmin={canPromoteToAdmin}
-                                           canPromoteToManager={canPromoteToManager} userRoles={userRoles} onActionPress={handleActionPress}/>
+                                           canPromoteToManager={canPromoteToManager} userRoles={userRoles}
+                                           onActionPress={handleActionPress}/>
                         </Popover.Body>
                     </Popover.Content>
                 </Popover>

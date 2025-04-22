@@ -8,17 +8,15 @@ import {GetGroupMemberList, GroupMember} from "../repo/Group";
 import {MemberCard} from "../components/group/MemberCard";
 
 export function GroupMemberList() {
-    const group = useGroup();
+    const {group} = useGroup();
     const text = useTexts(['memberList', 'noMembers', 'ifYouSeeThisPleaseReport']);
     const [loading, setLoading] = useState(true);
     const [groupMembers, setGroupMembers] = useState<GroupMember[]>([]);
-
     useEffect(() => {
         async function loadGroupMembers() {
             try {
-                const groupMembers = await GetGroupMemberList(group.group.groupId);
+                const groupMembers = await GetGroupMemberList(group.groupId);
                 setGroupMembers(groupMembers);
-                console.log(groupMembers);
             } catch (e) {
                 console.error(e);
             } finally {
@@ -27,7 +25,7 @@ export function GroupMemberList() {
         }
 
         loadGroupMembers();
-    }, [group.group.groupId]);
+    }, [group.groupId]);
 
     if (loading) {
         return (

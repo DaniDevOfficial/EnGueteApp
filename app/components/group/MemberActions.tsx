@@ -43,7 +43,7 @@ export function MemberActions({
 
     return (
         <VStack space={2} divider={<Divider />}>
-            {actions.map(({ label, action }, index) => (
+             {actions.map(({ label, action }, index) => (
                 <Pressable key={index} onPress={() => onActionPress(action)}>
                     {({ isPressed }) => (
                         <Text

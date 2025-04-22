@@ -18,8 +18,8 @@ export function GroupSettings() {
     const user = useUser();
     const group = useGroup();
     const navigation = useNavigation();
-    const text = useTexts(['updateGroupName']);
-
+    const text = useTexts(['updateGroupName', 'memberList']);
+    console.log(group.group)
 
     async function handleEditGroupName(newGroupName: string) {
         const params: UpdateGroupNameType = {
@@ -46,11 +46,11 @@ export function GroupSettings() {
 
                     <TextUpdate text={group.group.groupName} title={text.groupName}
                                 onSuccess={handleEditGroupName}
-                                readonly={!group.group.userRoleRights.includes(PERMISSIONS.CAN_UPDATE_GROUP)}/>
+                                readonly={!group.group.userRoleRights || !group.group.userRoleRights.includes(PERMISSIONS.CAN_UPDATE_GROUP)}/>
                     <Button onPress={() => navigation.navigate('memberList')}>
-                        asdf
+                        {text.memberList}
                     </Button>
-                    {group.group.userRoleRights.includes(PERMISSIONS.CAN_DELETE_GROUP) && (
+                    {group.group.userRoleRights && group.group.userRoleRights.includes(PERMISSIONS.CAN_DELETE_GROUP) && (
                         <GroupDangerZone/>
                     )}
                 </VStack>
