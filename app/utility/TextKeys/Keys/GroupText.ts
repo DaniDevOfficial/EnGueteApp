@@ -25,6 +25,8 @@ export type GroupTextType =
     | 'manager'
     | 'admin'
     | 'groupSettings'
+    | 'leaveGroup'
+    | 'leaveGroupInfoText'
     ;
 
 export type GroupTextKeyType = {
@@ -130,7 +132,15 @@ export const GroupTextKey: GroupTextKeyType = {
     'groupSettings': {
         german: 'Gruppeneinstellungen',
         english: 'Group settings',
-    }
+    },
+    'leaveGroup': {
+        german: 'Gruppe verlassen',
+        english: 'Leave group',
+    },
+    'leaveGroupInfoText': {
+        german: 'Wenn du die Gruppe verlässt, kannst du nicht mehr auf die Gruppenfunktionen zugreifen. Möchtest du wirklich die Gruppe [groupName] verlassen?',
+        english: 'If you leave the group, you will no longer be able to access the group features. Do you really want to leave the group [groupName]?',
+    },
 }
 
 type tmp = string

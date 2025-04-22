@@ -53,9 +53,7 @@ export function GroupSettings() {
                     <Button onPress={() => navigation.navigate('memberList')}>
                         {text.memberList}
                     </Button>
-                    {group.group.userRoleRights && group.group.userRoleRights.includes(PERMISSIONS.CAN_DELETE_GROUP) && (
-                        <GroupDangerZone/>
-                    )}
+                    <GroupDangerZone/>
                 </VStack>
             </ScrollView>
         </>

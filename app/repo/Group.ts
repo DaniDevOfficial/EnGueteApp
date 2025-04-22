@@ -122,6 +122,20 @@ export async function DeleteGroupRequest(groupId: string): Promise<GroupIdRespon
     return await res.json();
 }
 
+export async function LeaveGroupRequest(groupId: string): Promise<GroupIdResponse> {
+    const url = BACKEND_URL + 'groups/leave?groupId=' + groupId;
+    const timeoutPromise = timeoutPromiseFactory()
+    const fetchPromise = await fetch(url, {
+        method: 'DELETE',
+        headers: await getBasicAuthHeader(),
+    });
+
+    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
+    await handleDefaultResponseAndHeaders(res)
+    return await res.json();
+}
+
+
 export async function GetGroupMemberList(groupId: string): Promise<GroupMember[]> {
     const url = BACKEND_URL + 'groups/members?groupId=' + groupId;
     const timeoutPromise = timeoutPromiseFactory()

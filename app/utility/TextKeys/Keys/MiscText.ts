@@ -6,7 +6,7 @@ export type MiscTextType =
     | 'placeholderIsRequired'
     | 'placeholderIsInvalid'
     | 'actions'
-
+    | 'submit'
     ;
 
 export type MiscTextKeyType = {
@@ -37,4 +37,8 @@ export const MiscTextKey: MiscTextKeyType = {
         german: 'Aktionen',
         english: 'Actions',
     },
+    'submit': {
+        german: 'Bestätigen',
+        english: 'Submit',
+    }
 }

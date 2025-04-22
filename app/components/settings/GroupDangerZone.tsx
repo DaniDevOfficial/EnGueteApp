@@ -4,6 +4,7 @@ import {DeleteGroup} from "./DeleteGroup";
 import {PERMISSIONS} from "../../utility/Roles";
 import {useGroup} from "../../context/groupContext";
 import {useText} from "../../utility/TextKeys/TextKeys";
+import {LeaveGroup} from "./LeaveGroup";
 
 export function GroupDangerZone() {
 
@@ -21,6 +22,7 @@ export function GroupDangerZone() {
             {group.userRoleRights && group.userRoleRights.includes(PERMISSIONS.CAN_DELETE_GROUP) && (
                 <DeleteGroup/>
             )}
+            <LeaveGroup/>
 
         </>
     );
