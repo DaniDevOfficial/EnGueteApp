@@ -13,8 +13,8 @@ export interface User {
 }
 
 export type UserCard = {
-    userName: string;
     userId: string;
+    userName: string;
     profilePicture?: string;
 }
 

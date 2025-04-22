@@ -14,6 +14,7 @@ interface MemberCardProps {
     canKickUser: boolean;
     canPromoteToAdmin: boolean;
     canPromoteToManager: boolean;
+    isCurrentUser: boolean;
 }
 
 export function MemberCard({
@@ -23,8 +24,12 @@ export function MemberCard({
                                canKickUser,
                                canPromoteToAdmin,
                                canPromoteToManager,
+                               isCurrentUser,
                            }: MemberCardProps) {
-    const hasActions = canKickUser || canPromoteToAdmin || canPromoteToManager;
+    let hasActions = canKickUser || canPromoteToAdmin || canPromoteToManager;
+    if (isCurrentUser) {
+        hasActions = canPromoteToAdmin || canPromoteToManager;
+    }
     const {group} = useGroup();
     const [prettyRoles, setPrettyRoles] = useState<string[]>([]);
     const text = useTexts(['member', 'admin', 'manager', 'actions'])
@@ -117,7 +122,7 @@ export function MemberCard({
                         <Popover.Header>{text.actions}</Popover.Header>
                         <Popover.Body>
                             <MemberActions
-                                canKickUser={canKickUser}
+                                canKickUser={canKickUser && !isCurrentUser}
                                 canPromoteToAdmin={canPromoteToAdmin}
                                 canPromoteToManager={canPromoteToManager}
                                 userRoles={userRoles}

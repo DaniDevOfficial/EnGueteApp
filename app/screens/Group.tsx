@@ -81,7 +81,6 @@ export function Group() {
         setRefreshing(true)
         await getGroupData()
         setRefreshing(false)
-
     }
 
     function handleNavigate() {
