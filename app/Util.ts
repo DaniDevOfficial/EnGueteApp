@@ -1,5 +1,5 @@
-import {NavigationProp, useNavigation} from "@react-navigation/native";
-import {removeAuthToken, removeRefreshToken, saveAuthToken} from "./utility/Auth";
+import {useNavigation} from "@react-navigation/native";
+import {removeAuthToken, removeRefreshToken} from "./utility/Auth";
 import {resetToHomeScreen} from "./utility/navigation";
 import {TimeoutError} from "./utility/Errors";
 

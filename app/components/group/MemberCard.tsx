@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {Box, CheckIcon, IconButton, Popover, Text} from "native-base";
+import {Box, IconButton, Popover, Text} from "native-base";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
-import {MemberActions} from "./MemberActions";
+import {ACTIONS, MemberActions} from "./MemberActions";
 import {ChangeRole, KickUserFromGroup, KickUserRequest, RoleChange, RoleChangeRequest} from "../../repo/Group";
 import {useGroup} from "../../context/groupContext";
 import {KebabIcon} from "../UI/Icons/KebabIcon";
-import {CanPerformAction, PERMISSIONS} from "../../utility/Roles";
 
 interface MemberCardProps {
     userId: string;
@@ -57,16 +56,16 @@ export function MemberCard({
             const groupId = group.groupId;
 
             switch (action) {
-                case "kick": {
+                case ACTIONS.KICK: {
                     const kickRequest: KickUserRequest = {groupId, userId};
                     await KickUserFromGroup(kickRequest);
                     console.log(`✅ User ${userId} was kicked from the group.`);
                     break;
                 }
-                case "promote_admin":
-                case "demote_admin":
-                case "promote_manager":
-                case "demote_manager": {
+                case ACTIONS.PROMOTE_ADMIN:
+                case ACTIONS.DEMOTE_ADMIN:
+                case ACTIONS.PROMOTE_MANAGER:
+                case ACTIONS.DEMOTE_MANAGER: {
                     const role = action.includes("admin") ? "admin" : "manager";
                     const isPromotion = action.includes("promote");
 

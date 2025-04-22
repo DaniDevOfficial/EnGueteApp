@@ -1,7 +1,7 @@
 // @ts-ignore
 import {BACKEND_URL} from '@env';
 import {timeoutPromiseFactory} from "../Util";
-import {getBasicAuthHeader, handleAuthorisationKeysFromHeader} from "../utility/Auth";
+import {getBasicAuthHeader} from "../utility/Auth";
 import {handleDefaultResponseAndHeaders} from "../utility/Response";
 
 export interface Group {

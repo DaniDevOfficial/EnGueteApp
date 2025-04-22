@@ -10,7 +10,7 @@ import {useGroup} from "../context/groupContext";
 import {PERMISSIONS} from "../utility/Roles";
 import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
 import {BackButton} from "../components/UI/BackButton";
-import {useText, useTexts} from "../utility/TextKeys/TextKeys";
+import {useTexts} from "../utility/TextKeys/TextKeys";
 import {EditButton} from "../components/UI/EditButton";
 
 export function Group() {

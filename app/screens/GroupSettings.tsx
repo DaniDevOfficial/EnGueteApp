@@ -1,12 +1,9 @@
-import React, {useState} from "react";
+import React from "react";
 import {BackButton} from "../components/UI/BackButton";
-import {Box, Button, Flex, Icon, Image, ScrollView, VStack} from "native-base";
+import {Button, ScrollView, VStack} from "native-base";
 import {useUser} from "../context/userContext";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import {TouchableOpacity} from "react-native";
 import {TextUpdate} from "../components/settings/TextUpdate";
-import {useText, useTexts} from "../utility/TextKeys/TextKeys";
-import {DangerZone} from "../components/settings/DangerZone";
+import {useTexts} from "../utility/TextKeys/TextKeys";
 import {useGroup} from "../context/groupContext";
 import {UpdateGroupName, UpdateGroupNameType} from "../repo/Group";
 import {PERMISSIONS} from "../utility/Roles";

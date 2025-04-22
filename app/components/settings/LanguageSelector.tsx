@@ -1,4 +1,4 @@
-import {Box, Pressable, Text, HStack, ScrollView} from "native-base";
+import {Box, HStack, Pressable, ScrollView, Text} from "native-base";
 import React, {useEffect, useRef} from "react";
 import {useText} from "../../utility/TextKeys/TextKeys";
 import germanFlag from '../../assets/flags/german.png';

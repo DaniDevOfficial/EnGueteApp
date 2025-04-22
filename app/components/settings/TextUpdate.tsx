@@ -1,4 +1,4 @@
-import {Button, FormControl, HStack, Icon, Input, Modal, Switch, Text} from "native-base";
+import {Button, FormControl, HStack, Icon, Input, Modal, Text} from "native-base";
 import {TouchableOpacity} from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import React, {useState} from "react";

@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 import {BackButton} from "../components/UI/BackButton";
-import {Box, Icon, Image, ScrollView, Select, Text, VStack} from "native-base";
+import {Box, Icon, Image, ScrollView, VStack} from "native-base";
 import {useUser} from "../context/userContext";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {TouchableOpacity} from "react-native";
 import {TextUpdate} from "../components/settings/TextUpdate";
-import {useText, useTexts} from "../utility/TextKeys/TextKeys";
+import {useTexts} from "../utility/TextKeys/TextKeys";
 import {updateUsername} from "../repo/settings/User";
 import {LanguageSelector} from "../components/settings/LanguageSelector";
 import {ThemeSelector} from "../components/settings/ThemeSelector";

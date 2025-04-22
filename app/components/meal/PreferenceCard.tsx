@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import {Modal, Button, FormControl, Input, Box, Text, Pressable, Flex, Switch} from 'native-base';
+import {Box, Button, Flex, FormControl, Input, Modal, Pressable, Switch, Text} from 'native-base';
 import {MealParticipants, saveMealPreference} from "../../repo/Meal";
 import {ForbiddenError, UnauthorizedError} from "../../utility/Errors";
 import {useNavigation} from "@react-navigation/native";
 import {handleLogoutProcedure} from "../../Util";
 import {PillTag} from "../UI/Pilltag";
-import { mealPreferenceText} from "../../utility/TextKeys/TextKeys";
+import {mealPreferenceText} from "../../utility/TextKeys/TextKeys";
 
 
 export function PreferenceCard({mealParticipants}: { mealParticipants: MealParticipants }) {

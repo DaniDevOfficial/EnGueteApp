@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, FormControl, Icon, Input, Text, TextArea, VStack, WarningOutlineIcon} from "native-base";
+import {Button, FormControl, Icon, Input, TextArea, VStack, WarningOutlineIcon} from "native-base";
 import {createNewMeal} from "../repo/Meal";
 import {StackActions, useNavigation} from "@react-navigation/native";
 import {useGroup} from "../context/groupContext";

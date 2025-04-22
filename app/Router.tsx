@@ -1,4 +1,4 @@
-import React, {ComponentType, ReactElement, useEffect} from 'react';
+import React, {ComponentType, ReactElement} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 

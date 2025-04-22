@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { UserCard as UserCardType } from '../../repo/User';
-import { Box, Image, Text } from 'native-base';
+import React, {useState} from 'react';
+import {UserCard as UserCardType} from '../../repo/User';
+import {Box, Image, Text} from 'native-base';
 import {useText} from "../../utility/TextKeys/TextKeys";
 import {getGreetingBasedOnTime} from "../../utility/Dates";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, VStack, Divider, Pressable } from "native-base";
+import {Divider, Pressable, Text, VStack} from "native-base";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 
 interface MemberActionsProps {
@@ -8,6 +8,14 @@ interface MemberActionsProps {
     canPromoteToManager: boolean;
     userRoles: string[];
     onActionPress: (action: string) => Promise<void>;
+}
+
+export const ACTIONS = {
+    KICK: "kick",
+    PROMOTE_ADMIN: "promote_admin",
+    DEMOTE_ADMIN: "demote_admin",
+    PROMOTE_MANAGER: "promote_manager",
+    DEMOTE_MANAGER: "demote_manager",
 }
 
 export function MemberActions({
@@ -26,19 +34,19 @@ export function MemberActions({
     if (canPromoteToAdmin) {
         actions.push({
             label: isAdmin ? text.demoteAdmin : text.promoteAdmin,
-            action: isAdmin ? "demote_admin" : "promote_admin",
+            action: isAdmin ? ACTIONS.DEMOTE_ADMIN : ACTIONS.PROMOTE_ADMIN,
         });
     }
 
     if (canPromoteToManager && !isAdmin) {
         actions.push({
             label: isManager ? text.demoteManager : text.promoteToManager,
-            action: isManager ? "demote_manager" : "promote_manager",
+            action: isManager ? ACTIONS.DEMOTE_MANAGER : ACTIONS.PROMOTE_MANAGER,
         });
     }
 
     if (canKickUser) {
-        actions.push({ label: text.kickFromGroup, action: "kick" });
+        actions.push({ label: text.kickFromGroup, action: ACTIONS.KICK });
     }
 
     return (

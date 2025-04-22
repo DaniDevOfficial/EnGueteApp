@@ -1,5 +1,18 @@
 import React, {useState} from 'react';
-import {Box, Button, Center, Divider, Flex, FormControl, Heading, HStack, Input, Pressable, Text, VStack} from "native-base";
+import {
+    Box,
+    Button,
+    Center,
+    Divider,
+    Flex,
+    FormControl,
+    Heading,
+    HStack,
+    Input,
+    Pressable,
+    Text,
+    VStack
+} from "native-base";
 import {SignIntoAccount} from "../repo/Auth";
 import {useNavigation} from "@react-navigation/native";
 import {resetToUserScreen} from "../utility/navigation";

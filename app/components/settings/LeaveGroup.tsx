@@ -1,10 +1,10 @@
-import {Button, FormControl, Input, Modal, Text, useToast} from "native-base";
+import {Button, Modal, Text, useToast} from "native-base";
 import React, {useState} from "react";
 import {useText, useTexts} from "../../utility/TextKeys/TextKeys";
 import {showToast} from "../UI/Toast";
 import {useNavigation} from "@react-navigation/native";
 import {useGroup} from "../../context/groupContext";
-import {DeleteGroupRequest, LeaveGroupRequest} from "../../repo/Group";
+import {LeaveGroupRequest} from "../../repo/Group";
 import {resetToUserScreen} from "../../utility/navigation";
 
 export function LeaveGroup() {

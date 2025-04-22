@@ -1,7 +1,7 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { Icon } from 'native-base';
+import {TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {Icon} from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 

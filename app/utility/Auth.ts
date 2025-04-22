@@ -1,5 +1,6 @@
 import {UnauthorizedError} from "./Errors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const AUTH_TOKEN_STRING = 'authToken';
 const REFRESH_TOKEN_STRING = 'refreshToken';
 
