@@ -13,7 +13,7 @@ export function GroupCard({group}: GroupCardProps) {
     function handleNavigate() {
         // @ts-ignore
         navigation.navigate('group', {
-            screen: 'GroupDetails',
+            screen: 'groupDetails',
             params: {
                 groupId: group.groupId,
             },

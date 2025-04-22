@@ -32,3 +32,10 @@ export class ForbiddenError extends Error {
         this.name = 'ForbiddenError';
     }
 }
+
+export class TimeoutError extends Error {
+    constructor(message: any) {
+        super(message);
+        this.name = 'TimeoutError';
+    }
+}

@@ -10,13 +10,16 @@ import {useGroup} from "../context/groupContext";
 import {PERMISSIONS} from "../utility/Roles";
 import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
 import {BackButton} from "../components/UI/BackButton";
-import {getText} from "../utility/TextKeys/TextKeys";
+import {useTexts} from "../utility/TextKeys/TextKeys";
+import {EditButton} from "../components/UI/EditButton";
 
 export function Group() {
     const [groupInformation, setGroupInformation] = useState<GroupInformationType | undefined>()
     const [loading, setLoading] = useState(true)
     const [refreshing, setRefreshing] = useState(false)
     const route = useRoute();
+    const texts = useTexts(['noMealsInThisGroup', 'createNewMeal']);
+
     // @ts-ignore
     const {groupId} = route.params;
 
@@ -35,10 +38,17 @@ export function Group() {
             const groupInformation = await GetGroupInformation(groupId);
             if (groupInformation) {
                 setLoading(false)
+                let userRoleRights: string[] = [];
+                if (groupInformation.groupInfo.userRoleRights) {
+                    userRoleRights = groupInformation.groupInfo.userRoleRights;
+                }
+                groupInformation.groupInfo.userRoleRights = userRoleRights;
                 setGroupInformation(groupInformation)
+
                 setGroup({
                     groupId: groupInformation.groupInfo.groupId,
-                    userRoleRights: groupInformation.groupInfo.userRoleRights,
+                    groupName: groupInformation.groupInfo.groupName,
+                    userRoleRights,
                 })
             }
         } catch (e) {
@@ -71,14 +81,13 @@ export function Group() {
         setRefreshing(true)
         await getGroupData()
         setRefreshing(false)
-
     }
 
     function handleNavigate() {
 
         // @ts-ignore
         navigation.navigate('group', {
-            screen: 'NewMeal',
+            screen: 'newMeal',
         });
     }
 
@@ -86,6 +95,8 @@ export function Group() {
     return (
         <>
             <BackButton color={'green'}/>
+            <EditButton navigateTo={'groupSettings'}/>
+
             <Box flex={1} alignItems="center">
                 <GroupInformationHeader groupInformation={groupInformation.groupInfo}/>
                 <ScrollView
@@ -100,14 +111,14 @@ export function Group() {
                     ) : (
                         <>
                             <Text>
-                                {getText('noMealsInThisGroup')}
+                                {texts.noMealsInThisGroup}
                             </Text>
                         </>
                     )}
                 </ScrollView>
-                {groupInformation.groupInfo.userRoleRights && groupInformation.groupInfo.userRoleRights.includes(PERMISSIONS.CAN_CREATE_MEAL) && (
+                {groupInformation.groupInfo.userRoleRights.includes(PERMISSIONS.CAN_CREATE_MEAL) && (
                     <Button my={4} onPress={handleNavigate}>
-                        {getText('createNewMeal')}
+                        {texts.createNewMeal}
                     </Button>
                 )}
             </Box>

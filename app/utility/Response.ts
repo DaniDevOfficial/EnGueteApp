@@ -7,6 +7,12 @@ import {handleAuthorisationKeysFromHeader} from "./Auth";
  * @param response
  */
 export async function handleDefaultResponseAndHeaders(response: Response) {
+    handleResponse(response);
+    await handleAuthorisationKeysFromHeader(response.headers);
+}
+
+
+export function handleResponse(response: Response) {
     if (!response.ok) {
         if (response.status === UNAUTHORIZED) {
             throw new UnauthorizedError('Not authorized');
@@ -22,7 +28,4 @@ export async function handleDefaultResponseAndHeaders(response: Response) {
         }
         throw new Error('An unexpected error occurred');
     }
-
-    await handleAuthorisationKeysFromHeader(response.headers);
 }
-

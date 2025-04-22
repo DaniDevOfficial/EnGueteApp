@@ -17,7 +17,7 @@ export function MealCard({meal}: MealCardProps) {
     function handleNavigate() {
 
         // @ts-ignore
-        navigation.navigate('Meal', { mealId: meal.mealId });
+        navigation.navigate('meal', { mealId: meal.mealId });
     }
 
     let preferenceText = meal.userPreference;

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Button, FormControl, Icon, Input, Text, TextArea, VStack, WarningOutlineIcon} from "native-base";
+import {Button, FormControl, Icon, Input, TextArea, VStack, WarningOutlineIcon} from "native-base";
 import {createNewMeal} from "../repo/Meal";
-import {useNavigation} from "@react-navigation/native";
+import {StackActions, useNavigation} from "@react-navigation/native";
 import {useGroup} from "../context/groupContext";
 import {PERMISSIONS} from "../utility/Roles";
 import {DateTimePickerAndroid} from "@react-native-community/datetimepicker";
@@ -73,12 +73,11 @@ export function NewMeal() {
             const res = await createNewMeal(data)
 
             // @ts-ignore
-            navigation.navigate('group', {
-                screen: 'Meal',
-                params: {
+            navigation.dispatch(
+                StackActions.replace('meal', {
                     mealId: res.mealId,
-                },
-            });
+                })
+            );
         } catch (e) {
             console.log(e.message())
         }

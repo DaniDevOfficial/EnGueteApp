@@ -17,7 +17,7 @@ import {CreateNewAccount} from "../repo/Auth";
 import {saveAuthToken} from "../Util";
 import {useNavigation} from "@react-navigation/native";
 import {resetToUserScreen} from "../utility/navigation";
-import {getText} from "../utility/TextKeys/TextKeys";
+import {useText} from "../utility/TextKeys/TextKeys";
 
 export function Signup() {
     const [username, setUsername] = useState('Dani1-123');
@@ -45,10 +45,10 @@ export function Signup() {
         <Center flex={1} bg="coolGray.100">
             <Box safeArea p="5" py="8" w="90%" maxW="290" bg="white" rounded="lg" shadow={2}>
                 <Heading size="lg" fontWeight="600" color="coolGray.800" textAlign="center">
-                    {getText('newAccountGreetingsText')}
+                    {useText('newAccountGreetingsText')}
                 </Heading>
                 <Heading mt="1" color="coolGray.600" fontWeight="medium" size="xs" textAlign="center">
-                    {getText('createNewAccount')}
+                    {useText('createNewAccount')}
                 </Heading>
 
                 <VStack space={4} mt="5">
@@ -59,36 +59,36 @@ export function Signup() {
                     ) : null}
 
                     <FormControl>
-                        <FormControl.Label>{getText('username')}</FormControl.Label>
+                        <FormControl.Label>{useText('username')}</FormControl.Label>
                         <Input
                             value={username}
                             onChangeText={(text) => setUsername(text)}
                             variant="filled"
                             p={3}
-                            placeholder={getText('enterUsername')}
+                            placeholder={useText('enterUsername')}
                             rounded="md"
                         />
                     </FormControl>
                     <FormControl>
-                        <FormControl.Label>{getText('email')}</FormControl.Label>
+                        <FormControl.Label>{useText('email')}</FormControl.Label>
                         <Input
                             value={email}
                             onChangeText={(text) => setEmail(text)}
                             variant="filled"
                             p={3}
-                            placeholder={getText('enterEmail')}
+                            placeholder={useText('enterEmail')}
                             type="text"
                             rounded="md"
                         />
                     </FormControl>
                     <FormControl>
-                        <FormControl.Label>{getText('password')}</FormControl.Label>
+                        <FormControl.Label>{useText('password')}</FormControl.Label>
                         <Input
                             value={password}
                             onChangeText={(text) => setPassword(text)}
                             variant="filled"
                             p={3}
-                            placeholder={getText('enterPassword')}
+                            placeholder={useText('enterPassword')}
                             type="password"
                             rounded="md"
                         />
@@ -99,7 +99,7 @@ export function Signup() {
                         _text={{fontSize: "md"}}
                         onPress={handleSubmit}
                     >
-                        {getText('createNewAccount')}
+                        {useText('createNewAccount')}
                     </Button>
                 </VStack>
                 <Pressable
@@ -110,7 +110,7 @@ export function Signup() {
                             <HStack alignItems="center" space={2}>
                                 <Divider flex={1} bg="coolGray.300"/>
                                 <Text fontSize="sm" color="coolGray.400">
-                                    {getText('orLogin')}
+                                    {useText('orLogin')}
                                 </Text>
                                 <Divider flex={1} bg="coolGray.300"/>
                             </HStack>

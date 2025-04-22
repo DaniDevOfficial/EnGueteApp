@@ -1,9 +1,10 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, {createContext, ReactNode, useContext, useState} from 'react';
 
 export type User = {
     userName: string;
     userId: string;
     profilePicture: string;
+    email: string;
 };
 
 type UserContextType = {
@@ -30,6 +31,7 @@ export function UserProvider({ children }: UserProviderProps): JSX.Element {
         userName: '',
         userId: '',
         profilePicture: '',
+        email: '',
     });
 
     return (

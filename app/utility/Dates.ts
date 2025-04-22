@@ -1,4 +1,4 @@
-import {getText} from "./TextKeys/TextKeys";
+import {useText} from "./TextKeys/TextKeys";
 
 
 const dayNames: ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
@@ -37,23 +37,23 @@ export function getFancyTimeDisplay(dateTimeString: string): string {
 
     if (diffDays === -1) {
 
-        return `${getText('yesterdayAt')} ${target.toLocaleTimeString([], options)}`;
+        return `${useText('yesterdayAt')} ${target.toLocaleTimeString([], options)}`;
     }
 
     if (diffDays === 1) {
-        return `${getText('tomorrowAt')} ${target.toLocaleTimeString([], options)}`;
+        return `${useText('tomorrowAt')} ${target.toLocaleTimeString([], options)}`;
     }
 
     if (diffDays < -1 && diffDays >= -7) {
-        return `${getText('last')} ${getText(dayNames[target.getDay()])}`;
+        return `${useText('last')} ${useText(dayNames[target.getDay()])}`;
     }
 
     if (diffDays > 1 && diffDays <= 7) {
 
-        return getText('thisWeekdayAtTime', {'weekday': getText(dayNames[target.getDay()]), 'time': target.toLocaleTimeString([], options)});
+        return useText('thisWeekdayAtTime', {'weekday': useText(dayNames[target.getDay()]), 'time': target.toLocaleTimeString([], options)});
     }
     const month = monthNames[target.getMonth()];
-    return `${getText('onMonthDayAtTime', {month: getText(month), day: target.getDate().toString(), time: target.toLocaleTimeString([], options)})}`;
+    return `${useText('onMonthDayAtTime', {month: useText(month), day: target.getDate().toString(), time: target.toLocaleTimeString([], options)})}`;
 }
 
 export function toNormalDateTime(dateTimeString: string) {
@@ -66,7 +66,7 @@ export function toNormalDateTime(dateTimeString: string) {
     const month = monthNames[target.getMonth()];
 
 
-    return `${getText('onMonthDayAtTime', {month: getText(month), day: target.getDate().toString(), time: target.toLocaleTimeString([], options)})}`;
+    return `${useText('onMonthDayAtTime', {month: useText(month), day: target.getDate().toString(), time: target.toLocaleTimeString([], options)})}`;
 }
 
 export function getSwissDateTimeDisplay(dateTime: Date) {
