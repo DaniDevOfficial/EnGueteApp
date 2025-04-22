@@ -5,6 +5,7 @@ import {AuthTextKey, AuthTextType} from "./Keys/AuthText";
 import {MealTextKey, MealTextType} from "./Keys/MealText";
 import {GroupTextKey, GroupTextType} from "./Keys/GroupText";
 import {MiscTextKey, MiscTextType} from "./Keys/MiscText";
+import {UserTextKey, UserTextType} from "./Keys/UserText";
 
 export type TextKey =
     | GeneralTextType
@@ -13,6 +14,7 @@ export type TextKey =
     | TimeTextType
     | GroupTextType
     | MealTextType
+    | UserTextType
     | ErrorTextType
     ;
 
@@ -31,6 +33,7 @@ export const textKeys: TextKeysInterface = {
     ...TimeTextKey,
     ...GroupTextKey,
     ...MealTextKey,
+    ...UserTextKey,
     ...ErrorTextKey,
 }
 

@@ -24,6 +24,7 @@ export type GroupTextType =
     | 'member'
     | 'manager'
     | 'admin'
+    | 'groupSettings'
     ;
 
 export type GroupTextKeyType = {
@@ -126,7 +127,10 @@ export const GroupTextKey: GroupTextKeyType = {
         german: 'Admin',
         english: 'Admin',
     },
-
+    'groupSettings': {
+        german: 'Gruppeneinstellungen',
+        english: 'Group settings',
+    }
 }
 
 type tmp = string

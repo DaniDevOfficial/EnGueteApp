@@ -5,17 +5,18 @@ import {useUser} from "../context/userContext";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {TouchableOpacity} from "react-native";
 import {TextUpdate} from "../components/settings/TextUpdate";
-import {useText} from "../utility/TextKeys/TextKeys";
+import {useText, useTexts} from "../utility/TextKeys/TextKeys";
 import {updateUsername} from "../repo/settings/User";
 import {LanguageSelector} from "../components/settings/LanguageSelector";
 import {ThemeSelector} from "../components/settings/ThemeSelector";
 import {DangerZone} from "../components/settings/DangerZone";
+import {PageTitleSection} from "../components/UI/PageTitleSection";
 
 
 export function UserSettings() {
     const user = useUser();
     const [imageSrc, setImageSrc] = useState(user.user.profilePicture || 'https://imebehavioralhealth.com/wp-content/uploads/2021/10/user-icon-placeholder-1.png');
-
+    const text = useTexts(['updateUsername', 'userSettings']);
     function handleEditImage() {
     }
 
@@ -35,6 +36,8 @@ export function UserSettings() {
     return (
         <>
             <BackButton/>
+            <PageTitleSection title={text.userSettings}/>
+
             <ScrollView>
                 <VStack maxH={'100%'} flex={1} alignItems="center" p={"10px 5px"} space={4}>
 
@@ -64,7 +67,7 @@ export function UserSettings() {
                             />
                         </TouchableOpacity>
                     </Box>
-                    <TextUpdate text={user.user.userName} title={useText('updateUsername')}
+                    <TextUpdate text={user.user.userName} title={text.updateUsername}
                                 onSuccess={handleEditUsername}/>
 
                     <LanguageSelector/>

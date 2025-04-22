@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {BackButton} from "../components/UI/BackButton";
-import {Box, Button, Icon, Image, ScrollView, VStack} from "native-base";
+import {Box, Button, Flex, Icon, Image, ScrollView, VStack} from "native-base";
 import {useUser} from "../context/userContext";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {TouchableOpacity} from "react-native";
@@ -12,13 +12,14 @@ import {UpdateGroupName, UpdateGroupNameType} from "../repo/Group";
 import {PERMISSIONS} from "../utility/Roles";
 import {GroupDangerZone} from "../components/settings/GroupDangerZone";
 import {useNavigation} from "@react-navigation/native";
+import {PageTitleSection} from "../components/UI/PageTitleSection";
 
 
 export function GroupSettings() {
     const user = useUser();
     const group = useGroup();
     const navigation = useNavigation();
-    const text = useTexts(['updateGroupName', 'memberList']);
+    const text = useTexts(['updateGroupName', 'memberList', 'groupSettings']);
     console.log(group.group)
 
     async function handleEditGroupName(newGroupName: string) {
@@ -41,7 +42,9 @@ export function GroupSettings() {
     return (
         <>
             <BackButton/>
+            <PageTitleSection title={text.groupSettings}/>
             <ScrollView>
+
                 <VStack maxH={'100%'} flex={1} alignItems="center" p={"10px 5px"} space={4}>
 
                     <TextUpdate text={group.group.groupName} title={text.groupName}

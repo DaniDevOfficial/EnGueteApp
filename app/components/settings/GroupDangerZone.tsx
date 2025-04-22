@@ -3,6 +3,7 @@ import {Box, HStack, Text} from "native-base";
 import {DeleteGroup} from "./DeleteGroup";
 import {PERMISSIONS} from "../../utility/Roles";
 import {useGroup} from "../../context/groupContext";
+import {useText} from "../../utility/TextKeys/TextKeys";
 
 export function GroupDangerZone() {
 
@@ -13,7 +14,7 @@ export function GroupDangerZone() {
             <HStack alignItems="center" space={4} width={'90%'}>
                 <Box flex={1} height="1px" bg="red.500" width={'10px'}/>
                 <Text textAlign="center" color="red.500" fontWeight="bold" fontSize="xl">
-                    Danger Zone
+                    {useText('dangerZone')}
                 </Text>
                 <Box flex={1} height="1px" bg="red.500"/>
             </HStack>
