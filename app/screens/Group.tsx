@@ -38,11 +38,13 @@ export function Group() {
             const groupInformation = await GetGroupInformation(groupId);
             if (groupInformation) {
                 setLoading(false)
-                setGroupInformation(groupInformation)
                 let userRoleRights: string[] = [];
                 if (groupInformation.groupInfo.userRoleRights) {
                     userRoleRights = groupInformation.groupInfo.userRoleRights;
                 }
+                groupInformation.groupInfo.userRoleRights = userRoleRights;
+                setGroupInformation(groupInformation)
+
                 setGroup({
                     groupId: groupInformation.groupInfo.groupId,
                     groupName: groupInformation.groupInfo.groupName,

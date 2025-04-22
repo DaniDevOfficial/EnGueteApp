@@ -5,6 +5,7 @@ export type MiscTextType =
     | 'on'
     | 'placeholderIsRequired'
     | 'placeholderIsInvalid'
+    | 'actions'
 
     ;
 
@@ -31,5 +32,9 @@ export const MiscTextKey: MiscTextKeyType = {
     'placeholderIsInvalid': {
         german: '[what] ist ungültig',
         english: '[what] is invalid',
+    },
+    'actions': {
+        german: 'Aktionen',
+        english: 'Actions',
     },
 }

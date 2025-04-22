@@ -6,12 +6,18 @@ import {PageTitleSection} from "../components/UI/PageTitleSection";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 import {GetGroupMemberList, GroupMember} from "../repo/Group";
 import {MemberCard} from "../components/group/MemberCard";
+import {CanPerformAction, PERMISSIONS} from "../utility/Roles";
 
 export function GroupMemberList() {
     const {group} = useGroup();
     const text = useTexts(['memberList', 'noMembers', 'ifYouSeeThisPleaseReport']);
     const [loading, setLoading] = useState(true);
     const [groupMembers, setGroupMembers] = useState<GroupMember[]>([]);
+    const [canPerformAction, setCanPerformAction] = useState({
+        canKickUser: false,
+        canPromoteToAdmin: false,
+        canPromoteToManager: false,
+    });
     useEffect(() => {
         async function loadGroupMembers() {
             try {
@@ -23,7 +29,11 @@ export function GroupMemberList() {
                 setLoading(false);
             }
         }
-
+        setCanPerformAction({
+            canKickUser: CanPerformAction(group.userRoleRights, PERMISSIONS.CAN_KICK_USERS),
+            canPromoteToAdmin: CanPerformAction(group.userRoleRights, PERMISSIONS.CAN_PROMOTE_TO_ADMINS),
+            canPromoteToManager: CanPerformAction(group.userRoleRights, PERMISSIONS.CAN_PROMOTE_TO_MANAGER),
+        });
         loadGroupMembers();
     }, [group.groupId]);
 
@@ -34,7 +44,6 @@ export function GroupMemberList() {
             </Box>
         )
     }
-
     return (
         <>
             <BackButton/>
@@ -42,7 +51,11 @@ export function GroupMemberList() {
                 <PageTitleSection title={text.memberList}/>
                 {groupMembers && groupMembers.length > 0 ? (groupMembers.map((member, index) => (
                         <>
-                            <MemberCard {...member} key={index}  canKickUser={true} canPromoteToAdmin={true} canPromoteToManager={true}/>
+                            <MemberCard {...member} key={index}
+                                        canKickUser={CanPerformAction(group.userRoleRights, PERMISSIONS.CAN_KICK_USERS)}
+                                        canPromoteToAdmin={CanPerformAction(group.userRoleRights, PERMISSIONS.CAN_PROMOTE_TO_ADMINS)}
+                                        canPromoteToManager={CanPerformAction(group.userRoleRights, PERMISSIONS.CAN_PROMOTE_TO_MANAGER)}
+                            />
                         </>
                     ))
                 ) : (
