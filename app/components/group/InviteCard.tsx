@@ -21,8 +21,27 @@ export function InviteCard({inviteToken, expiryDate, inviteLink, canVoid, onVoid
     const toast = useToast();
     const [showQr, setShowQr] = useState(false);
 
+    const actions = [
+
+        {
+            title: text.copyLink,
+            action: copyLink,
+
+        },
+        {
+            title: text.showQr,
+            action: () => setShowQr(true),
+        },
+    ]
+
+    if (canVoid) {
+        actions.push({
+            title: text.voidToken,
+            action: voidToken,
+        })
+    }
+
     async function voidToken() {
-        // Add voiding logic here
         try {
             await DeleteInviteToken(inviteToken);
             await onVoid();
@@ -86,43 +105,19 @@ export function InviteCard({inviteToken, expiryDate, inviteLink, canVoid, onVoid
                     <Popover.Header>{text.actions}</Popover.Header>
                     <Popover.Body>
                         <VStack space={2}>
-                            <Pressable onPress={copyLink}>
-                                {({isPressed}) => (
-                                    <Text
-                                        fontSize="sm"
-                                        color={isPressed ? "primary.600" : "gray.700"}
-                                        opacity={isPressed ? 0.8 : 1}
-                                    >
-                                        {text.copyLink}
-                                    </Text>
-                                )}
-                            </Pressable>
-
-                            <Pressable onPress={() => setShowQr(true)}>
-                                {({isPressed}) => (
-                                    <Text
-                                        fontSize="sm"
-                                        color={isPressed ? "primary.600" : "gray.700"}
-                                        opacity={isPressed ? 0.8 : 1}
-                                    >
-                                        {text.showQr}
-                                    </Text>
-                                )}
-                            </Pressable>
-
-                            {canVoid && (
-                                <Pressable onPress={voidToken}>
+                            {actions.map((action, index) => (
+                                <Pressable key={index} onPress={action.action}>
                                     {({isPressed}) => (
                                         <Text
                                             fontSize="sm"
                                             color={isPressed ? "primary.600" : "gray.700"}
                                             opacity={isPressed ? 0.8 : 1}
                                         >
-                                            {text.voidToken}
+                                            {action.title}
                                         </Text>
                                     )}
                                 </Pressable>
-                            )}
+                            ))}
                         </VStack>
                     </Popover.Body>
                 </Popover.Content>
