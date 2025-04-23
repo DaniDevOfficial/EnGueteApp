@@ -18,6 +18,7 @@ import {SettingsProvider} from "./context/settingsContext";
 import {NewGroup} from "./screens/newGroup";
 import {GroupSettings} from "./screens/GroupSettings";
 import {GroupMemberList} from "./screens/GroupMemberList";
+import {Invites} from "./screens/Invites";
 
 const Stack = createStackNavigator();
 
@@ -32,12 +33,6 @@ function withBaseLayout<T>(Component: ComponentType<T>) {
 }
 
 
-const HomeScreen = withBaseLayout(Home);
-const LoginScreen = withBaseLayout(Login);
-const SignupScreen = withBaseLayout(Signup);
-const UserScreen = withBaseLayout(User);
-const UserSettingsScreen = withBaseLayout(UserSettings);
-const NewGroupScreen = withBaseLayout(NewGroup);
 function GroupContextStack() {
     const GroupStack = createStackNavigator();
 
@@ -49,10 +44,18 @@ function GroupContextStack() {
                 <GroupStack.Screen name="memberList" component={withBaseLayout(GroupMemberList)}/>
                 <GroupStack.Screen name="newMeal" component={withBaseLayout(NewMeal)}/>
                 <GroupStack.Screen name="meal" component={withBaseLayout(Meal)}/>
+                <GroupStack.Screen name="invites" component={withBaseLayout(Invites)}/>
             </GroupStack.Navigator>
         </GroupProvider>
     );
 }
+
+const HomeScreen = withBaseLayout(Home);
+const LoginScreen = withBaseLayout(Login);
+const SignupScreen = withBaseLayout(Signup);
+const UserScreen = withBaseLayout(User);
+const UserSettingsScreen = withBaseLayout(UserSettings);
+const NewGroupScreen = withBaseLayout(NewGroup);
 
 export function Router() {
 

@@ -27,6 +27,9 @@ export type GroupTextType =
     | 'groupSettings'
     | 'leaveGroup'
     | 'leaveGroupInfoText'
+    | 'invites'
+    | 'updateGroupName'
+    | 'noActiveInviteTokens'
     ;
 
 export type GroupTextKeyType = {
@@ -141,6 +144,18 @@ export const GroupTextKey: GroupTextKeyType = {
         german: 'Wenn du die Gruppe verlässt, kannst du nicht mehr auf die Gruppenfunktionen zugreifen. Möchtest du wirklich die Gruppe [groupName] verlassen?',
         english: 'If you leave the group, you will no longer be able to access the group features. Do you really want to leave the group [groupName]?',
     },
+    'invites': {
+        german: 'Einladungen',
+        english: 'Invites',
+    },
+    'updateGroupName': {
+        german: 'Gruppenname aktualisieren',
+        english: 'Update group name',
+    },
+    'noActiveInviteTokens': {
+        german: 'Keine aktiven Einladungen gefunden 😞',
+        english: 'No active invites found 😞',
+    }
 }
 
 type tmp = string
