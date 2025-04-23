@@ -4,18 +4,20 @@ import {useTexts} from "../utility/TextKeys/TextKeys";
 import {PageTitleSection} from "../components/UI/PageTitleSection";
 import {GetAllInviteTokensOfAGroup, InviteToken} from "../repo/group/Invites";
 import {useGroup} from "../context/groupContext";
-import {Box, ScrollView, Spinner, Text, VStack} from "native-base";
+import {Box, Button, ScrollView, Spinner, Text, VStack} from "native-base";
 import {RefreshControl} from "react-native-gesture-handler";
-import {GroupCard} from "../components/user/GroupCard";
+import {useNavigation} from "@react-navigation/native";
+import {CreateInvite} from "../components/CreateInvite";
 
 export function Invites() {
     const text = useTexts(['invites', 'createNewGroup', 'noActiveInviteTokens']);
+    const navigation = useNavigation();
     const {group} = useGroup();
 
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const [inviteTokens, setInviteTokens] = useState<InviteToken[]>([]);
-
+    const [saving, setSaving] = useState<boolean>(true);
 
     async function loadInvites() {
         try {
@@ -78,7 +80,7 @@ export function Invites() {
                     )}
                 </VStack>
             </ScrollView>
-
+            <CreateInvite groupId={group.groupId} onSuccess={onRefresh} />
         </>
 
     )

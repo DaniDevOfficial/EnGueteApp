@@ -23,6 +23,22 @@ export async function GetAllInviteTokensOfAGroup(groupId: string): Promise<Invit
     return await res.json() ?? [];
 }
 
-export async function createInviteToken(groupId: string): Promise<InviteToken> {
+export interface CreateInviteTokenRequest {
+    groupId: string,
+    expiresAt: string,
+}
 
+export async function CreateInviteToken(data: CreateInviteTokenRequest): Promise<InviteToken> {
+
+    const url = `${BACKEND_URL}groups/invite`;
+    const timeoutPromise = timeoutPromiseFactory();
+    const fetchPromise = fetch(url, {
+        method: 'POST',
+        headers: await getBasicAuthHeader(),
+        body: JSON.stringify(data),
+    });
+
+    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
+    await handleDefaultResponseAndHeaders(res)
+    return await res.json() ?? [];
 }
