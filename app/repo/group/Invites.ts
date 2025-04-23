@@ -42,3 +42,16 @@ export async function CreateInviteToken(data: CreateInviteTokenRequest): Promise
     await handleDefaultResponseAndHeaders(res)
     return await res.json() ?? [];
 }
+
+export async function DeleteInviteToken(token: string): Promise<InviteToken> {
+    const url = `${BACKEND_URL}groups/invite?inviteToken=${token}`;
+    const timeoutPromise = timeoutPromiseFactory();
+    const fetchPromise = fetch(url, {
+        method: 'DELETE',
+        headers: await getBasicAuthHeader(),
+    });
+
+    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
+    await handleDefaultResponseAndHeaders(res)
+    return await res.json() ?? [];
+}

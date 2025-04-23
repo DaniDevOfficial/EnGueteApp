@@ -8,6 +8,10 @@ export type MiscTextType =
     | 'actions'
     | 'submit'
     | 'expiresAt'
+    | 'showQr'
+    | 'qrCode'
+    | 'copyLink'
+    | 'copiedLink'
     ;
 
 export type MiscTextKeyType = {
@@ -45,5 +49,21 @@ export const MiscTextKey: MiscTextKeyType = {
     'expiresAt': {
         german: 'Ablaufdatum',
         english: 'Expires at',
-    }
+    },
+    'showQr': {
+        german: 'QR-Code anzeigen',
+        english: 'Show QR code',
+    },
+    'copyLink': {
+        german: 'Link kopieren',
+        english: 'Copy link',
+    },
+    'copiedLink': {
+        german: 'Link kopiert',
+        english: 'Link copied',
+    },
+    'qrCode': {
+        german: 'QR-Code',
+        english: 'QR code',
+    },
 }

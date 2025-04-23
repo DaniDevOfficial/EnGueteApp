@@ -65,9 +65,9 @@ export function Invites() {
                 }
             >
                 <VStack alignItems="center" w={'100%'}>
-                    {inviteTokens.length > 0 ? (inviteTokens.map((inviteToken) => (
-                            <InviteCard inviteToken={inviteToken.inviteToken} inviteLink={inviteToken.inviteToken}
-                                        canVoid={canVoid} expiryDate={inviteToken.expiresAt}/>
+                    {inviteTokens.length > 0 ? (inviteTokens.map((inviteToken, key) => (
+                            <InviteCard key={key} inviteToken={inviteToken.inviteToken} inviteLink={inviteToken.inviteToken}
+                                        canVoid={canVoid} expiryDate={inviteToken.expiresAt} onVoid={onRefresh}/>
                         ))
                     ) : (
                         <Box mt={5}>
