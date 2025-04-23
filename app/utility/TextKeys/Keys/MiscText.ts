@@ -7,6 +7,7 @@ export type MiscTextType =
     | 'placeholderIsInvalid'
     | 'actions'
     | 'submit'
+    | 'expiresAt'
     ;
 
 export type MiscTextKeyType = {
@@ -40,5 +41,9 @@ export const MiscTextKey: MiscTextKeyType = {
     'submit': {
         german: 'Bestätigen',
         english: 'Submit',
+    },
+    'expiresAt': {
+        german: 'Ablaufdatum',
+        english: 'Expires at',
     }
 }

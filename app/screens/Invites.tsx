@@ -7,7 +7,9 @@ import {useGroup} from "../context/groupContext";
 import {Box, Button, ScrollView, Spinner, Text, VStack} from "native-base";
 import {RefreshControl} from "react-native-gesture-handler";
 import {useNavigation} from "@react-navigation/native";
-import {CreateInvite} from "../components/CreateInvite";
+import {CreateInvite} from "../components/group/CreateInvite";
+import {InviteCard} from "../components/group/InviteCard";
+import {CanPerformAction, PERMISSIONS} from "../utility/Roles";
 
 export function Invites() {
     const text = useTexts(['invites', 'createNewGroup', 'noActiveInviteTokens']);
@@ -18,11 +20,13 @@ export function Invites() {
     const [refreshing, setRefreshing] = useState(false);
     const [inviteTokens, setInviteTokens] = useState<InviteToken[]>([]);
     const [saving, setSaving] = useState<boolean>(true);
+    const canVoid = CanPerformAction(group.userRoleRights, PERMISSIONS.CAN_VOID_INVITE_LINKS);
 
     async function loadInvites() {
         try {
+
             const response = await GetAllInviteTokensOfAGroup(group.groupId);
-                setInviteTokens(response);
+            setInviteTokens(response);
         } catch (e) {
             //TODO: Hanlde errors
             console.log(e.message);
@@ -62,14 +66,8 @@ export function Invites() {
             >
                 <VStack alignItems="center" w={'100%'}>
                     {inviteTokens.length > 0 ? (inviteTokens.map((inviteToken) => (
-                            <Box>
-                                <Text>
-                                    {inviteToken.inviteToken}
-                                </Text>
-                                <Text>
-                                    {inviteToken.expiresAt}
-                                </Text>
-                            </Box>
+                            <InviteCard inviteToken={inviteToken.inviteToken} inviteLink={inviteToken.inviteToken}
+                                        canVoid={canVoid} expiryDate={inviteToken.expiresAt}/>
                         ))
                     ) : (
                         <Box mt={5}>
@@ -80,7 +78,7 @@ export function Invites() {
                     )}
                 </VStack>
             </ScrollView>
-            <CreateInvite groupId={group.groupId} onSuccess={onRefresh} />
+            <CreateInvite groupId={group.groupId} onSuccess={onRefresh}/>
         </>
 
     )

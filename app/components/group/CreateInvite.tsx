@@ -1,15 +1,15 @@
 import React, {useState} from "react";
-import {useText, useTexts} from "../utility/TextKeys/TextKeys";
+import {useText, useTexts} from "../../utility/TextKeys/TextKeys";
 import {Button, FormControl, Icon, Input, Modal} from "native-base";
-import {getSwissDateTimeDisplay} from "../utility/Dates";
+import {getSwissDateTimeDisplay} from "../../utility/Dates";
 import {DateTimePickerAndroid} from "@react-native-community/datetimepicker";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import {CreateInviteToken, CreateInviteTokenRequest} from "../repo/group/Invites";
+import {CreateInviteToken, CreateInviteTokenRequest} from "../../repo/group/Invites";
 
 
 interface CreateInviteProps {
     groupId: string;
-    onSuccess: () => void;
+    onSuccess: () => Promise<void>;
 }
 
 

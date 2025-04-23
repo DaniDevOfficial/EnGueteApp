@@ -31,6 +31,7 @@ export type GroupTextType =
     | 'updateGroupName'
     | 'noActiveInviteTokens'
     | 'createInvite'
+    | 'voidToken'
     ;
 
 export type GroupTextKeyType = {
@@ -160,7 +161,11 @@ export const GroupTextKey: GroupTextKeyType = {
     'createInvite': {
         german: 'Einladung erstellen',
         english: 'Create invite',
-    }
+    },
+    'voidToken': {
+        german: 'Einladung ungültig machen',
+        english: 'Void token',
+    },
 }
 
 type tmp = string

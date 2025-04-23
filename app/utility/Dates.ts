@@ -53,7 +53,9 @@ export function getFancyTimeDisplay(dateTimeString: string): string {
         return useText('thisWeekdayAtTime', {'weekday': useText(dayNames[target.getDay()]), 'time': target.toLocaleTimeString([], options)});
     }
     const month = monthNames[target.getMonth()];
-    return `${useText('onMonthDayAtTime', {month: useText(month), day: target.getDate().toString(), time: target.toLocaleTimeString([], options)})}`;
+    const year = target.getFullYear();
+    const thisYear = now.getFullYear();
+    return `${useText('onMonthDayAtTime', {year: year === thisYear ? '' : year.toString() ,month: useText(month), day: target.getDate().toString(), time: target.toLocaleTimeString([], options)})}`;
 }
 
 export function toNormalDateTime(dateTimeString: string) {
