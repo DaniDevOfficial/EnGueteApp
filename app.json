@@ -1,5 +1,6 @@
 {
   "expo": {
+    "scheme": "app.enguete",
     "name": "EnGueteApp",
     "slug": "EnGueteApp",
     "version": "1.0.0",

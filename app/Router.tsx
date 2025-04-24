@@ -1,7 +1,6 @@
-import React, {ComponentType, ReactElement} from 'react';
+import React, {ComponentType, ReactElement, useEffect} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-
 import {Home} from './screens/Home';
 import {Login} from './screens/Login';
 import {Signup} from './screens/Signup';
@@ -19,6 +18,8 @@ import {NewGroup} from "./screens/newGroup";
 import {GroupSettings} from "./screens/GroupSettings";
 import {GroupMemberList} from "./screens/GroupMemberList";
 import {Invites} from "./screens/Invites";
+import * as Linking from 'expo-linking';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Stack = createStackNavigator();
 
@@ -59,6 +60,12 @@ const NewGroupScreen = withBaseLayout(NewGroup);
 
 export function Router() {
 
+    useEffect(() => {
+        const sub = Linking.addEventListener('url', ({ url }) => handleUrl(url));
+        Linking.getInitialURL().then((url) => url && handleUrl(url));
+
+        return () => sub.remove();
+    }, []);
     return (
         <SettingsProvider>
             <UserProvider>
@@ -77,4 +84,12 @@ export function Router() {
             </UserProvider>
         </SettingsProvider>
     );
+}
+
+async function handleUrl (url: string) {
+    const { path, queryParams } = Linking.parse(url);
+
+    if (path === 'invite' && queryParams?.token) {
+        await AsyncStorage.setItem('pendingInviteToken', queryParams.token);
+    }
 }

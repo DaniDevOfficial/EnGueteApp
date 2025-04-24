@@ -13,10 +13,13 @@ import {
     Text,
     VStack
 } from "native-base";
+import { Alert } from 'react-native';
 import {SignIntoAccount} from "../repo/Auth";
 import {useNavigation} from "@react-navigation/native";
 import {resetToUserScreen} from "../utility/navigation";
 import {useText} from "../utility/TextKeys/TextKeys";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {JoinGroupWithToken} from "../repo/group/Invites";
 
 export function Login() {
     const [username, setUsername] = useState('Dani1-123');
@@ -32,6 +35,7 @@ export function Login() {
         try {
             const res = await SignIntoAccount(username, password)
             resetToUserScreen(navigation)
+            await handleInviteToken(navigation)
         } catch (e) {
             setError(e.message);
             //TODO: Make some toasts
@@ -107,4 +111,35 @@ export function Login() {
             </Box>
         </Center>
     );
+}
+
+
+export async function handleInviteToken(navigation) {
+    const token = await AsyncStorage.getItem('pendingInviteToken');
+    if (!token) {
+        console.log('📥 No pending invite token found');
+        return;
+    }
+
+    setTimeout(() => {
+        Alert.alert('🎉 Group Invite', `You were invited with token: ${token}`, [
+            {
+                text: 'Join Group',
+                onPress: () => handleJoiningGroup(token, navigation),
+            },
+            { text: 'Maybe later', style: 'cancel' },
+        ]);
+    }, 500);
+
+}
+
+async function handleJoiningGroup(token: string, navigation) {
+    const response = await JoinGroupWithToken(token);
+        //TODO: error handeling
+    navigation.navigate('group', {
+        screen: 'groupDetails',
+        params: {
+            groupId: response.groupId,
+        },
+    });
 }

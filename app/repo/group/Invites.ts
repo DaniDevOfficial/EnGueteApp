@@ -9,6 +9,10 @@ export interface InviteToken {
     expiresAt: string,
 }
 
+interface JoiningGroupResponse {
+    groupId: string,
+}
+
 export async function GetAllInviteTokensOfAGroup(groupId: string): Promise<InviteToken[]> {
     const url = `${BACKEND_URL}groups/invite?groupId=${groupId}`;
     const timeoutPromise = timeoutPromiseFactory();
@@ -48,6 +52,19 @@ export async function DeleteInviteToken(token: string): Promise<InviteToken> {
     const timeoutPromise = timeoutPromiseFactory();
     const fetchPromise = fetch(url, {
         method: 'DELETE',
+        headers: await getBasicAuthHeader(),
+    });
+
+    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
+    await handleDefaultResponseAndHeaders(res)
+    return await res.json() ?? [];
+}
+
+export async function JoinGroupWithToken(token: string): Promise<JoiningGroupResponse> {
+    const url = `${BACKEND_URL}groups/invite/join?inviteToken=${token}`;
+    const timeoutPromise = timeoutPromiseFactory();
+    const fetchPromise = fetch(url, {
+        method: 'POST',
         headers: await getBasicAuthHeader(),
     });
 
