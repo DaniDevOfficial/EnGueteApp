@@ -6,7 +6,7 @@ import {Login} from './screens/Login';
 import {Signup} from './screens/Signup';
 import {User} from './screens/User';
 import {Group} from './screens/Group';
-import {UserProvider} from './context/userContext';
+import {UserProvider, useUser} from './context/userContext';
 import {BaseLayout} from './layout/BaseLayout';
 import {NewMeal} from "./screens/newMeal";
 import {GroupProvider} from "./context/groupContext";
@@ -20,6 +20,9 @@ import {GroupMemberList} from "./screens/GroupMemberList";
 import {Invites} from "./screens/Invites";
 import * as Linking from 'expo-linking';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {Alert} from "react-native";
+import {JoinGroupWithToken} from "./repo/group/Invites";
+import {getRefreshToken} from "./utility/Auth";
 
 const Stack = createStackNavigator();
 
@@ -58,38 +61,86 @@ const UserScreen = withBaseLayout(User);
 const UserSettingsScreen = withBaseLayout(UserSettings);
 const NewGroupScreen = withBaseLayout(NewGroup);
 
-export function Router() {
-
-    useEffect(() => {
-        const sub = Linking.addEventListener('url', ({ url }) => handleUrl(url));
-        Linking.getInitialURL().then((url) => url && handleUrl(url));
-
-        return () => sub.remove();
-    }, []);
+export function RouterWrapper() {
     return (
         <SettingsProvider>
             <UserProvider>
-                <NavigationContainer>
-                    <Stack.Navigator initialRouteName="home" screenOptions={{headerShown: false}}>
-                        <Stack.Screen name="home" component={HomeScreen}/>
-                        <Stack.Screen name="login" component={LoginScreen}/>
-                        <Stack.Screen name="signup" component={SignupScreen}/>
-                        <Stack.Screen name="user" component={UserScreen}/>
-                        <Stack.Screen name="userSettings" component={UserSettingsScreen}/>
-                        <Stack.Screen name="newGroup" component={NewGroupScreen}/>
-                        <Stack.Screen name="test" component={Test}/>
-                        <Stack.Screen name="group" component={GroupContextStack}/>
-                    </Stack.Navigator>
-                </NavigationContainer>
+                <Router/>
             </UserProvider>
         </SettingsProvider>
     );
 }
 
-async function handleUrl (url: string) {
-    const { path, queryParams } = Linking.parse(url);
+export function Router() {
+    const {user} = useUser();
+    useEffect(() => {
+        const sub = Linking.addEventListener('url', ({url}) => handleUrl(url));
+        Linking.getInitialURL().then((url) => url && handleUrl(url));
 
-    if (path === 'invite' && queryParams?.token) {
-        await AsyncStorage.setItem('pendingInviteToken', queryParams.token);
+        return () => sub.remove();
+    }, []);
+
+    async function handleUrl(url: string) {
+        const {path, queryParams} = Linking.parse(url);
+        console.log('🔗 URL:', url);
+        if (path === 'invite' && queryParams?.token && queryParams?.token !== '') {
+            await AsyncStorage.setItem('pendingInviteToken', queryParams.token);
+            const refreshToken = await getRefreshToken();
+            if (user.userId !== '' && refreshToken) {
+                await handleInviteToken(false);
+            }
+        }
+
+
+    }
+
+
+    return (
+        <NavigationContainer>
+            <Stack.Navigator initialRouteName="home" screenOptions={{headerShown: false}}>
+                <Stack.Screen name="home" component={HomeScreen}/>
+                <Stack.Screen name="login" component={LoginScreen}/>
+                <Stack.Screen name="signup" component={SignupScreen}/>
+                <Stack.Screen name="user" component={UserScreen}/>
+                <Stack.Screen name="userSettings" component={UserSettingsScreen}/>
+                <Stack.Screen name="newGroup" component={NewGroupScreen}/>
+                <Stack.Screen name="test" component={Test}/>
+                <Stack.Screen name="group" component={GroupContextStack}/>
+            </Stack.Navigator>
+        </NavigationContainer>
+    );
+}
+
+
+export async function handleInviteToken(navigation) {
+    const token = await AsyncStorage.getItem('pendingInviteToken');
+    if (!token) {
+        console.log('📥 No pending invite token found');
+        return;
+    }
+
+    setTimeout(() => {
+        Alert.alert('🎉 Group Invite', `You were invited with token: ${token}`, [
+            {
+                text: 'Join Group',
+                onPress: () => handleJoiningGroup(token, navigation),
+            },
+            {text: 'Maybe later', style: 'cancel'},
+        ]);
+    }, 500);
+
+}
+
+async function handleJoiningGroup(token: string, navigation) {
+    const response = await JoinGroupWithToken(token);
+    //TODO: error handeling
+    if (navigation) {
+        navigation.navigate('group', {
+            screen: 'groupDetails',
+            params: {
+                groupId: response.groupId,
+            },
+        });
     }
 }
+

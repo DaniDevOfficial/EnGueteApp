@@ -14,10 +14,10 @@ import {
     VStack
 } from "native-base";
 import {CreateNewAccount} from "../repo/Auth";
-import {saveAuthToken} from "../Util";
 import {useNavigation} from "@react-navigation/native";
 import {resetToUserScreen} from "../utility/navigation";
 import {useText} from "../utility/TextKeys/TextKeys";
+import {handleInviteToken} from "../Router";
 
 export function Signup() {
     const [username, setUsername] = useState('Dani1-123');
@@ -35,6 +35,8 @@ export function Signup() {
         try {
             const response = await CreateNewAccount(username, email ,password)
             resetToUserScreen(navigation)
+            await handleInviteToken(navigation)
+
         } catch (e) {
             setError(e.message);
             //TODO: Make some toasts

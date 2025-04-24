@@ -10,6 +10,7 @@ import {useNavigation} from "@react-navigation/native";
 import {CreateInvite} from "../components/group/CreateInvite";
 import {InviteCard} from "../components/group/InviteCard";
 import {CanPerformAction, PERMISSIONS} from "../utility/Roles";
+import {DEFAULT_APP_URL} from '@env'
 
 export function Invites() {
     const text = useTexts(['invites', 'createNewGroup', 'noActiveInviteTokens']);
@@ -66,7 +67,7 @@ export function Invites() {
             >
                 <VStack alignItems="center" w={'100%'}>
                     {inviteTokens.length > 0 ? (inviteTokens.map((inviteToken, key) => (
-                            <InviteCard key={key} inviteToken={inviteToken.inviteToken} inviteLink={inviteToken.inviteToken}
+                            <InviteCard key={key} inviteToken={inviteToken.inviteToken} inviteLink={DEFAULT_APP_URL + inviteToken.inviteToken}
                                         canVoid={canVoid} expiryDate={inviteToken.expiresAt} onVoid={onRefresh}/>
                         ))
                     ) : (
