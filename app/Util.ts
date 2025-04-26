@@ -6,9 +6,14 @@ import {TimeoutError} from "./utility/Errors";
 const TIMEOUT = 3000;
 type NavigationType = ReturnType<typeof useNavigation>;
 
-export async function handleLogoutProcedure(navigation: NavigationType) {
+export async function voidAuthToken() {
     await removeAuthToken()
     await removeRefreshToken()
+}
+
+
+export async function handleLogoutProcedure(navigation: NavigationType) {
+    await voidAuthToken()
     //TODO: remove user data from context
     //TODO: delte userdata from sqlite
     resetToHomeScreen(navigation);
