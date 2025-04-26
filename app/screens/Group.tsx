@@ -12,6 +12,7 @@ import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
 import {BackButton} from "../components/UI/BackButton";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 import {EditButton} from "../components/UI/EditButton";
+import {PageSpinner} from "../components/UI/PageSpinner";
 
 export function Group() {
     const [groupInformation, setGroupInformation] = useState<GroupInformationType | undefined>()
@@ -70,11 +71,7 @@ export function Group() {
 
 
     if (loading || groupInformation === undefined) {
-        return (
-            <Box flex={1} alignItems="center" justifyContent="center">
-                <Spinner size="lg" color="emerald.500"/>
-            </Box>
-        )
+        return <PageSpinner />
     }
 
     async function onRefresh() {

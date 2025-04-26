@@ -9,6 +9,7 @@ import {MemberCard} from "../components/group/MemberCard";
 import {CanPerformAction, PERMISSIONS} from "../utility/Roles";
 import {RefreshControl} from "react-native-gesture-handler";
 import {useUser} from "../context/userContext";
+import {PageSpinner} from "../components/UI/PageSpinner";
 
 export function GroupMemberList() {
     const {group} = useGroup();
@@ -52,11 +53,7 @@ export function GroupMemberList() {
     }
 
     if (loading) {
-        return (
-            <Box flex={1} alignItems="center" justifyContent="center">
-                <Spinner size="lg" color="emerald.500"/>
-            </Box>
-        )
+        return <PageSpinner />
     }
     return (
         <>

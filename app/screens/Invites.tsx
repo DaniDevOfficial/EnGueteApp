@@ -11,6 +11,7 @@ import {CreateInvite} from "../components/group/CreateInvite";
 import {InviteCard} from "../components/group/InviteCard";
 import {CanPerformAction, PERMISSIONS} from "../utility/Roles";
 import {DEFAULT_APP_URL} from '@env'
+import {PageSpinner} from "../components/UI/PageSpinner";
 
 export function Invites() {
     const text = useTexts(['invites', 'createNewGroup', 'noActiveInviteTokens']);
@@ -25,7 +26,6 @@ export function Invites() {
 
     async function loadInvites() {
         try {
-
             const response = await GetAllInviteTokensOfAGroup(group.groupId);
             setInviteTokens(response);
         } catch (e) {
@@ -47,11 +47,7 @@ export function Invites() {
     }, []);
 
     if (loading) {
-        return (
-            <Box flex={1} alignItems="center" justifyContent="center">
-                <Spinner size="lg" color="emerald.500"/>
-            </Box>
-        )
+        return <PageSpinner />
     }
 
     return (

@@ -11,6 +11,7 @@ import {getAuthToken} from "../utility/Auth";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 import {EditButton} from "../components/UI/EditButton";
 import {RefreshControl} from "react-native-gesture-handler";
+import {PageSpinner} from "../components/UI/PageSpinner";
 
 export function User() {
     const [userInformation, setUserInformation] = useState<UserType | undefined>()
@@ -75,11 +76,7 @@ export function User() {
     }
 
     if (loading || !userInformation || !user) {
-        return (
-            <Box flex={1} alignItems="center" justifyContent="center">
-                <Spinner size="lg" color="emerald.500"/>
-            </Box>
-        )
+        return <PageSpinner />
     }
 
     function handleNavigate() {
