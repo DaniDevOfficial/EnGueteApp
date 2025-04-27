@@ -1,4 +1,4 @@
-import React, {ComponentType, ReactElement, useEffect} from 'react';
+import React, {ComponentType, ReactElement, useEffect, useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {Home} from './screens/Home';
@@ -13,7 +13,7 @@ import {GroupProvider} from "./context/groupContext";
 import {Meal} from "./screens/Meal";
 import {Test} from "./screens/Test";
 import {UserSettings} from "./screens/UserSettings";
-import {SettingsProvider} from "./context/settingsContext";
+import {SettingsProvider, useSettings} from "./context/settingsContext";
 import {NewGroup} from "./screens/newGroup";
 import {GroupSettings} from "./screens/GroupSettings";
 import {GroupMemberList} from "./screens/GroupMemberList";
@@ -23,6 +23,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {Alert} from "react-native";
 import {JoinGroupWithToken} from "./repo/group/Invites";
 import {getRefreshToken} from "./utility/Auth";
+import {useTexts} from "./utility/TextKeys/TextKeys";
 
 const Stack = createStackNavigator();
 
@@ -73,6 +74,7 @@ export function RouterWrapper() {
 
 export function Router() {
     const {user} = useUser();
+
     useEffect(() => {
         const sub = Linking.addEventListener('url', ({url}) => handleUrl(url));
         Linking.getInitialURL().then((url) => url && handleUrl(url));
@@ -80,14 +82,17 @@ export function Router() {
         return () => sub.remove();
     }, []);
 
+    const [text] = useState(useTexts(['actions', 'maybeLater', 'joinGroup', 'youWereInvited', 'groupInvite']));
+
     async function handleUrl(url: string) {
         const {path, queryParams} = Linking.parse(url);
         console.log('🔗 URL:', url);
         if (path === 'invite' && queryParams?.token && queryParams?.token !== '') {
             await AsyncStorage.setItem('pendingInviteToken', queryParams.token);
             const refreshToken = await getRefreshToken();
+
             if (user.userId !== '' && refreshToken) {
-                await handleInviteToken(false);
+                await handleInviteToken(false, text);
             }
         }
 
@@ -111,27 +116,39 @@ export function Router() {
     );
 }
 
+interface invitePopupText {
+    groupInvite: string,
+    youWereInvited: string,
+    joinGroup: string,
+    maybeLater: string,
+}
 
-export async function handleInviteToken(navigation) {
+export async function handleTokenPopup(text: invitePopupText, token: string, navigation: any) {
+    Alert.alert(text.groupInvite, text.youWereInvited, [
+        {
+            text: text.joinGroup,
+            onPress: () => handleJoiningGroup(token, navigation),
+        },
+        {text: text.maybeLater, style: 'cancel'},
+    ]);
+}
+
+
+export async function handleInviteToken(navigation: any, text: invitePopupText) {
     const token = await AsyncStorage.getItem('pendingInviteToken');
+
     if (!token) {
-        console.log('📥 No pending invite token found');
         return;
     }
+    await AsyncStorage.removeItem('pendingInviteToken');
 
     setTimeout(() => {
-        Alert.alert('🎉 Group Invite', `You were invited with token: ${token}`, [
-            {
-                text: 'Join Group',
-                onPress: () => handleJoiningGroup(token, navigation),
-            },
-            {text: 'Maybe later', style: 'cancel'},
-        ]);
+        handleTokenPopup(text, token, navigation);
     }, 500);
 
 }
 
-async function handleJoiningGroup(token: string, navigation) {
+async function handleJoiningGroup(token: string, navigation: any) {
     const response = await JoinGroupWithToken(token);
     //TODO: error handeling
     if (navigation) {

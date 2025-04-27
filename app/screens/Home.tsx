@@ -7,6 +7,7 @@ import {useText, useTexts} from "../utility/TextKeys/TextKeys";
 import {checkAuth} from "../repo/Auth";
 import {PageSpinner} from "../components/UI/PageSpinner";
 import {voidAuthToken} from "../Util";
+import {handleInviteToken} from "../Router";
 
 export function Home() {
     const [loading, setLoading] = useState(true);
@@ -20,6 +21,7 @@ export function Home() {
             try {
                 await checkAuth();
                 navigation.navigate('user')
+                await handleInviteToken(navigation)
             } catch (e) {
                 await voidAuthToken();
                 setLoading(false);

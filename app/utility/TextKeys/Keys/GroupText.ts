@@ -32,6 +32,10 @@ export type GroupTextType =
     | 'noActiveInviteTokens'
     | 'createInvite'
     | 'voidToken'
+    | 'groupInvite'
+    | 'youWereInvited'
+    | 'joinGroup'
+    | 'maybeLater'
     ;
 
 export type GroupTextKeyType = {
@@ -166,6 +170,22 @@ export const GroupTextKey: GroupTextKeyType = {
         german: 'Einladung ungültig machen',
         english: 'Void token',
     },
+    'groupInvite': {
+        german: 'Gruppen Einladung',
+        english: 'Group Invite',
+    },
+    'youWereInvited': {
+        german: 'Du wurdest in eine Gruppe eingeladen eingeladen 🎉',
+        english: 'You were invited to a group 🎉',
+    },
+    'joinGroup': {
+        german: 'Gruppe beitreten',
+        english: 'Join group',
+    },
+    'maybeLater': {
+        german: 'Vielleicht später',
+        english: 'Maybe later',
+    }
 }
 
 type tmp = string
