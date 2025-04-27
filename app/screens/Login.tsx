@@ -16,7 +16,7 @@ import {
 import {SignIntoAccount} from "../repo/Auth";
 import {useNavigation} from "@react-navigation/native";
 import {resetToUserScreen} from "../utility/navigation";
-import {useText} from "../utility/TextKeys/TextKeys";
+import {useText, useTexts} from "../utility/TextKeys/TextKeys";
 import {handleInviteToken} from "../Router";
 
 export function Login() {
@@ -24,6 +24,10 @@ export function Login() {
     const [password, setPassword] = useState('Dani1-123');
     const [error, setError] = useState('');
     const navigation = useNavigation()
+
+    const text = useTexts(['maybeLater', 'joinGroup', 'youWereInvited', 'groupInvite']);
+
+
     async function handleSubmit() {
         setError('');
         if (!username || !password) {
@@ -33,7 +37,7 @@ export function Login() {
         try {
             const res = await SignIntoAccount(username, password)
             resetToUserScreen(navigation)
-            await handleInviteToken(navigation)
+            await handleInviteToken(navigation, text)
         } catch (e) {
             setError(e.message);
             //TODO: Make some toasts

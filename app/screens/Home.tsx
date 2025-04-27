@@ -1,9 +1,7 @@
 import {Box, Button, Text} from 'native-base'
 import React, {useEffect, useState} from 'react'
 import {useNavigation} from "@react-navigation/native";
-import {getAuthToken} from "../utility/Auth";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import {useText, useTexts} from "../utility/TextKeys/TextKeys";
+import {useTexts} from "../utility/TextKeys/TextKeys";
 import {checkAuth} from "../repo/Auth";
 import {PageSpinner} from "../components/UI/PageSpinner";
 import {voidAuthToken} from "../Util";
@@ -15,13 +13,14 @@ export function Home() {
 
     const text = useTexts(['login', 'signup']);
 
+    const [popupTexts] = useState(useTexts(['maybeLater', 'joinGroup', 'youWereInvited', 'groupInvite']));
     useEffect(() => {
         checkAuthentication();
         async function checkAuthentication() {
             try {
                 await checkAuth();
                 navigation.navigate('user')
-                await handleInviteToken(navigation)
+                await handleInviteToken(navigation, popupTexts)
             } catch (e) {
                 await voidAuthToken();
                 setLoading(false);

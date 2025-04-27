@@ -74,7 +74,7 @@ export function RouterWrapper() {
 
 export function Router() {
     const {user} = useUser();
-
+    const [handledUrls] = useState(new Set<string>());
     useEffect(() => {
         const sub = Linking.addEventListener('url', ({url}) => handleUrl(url));
         Linking.getInitialURL().then((url) => url && handleUrl(url));
@@ -82,11 +82,17 @@ export function Router() {
         return () => sub.remove();
     }, []);
 
-    const [text] = useState(useTexts(['actions', 'maybeLater', 'joinGroup', 'youWereInvited', 'groupInvite']));
+    const [text] = useState(useTexts(['maybeLater', 'joinGroup', 'youWereInvited', 'groupInvite']));
+
 
     async function handleUrl(url: string) {
+        if (handledUrls.has(url)) {
+            return;
+        }
+
+        handledUrls.add(url);
         const {path, queryParams} = Linking.parse(url);
-        console.log('🔗 URL:', url);
+
         if (path === 'invite' && queryParams?.token && queryParams?.token !== '') {
             await AsyncStorage.setItem('pendingInviteToken', queryParams.token);
             const refreshToken = await getRefreshToken();
@@ -95,8 +101,6 @@ export function Router() {
                 await handleInviteToken(false, text);
             }
         }
-
-
     }
 
 

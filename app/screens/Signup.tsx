@@ -16,16 +16,18 @@ import {
 import {CreateNewAccount} from "../repo/Auth";
 import {useNavigation} from "@react-navigation/native";
 import {resetToUserScreen} from "../utility/navigation";
-import {useText} from "../utility/TextKeys/TextKeys";
+import {useText, useTexts} from "../utility/TextKeys/TextKeys";
 import {handleInviteToken} from "../Router";
 
 export function Signup() {
     const [username, setUsername] = useState('Dani1-123');
     const [password, setPassword] = useState('Dani1-123');
     const [email, setEmail] = useState('1232@gmail.com');
-
     const [error, setError] = useState('');
+
     const navigation = useNavigation();
+    const text = useTexts(['maybeLater', 'joinGroup', 'youWereInvited', 'groupInvite']);
+
     async function handleSubmit() {
         setError('');
         if (!username || !password) {
@@ -35,7 +37,7 @@ export function Signup() {
         try {
             const response = await CreateNewAccount(username, email ,password)
             resetToUserScreen(navigation)
-            await handleInviteToken(navigation)
+            await handleInviteToken(navigation, text)
 
         } catch (e) {
             setError(e.message);

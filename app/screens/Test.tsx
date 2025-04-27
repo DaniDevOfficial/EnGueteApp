@@ -2,9 +2,10 @@ import {Button, Text} from "native-base";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {DateTimePickerAndroid} from "@react-native-community/datetimepicker";
 import {SetStateAction, useState} from "react";
-import {getLanguageFromAsyncStorage} from "../utility/TextKeys/TextKeys";
-import {handleInviteToken} from "./Login";
+import {useTexts} from "../utility/TextKeys/TextKeys";
 import {useNavigation} from "@react-navigation/native";
+import {getLanguageFromAsyncStorage} from "../context/settingsContext";
+import {handleInviteToken} from "../Router";
 
 export function Test() {
     const [date, setDate] = useState(new Date(1598051730000));
@@ -13,6 +14,7 @@ export function Test() {
     const onChange = (event: any, selectedDate: SetStateAction<Date>) => {
         setDate(selectedDate);
     };
+    const [popupTexts] = useState(useTexts(['maybeLater', 'joinGroup', 'youWereInvited', 'groupInvite']));
 
     const showMode = (currentMode: string) => {
         DateTimePickerAndroid.open({
@@ -46,7 +48,7 @@ export function Test() {
             <Button onPress={showLanguage} >
                 <Text>Get Language: {language}</Text>
             </Button>
-            <Button onPress={() => {handleInviteToken(navigation)}} >
+            <Button onPress={() => {handleInviteToken(navigation, popupTexts)}} >
                 <Text>handle Invite Token</Text>
             </Button>
             <Text>selected: {date.toLocaleString()}</Text>
