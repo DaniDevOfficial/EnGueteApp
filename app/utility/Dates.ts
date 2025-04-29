@@ -66,9 +66,12 @@ export function toNormalDateTime(dateTimeString: string) {
         hour12: false,
     };
     const month = monthNames[target.getMonth()];
+    const now = new Date();
 
+    const year = target.getFullYear();
+    const thisYear = now.getFullYear();
 
-    return `${useText('onMonthDayAtTime', {month: useText(month), day: target.getDate().toString(), time: target.toLocaleTimeString([], options)})}`;
+    return `${useText('onMonthDayAtTime', {year: year === thisYear ? '' : year.toString(), month: useText(month), day: target.getDate().toString(), time: target.toLocaleTimeString([], options)})}`;
 }
 
 export function getSwissDateTimeDisplay(dateTime: Date) {
