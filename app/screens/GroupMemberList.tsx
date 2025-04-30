@@ -69,14 +69,12 @@ export function GroupMemberList() {
                     {groupMembers && groupMembers.length > 0 ? (groupMembers.map((member, index) => {
                         const isCurrentUser = member.userId === user.userId;
                         return (
-                            <>
                                 <MemberCard {...member} key={index}
                                             canKickUser={canPerformAction.canKickUser}
                                             canPromoteToAdmin={canPerformAction.canPromoteToAdmin}
                                             canPromoteToManager={canPerformAction.canPromoteToManager}
                                             isCurrentUser={isCurrentUser}
                                 />
-                            </>
                         )})
                     ) : (
                         <Box mt={5}>
