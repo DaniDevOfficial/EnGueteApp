@@ -182,7 +182,7 @@ export const TimeTextKey: TimeTextKeyType = {
         english: 'This [weekday] at [time]',
     },
     'onMonthDayAtTime': {
-        german: 'Am  [day]. [month] um [time]',
+        german: 'Am  [day]. [month] [year] um [time]',
         english: 'On [month] [day] at [time]',
     },
 }

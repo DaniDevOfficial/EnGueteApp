@@ -135,7 +135,6 @@ export async function LeaveGroupRequest(groupId: string): Promise<GroupIdRespons
     return await res.json();
 }
 
-
 export async function GetGroupMemberList(groupId: string): Promise<GroupMember[]> {
     const url = BACKEND_URL + 'groups/members?groupId=' + groupId;
     const timeoutPromise = timeoutPromiseFactory()

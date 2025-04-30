@@ -1,13 +1,12 @@
-import React, {ComponentType, ReactElement} from 'react';
+import React, {ComponentType, ReactElement, useEffect, useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-
 import {Home} from './screens/Home';
 import {Login} from './screens/Login';
 import {Signup} from './screens/Signup';
 import {User} from './screens/User';
 import {Group} from './screens/Group';
-import {UserProvider} from './context/userContext';
+import {UserProvider, useUser} from './context/userContext';
 import {BaseLayout} from './layout/BaseLayout';
 import {NewMeal} from "./screens/newMeal";
 import {GroupProvider} from "./context/groupContext";
@@ -18,6 +17,10 @@ import {SettingsProvider} from "./context/settingsContext";
 import {NewGroup} from "./screens/newGroup";
 import {GroupSettings} from "./screens/GroupSettings";
 import {GroupMemberList} from "./screens/GroupMemberList";
+import {Invites} from "./screens/Invites";
+import * as Linking from 'expo-linking';
+import {getRefreshToken} from "./utility/Auth";
+import {TokenPopupHandler} from "./components/Utility/JoinGroupPopup";
 
 const Stack = createStackNavigator();
 
@@ -32,12 +35,6 @@ function withBaseLayout<T>(Component: ComponentType<T>) {
 }
 
 
-const HomeScreen = withBaseLayout(Home);
-const LoginScreen = withBaseLayout(Login);
-const SignupScreen = withBaseLayout(Signup);
-const UserScreen = withBaseLayout(User);
-const UserSettingsScreen = withBaseLayout(UserSettings);
-const NewGroupScreen = withBaseLayout(NewGroup);
 function GroupContextStack() {
     const GroupStack = createStackNavigator();
 
@@ -49,29 +46,84 @@ function GroupContextStack() {
                 <GroupStack.Screen name="memberList" component={withBaseLayout(GroupMemberList)}/>
                 <GroupStack.Screen name="newMeal" component={withBaseLayout(NewMeal)}/>
                 <GroupStack.Screen name="meal" component={withBaseLayout(Meal)}/>
+                <GroupStack.Screen name="invites" component={withBaseLayout(Invites)}/>
             </GroupStack.Navigator>
         </GroupProvider>
     );
 }
 
-export function Router() {
+const HomeScreen = withBaseLayout(Home);
+const LoginScreen = withBaseLayout(Login);
+const SignupScreen = withBaseLayout(Signup);
+const UserScreen = withBaseLayout(User);
+const UserSettingsScreen = withBaseLayout(UserSettings);
+const NewGroupScreen = withBaseLayout(NewGroup);
 
+export function RouterWrapper() {
     return (
         <SettingsProvider>
             <UserProvider>
                 <NavigationContainer>
-                    <Stack.Navigator initialRouteName="home" screenOptions={{headerShown: false}}>
-                        <Stack.Screen name="home" component={HomeScreen}/>
-                        <Stack.Screen name="login" component={LoginScreen}/>
-                        <Stack.Screen name="signup" component={SignupScreen}/>
-                        <Stack.Screen name="user" component={UserScreen}/>
-                        <Stack.Screen name="userSettings" component={UserSettingsScreen}/>
-                        <Stack.Screen name="newGroup" component={NewGroupScreen}/>
-                        <Stack.Screen name="test" component={Test}/>
-                        <Stack.Screen name="group" component={GroupContextStack}/>
-                    </Stack.Navigator>
+                    <Router/>
                 </NavigationContainer>
             </UserProvider>
         </SettingsProvider>
     );
 }
+
+export function Router() {
+    const {user} = useUser();
+    const [handledUrls] = useState(new Set<string>());
+    const [inviteToken, setInviteToken] = useState<string | null>(null);
+
+    useEffect(() => {
+        const sub = Linking.addEventListener('url', ({url}) => handleUrl(url));
+        Linking.getInitialURL().then((url) => url && handleUrl(url));
+
+        return () => sub.remove();
+    }, []);
+
+
+    async function handleUrl(url: string) {
+        setInviteToken(null);
+        if (handledUrls.has(url)) {
+            return;
+        }
+        handledUrls.add(url);
+        const {path, queryParams} = Linking.parse(url);
+        const inviteToken = queryParams?.token;
+
+        if (path === 'invite' && inviteToken && inviteToken !== '' && typeof inviteToken === 'string') {
+            const refreshToken = await getRefreshToken();
+            if (user.userId !== '' && refreshToken) {
+                setTimeout(() => {
+                    setInviteToken(inviteToken);
+                }, 500);
+            }
+        }
+    }
+
+
+    return (
+        <>
+            {inviteToken && (
+                <TokenPopupHandler
+                    token={inviteToken}
+                />
+            )}
+            <Stack.Navigator initialRouteName="home" screenOptions={{headerShown: false}}>
+                <Stack.Screen name="home" component={HomeScreen}/>
+                <Stack.Screen name="login" component={LoginScreen}/>
+                <Stack.Screen name="signup" component={SignupScreen}/>
+                <Stack.Screen name="user" component={UserScreen}/>
+                <Stack.Screen name="userSettings" component={UserSettingsScreen}/>
+                <Stack.Screen name="newGroup" component={NewGroupScreen}/>
+                <Stack.Screen name="test" component={Test}/>
+                <Stack.Screen name="group" component={GroupContextStack}/>
+            </Stack.Navigator>
+        </>
+    );
+}
+
+
+

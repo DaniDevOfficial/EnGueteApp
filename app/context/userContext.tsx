@@ -12,7 +12,7 @@ type UserContextType = {
     setUser: React.Dispatch<React.SetStateAction<User>>;
 };
 
-const UserContext = createContext<UserContextType | undefined>(undefined);
+export const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export function useUser(): UserContextType {
     const context = useContext(UserContext);

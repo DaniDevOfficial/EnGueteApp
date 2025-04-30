@@ -15,6 +15,7 @@ export const PERMISSIONS = {
 
     CAN_CREATE_INVITE_LINKS: "can_create_invite_links",
     CAN_VOID_INVITE_LINKS: "can_void_invite_links",
+    CAN_VIEW_INVITE_LINKS: "can_view_invite_links",
 
     CAN_FORCE_OPT_IN: "can_force_opt_in",
     CAN_SEND_NOTIFICATIONS: "can_send_notifications",

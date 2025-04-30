@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Box, ScrollView, Spinner} from "native-base";
+import {ScrollView} from "native-base";
 import {useGroup} from "../context/groupContext";
 import {useNavigation, useRoute} from "@react-navigation/native";
 import {handleLogoutProcedure} from "../Util";
@@ -9,6 +9,7 @@ import {MealHeader} from "../components/meal/MealHeader";
 import {PreferenceCard} from "../components/meal/PreferenceCard";
 import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
 import {BackButton} from "../components/UI/BackButton";
+import {PageSpinner} from "../components/UI/PageSpinner";
 
 export function Meal() {
     const [mealInformation, setMealInformation] = useState<MealInterface | undefined>();
@@ -57,11 +58,7 @@ export function Meal() {
     }
 
     if (!mealInformation || loading) {
-        return (
-            <Box flex={1} alignItems="center" justifyContent="center">
-                <Spinner size="lg" color="emerald.500"/>
-            </Box>
-        )
+        return <PageSpinner />
     }
 
     return (

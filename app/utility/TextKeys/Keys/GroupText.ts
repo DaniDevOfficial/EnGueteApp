@@ -27,6 +27,15 @@ export type GroupTextType =
     | 'groupSettings'
     | 'leaveGroup'
     | 'leaveGroupInfoText'
+    | 'invites'
+    | 'updateGroupName'
+    | 'noActiveInviteTokens'
+    | 'createInvite'
+    | 'voidToken'
+    | 'groupInvite'
+    | 'youWereInvited'
+    | 'joinGroup'
+    | 'maybeLater'
     ;
 
 export type GroupTextKeyType = {
@@ -141,6 +150,42 @@ export const GroupTextKey: GroupTextKeyType = {
         german: 'Wenn du die Gruppe verlässt, kannst du nicht mehr auf die Gruppenfunktionen zugreifen. Möchtest du wirklich die Gruppe [groupName] verlassen?',
         english: 'If you leave the group, you will no longer be able to access the group features. Do you really want to leave the group [groupName]?',
     },
+    'invites': {
+        german: 'Einladungen',
+        english: 'Invites',
+    },
+    'updateGroupName': {
+        german: 'Gruppenname aktualisieren',
+        english: 'Update group name',
+    },
+    'noActiveInviteTokens': {
+        german: 'Keine aktiven Einladungen gefunden 😞',
+        english: 'No active invites found 😞',
+    },
+    'createInvite': {
+        german: 'Einladung erstellen',
+        english: 'Create invite',
+    },
+    'voidToken': {
+        german: 'Einladung ungültig machen',
+        english: 'Void token',
+    },
+    'groupInvite': {
+        german: 'Gruppen Einladung',
+        english: 'Group Invite',
+    },
+    'youWereInvited': {
+        german: 'Du wurdest in eine Gruppe eingeladen eingeladen 🎉',
+        english: 'You were invited to a group 🎉',
+    },
+    'joinGroup': {
+        german: 'Gruppe beitreten',
+        english: 'Join group',
+    },
+    'maybeLater': {
+        german: 'Vielleicht später',
+        english: 'Maybe later',
+    }
 }
 
 type tmp = string

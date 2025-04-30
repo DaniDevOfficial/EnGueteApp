@@ -1,6 +1,8 @@
 import {BACKEND_URL} from '@env';
 import {timeoutPromiseFactory} from "../Util";
 import {handleDefaultResponseAndHeaders} from "../utility/Response";
+import {UnauthorizedError} from "../utility/Errors";
+import {getAuthToken, getBasicAuthHeader, getRefreshToken} from "../utility/Auth";
 
 type ResponseAuth = {
     token: string;
@@ -62,4 +64,26 @@ export async function CreateNewAccount(
     await handleDefaultResponseAndHeaders(res);
     return await res.json();
 
+}
+
+export async function checkAuth() {
+    const authToken = await getAuthToken();
+    if (authToken === null) {
+        throw new UnauthorizedError('Not authorized');
+    }
+    const refreshToken = await getRefreshToken();
+    if (refreshToken === null) {
+        throw new UnauthorizedError('Not authorized');
+    }
+    const URL = BACKEND_URL + 'auth/check;
+    const timeoutPromise = timeoutPromiseFactory();
+    const fetchPromise = fetch(URL, {
+        method: 'GET',
+        headers: await getBasicAuthHeader(),
+    });
+
+
+    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
+    await handleDefaultResponseAndHeaders(res);
+    return await res.json();
 }
