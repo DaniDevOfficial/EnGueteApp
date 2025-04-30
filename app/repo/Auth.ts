@@ -75,7 +75,7 @@ export async function checkAuth() {
     if (refreshToken === null) {
         throw new UnauthorizedError('Not authorized');
     }
-    const URL = BACKEND_URL + 'auth/check;
+    const URL = BACKEND_URL + 'auth/check';
     const timeoutPromise = timeoutPromiseFactory();
     const fetchPromise = fetch(URL, {
         method: 'GET',
