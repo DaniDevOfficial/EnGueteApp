@@ -17,13 +17,16 @@ import {CreateNewAccount} from "../repo/Auth";
 import {useNavigation} from "@react-navigation/native";
 import {resetToUserScreen} from "../utility/navigation";
 import {useText, useTexts} from "../utility/TextKeys/TextKeys";
-import {handleInviteToken} from "../Router";
+
+import {getPendingInviteToken, handleInviteToken, removePendingInviteToken} from "../utility/DeepLinking";
+import {TokenPopupHandler} from "../components/Utility/JoinGroupPopup";
 
 export function Signup() {
     const [username, setUsername] = useState('Dani1-123');
     const [password, setPassword] = useState('Dani1-123');
     const [email, setEmail] = useState('1232@gmail.com');
     const [error, setError] = useState('');
+    const [inviteToken, setInviteToken] = useState<string | null>(null);
 
     const navigation = useNavigation();
     const text = useTexts(['maybeLater', 'joinGroup', 'youWereInvited', 'groupInvite']);
@@ -37,8 +40,11 @@ export function Signup() {
         try {
             const response = await CreateNewAccount(username, email ,password)
             resetToUserScreen(navigation)
-            await handleInviteToken(navigation, text)
+            const token = await getPendingInviteToken();
 
+            if (token) {
+                setInviteToken(token);
+            }
         } catch (e) {
             setError(e.message);
             //TODO: Make some toasts
@@ -47,6 +53,11 @@ export function Signup() {
 
     return (
         <Center flex={1} bg="coolGray.100">
+            {inviteToken && (
+                <TokenPopupHandler
+                    token={inviteToken}
+                />
+            )}
             <Box safeArea p="5" py="8" w="90%" maxW="290" bg="white" rounded="lg" shadow={2}>
                 <Heading size="lg" fontWeight="600" color="coolGray.800" textAlign="center">
                     {useText('newAccountGreetingsText')}

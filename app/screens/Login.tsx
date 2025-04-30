@@ -17,12 +17,18 @@ import {SignIntoAccount} from "../repo/Auth";
 import {useNavigation} from "@react-navigation/native";
 import {resetToUserScreen} from "../utility/navigation";
 import {useText, useTexts} from "../utility/TextKeys/TextKeys";
-import {handleInviteToken} from "../Router";
+
+import {getPendingInviteToken, handleInviteToken, removePendingInviteToken} from "../utility/DeepLinking";
+import {TokenPopupHandler} from "../components/Utility/JoinGroupPopup";
+import {getRefreshToken} from "../utility/Auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function Login() {
     const [username, setUsername] = useState('Dani1-123');
     const [password, setPassword] = useState('Dani1-123');
     const [error, setError] = useState('');
+    const [inviteToken, setInviteToken] = useState<string | null>(null);
+
     const navigation = useNavigation()
 
     const text = useTexts(['maybeLater', 'joinGroup', 'youWereInvited', 'groupInvite']);
@@ -36,8 +42,12 @@ export function Login() {
         }
         try {
             const res = await SignIntoAccount(username, password)
+            const token = await getPendingInviteToken();
+            if (token) {
+                setInviteToken(token);
+            }
             resetToUserScreen(navigation)
-            await handleInviteToken(navigation, text)
+
         } catch (e) {
             setError(e.message);
             //TODO: Make some toasts
@@ -46,6 +56,11 @@ export function Login() {
 
     return (
         <Center flex={1} bg="coolGray.100">
+            {inviteToken && (
+                <TokenPopupHandler
+                    token={inviteToken}
+                />
+            )}
             <Box safeArea p="5" py="8" w="90%" maxW="290" bg="white" rounded="lg" shadow={2}>
                 <Heading size="lg" fontWeight="600" color="coolGray.800" textAlign="center">
                     {useText('welcomeBack')}

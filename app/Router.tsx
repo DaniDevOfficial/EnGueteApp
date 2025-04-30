@@ -1,6 +1,6 @@
 import React, {ComponentType, ReactElement, useEffect, useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {Home} from './screens/Home';
 import {Login} from './screens/Login';
 import {Signup} from './screens/Signup';
@@ -13,17 +13,17 @@ import {GroupProvider} from "./context/groupContext";
 import {Meal} from "./screens/Meal";
 import {Test} from "./screens/Test";
 import {UserSettings} from "./screens/UserSettings";
-import {SettingsProvider, useSettings} from "./context/settingsContext";
+import {SettingsProvider} from "./context/settingsContext";
 import {NewGroup} from "./screens/newGroup";
 import {GroupSettings} from "./screens/GroupSettings";
 import {GroupMemberList} from "./screens/GroupMemberList";
 import {Invites} from "./screens/Invites";
 import * as Linking from 'expo-linking';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {Alert} from "react-native";
-import {JoinGroupWithToken} from "./repo/group/Invites";
 import {getRefreshToken} from "./utility/Auth";
 import {useTexts} from "./utility/TextKeys/TextKeys";
+import {handleInviteToken, setPendingInviteToken} from "./utility/DeepLinking";
+import {TokenPopupHandler} from "./components/Utility/JoinGroupPopup";
 
 const Stack = createStackNavigator();
 
@@ -66,7 +66,9 @@ export function RouterWrapper() {
     return (
         <SettingsProvider>
             <UserProvider>
-                <Router/>
+                <NavigationContainer>
+                    <Router/>
+                </NavigationContainer>
             </UserProvider>
         </SettingsProvider>
     );
@@ -75,6 +77,8 @@ export function RouterWrapper() {
 export function Router() {
     const {user} = useUser();
     const [handledUrls] = useState(new Set<string>());
+    const [inviteToken, setInviteToken] = useState<string | null>(null);
+
     useEffect(() => {
         const sub = Linking.addEventListener('url', ({url}) => handleUrl(url));
         Linking.getInitialURL().then((url) => url && handleUrl(url));
@@ -82,30 +86,34 @@ export function Router() {
         return () => sub.remove();
     }, []);
 
-    const [text] = useState(useTexts(['maybeLater', 'joinGroup', 'youWereInvited', 'groupInvite']));
-
 
     async function handleUrl(url: string) {
+        setInviteToken(null);
         if (handledUrls.has(url)) {
             return;
         }
-
         handledUrls.add(url);
         const {path, queryParams} = Linking.parse(url);
+        const inviteToken = queryParams?.token;
 
-        if (path === 'invite' && queryParams?.token && queryParams?.token !== '') {
-            await AsyncStorage.setItem('pendingInviteToken', queryParams.token);
+        if (path === 'invite' && inviteToken && inviteToken !== '' && typeof inviteToken === 'string') {
             const refreshToken = await getRefreshToken();
-
             if (user.userId !== '' && refreshToken) {
-                await handleInviteToken(false, text);
+                setTimeout(() => {
+                    setInviteToken(inviteToken);
+                }, 500);
             }
         }
     }
 
 
     return (
-        <NavigationContainer>
+        <>
+            {inviteToken && (
+                <TokenPopupHandler
+                    token={inviteToken}
+                />
+            )}
             <Stack.Navigator initialRouteName="home" screenOptions={{headerShown: false}}>
                 <Stack.Screen name="home" component={HomeScreen}/>
                 <Stack.Screen name="login" component={LoginScreen}/>
@@ -116,52 +124,9 @@ export function Router() {
                 <Stack.Screen name="test" component={Test}/>
                 <Stack.Screen name="group" component={GroupContextStack}/>
             </Stack.Navigator>
-        </NavigationContainer>
+        </>
     );
 }
 
-interface invitePopupText {
-    groupInvite: string,
-    youWereInvited: string,
-    joinGroup: string,
-    maybeLater: string,
-}
 
-export async function handleTokenPopup(text: invitePopupText, token: string, navigation: any) {
-    Alert.alert(text.groupInvite, text.youWereInvited, [
-        {
-            text: text.joinGroup,
-            onPress: () => handleJoiningGroup(token, navigation),
-        },
-        {text: text.maybeLater, style: 'cancel'},
-    ]);
-}
-
-
-export async function handleInviteToken(navigation: any, text: invitePopupText) {
-    const token = await AsyncStorage.getItem('pendingInviteToken');
-
-    if (!token) {
-        return;
-    }
-    await AsyncStorage.removeItem('pendingInviteToken');
-
-    setTimeout(() => {
-        handleTokenPopup(text, token, navigation);
-    }, 500);
-
-}
-
-async function handleJoiningGroup(token: string, navigation: any) {
-    const response = await JoinGroupWithToken(token);
-    //TODO: error handeling
-    if (navigation) {
-        navigation.navigate('group', {
-            screen: 'groupDetails',
-            params: {
-                groupId: response.groupId,
-            },
-        });
-    }
-}
 

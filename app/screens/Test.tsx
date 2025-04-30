@@ -5,7 +5,8 @@ import {SetStateAction, useState} from "react";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 import {useNavigation} from "@react-navigation/native";
 import {getLanguageFromAsyncStorage} from "../context/settingsContext";
-import {handleInviteToken} from "../Router";
+
+import {handleInviteToken} from "../utility/DeepLinking";
 
 export function Test() {
     const [date, setDate] = useState(new Date(1598051730000));
@@ -47,9 +48,6 @@ export function Test() {
             </Button>
             <Button onPress={showLanguage} >
                 <Text>Get Language: {language}</Text>
-            </Button>
-            <Button onPress={() => {handleInviteToken(navigation, popupTexts)}} >
-                <Text>handle Invite Token</Text>
             </Button>
             <Text>selected: {date.toLocaleString()}</Text>
         </SafeAreaView>
