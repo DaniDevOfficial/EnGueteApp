@@ -14,7 +14,7 @@ interface JoiningGroupResponse {
 }
 
 export async function GetAllInviteTokensOfAGroup(groupId: string): Promise<InviteToken[]> {
-    const url = `${BACKEND_URL}groups/invite?groupId=${groupId}`;
+    const url = BACKEND_URL +'groups/invite?groupId=' + groupId;
     const timeoutPromise = timeoutPromiseFactory();
     const fetchPromise = fetch(url, {
         method: 'GET',
@@ -34,7 +34,7 @@ export interface CreateInviteTokenRequest {
 
 export async function CreateInviteToken(data: CreateInviteTokenRequest): Promise<InviteToken> {
 
-    const url = `${BACKEND_URL}groups/invite`;
+    const url = BACKEND_URL + 'groups/invite';
     const timeoutPromise = timeoutPromiseFactory();
     const fetchPromise = fetch(url, {
         method: 'POST',
@@ -48,7 +48,7 @@ export async function CreateInviteToken(data: CreateInviteTokenRequest): Promise
 }
 
 export async function DeleteInviteToken(token: string): Promise<InviteToken> {
-    const url = `${BACKEND_URL}groups/invite?inviteToken=${token}`;
+    const url = BACKEND_URL + 'groups/invite?inviteToken=' + token;
     const timeoutPromise = timeoutPromiseFactory();
     const fetchPromise = fetch(url, {
         method: 'DELETE',
@@ -61,7 +61,7 @@ export async function DeleteInviteToken(token: string): Promise<InviteToken> {
 }
 
 export async function JoinGroupWithToken(token: string): Promise<JoiningGroupResponse> {
-    const url = `${BACKEND_URL}groups/invite/join?inviteToken=${token}`;
+    const url = BACKEND_URL + 'groups/invite/join?inviteToken=' + token;
     const timeoutPromise = timeoutPromiseFactory();
     const fetchPromise = fetch(url, {
         method: 'POST',
