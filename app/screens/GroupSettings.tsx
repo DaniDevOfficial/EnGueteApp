@@ -6,7 +6,7 @@ import {TextUpdate} from "../components/settings/TextUpdate";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 import {useGroup} from "../context/groupContext";
 import {UpdateGroupName, UpdateGroupNameType} from "../repo/Group";
-import {PERMISSIONS, CanPerformAction} from "../utility/Roles";
+import {CanPerformAction, PERMISSIONS} from "../utility/Roles";
 import {GroupDangerZone} from "../components/settings/GroupDangerZone";
 import {useNavigation} from "@react-navigation/native";
 import {PageTitleSection} from "../components/UI/PageTitleSection";

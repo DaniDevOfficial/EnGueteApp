@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {Box, Button, ScrollView, Spinner, Text} from 'native-base';
+import {Box, Button, ScrollView, Text} from 'native-base';
 import {handleLogoutProcedure} from "../Util";
 import {GetGroupInformation, Group as GroupInformationType} from "../repo/Group";
 import {GroupInformationHeader} from "../components/group/GroupInformationHeader";

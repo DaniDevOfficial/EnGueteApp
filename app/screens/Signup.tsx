@@ -18,7 +18,7 @@ import {useNavigation} from "@react-navigation/native";
 import {resetToUserScreen} from "../utility/navigation";
 import {useText, useTexts} from "../utility/TextKeys/TextKeys";
 
-import {getPendingInviteToken, handleInviteToken, removePendingInviteToken} from "../utility/DeepLinking";
+import {getPendingInviteToken} from "../utility/DeepLinking";
 import {TokenPopupHandler} from "../components/Utility/JoinGroupPopup";
 
 export function Signup() {

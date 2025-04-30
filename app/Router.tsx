@@ -1,6 +1,6 @@
 import React, {ComponentType, ReactElement, useEffect, useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import {Home} from './screens/Home';
 import {Login} from './screens/Login';
 import {Signup} from './screens/Signup';
@@ -19,10 +19,7 @@ import {GroupSettings} from "./screens/GroupSettings";
 import {GroupMemberList} from "./screens/GroupMemberList";
 import {Invites} from "./screens/Invites";
 import * as Linking from 'expo-linking';
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {getRefreshToken} from "./utility/Auth";
-import {useTexts} from "./utility/TextKeys/TextKeys";
-import {handleInviteToken, setPendingInviteToken} from "./utility/DeepLinking";
 import {TokenPopupHandler} from "./components/Utility/JoinGroupPopup";
 
 const Stack = createStackNavigator();

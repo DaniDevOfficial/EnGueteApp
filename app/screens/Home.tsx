@@ -6,9 +6,8 @@ import {checkAuth} from "../repo/Auth";
 import {PageSpinner} from "../components/UI/PageSpinner";
 import {voidAuthToken} from "../Util";
 
-import {getPendingInviteToken, handleInviteToken, removePendingInviteToken} from "../utility/DeepLinking";
+import {getPendingInviteToken} from "../utility/DeepLinking";
 import {resetToUserScreen} from "../utility/navigation";
-import {getRefreshToken} from "../utility/Auth";
 import {TokenPopupHandler} from "../components/Utility/JoinGroupPopup";
 
 export function Home() {

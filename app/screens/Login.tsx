@@ -18,10 +18,8 @@ import {useNavigation} from "@react-navigation/native";
 import {resetToUserScreen} from "../utility/navigation";
 import {useText, useTexts} from "../utility/TextKeys/TextKeys";
 
-import {getPendingInviteToken, handleInviteToken, removePendingInviteToken} from "../utility/DeepLinking";
+import {getPendingInviteToken} from "../utility/DeepLinking";
 import {TokenPopupHandler} from "../components/Utility/JoinGroupPopup";
-import {getRefreshToken} from "../utility/Auth";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function Login() {
     const [username, setUsername] = useState('Dani1-123');

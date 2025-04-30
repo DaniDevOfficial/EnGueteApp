@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Box, ScrollView, Spinner} from "native-base";
+import {ScrollView} from "native-base";
 import {useGroup} from "../context/groupContext";
 import {useNavigation, useRoute} from "@react-navigation/native";
 import {handleLogoutProcedure} from "../Util";

@@ -6,8 +6,6 @@ import {useTexts} from "../utility/TextKeys/TextKeys";
 import {useNavigation} from "@react-navigation/native";
 import {getLanguageFromAsyncStorage} from "../context/settingsContext";
 
-import {handleInviteToken} from "../utility/DeepLinking";
-
 export function Test() {
     const [date, setDate] = useState(new Date(1598051730000));
     const [language, setLanguage] = useState('none');

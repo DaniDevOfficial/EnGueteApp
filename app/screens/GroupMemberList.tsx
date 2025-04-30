@@ -1,4 +1,4 @@
-import {Box, ScrollView, Spinner, Text, VStack} from "native-base";
+import {Box, ScrollView, Text, VStack} from "native-base";
 import React, {useEffect, useState} from "react";
 import {useGroup} from "../context/groupContext";
 import {BackButton} from "../components/UI/BackButton";

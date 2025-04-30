@@ -1,10 +1,9 @@
 import {Alert} from "react-native";
 import {JoinGroupWithToken} from "../../repo/group/Invites";
-import {invitePopupText, removePendingInviteToken} from "../../utility/DeepLinking";
+import {removePendingInviteToken} from "../../utility/DeepLinking";
 import {useEffect} from "react";
 import {useNavigation} from "@react-navigation/native";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function TokenPopupHandler({token}: { token: string }) {
     const navigation = useNavigation();

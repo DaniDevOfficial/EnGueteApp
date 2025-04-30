@@ -1,4 +1,4 @@
-import {Box, Button, Pressable, ScrollView, Spinner, Text, VStack} from 'native-base'
+import {Box, Button, Pressable, ScrollView, Text, VStack} from 'native-base'
 import React, {useEffect, useState} from 'react'
 import {handleLogoutProcedure} from "../Util";
 import {useNavigation} from "@react-navigation/native";
