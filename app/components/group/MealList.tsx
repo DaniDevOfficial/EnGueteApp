@@ -5,6 +5,7 @@ import {GetGroupMeals, MealCard as MealCardType} from "../../repo/Group";
 import {MealCard} from "./MealCard";
 import {MealFilterSection} from "./MealFilterSection";
 import {useGroup} from "../../context/groupContext";
+import {RefreshControl} from "react-native-gesture-handler";
 
 interface MealListProps {
     tempMeals: MealCardType[];
@@ -13,12 +14,15 @@ interface MealListProps {
 export function MealList({tempMeals}: MealListProps) {
     const text = useTexts(['noMealsInThisGroup']);
     const {group} = useGroup();
-
+    const [loading, setLoading] = React.useState(false);
+    const [date, setDate] = React.useState(new Date());
     const [meals, setMeals] = React.useState<MealCardType[]>(tempMeals);
 
 
     async function loadMeals(filterDate: Date | null) {
         if (filterDate) {
+            setLoading(true);
+            setDate(filterDate);
             try {
                 const meals = await GetGroupMeals(group.groupId, filterDate.toISOString());
                 setMeals(meals);
@@ -26,11 +30,19 @@ export function MealList({tempMeals}: MealListProps) {
                 console.log(e); //TODO: Handle errors
                 setMeals([]);
             }
+            setLoading(false);
         } else {
             setMeals(tempMeals);
         }
 
     }
+
+    async function reloadMeals() {
+        setLoading(true);
+        await loadMeals(date) //TODO: maybe skeletons or something
+        setLoading(false);
+    }
+
 
     return (
         <Box
@@ -40,6 +52,10 @@ export function MealList({tempMeals}: MealListProps) {
             <ScrollView
                 contentContainerStyle={{flexGrow: 1}}
                 width={"100%"}
+                minH={"100%"}
+                refreshControl={
+                    <RefreshControl refreshing={loading} onRefresh={reloadMeals}/>
+                }
             >
                 <Flex
                     flexDir={'column'}
@@ -49,27 +65,18 @@ export function MealList({tempMeals}: MealListProps) {
                     paddingBottom={10}
                 >
 
-                {meals && meals.length > 0 ? meals.map((meal) => (
-                        <MealCard meal={meal} key={meal.mealId}/>
-                    )
-                ) : (
-                    <Box py={10}>
-                        <Text>
-                            {text.noMealsInThisGroup}
-                        </Text>
-                    </Box>
-                )}
+                    {meals && meals.length > 0 ? meals.map((meal) => (
+                            <MealCard meal={meal} key={meal.mealId}/>
+                        )
+                    ) : (
+                        <Box py={10}>
+                            <Text>
+                                {text.noMealsInThisGroup}
+                            </Text>
+                        </Box>
+                    )}
                 </Flex>
             </ScrollView>
         </Box>
     )
 }
-/*
-<ScrollView
-    contentContainerStyle={{flexGrow: 1}}
-    refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
-    }
-    width={"100%"}
->
-*/

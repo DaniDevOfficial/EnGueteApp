@@ -76,11 +76,6 @@ export function Group() {
         return <PageSpinner/>
     }
 
-    async function onRefresh() {
-        setRefreshing(true)
-        await getGroupData()
-        setRefreshing(false)
-    }
 
     function handleNavigate() {
 

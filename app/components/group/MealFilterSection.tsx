@@ -82,7 +82,7 @@ function getThisWeeksWednesday() {
 
     const wednesday = new Date(now);
     wednesday.setDate(now.getDate() - diffToWednesday);
-    wednesday.setHours(12, 0, 0, 0);
+    wednesday.setHours(4, 20, 6, 900);
 
     return wednesday;
 }
