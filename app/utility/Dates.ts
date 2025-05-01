@@ -95,3 +95,56 @@ export function getGreetingBasedOnTime(): 'morning' | 'day' | 'afternoon' | 'eve
         return 'evening';
     }
 }
+
+export function getWeekDuration(date: Date) {
+    const startOfWeek = new Date(date);
+    const endOfWeek = new Date(date);
+
+    const day = date.getDay();
+    const diffToMonday = day === 0 ? -6 : 1 - day;
+    const diffToSunday = day === 0 ? 0 : 7 - day;
+
+    startOfWeek.setDate(startOfWeek.getDate() + diffToMonday);
+    endOfWeek.setDate(endOfWeek.getDate() + diffToSunday);
+
+    startOfWeek.setHours(0, 0, 0, 0);
+    endOfWeek.setHours(23, 59, 59, 999);
+
+    return {
+        start: startOfWeek,
+        end: endOfWeek
+    }
+}
+
+export function getFancyWeekDisplay(date) {
+    const now = new Date();
+
+    const thisWeek = getWeekDuration(now);
+    const targetWeek = getWeekDuration(date);
+
+    const start = thisWeek.start.getTime();
+    const end = thisWeek.end.getTime();
+    const targetStart = targetWeek.start.getTime();
+
+    const oneWeekMs = 7 * 24 * 60 * 60 * 1000;
+
+    if (targetStart === start) {
+        return 'This week';
+    } else if (targetStart === start - oneWeekMs) {
+        return 'Last week';
+    } else if (targetStart === start + oneWeekMs) {
+        return 'Next week';
+    }
+
+    return null; // or something like "Other"
+}
+
+
+export function getDateDurationWeek(date: Date) {
+    const {start, end} = getWeekDuration(date);
+
+    const startDate = start.toLocaleDateString("de-CH", {day: "2-digit", month: "2-digit", year: 'numeric'});
+    const endDate = end.toLocaleDateString("de-CH", {day: "2-digit", month: "2-digit", year: 'numeric'});
+
+    return `${startDate} - ${endDate}`;
+}

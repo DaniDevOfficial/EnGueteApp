@@ -53,7 +53,7 @@ export function GroupMemberList() {
     }
 
     if (loading) {
-        return <PageSpinner />
+        return <PageSpinner/>
     }
     return (
         <>
@@ -67,15 +67,16 @@ export function GroupMemberList() {
             >
                 <VStack alignItems="center" space={4}>
                     {groupMembers && groupMembers.length > 0 ? (groupMembers.map((member, index) => {
-                        const isCurrentUser = member.userId === user.userId;
-                        return (
+                            const isCurrentUser = member.userId === user.userId;
+                            return (
                                 <MemberCard {...member} key={index}
                                             canKickUser={canPerformAction.canKickUser}
                                             canPromoteToAdmin={canPerformAction.canPromoteToAdmin}
                                             canPromoteToManager={canPerformAction.canPromoteToManager}
                                             isCurrentUser={isCurrentUser}
                                 />
-                        )})
+                            )
+                        })
                     ) : (
                         <Box mt={5}>
                             <Text color={"gray.500"} textAlign={"center"}>

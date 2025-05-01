@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {Box, Button, ScrollView, Text} from 'native-base';
+import {Box, Button, Flex, ScrollView, Text} from 'native-base';
 import {handleLogoutProcedure} from "../Util";
 import {GetGroupInformation, Group as GroupInformationType} from "../repo/Group";
 import {GroupInformationHeader} from "../components/group/GroupInformationHeader";
@@ -13,6 +13,7 @@ import {BackButton} from "../components/UI/BackButton";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 import {EditButton} from "../components/UI/EditButton";
 import {PageSpinner} from "../components/UI/PageSpinner";
+import {MealList} from "../components/group/MealList";
 
 export function Group() {
     const [groupInformation, setGroupInformation] = useState<GroupInformationType | undefined>()
@@ -37,6 +38,7 @@ export function Group() {
         try {
 
             const groupInformation = await GetGroupInformation(groupId);
+            console.log(groupInformation)
             if (groupInformation) {
                 setLoading(false)
                 let userRoleRights: string[] = [];
@@ -71,7 +73,7 @@ export function Group() {
 
 
     if (loading || groupInformation === undefined) {
-        return <PageSpinner />
+        return <PageSpinner/>
     }
 
     async function onRefresh() {
@@ -93,32 +95,14 @@ export function Group() {
         <>
             <BackButton color={'green'}/>
             <EditButton navigateTo={'groupSettings'}/>
-
-            <Box flex={1} alignItems="center">
-                <GroupInformationHeader groupInformation={groupInformation.groupInfo}/>
-                <ScrollView
-                    contentContainerStyle={{flexGrow: 1}}
-                    refreshControl={
-                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
-                    }
-                >
-                    {groupInformation.meals && groupInformation.meals.length > 0 ? groupInformation.meals.map((meal) => (
-                            <MealCard meal={meal} key={meal.mealId}/>
-                        )
-                    ) : (
-                        <>
-                            <Text>
-                                {texts.noMealsInThisGroup}
-                            </Text>
-                        </>
-                    )}
-                </ScrollView>
-                {groupInformation.groupInfo.userRoleRights.includes(PERMISSIONS.CAN_CREATE_MEAL) && (
-                    <Button my={4} onPress={handleNavigate}>
+            <MealList tempMeals={groupInformation.meals ?? []}/>
+            {groupInformation.groupInfo.userRoleRights.includes(PERMISSIONS.CAN_CREATE_MEAL) && (
+                <Box position="absolute" bottom={4} left={4} right={4}>
+                    <Button onPress={handleNavigate}>
                         {texts.createNewMeal}
                     </Button>
-                )}
-            </Box>
+                </Box>
+            )}
         </>
     );
 }
