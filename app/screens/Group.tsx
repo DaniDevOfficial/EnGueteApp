@@ -38,7 +38,7 @@ export function Group() {
         try {
 
             const groupInformation = await GetGroupInformation(groupId);
-            console.log(groupInformation)
+
             if (groupInformation) {
                 setLoading(false)
                 let userRoleRights: string[] = [];

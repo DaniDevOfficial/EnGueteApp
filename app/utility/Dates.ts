@@ -50,12 +50,20 @@ export function getFancyTimeDisplay(dateTimeString: string): string {
 
     if (diffDays > 1 && diffDays <= 7) {
 
-        return useText('thisWeekdayAtTime', {'weekday': useText(dayNames[target.getDay()]), 'time': target.toLocaleTimeString([], options)});
+        return useText('thisWeekdayAtTime', {
+            'weekday': useText(dayNames[target.getDay()]),
+            'time': target.toLocaleTimeString([], options)
+        });
     }
     const month = monthNames[target.getMonth()];
     const year = target.getFullYear();
     const thisYear = now.getFullYear();
-    return `${useText('onMonthDayAtTime', {year: year === thisYear ? '' : year.toString() ,month: useText(month), day: target.getDate().toString(), time: target.toLocaleTimeString([], options)})}`;
+    return `${useText('onMonthDayAtTime', {
+        year: year === thisYear ? '' : year.toString(),
+        month: useText(month),
+        day: target.getDate().toString(),
+        time: target.toLocaleTimeString([], options)
+    })}`;
 }
 
 export function toNormalDateTime(dateTimeString: string) {
@@ -71,12 +79,17 @@ export function toNormalDateTime(dateTimeString: string) {
     const year = target.getFullYear();
     const thisYear = now.getFullYear();
 
-    return `${useText('onMonthDayAtTime', {year: year === thisYear ? '' : year.toString(), month: useText(month), day: target.getDate().toString(), time: target.toLocaleTimeString([], options)})}`;
+    return `${useText('onMonthDayAtTime', {
+        year: year === thisYear ? '' : year.toString(),
+        month: useText(month),
+        day: target.getDate().toString(),
+        time: target.toLocaleTimeString([], options)
+    })}`;
 }
 
 export function getSwissDateTimeDisplay(dateTime: Date) {
     const date = dateTime.toLocaleDateString("de-CH");
-    const time = dateTime.toLocaleTimeString("de-CH", { hour: "2-digit", minute: "2-digit", hour12: false });
+    const time = dateTime.toLocaleTimeString("de-CH", {hour: "2-digit", minute: "2-digit", hour12: false});
 
     return `${date} ${time}`;
 }
@@ -129,11 +142,11 @@ export function getFancyWeekDisplay(date) {
     const oneWeekMs = 7 * 24 * 60 * 60 * 1000;
 
     if (targetStart === start) {
-        return 'This week';
+        return 'thisWeek';
     } else if (targetStart === start - oneWeekMs) {
-        return 'Last week';
+        return 'lastWeek';
     } else if (targetStart === start + oneWeekMs) {
-        return 'Next week';
+        return 'nextWeek';
     }
 
     return null; // or something like "Other"

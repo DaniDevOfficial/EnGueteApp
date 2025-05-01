@@ -2,6 +2,7 @@ import {Box, Flex, IconButton, Text, Icon, Button} from "native-base";
 import {MaterialIcons} from "@expo/vector-icons";
 import {useEffect, useState} from "react";
 import {getDateDurationWeek, getFancyWeekDisplay} from "../../utility/Dates";
+import {useText, useTexts} from "../../utility/TextKeys/TextKeys";
 
 interface Props {
     onDateChange: (date: Date) => Promise<void>;
@@ -11,11 +12,11 @@ export function MealFilterSection({onDateChange}: Props) {
     const [primaryText, setPrimaryText] = useState<string>("");
     const [secondaryText, setSecondaryText] = useState<string|null>("");
     const [currentDate, setCurrentDate] = useState<Date>(getThisWeeksWednesday());
-
+    const text = useTexts(['thisWeek', 'lastWeek', 'nextWeek']);
     function handleTextChange(date: Date) {
         const fancyText = getFancyWeekDisplay(date);
         if (fancyText) {
-            setPrimaryText(fancyText);
+            setPrimaryText(text[fancyText]);
             setSecondaryText(getDateDurationWeek(date))
         } else {
             setPrimaryText(getDateDurationWeek(date));
