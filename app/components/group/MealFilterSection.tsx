@@ -10,14 +10,15 @@ interface Props {
 export function MealFilterSection({onDateChange}: Props) {
     const [primaryText, setPrimaryText] = useState<string>("");
     const [secondaryText, setSecondaryText] = useState<string|null>("");
-    const [currentDate, setCurrentDate] = useState<Date>(getThisWeeksWendsDay());
-    function handleTextChange() {
-        const fancyText = getFancyWeekDisplay(currentDate);
+    const [currentDate, setCurrentDate] = useState<Date>(getThisWeeksWednesday());
+
+    function handleTextChange(date: Date) {
+        const fancyText = getFancyWeekDisplay(date);
         if (fancyText) {
             setPrimaryText(fancyText);
-            setSecondaryText(getDateDurationWeek(currentDate))
+            setSecondaryText(getDateDurationWeek(date))
         } else {
-            setPrimaryText(getDateDurationWeek(currentDate));
+            setPrimaryText(getDateDurationWeek(date));
             setSecondaryText(null)
         }
     }
@@ -26,13 +27,12 @@ export function MealFilterSection({onDateChange}: Props) {
         const newDate = new Date(currentDate);
         newDate.setDate(newDate.getDate() + amount);
         setCurrentDate(newDate);
-        handleTextChange();
         await onDateChange(newDate);
     }
 
     useEffect(() => {
-        handleTextChange();
-    }, []);
+        handleTextChange(currentDate);
+    }, [currentDate]);
     return (
         <Box
             background="white"
@@ -41,7 +41,7 @@ export function MealFilterSection({onDateChange}: Props) {
             padding={2}
             width="95%"
             alignSelf="center"
-
+            height={60}
         >
             <Flex direction="row" align="center" justify="space-between">
                 <IconButton
@@ -73,14 +73,15 @@ export function MealFilterSection({onDateChange}: Props) {
     );
 }
 
-function getThisWeeksWendsDay() {
+function getThisWeeksWednesday() {
     const now = new Date();
     const day = now.getDay();
-    const diffToWednesday = 3 - (day === 0 ? 7 : day);
+
+    const diffToWednesday = (day >= 3 ? day - 3 : -(3 - day));
 
     const wednesday = new Date(now);
-    wednesday.setDate(now.getDate() + diffToWednesday);
+    wednesday.setDate(now.getDate() - diffToWednesday);
     wednesday.setHours(12, 0, 0, 0);
 
     return wednesday;
-};
+}

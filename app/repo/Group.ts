@@ -63,9 +63,10 @@ export interface KickUserRequest {
 
 
 export async function GetGroupInformation(groupId: string): Promise<GroupResponse> {
+    const now = new Date();
 
     const timeoutPromise = timeoutPromiseFactory()
-    const url = BACKEND_URL + 'groups?groupId=' + groupId
+    const url = BACKEND_URL + 'groups?groupId=' + groupId + '&weekFilter=' + now.toISOString();
     const fetchPromise = await fetch(url, {
         method: 'GET',
         headers: await getBasicAuthHeader(),
@@ -177,6 +178,19 @@ export async function KickUserFromGroup(requestData: KickUserRequest){
         method: 'POST',
         headers: await getBasicAuthHeader(),
         body: JSON.stringify(requestData),
+    });
+
+    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
+    await handleDefaultResponseAndHeaders(res)
+    return await res.json();
+}
+
+export async function GetGroupMeals(groupId: string, date: string): Promise<MealCard[]> {
+    const url = BACKEND_URL + 'groups/meals?groupId=' + groupId + '&filterDate=' + date;
+    const timeoutPromise = timeoutPromiseFactory()
+    const fetchPromise = await fetch(url, {
+        method: 'GET',
+        headers: await getBasicAuthHeader(),
     });
 
     const res: Response = await Promise.race([fetchPromise, timeoutPromise]);

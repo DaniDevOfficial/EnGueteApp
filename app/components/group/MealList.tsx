@@ -1,9 +1,10 @@
 import {Box, Flex, ScrollView, Text} from "native-base";
 import React from "react";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
-import {MealCard as MealCardType} from "../../repo/Group";
+import {GetGroupMeals, MealCard as MealCardType} from "../../repo/Group";
 import {MealCard} from "./MealCard";
 import {MealFilterSection} from "./MealFilterSection";
+import {useGroup} from "../../context/groupContext";
 
 interface MealListProps {
     tempMeals: MealCardType[];
@@ -11,11 +12,20 @@ interface MealListProps {
 
 export function MealList({tempMeals}: MealListProps) {
     const text = useTexts(['noMealsInThisGroup']);
+    const {group} = useGroup();
+
     const [meals, setMeals] = React.useState<MealCardType[]>(tempMeals);
+
 
     async function loadMeals(filterDate: Date | null) {
         if (filterDate) {
-            // TODO: load just meals
+            try {
+                const meals = await GetGroupMeals(group.groupId, filterDate.toISOString());
+                setMeals(meals);
+            } catch (e) {
+                console.log(e); //TODO: Handle errors
+                setMeals([]);
+            }
         } else {
             setMeals(tempMeals);
         }
