@@ -13,9 +13,9 @@ interface MealListProps {
 
 export function MealList({tempMeals}: MealListProps) {
     const text = useTexts(['noMealsInThisWeek']);
-    const {group} = useGroup();
+    const {group, setGroup} = useGroup();
     const [loading, setLoading] = React.useState(false);
-    const [date, setDate] = React.useState(new Date());
+    const [date, setDate] = React.useState(group.filterDate);
     const [meals, setMeals] = React.useState<MealCardType[]>(tempMeals);
 
 
@@ -23,6 +23,7 @@ export function MealList({tempMeals}: MealListProps) {
         if (filterDate) {
             setLoading(true);
             setDate(filterDate);
+            setGroup({...group, filterDate: filterDate});
             try {
                 const meals = await GetGroupMeals(group.groupId, filterDate.toISOString());
                 setMeals(meals);

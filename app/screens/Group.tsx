@@ -50,6 +50,7 @@ export function Group() {
                     groupId: groupInformation.groupInfo.groupId,
                     groupName: groupInformation.groupInfo.groupName,
                     userRoleRights,
+                    filterDate: new Date(),
                 })
             }
         } catch (e) {
