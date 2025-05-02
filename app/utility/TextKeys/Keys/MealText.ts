@@ -14,6 +14,10 @@ export type MealTextType =
     | 'editPreferences'
     | 'preference'
     | 'isCook'
+    | 'nameOfTheMeal'
+    | 'enterANameForTheMeal'
+    | 'typeOfMealExample'
+    | 'whenTheMealWillTakePlace'
     ;
 
 export type MealTextKeyType = {
@@ -41,8 +45,8 @@ export const MealTextKey: MealTextKeyType = {
         english: 'Meal type',
     },
     'mealTypePlaceholder': {
-        german: 'Abendessen',
-        english: 'Dinner',
+        german: 'Mittag, Abendessen...',
+        english: 'Lunch, Dinner...',
     },
     'scheduledAt': {
         german: 'Geplant für',

@@ -8,6 +8,8 @@ import {DateTimePickerAndroid} from "@react-native-community/datetimepicker";
 import {getSwissDateTimeDisplay} from "../utility/Dates";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {BackButton} from "../components/UI/BackButton";
+import {showDatePicker} from "../components/Utility/DatePicker";
+import {useTexts} from "../utility/TextKeys/TextKeys";
 
 export interface NewMealType {
     title: string,
@@ -17,16 +19,18 @@ export interface NewMealType {
 }
 
 export function NewMeal() {
+
+    const {group} = useGroup()
+    const groupId = group.groupId;
+    const navigation = useNavigation();
+    const text = useTexts(['mealName', 'mealNamePlaceholder', 'mealType', 'mealTypePlaceholder', 'scheduledAt', 'scheduledAtPlaceholder', 'mealDescription', 'mealDescriptionPlaceholder', 'createNewMeal', 'isRequired']);
+
     const [title, setTitle] = useState<string | undefined>();
     const [type, setType] = useState<string | undefined>();
     const [scheduledAt, setScheduledAt] = useState<string | undefined>();
     const [scheduledAtDate, setScheduledAtDate] = useState<Date>(new Date());
     const [notes, setNotes] = useState<string | undefined>();
 
-    const {group} = useGroup()
-
-    const groupId = group.groupId;
-    const navigation = useNavigation();
 
     const [touched, setTouched] = useState({
         title: false,
@@ -43,9 +47,9 @@ export function NewMeal() {
     const [isDisabledSubmit, setIsDisabledSubmit] = useState(true);
 
     useEffect(() => {
-        const titleError = !title?.trim() ? "meal name is required" : "";
-        const scheduledAtError = !scheduledAt?.trim() ? "Scheduled time is required" : "";
-        const typeError = !type?.trim() ? "meal Type is required" : "";
+        const titleError = !title?.trim() ? text.mealName + ' ' + text.isRequired : "";
+        const scheduledAtError = !scheduledAt?.trim() ? text.scheduledAt + ' ' + text.isRequired : "";
+        const typeError = !type?.trim() ? text.scheduledAt + ' ' + text.isRequired : "";
 
         setErrors({
             title: touched.title ? titleError : "",
@@ -98,21 +102,12 @@ export function NewMeal() {
         setScheduledAt(text);
     }
 
-    function showMode (currentMode: "date" | "time", onChange = onChangeDatePicker, selectedDate: Date) {
-        DateTimePickerAndroid.open({
-            value: selectedDate,
-            onChange,
-            mode: currentMode,
-            is24Hour: true,
-        });
-    };
-
-    function showDatepicker() {
+    function showDatepickerSequencing() {
         setTouched({...touched, scheduledAt: true});
-        showMode("date", (event, selectedDate) => {
+        showDatePicker("date", (event: any, selectedDate: any) => {
             if (selectedDate) {
                 onChangeDatePicker(event, selectedDate);
-                showMode("time", onChangeDatePicker, selectedDate);
+                showDatePicker("time", onChangeDatePicker, selectedDate);
             }
         }, scheduledAtDate);
     }
@@ -123,13 +118,13 @@ export function NewMeal() {
             <VStack space={4} padding={4}>
 
                 <FormControl isRequired isInvalid={errors.title}>
-                    <FormControl.Label>Meal Name</FormControl.Label>
+                    <FormControl.Label>{text.mealName}</FormControl.Label>
                     <Input
                         value={title}
                         onChangeText={(text) => setTitle(text)}
                         onBlur={() => setTouched((prev) => ({...prev, title: true}))}
                         p={3}
-                        placeholder="Enter a title for the meal"
+                        placeholder={text.mealNamePlaceholder}
                     />
                     {errors.title ? (
                         <FormControl.ErrorMessage
@@ -137,12 +132,12 @@ export function NewMeal() {
                     ) : null}
                 </FormControl>
                 <FormControl isRequired isInvalid={errors.type !== ''}>
-                    <FormControl.Label>Meal Type</FormControl.Label>
+                    <FormControl.Label>{text.mealType}</FormControl.Label>
                     <Input
                         value={type}
                         onChangeText={setType}
                         p={3}
-                        placeholder="Type of the meal"
+                        placeholder={text.mealTypePlaceholder}
                     />
                     {errors.type ? (
                         <FormControl.ErrorMessage
@@ -150,15 +145,15 @@ export function NewMeal() {
                     ) : null}
                 </FormControl>
                 <FormControl isRequired isInvalid={errors.scheduledAt}>
-                    <FormControl.Label>Scheduled At</FormControl.Label>
+                    <FormControl.Label>{text.scheduledAt}</FormControl.Label>
                     <Input
                         value={scheduledAt /*TODO DatePicker */}
                         isReadOnly={true}
                         p={3}
-                        placeholder="When the meal will take place"
+                        placeholder={text.scheduledAtPlaceholder}
                         InputRightElement={
                             <Button onPress={() => {
-                                showDatepicker()
+                                showDatepickerSequencing()
                             }} size="xs" p={3}>
                                 <Icon as={Ionicons} name="calendar" size={5} color={`white`}/>
                             </Button>
@@ -170,15 +165,15 @@ export function NewMeal() {
                     ) : null}
                 </FormControl>
                 <FormControl>
-                    <FormControl.Label>General Notes</FormControl.Label>
+                    <FormControl.Label>{text.mealDescription}</FormControl.Label>
                     <TextArea
                         value={notes}
                         onChangeText={setNotes}
-                        placeholder="Notes like grocery list"
+                        placeholder={text.mealDescriptionPlaceholder}
                     />
                 </FormControl>
                 <Button onPress={handleSubmit} isDisabled={isDisabledSubmit}>
-                    Create New Meal
+                    {text.createNewMeal}
                 </Button>
             </VStack>
         </>
