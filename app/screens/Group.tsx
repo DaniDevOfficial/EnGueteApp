@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {Box, Button, Flex, ScrollView, Text} from 'native-base';
+import {Box, Button, Flex, Heading, ScrollView, Text} from 'native-base';
 import {handleLogoutProcedure} from "../Util";
 import {GetGroupInformation, Group as GroupInformationType} from "../repo/Group";
 import {GroupInformationHeader} from "../components/group/GroupInformationHeader";
@@ -14,12 +14,13 @@ import {useTexts} from "../utility/TextKeys/TextKeys";
 import {EditButton} from "../components/UI/EditButton";
 import {PageSpinner} from "../components/UI/PageSpinner";
 import {MealList} from "../components/group/MealList";
+import {Title} from "../components/UI/Icons/Title";
 
 export function Group() {
     const [groupInformation, setGroupInformation] = useState<GroupInformationType | undefined>()
     const [loading, setLoading] = useState(true)
     const route = useRoute();
-    const texts = useTexts(['createNewMeal']);
+    const text = useTexts(['createNewMeal', 'member', 'members']);
 
     // @ts-ignore
     const {groupId} = route.params;
@@ -89,11 +90,12 @@ export function Group() {
         <>
             <BackButton color={'green'}/>
             <EditButton navigateTo={'groupSettings'}/>
+            <Title title={groupInformation.groupInfo.groupName} />
             <MealList tempMeals={groupInformation.meals ?? []}/>
             {groupInformation.groupInfo.userRoleRights.includes(PERMISSIONS.CAN_CREATE_MEAL) && (
                 <Box position="absolute" bottom={4} left={4} right={4}>
                     <Button onPress={handleNavigate}>
-                        {texts.createNewMeal}
+                        {text.createNewMeal}
                     </Button>
                 </Box>
             )}

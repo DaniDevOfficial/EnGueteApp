@@ -9,14 +9,14 @@ type PillProps = {
 export function PillTag({text, colorScheme = 'black'}: PillProps) {
     return (
         <Box
-            px="3"
-            py="1"
+            px="2"
+            py="0.5"
             borderRadius="full"
             borderColor={`${colorScheme}.500`}
             borderWidth={'1px'}
             mx="1"
         >
-            <Text>
+            <Text isTruncated>
                 {text}
             </Text>
         </Box>

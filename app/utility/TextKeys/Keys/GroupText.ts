@@ -23,6 +23,7 @@ export type GroupTextType =
     | 'demoteManager'
     | 'kickFromGroup'
     | 'member'
+    | 'members'
     | 'manager'
     | 'admin'
     | 'groupSettings'
@@ -134,6 +135,10 @@ export const GroupTextKey: GroupTextKeyType = {
     'member': {
         german: 'Mitglied',
         english: 'Member',
+    },
+    'members': {
+        german: 'Mitglieder',
+        english: 'Members',
     },
     'manager': {
         german: 'Manager',
