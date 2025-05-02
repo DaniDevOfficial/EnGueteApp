@@ -13,7 +13,7 @@ export type MiscTextType =
     | 'qrCode'
     | 'copyLink'
     | 'copiedLink'
-    | 'thisWeek'
+    | 'currentWeek'
     | 'lastWeek'
     | 'nextWeek'
     ;
@@ -74,9 +74,9 @@ export const MiscTextKey: MiscTextKeyType = {
         german: 'QR-Code',
         english: 'QR code',
     },
-    'thisWeek': {
-        german: 'Diese Woche',
-        english: 'This week',
+    'currentWeek': {
+        german: 'Jetzige Woche',
+        english: 'Current week',
     },
     'lastWeek': {
         german: 'Letzte Woche',

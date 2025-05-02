@@ -129,27 +129,26 @@ export function getWeekDuration(date: Date) {
     }
 }
 
-export function getFancyWeekDisplay(date) {
+export function getFancyWeekDisplay(date: Date) {
     const now = new Date();
 
     const thisWeek = getWeekDuration(now);
     const targetWeek = getWeekDuration(date);
 
     const start = thisWeek.start.getTime();
-    const end = thisWeek.end.getTime();
     const targetStart = targetWeek.start.getTime();
 
     const oneWeekMs = 7 * 24 * 60 * 60 * 1000;
 
     if (targetStart === start) {
-        return 'thisWeek';
+        return 'currentWeek';
     } else if (targetStart === start - oneWeekMs) {
         return 'lastWeek';
     } else if (targetStart === start + oneWeekMs) {
         return 'nextWeek';
     }
 
-    return null; // or something like "Other"
+    return null;
 }
 
 

@@ -51,7 +51,7 @@ type JWTPayload = {
 };
 
 
-function decodeJwt(token: string): JWTPayload {
+function decodeJwt(token: string): JWTPayload | null {
     try {
         const parts = token.split(".");
 

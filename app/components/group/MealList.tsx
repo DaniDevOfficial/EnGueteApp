@@ -12,7 +12,7 @@ interface MealListProps {
 }
 
 export function MealList({tempMeals}: MealListProps) {
-    const text = useTexts(['noMealsInThisGroup']);
+    const text = useTexts(['noMealsInThisWeek']);
     const {group} = useGroup();
     const [loading, setLoading] = React.useState(false);
     const [date, setDate] = React.useState(new Date());
@@ -71,7 +71,7 @@ export function MealList({tempMeals}: MealListProps) {
                     ) : (
                         <Box py={10}>
                             <Text>
-                                {text.noMealsInThisGroup}
+                                {text.noMealsInThisWeek}
                             </Text>
                         </Box>
                     )}

@@ -9,6 +9,7 @@ export type GroupTextType =
     | 'oneParticipant'
     | 'participants'
     | 'noMealsInThisGroup'
+    | 'noMealsInThisWeek'
     | 'createNewMeal'
     | 'createNewGroup'
     | 'groupName'
@@ -77,6 +78,10 @@ export const GroupTextKey: GroupTextKeyType = {
     'noMealsInThisGroup': {
         german: 'Keine Mahlzeiten gefunden 😞',
         english: 'No meals found 😞',
+    },
+    'noMealsInThisWeek': {
+        german: 'Keine Mahlzeiten für diese Woche gefunden 😞',
+        english: 'No meals found for this Week 😞',
     },
     'createNewMeal': {
         german: 'Neue Mahlzeit erstellen',

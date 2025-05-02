@@ -18,9 +18,8 @@ import {MealList} from "../components/group/MealList";
 export function Group() {
     const [groupInformation, setGroupInformation] = useState<GroupInformationType | undefined>()
     const [loading, setLoading] = useState(true)
-    const [refreshing, setRefreshing] = useState(false)
     const route = useRoute();
-    const texts = useTexts(['noMealsInThisGroup', 'createNewMeal']);
+    const texts = useTexts(['createNewMeal']);
 
     // @ts-ignore
     const {groupId} = route.params;
@@ -31,7 +30,6 @@ export function Group() {
     const navigation = useNavigation()
     useEffect(() => {
         getGroupData()
-
     }, [groupId]);
 
     async function getGroupData() {

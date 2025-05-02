@@ -13,7 +13,7 @@ export function MealFilterSection({onDateChange}: Props) {
     const [primaryText, setPrimaryText] = useState<string>("");
     const [secondaryText, setSecondaryText] = useState<string | null>("");
     const [currentDate, setCurrentDate] = useState<Date>(getWednesdayOfWeek());
-    const text = useTexts(['thisWeek', 'lastWeek', 'nextWeek']);
+    const text = useTexts(['currentWeek', 'lastWeek', 'nextWeek']);
 
     function handleTextChange(date: Date) {
         const fancyText = getFancyWeekDisplay(date);
