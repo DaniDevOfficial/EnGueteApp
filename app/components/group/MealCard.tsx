@@ -19,21 +19,11 @@ export function MealCard({meal}: MealCardProps) {
         // @ts-ignore
         navigation.navigate('meal', { mealId: meal.mealId });
     }
-
-    let preferenceText = meal.userPreference;
-    if (preferenceText.length > 10) {
-        preferenceText = preferenceText.substring(0, 10) + '...';
-    }
-    let mealTitle = meal.title;
-    if (mealTitle.length > 10) {
-        mealTitle = mealTitle.substring(0, 20) + '...';
-    }
-
-
+    
     const whenText = getFancyTimeDisplay(meal.dateTime)
     const participantsText = getParticipantsText(meal.participantCount)
     return (
-        <Pressable onPress={handleNavigate} alignItems={'center'}>
+        <Pressable onPress={handleNavigate} alignItems={'center'} width={'100%'}>
             <Box alignItems="center" p="4" borderRadius="md" backgroundColor={"coolGray.300"} width={'95%'} my={2}>
                 <Flex
                     justifyContent={"space-between"}
@@ -44,18 +34,18 @@ export function MealCard({meal}: MealCardProps) {
                         w='50%'
                         flexDir={'column'}
                     >
-                        <Text>
-                            {mealTitle}
+                        <Text isTruncated>
+                            {meal.title}
                         </Text>
-                        <Text>{whenText}</Text>
+                        <Text isTruncated>{whenText}</Text>
                     </Flex>
-                    <Flex alignItems={'flex-end'}>
-                        <Text>
+                    <Flex alignItems={'flex-end'} w={'50%'}>
+                        <Text isTruncated>
                             {participantsText}
                         </Text>
                         <Flex flexDir={'row'}>
                             {meal.isCook && <PillTag text={'‍👨‍🍳'} />}
-                            <PillTag text={mealPreferenceText(preferenceText)} colorScheme={'orange'} />
+                            <PillTag text={mealPreferenceText(meal.userPreference)} colorScheme={'orange'} />
                         </Flex>
                     </Flex>
                 </Flex>

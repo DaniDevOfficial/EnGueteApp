@@ -4,6 +4,7 @@ export type Group = {
     groupId: string;
     groupName: string;
     userRoleRights: string[];
+    filterDate: Date;
 };
 
 type GroupContextType = {
@@ -30,6 +31,7 @@ export function GroupProvider({ children }: GroupProviderProps): JSX.Element {
         groupId: '',
         groupName: '',
         userRoleRights: [],
+        filterDate: new Date(),
     });
 
     return (

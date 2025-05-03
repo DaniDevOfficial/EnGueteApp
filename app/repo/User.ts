@@ -44,14 +44,26 @@ export async function GetUserInformation(authToken: string): Promise<User> {
     return await res.json();
 }
 
+export async function GetUserGroups(): Promise<Group[]> {
+    const url = BACKEND_URL + 'users/groups';
+    const timeoutPromise = timeoutPromiseFactory()
+    const fetchPromise = await fetch(url, {
+        method: 'GET',
+        headers: await getBasicAuthHeader(),
+    });
+
+    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
+    await handleDefaultResponseAndHeaders(res)
+    return await res.json();
+}
+
 type JWTPayload = {
     UserId: string;
     Username: string;
     Exp: number;
 };
 
-
-function decodeJwt(token: string): JWTPayload {
+function decodeJwt(token: string): JWTPayload | null {
     try {
         const parts = token.split(".");
 

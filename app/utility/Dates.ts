@@ -50,12 +50,20 @@ export function getFancyTimeDisplay(dateTimeString: string): string {
 
     if (diffDays > 1 && diffDays <= 7) {
 
-        return useText('thisWeekdayAtTime', {'weekday': useText(dayNames[target.getDay()]), 'time': target.toLocaleTimeString([], options)});
+        return useText('thisWeekdayAtTime', {
+            'weekday': useText(dayNames[target.getDay()]),
+            'time': target.toLocaleTimeString([], options)
+        });
     }
     const month = monthNames[target.getMonth()];
     const year = target.getFullYear();
     const thisYear = now.getFullYear();
-    return `${useText('onMonthDayAtTime', {year: year === thisYear ? '' : year.toString() ,month: useText(month), day: target.getDate().toString(), time: target.toLocaleTimeString([], options)})}`;
+    return `${useText('onMonthDayAtTime', {
+        year: year === thisYear ? '' : year.toString(),
+        month: useText(month),
+        day: target.getDate().toString(),
+        time: target.toLocaleTimeString([], options)
+    })}`;
 }
 
 export function toNormalDateTime(dateTimeString: string) {
@@ -71,12 +79,17 @@ export function toNormalDateTime(dateTimeString: string) {
     const year = target.getFullYear();
     const thisYear = now.getFullYear();
 
-    return `${useText('onMonthDayAtTime', {year: year === thisYear ? '' : year.toString(), month: useText(month), day: target.getDate().toString(), time: target.toLocaleTimeString([], options)})}`;
+    return `${useText('onMonthDayAtTime', {
+        year: year === thisYear ? '' : year.toString(),
+        month: useText(month),
+        day: target.getDate().toString(),
+        time: target.toLocaleTimeString([], options)
+    })}`;
 }
 
 export function getSwissDateTimeDisplay(dateTime: Date) {
     const date = dateTime.toLocaleDateString("de-CH");
-    const time = dateTime.toLocaleTimeString("de-CH", { hour: "2-digit", minute: "2-digit", hour12: false });
+    const time = dateTime.toLocaleTimeString("de-CH", {hour: "2-digit", minute: "2-digit", hour12: false});
 
     return `${date} ${time}`;
 }
@@ -94,4 +107,56 @@ export function getGreetingBasedOnTime(): 'morning' | 'day' | 'afternoon' | 'eve
     } else {
         return 'evening';
     }
+}
+
+export function getWeekDuration(date: Date) {
+    const startOfWeek = new Date(date);
+    const endOfWeek = new Date(date);
+
+    const day = date.getDay();
+    const diffToMonday = day === 0 ? -6 : 1 - day;
+    const diffToSunday = day === 0 ? 0 : 7 - day;
+
+    startOfWeek.setDate(startOfWeek.getDate() + diffToMonday);
+    endOfWeek.setDate(endOfWeek.getDate() + diffToSunday);
+
+    startOfWeek.setHours(0, 0, 0, 0);
+    endOfWeek.setHours(23, 59, 59, 999);
+
+    return {
+        start: startOfWeek,
+        end: endOfWeek
+    }
+}
+
+export function getFancyWeekDisplay(date: Date) {
+    const now = new Date();
+
+    const thisWeek = getWeekDuration(now);
+    const targetWeek = getWeekDuration(date);
+
+    const start = thisWeek.start.getTime();
+    const targetStart = targetWeek.start.getTime();
+
+    const oneWeekMs = 7 * 24 * 60 * 60 * 1000;
+
+    if (targetStart === start) {
+        return 'currentWeek';
+    } else if (targetStart === start - oneWeekMs) {
+        return 'lastWeek';
+    } else if (targetStart === start + oneWeekMs) {
+        return 'nextWeek';
+    }
+
+    return null;
+}
+
+
+export function getDateDurationWeek(date: Date) {
+    const {start, end} = getWeekDuration(date);
+
+    const startDate = start.toLocaleDateString("de-CH", {day: "2-digit", month: "2-digit", year: 'numeric'});
+    const endDate = end.toLocaleDateString("de-CH", {day: "2-digit", month: "2-digit", year: 'numeric'});
+
+    return `${startDate} - ${endDate}`;
 }

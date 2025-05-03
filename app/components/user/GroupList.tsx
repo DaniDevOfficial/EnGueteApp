@@ -1,0 +1,98 @@
+import {Box, Input, InputGroup, Pressable, ScrollView, Text, VStack} from "native-base";
+import {RefreshControl} from "react-native-gesture-handler";
+import {GroupCard} from "./GroupCard";
+import React, {useEffect, useState} from "react";
+import {useNavigation} from "@react-navigation/native";
+import {GetUserGroups, Group} from "../../repo/User";
+import {useTexts} from "../../utility/TextKeys/TextKeys";
+
+export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
+    const navigation = useNavigation();
+    const text = useTexts(['youAreInNoGroup', 'startByJoiningOrCreating', 'yourGroups', 'createNewGroup', 'searchForGroup']);
+
+    const [refreshing, setRefreshing] = useState(false);
+    const [groups, setGroups] = useState(groupsDefault);
+    const [filteredGroups, setFilteredGroups] = useState(groups);
+    const [searchQuery, setSearchQuery] = useState('');
+
+    async function onRefresh() {
+        setRefreshing(true);
+        try {
+
+            const groupsResponse = await GetUserGroups()
+            setGroups(groupsResponse)
+        } catch (error) {
+            console.log(error)
+        }
+        setRefreshing(false);
+    }
+
+    function handleSearch(query: string) {
+        const filtered = groups.filter((group) =>
+            group.groupName.toLowerCase().includes(query.toLowerCase())
+        );
+        setFilteredGroups(filtered);
+    }
+    useEffect(() => {
+        handleSearch(searchQuery);
+    }, [groups]);
+
+    return (
+        <>
+            <Box
+                height="1px"
+                width="90%"
+                backgroundColor="coolGray.300"
+                marginY="3px"
+            />
+
+            <Text fontWeight={"bold"} fontSize={"2xl"}>{text.yourGroups}</Text>
+            {filteredGroups.length > 0 && (
+                <InputGroup w={'100%'} justifyContent={'center'} alignItems={'center'}>
+                    <Input
+                        width={'70%'}
+                        onChangeText={(text) => {
+                            setSearchQuery(text);
+                            handleSearch(text);
+                        }}
+                        placeholder={text.searchForGroup}
+                        value={searchQuery}
+                    />
+                </InputGroup>
+            )}
+            <ScrollView
+                w={'100%'}
+                contentContainerStyle={{flexGrow: 1}}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+                }
+            >
+                <VStack alignItems="center" w={'100%'}>
+                    {filteredGroups && filteredGroups.length > 0 ? (filteredGroups.map((group) => (
+                            <GroupCard group={group} key={group.groupId}/>
+                        ))
+                    ) : (
+                        <Box mt={5}>
+                            <Text color={"gray.500"} textAlign={"center"}>
+                                {text.youAreInNoGroup}
+                            </Text>
+
+                            <Text color={"gray.500"} textAlign={"center"}>
+                                {text.startByJoiningOrCreating}
+                            </Text>
+                        </Box>
+                    )}
+                </VStack>
+
+            </ScrollView>
+            <Pressable
+                onPress={() => {
+                    navigation.navigate('test')
+                }}
+            >
+                <Text>Test</Text>
+            </Pressable>
+        </>
+
+    )
+}

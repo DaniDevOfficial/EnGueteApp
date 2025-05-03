@@ -9,8 +9,10 @@ export type GroupTextType =
     | 'oneParticipant'
     | 'participants'
     | 'noMealsInThisGroup'
+    | 'noMealsInThisWeek'
     | 'createNewMeal'
     | 'createNewGroup'
+    | 'searchForGroup'
     | 'groupName'
     | 'deleteGroup'
     | 'deleteGroupRequiredText'
@@ -22,6 +24,7 @@ export type GroupTextType =
     | 'demoteManager'
     | 'kickFromGroup'
     | 'member'
+    | 'members'
     | 'manager'
     | 'admin'
     | 'groupSettings'
@@ -78,6 +81,10 @@ export const GroupTextKey: GroupTextKeyType = {
         german: 'Keine Mahlzeiten gefunden 😞',
         english: 'No meals found 😞',
     },
+    'noMealsInThisWeek': {
+        german: 'Keine Mahlzeiten für diese Woche gefunden 😞',
+        english: 'No meals found for this Week 😞',
+    },
     'createNewMeal': {
         german: 'Neue Mahlzeit erstellen',
         english: 'Create new meal',
@@ -85,6 +92,10 @@ export const GroupTextKey: GroupTextKeyType = {
     'createNewGroup': {
         german: 'Neue Gruppe erstellen',
         english: 'Create new group',
+    },
+    'searchForGroup': {
+        german: 'Nach Gruppe suchen',
+        english: 'Search for group',
     },
     'groupName': {
         german: 'Gruppenname',
@@ -129,6 +140,10 @@ export const GroupTextKey: GroupTextKeyType = {
     'member': {
         german: 'Mitglied',
         english: 'Member',
+    },
+    'members': {
+        german: 'Mitglieder',
+        english: 'Members',
     },
     'manager': {
         german: 'Manager',

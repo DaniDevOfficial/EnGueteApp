@@ -3,6 +3,7 @@
 export type MiscTextType =
     | 'at'
     | 'on'
+    | 'isRequired'
     | 'placeholderIsRequired'
     | 'placeholderIsInvalid'
     | 'actions'
@@ -12,6 +13,9 @@ export type MiscTextType =
     | 'qrCode'
     | 'copyLink'
     | 'copiedLink'
+    | 'currentWeek'
+    | 'lastWeek'
+    | 'nextWeek'
     ;
 
 export type MiscTextKeyType = {
@@ -33,6 +37,10 @@ export const MiscTextKey: MiscTextKeyType = {
     'placeholderIsRequired': {
         german: '[what] ist erforderlich',
         english: '[what] is required',
+    },
+    'isRequired': {
+        german: 'ist erforderlich',
+        english: 'is required',
     },
     'placeholderIsInvalid': {
         german: '[what] ist ungültig',
@@ -65,5 +73,17 @@ export const MiscTextKey: MiscTextKeyType = {
     'qrCode': {
         german: 'QR-Code',
         english: 'QR code',
+    },
+    'currentWeek': {
+        german: 'Jetzige Woche',
+        english: 'Current week',
+    },
+    'lastWeek': {
+        german: 'Letzte Woche',
+        english: 'Last week',
+    },
+    'nextWeek': {
+        german: 'Nächste Woche',
+        english: 'Next week',
     },
 }
