@@ -12,6 +12,7 @@ export type GroupTextType =
     | 'noMealsInThisWeek'
     | 'createNewMeal'
     | 'createNewGroup'
+    | 'searchForGroup'
     | 'groupName'
     | 'deleteGroup'
     | 'deleteGroupRequiredText'
@@ -91,6 +92,10 @@ export const GroupTextKey: GroupTextKeyType = {
     'createNewGroup': {
         german: 'Neue Gruppe erstellen',
         english: 'Create new group',
+    },
+    'searchForGroup': {
+        german: 'Nach Gruppe suchen',
+        english: 'Search for group',
     },
     'groupName': {
         german: 'Gruppenname',
