@@ -1,3 +1,6 @@
+import {useSettings} from "../context/settingsContext";
+import {ErrorTextKey} from "./TextKeys/Keys/ErrorText";
+
 export class UnauthorizedError extends Error {
     constructor(message: any) {
         super(message);
@@ -70,5 +73,18 @@ export const FRONTEND_ERRORS = {
 
     MEAL_DOES_NOT_EXIST_ERROR: "mealDoesNotExistError",
 
-    FILTERS_ARE_NOT_VALID_ERROR: "filtersAreNotValidError"
+    FILTERS_ARE_NOT_VALID_ERROR: "filtersAreNotValidError",
+
+    UNKNOWN_ERROR: "unknownError",
+}
+
+export function useErrorText() {
+    const { language } = useSettings();
+
+    function getErrorText(errorKey: string): string {
+        // @ts-ignore
+        return ErrorTextKey[errorKey]?.[language] ?? ErrorTextKey[FRONTEND_ERRORS.UNKNOWN_ERROR]?.[language];
+    }
+
+    return getErrorText;
 }

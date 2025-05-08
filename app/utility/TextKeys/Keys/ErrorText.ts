@@ -1,5 +1,3 @@
-
-
 export type ErrorTextType =
     | 'error'
     | 'errorPleaseEnterCorrectText'
@@ -25,7 +23,9 @@ export type ErrorTextType =
     | 'usernameIsAlreadyTakenError'
     | 'wrongUsernameOrPasswordError'
     | 'mealDoesNotExistError'
-    | 'filtersAreNotValidError';
+    | 'filtersAreNotValidError'
+    | 'unknownError'
+    ;
 
 export type ErrorTextKeyType = {
     [K in ErrorTextType]: {
@@ -40,7 +40,7 @@ export const ErrorTextKey: ErrorTextKeyType = {
         english: 'Error',
     },
     errorPleaseEnterCorrectText: {
-        german: 'Bitte geben Sie den richtigen Text ein',
+        german: 'Bitte gib den richtigen Text ein',
         english: 'Please enter the correct text',
     },
     errorNoOfflineLogout: {
@@ -48,7 +48,7 @@ export const ErrorTextKey: ErrorTextKeyType = {
         english: 'Offline logout is not possible',
     },
     ifYouSeeThisPleaseReport: {
-        german: 'Wenn Sie dies sehen, melden Sie es bitte',
+        german: 'Wenn du dies siehst, melde es bitte',
         english: 'If you see this, please report it',
     },
     unauthorizedError: {
@@ -72,11 +72,11 @@ export const ErrorTextKey: ErrorTextKeyType = {
         english: 'Invalid request',
     },
     notAllowedToDeleteGroupError: {
-        german: 'Sie dürfen diese Gruppe nicht löschen',
+        german: 'Du darfst diese Gruppe nicht löschen',
         english: 'You are not allowed to delete this group',
     },
     notAllowedToUpdateGroupError: {
-        german: 'Sie dürfen diese Gruppe nicht bearbeiten',
+        german: 'Du darfst diese Gruppe nicht bearbeiten',
         english: 'You are not allowed to update this group',
     },
     groupDoesNotExistError: {
@@ -96,7 +96,7 @@ export const ErrorTextKey: ErrorTextKeyType = {
         english: 'Failed to create group',
     },
     youCantKickOrBanYourselfError: {
-        german: 'Sie können sich nicht selbst entfernen oder blockieren',
+        german: 'Du kannst dich nicht selbst entfernen oder blockieren',
         english: "You can't kick or ban yourself",
     },
     invalidRoleError: {
@@ -134,5 +134,9 @@ export const ErrorTextKey: ErrorTextKeyType = {
     filtersAreNotValidError: {
         german: 'Filter sind ungültig',
         english: 'Filters are not valid',
-    }
+    },
+    unknownError: {
+        german: 'Unbekannter Fehler',
+        english: 'Unknown error',
+    },
 }
