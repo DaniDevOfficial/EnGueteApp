@@ -29,7 +29,7 @@ export function Login() {
 
     const navigation = useNavigation()
 
-    const text = useTexts(['maybeLater', 'joinGroup', 'youWereInvited', 'groupInvite']);
+    const text = useTexts(['welcomeBack', 'pleaseSignIn', 'username', 'enterUsername', 'password', 'enterPassword', 'login', 'orCreateAnAccount']);
 
 
     async function handleSubmit() {
@@ -61,10 +61,10 @@ export function Login() {
             )}
             <Box safeArea p="5" py="8" w="90%" maxW="290" bg="white" rounded="lg" shadow={2}>
                 <Heading size="lg" fontWeight="600" color="coolGray.800" textAlign="center">
-                    {useText('welcomeBack')}
+                    {text.welcomeBack}
                 </Heading>
                 <Heading mt="1" color="coolGray.600" fontWeight="medium" size="xs" textAlign="center">
-                    {useText('pleaseSignIn')}
+                    {text.pleaseSignIn}
                 </Heading>
 
                 <VStack space={4} mt="5">
@@ -75,24 +75,24 @@ export function Login() {
                     ) : null}
 
                     <FormControl>
-                        <FormControl.Label>{useText('username')}</FormControl.Label>
+                        <FormControl.Label>{text.username}</FormControl.Label>
                         <Input
                             value={username}
                             onChangeText={(text) => setUsername(text)}
                             variant="filled"
                             p={3}
-                            placeholder={useText('enterUsername')}
+                            placeholder={text.enterUsername}
                             rounded="md"
                         />
                     </FormControl>
                     <FormControl>
-                        <FormControl.Label>Password</FormControl.Label>
+                        <FormControl.Label>{text.password}</FormControl.Label>
                         <Input
                             value={password}
                             onChangeText={(text) => setPassword(text)}
                             variant="filled"
                             p={3}
-                            placeholder={useText('enterPassword')}
+                            placeholder={text.enterPassword}
                             type="password"
                             rounded="md"
                         />
@@ -103,7 +103,7 @@ export function Login() {
                         _text={{fontSize: "md"}}
                         onPress={handleSubmit}
                     >
-                        {useText('login')}
+                        {text.login}
                     </Button>
                 </VStack>
                 <Pressable
@@ -116,7 +116,7 @@ export function Login() {
                             <HStack alignItems="center" space={2}>
                                 <Divider flex={1} bg="coolGray.300"/>
                                 <Text fontSize="sm" color="coolGray.400">
-                                    {useText('orCreateAnAccount')}
+                                    {text.orCreateAnAccount}
                                 </Text>
                                 <Divider flex={1} bg="coolGray.300"/>
                             </HStack>

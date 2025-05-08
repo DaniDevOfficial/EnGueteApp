@@ -1,4 +1,4 @@
-import {BAD_REQUEST, FORBIDDEN, INTERNAL_SERVER_ERROR, UNAUTHORIZED} from "./HttpResponseCodes";
+import {BAD_REQUEST, FORBIDDEN, INTERNAL_SERVER_ERROR, NOT_FOUND, UNAUTHORIZED} from "./HttpResponseCodes";
 import {BadRequestError, ForbiddenError, InternalServerError, UnauthorizedError} from "./Errors";
 import {handleAuthorisationKeysFromHeader} from "./Auth";
 
@@ -7,25 +7,32 @@ import {handleAuthorisationKeysFromHeader} from "./Auth";
  * @param response
  */
 export async function handleDefaultResponseAndHeaders(response: Response) {
-    handleResponse(response);
+    await handleResponse(response);
     await handleAuthorisationKeysFromHeader(response.headers);
 }
 
 
-export function handleResponse(response: Response) {
+export async function handleResponse(response: Response) {
+
     if (!response.ok) {
+        const data = await response.json();
+        const errorMessage = data.error || false;
         if (response.status === UNAUTHORIZED) {
-            throw new UnauthorizedError('Not authorized');
+            throw new UnauthorizedError(errorMessage ?? 'unauthorizedError');
         }
         if (response.status === FORBIDDEN) {
-            throw new ForbiddenError('You are not allowed to access these Resources');
+            throw new ForbiddenError(errorMessage ?? 'forbiddenError');
         }
         if (response.status === BAD_REQUEST) {
-            throw new BadRequestError('Wrong data provided');
+            throw new BadRequestError(errorMessage ?? 'badRequestError');
         }
         if (response.status === INTERNAL_SERVER_ERROR) {
-            throw new InternalServerError("Internal server error");
+            throw new InternalServerError(errorMessage ?? "serverError");
         }
-        throw new Error('An unexpected error occurred');
+        if (response.status === NOT_FOUND) {
+            throw new Error(errorMessage ?? 'notFoundError');
+        }
+
+        throw new Error(errorMessage ?? 'errorOccurred');
     }
 }

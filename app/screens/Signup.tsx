@@ -29,7 +29,7 @@ export function Signup() {
     const [inviteToken, setInviteToken] = useState<string | null>(null);
 
     const navigation = useNavigation();
-    const text = useTexts(['maybeLater', 'joinGroup', 'youWereInvited', 'groupInvite']);
+    const text = useTexts(['newAccountGreetingsText', 'createNewAccount', 'username', 'enterUsername', 'email', 'enterEmail', 'password', 'enterPassword', 'createNewAccount', 'orLogin']);
 
     async function handleSubmit() {
         setError('');
@@ -60,10 +60,10 @@ export function Signup() {
             )}
             <Box safeArea p="5" py="8" w="90%" maxW="290" bg="white" rounded="lg" shadow={2}>
                 <Heading size="lg" fontWeight="600" color="coolGray.800" textAlign="center">
-                    {useText('newAccountGreetingsText')}
+                    {text.newAccountGreetingsText}
                 </Heading>
                 <Heading mt="1" color="coolGray.600" fontWeight="medium" size="xs" textAlign="center">
-                    {useText('createNewAccount')}
+                    {text.createNewAccount}
                 </Heading>
 
                 <VStack space={4} mt="5">
@@ -74,36 +74,36 @@ export function Signup() {
                     ) : null}
 
                     <FormControl>
-                        <FormControl.Label>{useText('username')}</FormControl.Label>
+                        <FormControl.Label>{text.username}</FormControl.Label>
                         <Input
                             value={username}
                             onChangeText={(text) => setUsername(text)}
                             variant="filled"
                             p={3}
-                            placeholder={useText('enterUsername')}
+                            placeholder={text.enterUsername}
                             rounded="md"
                         />
                     </FormControl>
                     <FormControl>
-                        <FormControl.Label>{useText('email')}</FormControl.Label>
+                        <FormControl.Label>{text.email}</FormControl.Label>
                         <Input
                             value={email}
                             onChangeText={(text) => setEmail(text)}
                             variant="filled"
                             p={3}
-                            placeholder={useText('enterEmail')}
+                            placeholder={text.enterEmail}
                             type="text"
                             rounded="md"
                         />
                     </FormControl>
                     <FormControl>
-                        <FormControl.Label>{useText('password')}</FormControl.Label>
+                        <FormControl.Label>{text.password}</FormControl.Label>
                         <Input
                             value={password}
                             onChangeText={(text) => setPassword(text)}
                             variant="filled"
                             p={3}
-                            placeholder={useText('enterPassword')}
+                            placeholder={text.enterPassword}
                             type="password"
                             rounded="md"
                         />
@@ -114,7 +114,7 @@ export function Signup() {
                         _text={{fontSize: "md"}}
                         onPress={handleSubmit}
                     >
-                        {useText('createNewAccount')}
+                        {text.createNewAccount}
                     </Button>
                 </VStack>
                 <Pressable
@@ -125,7 +125,7 @@ export function Signup() {
                             <HStack alignItems="center" space={2}>
                                 <Divider flex={1} bg="coolGray.300"/>
                                 <Text fontSize="sm" color="coolGray.400">
-                                    {useText('orLogin')}
+                                    {text.orLogin}
                                 </Text>
                                 <Divider flex={1} bg="coolGray.300"/>
                             </HStack>
