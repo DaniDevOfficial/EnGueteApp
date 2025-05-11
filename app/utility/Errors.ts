@@ -36,6 +36,13 @@ export class ForbiddenError extends Error {
     }
 }
 
+export class NotFoundError extends Error {
+    constructor(message: any) {
+        super(message);
+        this.name = 'NotFoundError';
+    }
+}
+
 export class TimeoutError extends Error {
     constructor(message: any) {
         super(message);

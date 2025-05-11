@@ -1,5 +1,12 @@
 import {BAD_REQUEST, FORBIDDEN, INTERNAL_SERVER_ERROR, NOT_FOUND, UNAUTHORIZED} from "./HttpResponseCodes";
-import {BadRequestError, ForbiddenError, FRONTEND_ERRORS, InternalServerError, UnauthorizedError} from "./Errors";
+import {
+    BadRequestError,
+    ForbiddenError,
+    FRONTEND_ERRORS,
+    InternalServerError,
+    NotFoundError,
+    UnauthorizedError
+} from "./Errors";
 import {handleAuthorisationKeysFromHeader} from "./Auth";
 
 /**
@@ -30,7 +37,7 @@ export async function handleResponse(response: Response) {
             throw new InternalServerError(errorMessage ?? FRONTEND_ERRORS.INTERNAL_SERVER_ERROR);
         }
         if (response.status === NOT_FOUND) {
-            throw new Error(errorMessage ?? FRONTEND_ERRORS.NOT_FOUND_ERROR);
+            throw new NotFoundError(errorMessage ?? FRONTEND_ERRORS.NOT_FOUND_ERROR);
         }
 
         throw new Error(errorMessage ?? FRONTEND_ERRORS.UNKNOWN_ERROR);
