@@ -10,7 +10,7 @@ import {
     HStack,
     Input,
     Pressable,
-    Text,
+    Text, useToast,
     VStack
 } from "native-base";
 import {CreateNewAccount} from "../repo/Auth";
@@ -20,6 +20,8 @@ import {useText, useTexts} from "../utility/TextKeys/TextKeys";
 
 import {getPendingInviteToken} from "../utility/DeepLinking";
 import {TokenPopupHandler} from "../components/Utility/JoinGroupPopup";
+import {showToast} from "../components/UI/Toast";
+import {useErrorText} from "../utility/Errors";
 
 export function Signup() {
     const [username, setUsername] = useState('Dani1-123');
@@ -29,25 +31,35 @@ export function Signup() {
     const [inviteToken, setInviteToken] = useState<string | null>(null);
 
     const navigation = useNavigation();
-    const text = useTexts(['newAccountGreetingsText', 'createNewAccount', 'username', 'enterUsername', 'email', 'enterEmail', 'password', 'enterPassword', 'createNewAccount', 'orLogin']);
+    const text = useTexts(['error', 'newAccountGreetingsText', 'createNewAccount', 'username', 'enterUsername', 'email', 'enterEmail', 'password', 'enterPassword', 'createNewAccount', 'orLogin', 'bothFieldsAreRequired']);
+    const toast = useToast();
+    const getError = useErrorText();
 
     async function handleSubmit() {
         setError('');
         if (!username || !password) {
-            setError('Both fields are required.');
+            showToast({
+                toast,
+                title: text.error,
+                description: text.bothFieldsAreRequired,
+                status: "error",
+            })
             return;
         }
         try {
-            const response = await CreateNewAccount(username, email ,password)
-            resetToUserScreen(navigation)
+            await CreateNewAccount(username, email, password)
             const token = await getPendingInviteToken();
-
             if (token) {
                 setInviteToken(token);
             }
+            resetToUserScreen(navigation)
         } catch (e) {
-            setError(e.message);
-            //TODO: Make some toasts
+            showToast({
+                toast,
+                title: text.error,
+                description: getError(e.message),
+                status: "error",
+            })
         }
     }
 
@@ -67,12 +79,6 @@ export function Signup() {
                 </Heading>
 
                 <VStack space={4} mt="5">
-                    {error ? (
-                        <Text color="red.500" fontSize="sm" textAlign="center">
-                            {error}
-                        </Text>
-                    ) : null}
-
                     <FormControl>
                         <FormControl.Label>{text.username}</FormControl.Label>
                         <Input
@@ -118,7 +124,9 @@ export function Signup() {
                     </Button>
                 </VStack>
                 <Pressable
-                    onPress={() => {navigation.navigate('login')}}
+                    onPress={() => {
+                        navigation.navigate('login')
+                    }}
                 >
                     <Flex justifyContent={"center"} alignItems={"center"}>
                         <Box w="90%" maxW="290" mt={5}>

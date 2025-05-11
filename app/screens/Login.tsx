@@ -10,7 +10,7 @@ import {
     HStack,
     Input,
     Pressable,
-    Text,
+    Text, useToast,
     VStack
 } from "native-base";
 import {SignIntoAccount} from "../repo/Auth";
@@ -20,26 +20,31 @@ import {useText, useTexts} from "../utility/TextKeys/TextKeys";
 
 import {getPendingInviteToken} from "../utility/DeepLinking";
 import {TokenPopupHandler} from "../components/Utility/JoinGroupPopup";
+import {useErrorText} from "../utility/Errors";
+import {showToast} from "../components/UI/Toast";
 
 export function Login() {
     const [username, setUsername] = useState('Dani1-123');
     const [password, setPassword] = useState('Dani1-123');
-    const [error, setError] = useState('');
     const [inviteToken, setInviteToken] = useState<string | null>(null);
 
     const navigation = useNavigation()
 
-    const text = useTexts(['welcomeBack', 'pleaseSignIn', 'username', 'enterUsername', 'password', 'enterPassword', 'login', 'orCreateAnAccount']);
-
-
+    const text = useTexts(['error', 'welcomeBack', 'pleaseSignIn', 'username', 'enterUsername', 'password', 'enterPassword', 'login', 'orCreateAnAccount', 'bothAreRequired']);
+    const toast = useToast();
+    const getError = useErrorText();
     async function handleSubmit() {
-        setError('');
         if (!username || !password) {
-            setError('Both fields are required.');
+            showToast({
+                toast,
+                title: text.error,
+                description: text.bothFieldsAreRequired,
+                status: "warning",
+            })
             return;
         }
         try {
-            const res = await SignIntoAccount(username, password)
+            await SignIntoAccount(username, password)
             const token = await getPendingInviteToken();
             if (token) {
                 setInviteToken(token);
@@ -47,10 +52,14 @@ export function Login() {
             resetToUserScreen(navigation)
 
         } catch (e) {
-            setError(e.message);
-            //TODO: Make some toasts
+            showToast({
+                toast,
+                title: text.login,
+                description: getError(e.message),
+                status: "error",
+            })
         }
-    };
+    }
 
     return (
         <Center flex={1} bg="coolGray.100">
@@ -68,11 +77,6 @@ export function Login() {
                 </Heading>
 
                 <VStack space={4} mt="5">
-                    {error ? (
-                        <Text color="red.500" fontSize="sm" textAlign="center">
-                            {error}
-                        </Text>
-                    ) : null}
 
                     <FormControl>
                         <FormControl.Label>{text.username}</FormControl.Label>

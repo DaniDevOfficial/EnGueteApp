@@ -1,4 +1,4 @@
-import {UnauthorizedError} from "./Errors";
+import {FRONTEND_ERRORS, UnauthorizedError} from "./Errors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AUTH_TOKEN_STRING = 'authToken';
@@ -22,7 +22,7 @@ export async function getBasicAuthHeader(): Promise<SimpleAuthHeaderWithJson> {
     const refreshToken = await getRefreshToken();
     const authToken = await getAuthToken() ?? '';
     if (!refreshToken) {
-        throw new UnauthorizedError('Not authorized');
+        throw new UnauthorizedError(FRONTEND_ERRORS.UNAUTHORIZED_ERROR);
     }
     return {
         RefreshToken: refreshToken,

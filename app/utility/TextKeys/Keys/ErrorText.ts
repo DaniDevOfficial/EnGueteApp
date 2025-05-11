@@ -1,10 +1,12 @@
 export type ErrorTextType =
     | 'error'
+    | 'bothFieldsAreRequired'
     | 'errorPleaseEnterCorrectText'
     | 'errorNoOfflineLogout'
     | 'ifYouSeeThisPleaseReport'
     | 'unauthorizedError'
     | 'forbiddenError'
+    | 'youAreNotAllowedToPerformThisAction'
     | 'notFoundError'
     | 'internalServerError'
     | 'badRequestError'
@@ -39,6 +41,10 @@ export const ErrorTextKey: ErrorTextKeyType = {
         german: 'Fehler',
         english: 'Error',
     },
+    bothFieldsAreRequired: {
+        german: 'Beide Felder sind erforderlich',
+        english: 'Both fields are required',
+    },
     errorPleaseEnterCorrectText: {
         german: 'Bitte gib den richtigen Text ein',
         english: 'Please enter the correct text',
@@ -58,6 +64,10 @@ export const ErrorTextKey: ErrorTextKeyType = {
     forbiddenError: {
         german: 'Zugriff verweigert',
         english: 'Access denied',
+    },
+    youAreNotAllowedToPerformThisAction: {
+        german: 'Du bist nicht berechtigt, diese Aktion auszuführen',
+        english: 'You are not allowed to perform this action',
     },
     notFoundError: {
         german: 'Nicht gefunden',

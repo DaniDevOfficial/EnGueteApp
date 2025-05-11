@@ -2,7 +2,7 @@
 import {BACKEND_URL} from '@env';
 import {timeoutPromiseFactory} from "../Util";
 import {getBasicAuthHeader} from "../utility/Auth";
-import {UnauthorizedError} from "../utility/Errors";
+import {FRONTEND_ERRORS, UnauthorizedError} from "../utility/Errors";
 import {handleDefaultResponseAndHeaders} from "../utility/Response";
 
 export interface User {
@@ -29,10 +29,10 @@ export interface Group {
 export async function GetUserInformation(authToken: string): Promise<User> {
     const payload = decodeJwt(authToken);
     if (!payload) {
-        throw new UnauthorizedError('Unauthorized');
+        throw new UnauthorizedError(FRONTEND_ERRORS.UNAUTHORIZED_ERROR);
     }
     const timeoutPromise = timeoutPromiseFactory()
-    const url = BACKEND_URL + 'users/' + payload['UserId']
+    const url = BACKEND_URL + 'users/';
 
     const fetchPromise = await fetch(url, {
         method: 'GET',
@@ -68,7 +68,7 @@ function decodeJwt(token: string): JWTPayload | null {
         const parts = token.split(".");
 
         if (parts.length !== 3) {
-            throw new Error("Invalid JWT token format.");
+            return null
         }
 
         const payload = parts[1];

@@ -51,6 +51,8 @@ export const FRONTEND_ERRORS = {
     INTERNAL_SERVER_ERROR: "internalServerError",
     BAD_REQUEST_ERROR: "badRequestError",
 
+    NOT_ALLOWED_TO_PERFORM_ACTION: "youAreNotAllowedToPerformThisAction",
+
     NOT_ALLOWED_TO_DELETE_GROUP_ERROR: "notAllowedToDeleteGroupError",
     NOT_ALLOWED_TO_UPDATE_GROUP_ERROR: "notAllowedToUpdateGroupError",
     GROUP_DOES_NOT_EXIST_ERROR: "groupDoesNotExistError",
