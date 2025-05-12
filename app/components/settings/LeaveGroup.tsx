@@ -6,11 +6,13 @@ import {useNavigation} from "@react-navigation/native";
 import {useGroup} from "../../context/groupContext";
 import {LeaveGroupRequest} from "../../repo/Group";
 import {resetToUserScreen} from "../../utility/navigation";
+import {useErrorText} from "../../utility/Errors";
 
 export function LeaveGroup() {
     const navigation = useNavigation();
     const toast = useToast();
     const group = useGroup();
+    const getError = useErrorText();
 
 
     const [isModalVisible, setModalVisible] = useState(false);
@@ -24,12 +26,11 @@ export function LeaveGroup() {
             setIsSaving(true);
             await LeaveGroupRequest(group.group.groupId);
             resetToUserScreen(navigation);
-        } catch (err) {
-            //TODO: error handling
+        } catch (e) {
             showToast({
                 toast,
                 title: text.error,
-                description: 'test',
+                description: getError(e.message),
                 status: 'error',
             });
         } finally {

@@ -6,11 +6,14 @@ import {useNavigation} from "@react-navigation/native";
 import {useGroup} from "../../context/groupContext";
 import {DeleteGroupRequest} from "../../repo/Group";
 import {resetToUserScreen} from "../../utility/navigation";
+import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Errors";
+import {handleLogoutProcedure} from "../../Util";
 
 export function DeleteGroup() {
     const navigation = useNavigation();
     const toast = useToast();
     const group = useGroup();
+    const getError = useErrorText();
 
 
     const [isModalVisible, setModalVisible] = useState(false);
@@ -20,7 +23,7 @@ export function DeleteGroup() {
 
     const pleaseEnterText = useText('pleaseEnterTextToConfirm', {'text': requiredText});
 
-    const texts = useTexts(['deleteGroup', 'error', 'errorPleaseEnterCorrectText', 'cancel'])
+    const text = useTexts(['deleteGroup', 'error', 'errorPleaseEnterCorrectText', 'cancel'])
 
 
     async function handleDelete() {
@@ -28,8 +31,8 @@ export function DeleteGroup() {
         if (value !== requiredText) {
             showToast({
                 toast,
-                title: texts.error,
-                description: texts.errorPleaseEnterCorrectText,
+                title: text.error,
+                description: text.errorPleaseEnterCorrectText,
                 status: 'error',
             });
             return;
@@ -39,28 +42,42 @@ export function DeleteGroup() {
             setIsSaving(true);
             await DeleteGroupRequest(group.group.groupId);
             resetToUserScreen(navigation);
-        } catch (err) {
+        } catch (e) {
             showToast({
                 toast,
-                title: texts.error,
-                description: 'test',
-                status: 'error',
-            });
+                title: text.error,
+                description: getError(e.message),
+                status: "warning",
+            })
+
+            if (e instanceof UnauthorizedError) {
+                await handleLogoutProcedure(navigation)
+                return;
+            }
+            if (e instanceof NotFoundError) {
+                if (e.message === FRONTEND_ERRORS.GROUP_DOES_NOT_EXIST_ERROR) {
+                    resetToUserScreen(navigation)
+                    return;
+                }
+                navigation.goBack();
+                return;
+            }
         } finally {
             setIsSaving(false);
 
         }
     }
+
     return (
         <>
             <Button onPress={() => setModalVisible(true)} colorScheme="red" width="100%" mt={4}>
                 <Text color="white" fontWeight="bold">
-                    {texts.deleteGroup}
+                    {text.deleteGroup}
                 </Text>
             </Button>
             <Modal isOpen={isModalVisible} onClose={() => setModalVisible(false)}>
                 <Modal.Content>
-                    <Modal.Header>{texts.deleteGroup}</Modal.Header>
+                    <Modal.Header>{text.deleteGroup}</Modal.Header>
                     <Modal.Body>
                         <Text>
                             {pleaseEnterText}
@@ -74,9 +91,10 @@ export function DeleteGroup() {
                         </FormControl>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button isLoading={isSaving} colorScheme={value !== requiredText ? "coolGray" : 'primary'} disabled={value !== requiredText} onPress={handleDelete}>{useText('save')}</Button>
+                        <Button isLoading={isSaving} colorScheme={value !== requiredText ? "coolGray" : 'primary'}
+                                disabled={value !== requiredText} onPress={handleDelete}>{useText('save')}</Button>
                         <Button variant="ghost" onPress={() => setModalVisible(false)}>
-                            {texts.cancel}
+                            {text.cancel}
                         </Button>
                     </Modal.Footer>
                 </Modal.Content>

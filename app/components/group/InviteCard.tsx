@@ -7,6 +7,10 @@ import * as Clipboard from 'expo-clipboard';
 import QRCode from 'react-native-qrcode-svg';
 import {showToast} from "../UI/Toast";
 import {DeleteInviteToken} from "../../repo/group/Invites";
+import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Errors";
+import {handleLogoutProcedure} from "../../Util";
+import {resetToUserScreen} from "../../utility/navigation";
+import {useNavigation} from "@react-navigation/native";
 
 interface InviteCardProps {
     inviteToken: string;
@@ -19,6 +23,10 @@ interface InviteCardProps {
 export function InviteCard({inviteToken, expiryDate, inviteLink, canVoid, onVoid}: InviteCardProps) {
     const text = useTexts(['voidToken', 'actions', 'expiresAt', 'copyLink', 'copiedLink', 'showQr', 'qrCode', 'close']);
     const toast = useToast();
+    const navigation = useNavigation();
+    const getError = useErrorText();
+
+
     const [showQr, setShowQr] = useState(false);
 
     const actions = [
@@ -52,13 +60,25 @@ export function InviteCard({inviteToken, expiryDate, inviteLink, canVoid, onVoid
                 status: "success",
             })
         } catch (e) {
-            console.log(e) //TODO: error handling
+
             showToast({
                 toast,
                 title: text.voidToken,
-                description: text.voidToken,
+                description: getError(e.message),
                 status: "error",
-            })
+            });
+
+            if (e instanceof UnauthorizedError) {
+                await handleLogoutProcedure(navigation)
+                return;
+            }
+            if (e instanceof NotFoundError) {
+                if (e.message === FRONTEND_ERRORS.GROUP_DOES_NOT_EXIST_ERROR) {
+                    resetToUserScreen(navigation)
+                    return;
+                }
+                return;
+            }
         }
     }
 

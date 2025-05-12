@@ -27,9 +27,7 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
             const groupsResponse = await GetUserGroups()
             setGroups(groupsResponse)
         } catch (e) {
-            if (e instanceof UnauthorizedError) {
-                await handleLogoutProcedure(navigation)
-            }
+
 
             showToast({
                 toast,
@@ -37,7 +35,10 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
                 description: getError(e.message),
                 status: "warning",
             })
-
+            if (e instanceof UnauthorizedError) {
+                await handleLogoutProcedure(navigation)
+                return;
+            }
         }
         setRefreshing(false);
     }

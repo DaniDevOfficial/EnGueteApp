@@ -1,19 +1,24 @@
 import React, {useState} from 'react';
-import {Box, Button, Flex, FormControl, Input, Modal, Pressable, Switch, Text} from 'native-base';
+import {Box, Button, Flex, FormControl, Input, Modal, Pressable, Switch, Text, useToast} from 'native-base';
 import {MealParticipants, saveMealPreference} from "../../repo/Meal";
-import {ForbiddenError, UnauthorizedError} from "../../utility/Errors";
+import {ForbiddenError, FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {useNavigation} from "@react-navigation/native";
 import {handleLogoutProcedure} from "../../Util";
 import {PillTag} from "../UI/Pilltag";
-import {mealPreferenceText} from "../../utility/TextKeys/TextKeys";
+import {mealPreferenceText, useTexts} from "../../utility/TextKeys/TextKeys";
+import {showToast} from "../UI/Toast";
+import {resetToUserScreen} from "../../utility/navigation";
 
 
 export function PreferenceCard({mealParticipants}: { mealParticipants: MealParticipants }) {
-    const [isModalVisible, setModalVisible] = useState(false);
-    const [newPreference, setNewPreference] = useState<null|string>(mealParticipants.preference);
-    const [newIsCook, setNewIsCook] = useState<null|boolean>(mealParticipants.isCook);
-
+    const toast = useToast();
+    const getError = useErrorText();
+    const text = useTexts(['error', 'errorPleaseEnterCorrectText', 'save', 'cancel', 'editMealPreference']);
     const navigation = useNavigation();
+
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [newPreference, setNewPreference] = useState<null | string>(mealParticipants.preference);
+    const [newIsCook, setNewIsCook] = useState<null | boolean>(mealParticipants.isCook);
 
     function handlePress() {
         setModalVisible(true);
@@ -21,7 +26,7 @@ export function PreferenceCard({mealParticipants}: { mealParticipants: MealParti
 
     async function handleSave() {
 
-        if (mealParticipants.isCook === newIsCook &&  mealParticipants.preference === newPreference) {
+        if (mealParticipants.isCook === newIsCook && mealParticipants.preference === newPreference) {
             setModalVisible(false);
             return;
         }
@@ -37,20 +42,25 @@ export function PreferenceCard({mealParticipants}: { mealParticipants: MealParti
         }
 
         try {
-        const res = await saveMealPreference(mealParticipants.userId, mealParticipants.mealId, preferenceParam, isCookParam);
-        //TODO: some logic for fancy update of the cah
+            const res = await saveMealPreference(mealParticipants.userId, mealParticipants.mealId, preferenceParam, isCookParam);
         } catch (e) {
+            showToast({
+                toast,
+                title: text.error,
+                description: getError(e.message),
+                status: "warning",
+            })
             if (e instanceof UnauthorizedError) {
                 await handleLogoutProcedure(navigation)
                 return;
             }
-
-            if (e instanceof ForbiddenError) {
-                console.log('This action is forbidden for this user')
-                //TODO: toast
+            if (e instanceof NotFoundError) {
+                if (e.message === FRONTEND_ERRORS.GROUP_DOES_NOT_EXIST_ERROR) {
+                    resetToUserScreen(navigation)
+                    return;
+                }
+                return;
             }
-            console.log(e.message)
-
         }
 
 
@@ -65,7 +75,7 @@ export function PreferenceCard({mealParticipants}: { mealParticipants: MealParti
                     {/*@ts-ignore*/}
                     <Flex gap={4} flexDir={'row'} alignItems={'center'}>
                         {mealParticipants.isCook && <Text>👨‍🍳</Text>}
-                        <PillTag text={mealPreferenceText(mealParticipants.preference)} />
+                        <PillTag text={mealPreferenceText(mealParticipants.preference)}/>
                     </Flex>
                 </Flex>
             </Box>

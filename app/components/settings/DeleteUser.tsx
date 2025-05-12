@@ -6,6 +6,7 @@ import {showToast} from "../UI/Toast";
 import {deleteCurrentUser} from "../../repo/settings/User";
 import {handleLogoutProcedure} from "../../Util";
 import {useNavigation} from "@react-navigation/native";
+import {useErrorText} from "../../utility/Errors";
 
 export function DeleteUser() {
     const user = useUser();
@@ -19,7 +20,8 @@ export function DeleteUser() {
     const title = useText('deleteAccount');
     const pleaseEnterText = useText('pleaseEnterTextToConfirm', {'text': requiredText});
 
-    const texts = useTexts(['deleteAccount', 'error', 'errorPleaseEnterCorrectText'])
+    const texts = useTexts(['deleteAccount', 'error', 'errorPleaseEnterCorrectText', 'cancel', 'confirm'])
+    const getError = useErrorText();
 
 
     async function handleSave() {
@@ -38,11 +40,11 @@ export function DeleteUser() {
             setIsSaving(true);
             await deleteCurrentUser();
             await handleLogoutProcedure(navigation);
-        } catch (err) {
+        } catch (e) {
             showToast({
                 toast,
                 title: texts.error,
-                description: 'test',
+                description: getError(e.message),
                 status: 'error',
             });
         } finally {
@@ -73,9 +75,9 @@ export function DeleteUser() {
                         </FormControl>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button isLoading={isSaving} colorScheme={value !== requiredText ? "coolGray" : 'primary'} disabled={value !== requiredText} onPress={handleSave}>{useText('save')}</Button>
+                        <Button isLoading={isSaving} colorScheme={value !== requiredText ? "coolGray" : 'primary'} disabled={value !== requiredText} onPress={handleSave}>{texts.confirm}</Button>
                         <Button variant="ghost" onPress={() => setModalVisible(false)}>
-                            {useText('cancel')}
+                            {texts.cancel}
                         </Button>
                     </Modal.Footer>
                 </Modal.Content>

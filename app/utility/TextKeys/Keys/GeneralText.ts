@@ -9,6 +9,7 @@ export type GeneralTextType =
     | 'cancel'
     | 'okay'
     | 'close'
+    | 'confirm'
     ;
 
 export type GeneralTextKeyType = {
@@ -47,5 +48,9 @@ export const GeneralTextKey: GeneralTextKeyType = {
     'close': {
         german: 'Schliessen',
         english: 'Close',
+    },
+    'confirm': {
+        german: 'Bestätigen',
+        english: 'Confirm',
     },
 }
