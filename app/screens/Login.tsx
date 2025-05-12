@@ -10,7 +10,7 @@ import {
     HStack,
     Input,
     Pressable,
-    Text,
+    Text, useToast,
     VStack
 } from "native-base";
 import {SignIntoAccount} from "../repo/Auth";
@@ -20,26 +20,31 @@ import {useText, useTexts} from "../utility/TextKeys/TextKeys";
 
 import {getPendingInviteToken} from "../utility/DeepLinking";
 import {TokenPopupHandler} from "../components/Utility/JoinGroupPopup";
+import {useErrorText} from "../utility/Errors";
+import {showToast} from "../components/UI/Toast";
 
 export function Login() {
     const [username, setUsername] = useState('Dani1-123');
     const [password, setPassword] = useState('Dani1-123');
-    const [error, setError] = useState('');
     const [inviteToken, setInviteToken] = useState<string | null>(null);
 
     const navigation = useNavigation()
 
-    const text = useTexts(['maybeLater', 'joinGroup', 'youWereInvited', 'groupInvite']);
-
-
+    const text = useTexts(['error', 'welcomeBack', 'pleaseSignIn', 'username', 'enterUsername', 'password', 'enterPassword', 'login', 'orCreateAnAccount', 'bothAreRequired']);
+    const toast = useToast();
+    const getError = useErrorText();
     async function handleSubmit() {
-        setError('');
         if (!username || !password) {
-            setError('Both fields are required.');
+            showToast({
+                toast,
+                title: text.error,
+                description: text.bothFieldsAreRequired,
+                status: "warning",
+            })
             return;
         }
         try {
-            const res = await SignIntoAccount(username, password)
+            await SignIntoAccount(username, password)
             const token = await getPendingInviteToken();
             if (token) {
                 setInviteToken(token);
@@ -47,10 +52,14 @@ export function Login() {
             resetToUserScreen(navigation)
 
         } catch (e) {
-            setError(e.message);
-            //TODO: Make some toasts
+            showToast({
+                toast,
+                title: text.login,
+                description: getError(e.message),
+                status: "error",
+            })
         }
-    };
+    }
 
     return (
         <Center flex={1} bg="coolGray.100">
@@ -61,38 +70,33 @@ export function Login() {
             )}
             <Box safeArea p="5" py="8" w="90%" maxW="290" bg="white" rounded="lg" shadow={2}>
                 <Heading size="lg" fontWeight="600" color="coolGray.800" textAlign="center">
-                    {useText('welcomeBack')}
+                    {text.welcomeBack}
                 </Heading>
                 <Heading mt="1" color="coolGray.600" fontWeight="medium" size="xs" textAlign="center">
-                    {useText('pleaseSignIn')}
+                    {text.pleaseSignIn}
                 </Heading>
 
                 <VStack space={4} mt="5">
-                    {error ? (
-                        <Text color="red.500" fontSize="sm" textAlign="center">
-                            {error}
-                        </Text>
-                    ) : null}
 
                     <FormControl>
-                        <FormControl.Label>{useText('username')}</FormControl.Label>
+                        <FormControl.Label>{text.username}</FormControl.Label>
                         <Input
                             value={username}
                             onChangeText={(text) => setUsername(text)}
                             variant="filled"
                             p={3}
-                            placeholder={useText('enterUsername')}
+                            placeholder={text.enterUsername}
                             rounded="md"
                         />
                     </FormControl>
                     <FormControl>
-                        <FormControl.Label>Password</FormControl.Label>
+                        <FormControl.Label>{text.password}</FormControl.Label>
                         <Input
                             value={password}
                             onChangeText={(text) => setPassword(text)}
                             variant="filled"
                             p={3}
-                            placeholder={useText('enterPassword')}
+                            placeholder={text.enterPassword}
                             type="password"
                             rounded="md"
                         />
@@ -103,7 +107,7 @@ export function Login() {
                         _text={{fontSize: "md"}}
                         onPress={handleSubmit}
                     >
-                        {useText('login')}
+                        {text.login}
                     </Button>
                 </VStack>
                 <Pressable
@@ -116,7 +120,7 @@ export function Login() {
                             <HStack alignItems="center" space={2}>
                                 <Divider flex={1} bg="coolGray.300"/>
                                 <Text fontSize="sm" color="coolGray.400">
-                                    {useText('orCreateAnAccount')}
+                                    {text.orCreateAnAccount}
                                 </Text>
                                 <Divider flex={1} bg="coolGray.300"/>
                             </HStack>

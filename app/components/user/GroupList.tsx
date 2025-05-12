@@ -1,14 +1,19 @@
-import {Box, Input, InputGroup, Pressable, ScrollView, Text, VStack} from "native-base";
+import {Box, Input, InputGroup, Pressable, ScrollView, Text, useToast, VStack} from "native-base";
 import {RefreshControl} from "react-native-gesture-handler";
 import {GroupCard} from "./GroupCard";
 import React, {useEffect, useState} from "react";
 import {useNavigation} from "@react-navigation/native";
 import {GetUserGroups, Group} from "../../repo/User";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
+import {UnauthorizedError, useErrorText} from "../../utility/Errors";
+import {showToast} from "../UI/Toast";
+import {handleLogoutProcedure} from "../../Util";
 
 export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
     const navigation = useNavigation();
-    const text = useTexts(['youAreInNoGroup', 'startByJoiningOrCreating', 'yourGroups', 'createNewGroup', 'searchForGroup']);
+    const text = useTexts(['youAreInNoGroup', 'startByJoiningOrCreating', 'yourGroups', 'createNewGroup', 'searchForGroup', 'error']);
+    const toast = useToast();
+    const getError = useErrorText();
 
     const [refreshing, setRefreshing] = useState(false);
     const [groups, setGroups] = useState(groupsDefault);
@@ -21,8 +26,19 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
 
             const groupsResponse = await GetUserGroups()
             setGroups(groupsResponse)
-        } catch (error) {
-            console.log(error)
+        } catch (e) {
+
+
+            showToast({
+                toast,
+                title: text.error,
+                description: getError(e.message),
+                status: "warning",
+            })
+            if (e instanceof UnauthorizedError) {
+                await handleLogoutProcedure(navigation)
+                return;
+            }
         }
         setRefreshing(false);
     }

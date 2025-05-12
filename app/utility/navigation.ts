@@ -1,7 +1,7 @@
 import {CommonActions, NavigationProp} from "@react-navigation/native";
 
 
-export function resetToHomeScreen(navigation: NavigationProp<any>) {
+export function resetToHomeScreen(navigation: unknown) {
     navigation.dispatch(
         CommonActions.reset({
             index: 0,
@@ -9,7 +9,7 @@ export function resetToHomeScreen(navigation: NavigationProp<any>) {
         })
     );
 }
-export function resetToUserScreen(navigation: NavigationProp<any>) {
+export function resetToUserScreen(navigation: unknown) {
     navigation.dispatch(
         CommonActions.reset({
             index: 0,

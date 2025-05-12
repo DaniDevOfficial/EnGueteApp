@@ -1,4 +1,4 @@
-import {Box, Button, Pressable, ScrollView, Text, VStack} from 'native-base'
+import {Box, Button, Pressable, ScrollView, Text, useToast, VStack} from 'native-base'
 import React, {useEffect, useState} from 'react'
 import {handleLogoutProcedure} from "../Util";
 import {useNavigation} from "@react-navigation/native";
@@ -6,47 +6,49 @@ import {GetUserInformation, Group, User as UserType} from "../repo/User";
 import {useUser} from "../context/userContext";
 import {UserCard} from "../components/user/UserCard";
 import {GroupCard} from "../components/user/GroupCard";
-import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
+import {ForbiddenError, UnauthorizedError, useErrorText} from "../utility/Errors";
 import {getAuthToken} from "../utility/Auth";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 import {EditButton} from "../components/UI/EditButton";
 import {RefreshControl} from "react-native-gesture-handler";
 import {PageSpinner} from "../components/UI/PageSpinner";
 import {GroupList} from "../components/user/GroupList";
+import {showToast} from "../components/UI/Toast";
 
 export function User() {
     const [userInformation, setUserInformation] = useState<UserType | undefined>()
     const [groupInformation, setGroupInformation] = useState<Group[]>([])
     const [loading, setLoading] = useState(true)
-    const text = useTexts(['youAreInNoGroup', 'startByJoiningOrCreating', 'yourGroups', 'createNewGroup']);
 
+    const text = useTexts(['youAreInNoGroup', 'startByJoiningOrCreating', 'yourGroups', 'createNewGroup', 'error']);
+    const toast = useToast();
+    const getError = useErrorText();
     const navigation = useNavigation();
-
     const {user, setUser: setUser} = useUser();
 
     async function getUserData() {
         try {
             const authToken = await getAuthToken()
             if (authToken === null) {
-                navigation.navigate('home')
+                await handleLogoutProcedure(navigation)
                 return
             }
             const userInformationRes = await GetUserInformation(authToken);
 
-            if (userInformationRes) {
-                setUserInformation(userInformationRes)
-                setGroupInformation(userInformationRes.groups)
-                setLoading(false)
-            }
+            setUserInformation(userInformationRes)
+            setGroupInformation(userInformationRes.groups)
+            setLoading(false)
         } catch (e) {
 
             if (e instanceof UnauthorizedError) {
                 await handleLogoutProcedure(navigation)
             }
-
-            if (e instanceof ForbiddenError) {
-                console.log('this acction is forbidden for this user')
-            }
+            showToast({
+                toast,
+                title: text.error,
+                description: getError(e.message),
+                status: "warning",
+            })
             console.log(e.message)
         }
     }
@@ -71,7 +73,7 @@ export function User() {
 
 
     if (loading || !userInformation || !user) {
-        return <PageSpinner />
+        return <PageSpinner/>
     }
 
     function handleNavigate() {
@@ -85,7 +87,7 @@ export function User() {
             <EditButton navigateTo={'userSettings'}/>
             <Box flex={1} alignItems="center" p={"10px 5px"}>
                 <UserCard user={user}/>
-                <GroupList groupsDefault={groupInformation} />
+                <GroupList groupsDefault={groupInformation}/>
             </Box>
             <Button my={4} onPress={handleNavigate}>
                 {text.createNewGroup}

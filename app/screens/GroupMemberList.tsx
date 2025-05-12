@@ -1,4 +1,4 @@
-import {Box, ScrollView, Text, VStack} from "native-base";
+import {Box, ScrollView, Text, useToast, VStack} from "native-base";
 import React, {useEffect, useState} from "react";
 import {useGroup} from "../context/groupContext";
 import {BackButton} from "../components/UI/BackButton";
@@ -10,11 +10,19 @@ import {CanPerformAction, PERMISSIONS} from "../utility/Roles";
 import {RefreshControl} from "react-native-gesture-handler";
 import {useUser} from "../context/userContext";
 import {PageSpinner} from "../components/UI/PageSpinner";
+import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../utility/Errors";
+import {showToast} from "../components/UI/Toast";
+import {handleLogoutProcedure} from "../Util";
+import {resetToUserScreen} from "../utility/navigation";
+import {useNavigation} from "@react-navigation/native";
 
 export function GroupMemberList() {
     const {group} = useGroup();
     const {user} = useUser();
-    const text = useTexts(['memberList', 'noMembers', 'ifYouSeeThisPleaseReport']);
+    const text = useTexts(['memberList', 'noMembers', 'ifYouSeeThisPleaseReport', 'error']);
+    const toast = useToast();
+    const getError = useErrorText();
+    const navigation = useNavigation();
     const [loading, setLoading] = useState(true);
     const [groupMembers, setGroupMembers] = useState<GroupMember[]>([]);
     const [canPerformAction, setCanPerformAction] = useState({
@@ -29,7 +37,26 @@ export function GroupMemberList() {
             const groupMembers = await GetGroupMemberList(group.groupId);
             setGroupMembers(groupMembers);
         } catch (e) {
-            console.error(e);
+            showToast({
+                toast,
+                title: text.error,
+                description: getError(e.message),
+                status: "warning",
+            })
+
+            if (e instanceof UnauthorizedError) {
+                await handleLogoutProcedure(navigation)
+                return;
+            }
+            if (e instanceof NotFoundError) {
+                if (e.message === FRONTEND_ERRORS.GROUP_DOES_NOT_EXIST_ERROR) {
+                    resetToUserScreen(navigation)
+                    return;
+                }
+                navigation.goBack();
+                return;
+            }
+            navigation.goBack();
         } finally {
             setLoading(false);
         }

@@ -1,4 +1,4 @@
-import {Box, Flex, ScrollView, Text} from "native-base";
+import {Box, Flex, ScrollView, Text, useToast} from "native-base";
 import React from "react";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {GetGroupMeals, MealCard as MealCardType} from "../../repo/Group";
@@ -6,14 +6,23 @@ import {MealCard} from "./MealCard";
 import {MealFilterSection} from "./MealFilterSection";
 import {useGroup} from "../../context/groupContext";
 import {RefreshControl} from "react-native-gesture-handler";
+import {showToast} from "../UI/Toast";
+import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Errors";
+import {handleLogoutProcedure} from "../../Util";
+import {useNavigation} from "@react-navigation/native";
+import {NOT_FOUND} from "../../utility/HttpResponseCodes";
+import {resetToUserScreen} from "../../utility/navigation";
 
 interface MealListProps {
     tempMeals: MealCardType[];
 }
 
 export function MealList({tempMeals}: MealListProps) {
-    const text = useTexts(['noMealsInThisWeek']);
+    const text = useTexts(['noMealsInThisWeek', 'error']);
+    const toast = useToast();
+    const getError = useErrorText();
     const {group, setGroup} = useGroup();
+    const navigation = useNavigation();
     const [loading, setLoading] = React.useState(false);
     const [date, setDate] = React.useState(group.filterDate);
     const [meals, setMeals] = React.useState<MealCardType[]>(tempMeals);
@@ -28,8 +37,24 @@ export function MealList({tempMeals}: MealListProps) {
                 const meals = await GetGroupMeals(group.groupId, filterDate.toISOString());
                 setMeals(meals);
             } catch (e) {
-                console.log(e); //TODO: Handle errors
+                showToast({
+                    toast,
+                    title: text.error,
+                    description: getError(e.message),
+                    status: "warning",
+                })
                 setMeals([]);
+
+                if (e instanceof UnauthorizedError) {
+                    await handleLogoutProcedure(navigation)
+                    return;
+                }
+
+                if (e instanceof NotFoundError) {
+                    resetToUserScreen(navigation)
+                    return;
+                }
+
             }
             setLoading(false);
         } else {

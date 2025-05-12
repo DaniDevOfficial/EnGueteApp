@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, FormControl, Icon, Input, TextArea, VStack, WarningOutlineIcon} from "native-base";
+import {Button, FormControl, Icon, Input, TextArea, useToast, VStack, WarningOutlineIcon} from "native-base";
 import {createNewMeal} from "../repo/Meal";
 import {StackActions, useNavigation} from "@react-navigation/native";
 import {useGroup} from "../context/groupContext";
@@ -10,6 +10,9 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import {BackButton} from "../components/UI/BackButton";
 import {showDatePicker} from "../components/Utility/DatePicker";
 import {useTexts} from "../utility/TextKeys/TextKeys";
+import {showToast} from "../components/UI/Toast";
+import {handleLogoutProcedure} from "../Util";
+import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
 
 export interface NewMealType {
     title: string,
@@ -23,7 +26,8 @@ export function NewMeal() {
     const {group} = useGroup()
     const groupId = group.groupId;
     const navigation = useNavigation();
-    const text = useTexts(['mealName', 'mealNamePlaceholder', 'mealType', 'mealTypePlaceholder', 'scheduledAt', 'scheduledAtPlaceholder', 'mealDescription', 'mealDescriptionPlaceholder', 'createNewMeal', 'isRequired']);
+    const text = useTexts(['mealName', 'mealNamePlaceholder', 'mealType', 'mealTypePlaceholder', 'scheduledAt', 'scheduledAtPlaceholder', 'mealDescription', 'mealDescriptionPlaceholder', 'createNewMeal', 'isRequired', 'error', 'youAreNotAllowedToPerformThisAction']);
+    const toast = useToast();
 
     const [title, setTitle] = useState<string | undefined>();
     const [type, setType] = useState<string | undefined>();
@@ -83,7 +87,20 @@ export function NewMeal() {
                 })
             );
         } catch (e) {
-            console.log(e.message())
+            showToast({
+                toast,
+                title: text.error,
+                description: text.youAreNotAllowedToPerformThisAction,
+                status: "warning",
+            })
+            if (e instanceof UnauthorizedError) {
+                await handleLogoutProcedure(navigation)
+                return;
+            }
+            if (e instanceof ForbiddenError) {
+                navigation.goBack();
+            }
+
         }
 
         setTouched({type: false, title: false, scheduledAt: false});
@@ -91,6 +108,12 @@ export function NewMeal() {
 
     useEffect(() => {
         if (!group.userRoleRights || !group.userRoleRights.includes(PERMISSIONS.CAN_CREATE_MEAL)) {
+            showToast({
+                toast,
+                title: text.error,
+                description: text.youAreNotAllowedToPerformThisAction,
+                status: "warning",
+            })
             navigation.goBack();
         }
     }, []);

@@ -1,7 +1,7 @@
 import {BACKEND_URL} from '@env';
 import {timeoutPromiseFactory} from "../Util";
 import {handleDefaultResponseAndHeaders} from "../utility/Response";
-import {UnauthorizedError} from "../utility/Errors";
+import {FRONTEND_ERRORS, UnauthorizedError} from "../utility/Errors";
 import {getAuthToken, getBasicAuthHeader, getRefreshToken} from "../utility/Auth";
 
 type ResponseAuth = {
@@ -69,11 +69,11 @@ export async function CreateNewAccount(
 export async function checkAuth() {
     const authToken = await getAuthToken();
     if (authToken === null) {
-        throw new UnauthorizedError('Not authorized');
+        throw new UnauthorizedError(FRONTEND_ERRORS.UNAUTHORIZED_ERROR);
     }
     const refreshToken = await getRefreshToken();
     if (refreshToken === null) {
-        throw new UnauthorizedError('Not authorized');
+        throw new UnauthorizedError(FRONTEND_ERRORS.UNAUTHORIZED_ERROR);
     }
     const URL = BACKEND_URL + 'auth/check';
     const timeoutPromise = timeoutPromiseFactory();
