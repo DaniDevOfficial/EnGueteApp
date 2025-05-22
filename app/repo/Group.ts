@@ -3,6 +3,7 @@ import {BACKEND_URL} from '@env';
 import {timeoutPromiseFactory} from "../Util";
 import {getBasicAuthHeader} from "../utility/Auth";
 import {handleDefaultResponseAndHeaders} from "../utility/Response";
+import {db} from "../utility/database";
 
 export interface Group {
     groupInfo: GroupInformation
@@ -196,4 +197,39 @@ export async function GetGroupMeals(groupId: string, date: string): Promise<Meal
     const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
     await handleDefaultResponseAndHeaders(res)
     return await res.json();
+}
+
+export async function GetAllGroupsFromBackend(): any {
+    const url = BACKEND_URL + 'sync/groups';
+    const timeoutPromise = timeoutPromiseFactory()
+    const fetchPromise = await fetch(url, {
+        method: 'GET',
+        headers: await getBasicAuthHeader(),
+    });
+
+    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
+    await handleDefaultResponseAndHeaders(res)
+    return await res.json();
+}
+
+export async function SyncAllGroups(): any {
+    const data = await GetAllGroupsFromBackend();
+    console.log('Syncing groups from backend 1');
+    const groups = data.groups;
+    await db.withTransactionAsync(async () => {
+        const now = new Date().toISOString();
+        for (const group of groups) {
+            console.log('Inserting group:', group.groupId);
+            await db.runAsync('INSERT OR REPLACE INTO groups (group_id, group_name, user_count, last_sync) VALUES (?, ?, ?, ?)', group.groupId, group.name, group.userCount, now);
+        }
+    })
+    console.log('Syncing groups from backend 2');
+    const inDatabase = await getAllGroupsFromLocalDB();
+    console.log(inDatabase);
+
+}
+
+async function getAllGroupsFromLocalDB() {
+    const groups = await db.getAllAsync('SELECT * FROM groups');
+    return groups
 }

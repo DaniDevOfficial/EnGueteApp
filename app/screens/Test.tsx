@@ -1,15 +1,18 @@
-import {Button, Text, useToast} from "native-base";
+import {Button, Input, Text, useToast} from "native-base";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {DateTimePickerAndroid} from "@react-native-community/datetimepicker";
-import {SetStateAction, useState} from "react";
+import {SetStateAction, useEffect, useState} from "react";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 import {useNavigation} from "@react-navigation/native";
 import {getLanguageFromAsyncStorage} from "../context/settingsContext";
 import {showToast} from "../components/UI/Toast";
+import {GetAllGroupsFromBackend} from "../repo/Group";
+import {createTable, db} from "../utility/database";
 
 export function Test() {
     const [date, setDate] = useState(new Date(1598051730000));
     const [language, setLanguage] = useState('none');
+    const [value, setValue] = useState('');
     const navigation = useNavigation();
     const toast = useToast();
     const onChange = (event: any, selectedDate: SetStateAction<Date>) => {
@@ -47,20 +50,62 @@ export function Test() {
         })
     }
 
+    async function getGroupsSync() {
+        try {
+            const data = await GetAllGroupsFromBackend();
+            console.log('data', data);
+        } catch (e) {
+            console.log('error', e);
+            showToast({
+                title: popupTexts.maybeLater,
+                description: popupTexts.groupInvite,
+                status: 'error',
+                toast
+            })
+        }
+    }
+
+    async function getDataFromSqlite() {
+        const allRows = await db.getAllAsync('SELECT * FROM test');
+        console.log('allRows', allRows);
+
+    }
+    async function addTestData() {
+        await db.runAsync('INSERT INTO test (value, intValue) VALUES (?, ?)', value, 1);
+    }
+
+    useEffect(() => {
+        createTable();
+    }, []);
 
     return (
         <SafeAreaView>
-            <Button onPress={showDatepicker} >
+            <Button onPress={showDatepicker}>
                 <Text>Show date picker!</Text>
             </Button>
-            <Button onPress={showTimepicker} >
+            <Button onPress={showTimepicker}>
                 <Text>Show time picker!</Text>
             </Button>
-            <Button onPress={showLanguage} >
+            <Button onPress={showLanguage}>
                 <Text>Get Language: {language}</Text>
             </Button>
-            <Button onPress={showToastLocal} >
+            <Button onPress={showToastLocal}>
                 <Text>Show Toast</Text>
+            </Button>
+            <Button onPress={getGroupsSync}>
+                <Text>Sync Groups</Text>
+            </Button>
+            <Button onPress={getDataFromSqlite}>
+                <Text>SQLite</Text>
+            </Button>
+            <Input
+                value={value}
+                onChangeText={setValue}
+            >
+
+            </Input>
+            <Button onPress={addTestData}>
+            Add Test  Data
             </Button>
             <Text>selected: {date.toLocaleString()}</Text>
         </SafeAreaView>

@@ -1,5 +1,5 @@
 import {Box, Flex, ScrollView, Text, useToast} from "native-base";
-import React from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {GetGroupMeals, MealCard as MealCardType} from "../../repo/Group";
 import {MealCard} from "./MealCard";
@@ -9,7 +9,7 @@ import {RefreshControl} from "react-native-gesture-handler";
 import {showToast} from "../UI/Toast";
 import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {handleLogoutProcedure} from "../../Util";
-import {useNavigation} from "@react-navigation/native";
+import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import {NOT_FOUND} from "../../utility/HttpResponseCodes";
 import {resetToUserScreen} from "../../utility/navigation";
 
@@ -26,13 +26,10 @@ export function MealList({tempMeals}: MealListProps) {
     const [loading, setLoading] = React.useState(false);
     const [date, setDate] = React.useState(group.filterDate);
     const [meals, setMeals] = React.useState<MealCardType[]>(tempMeals);
-
+    const [shouldReload, setShouldReload] = useState(false);
 
     async function loadMeals(filterDate: Date | null) {
         if (filterDate) {
-            setLoading(true);
-            setDate(filterDate);
-            setGroup({...group, filterDate: filterDate});
             try {
                 const meals = await GetGroupMeals(group.groupId, filterDate.toISOString());
                 setMeals(meals);
@@ -60,7 +57,7 @@ export function MealList({tempMeals}: MealListProps) {
         } else {
             setMeals(tempMeals);
         }
-
+        setShouldReload(false);
     }
 
     async function reloadMeals() {
@@ -69,6 +66,23 @@ export function MealList({tempMeals}: MealListProps) {
         setLoading(false);
     }
 
+
+    useEffect(() => {
+        if (!shouldReload) {
+            return;
+        }
+        setTimeout(() => {
+            loadMeals(date)
+        }, 100) // this is because the animation is not finished yet and a statechange will cause a re-render. it's a bit hacky but it works
+        //TODO: find a better way to do this
+
+    }, [shouldReload]);
+
+    useFocusEffect(
+        useCallback(() => {
+            setShouldReload(true);
+        }, [])
+    );
 
     return (
         <Box

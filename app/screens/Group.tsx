@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {useFocusEffect, useNavigation, useRoute} from '@react-navigation/native';
 import {Box, Button, Flex, Heading, ScrollView, Text, useToast} from 'native-base';
 import {handleLogoutProcedure} from "../Util";
 import {GetGroupInformation, Group as GroupInformationType} from "../repo/Group";
@@ -36,6 +36,7 @@ export function Group() {
     useEffect(() => {
         getGroupData()
     }, [groupId]);
+
 
     async function getGroupData() {
         try {

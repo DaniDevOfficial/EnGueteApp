@@ -8,6 +8,7 @@ import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {showToast} from "../UI/Toast";
 import {handleLogoutProcedure} from "../../Util";
+import {GetAllGroupsFromBackend, SyncAllGroups} from "../../repo/Group";
 
 export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
     const navigation = useNavigation();
@@ -23,6 +24,8 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
     async function onRefresh() {
         setRefreshing(true);
         try {
+            GetAllGroupsFromBackend()
+            SyncAllGroups()
 
             const groupsResponse = await GetUserGroups()
             setGroups(groupsResponse)

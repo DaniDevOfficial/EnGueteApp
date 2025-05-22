@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {ScrollView, useToast} from "native-base";
 import {useGroup} from "../context/groupContext";
-import {useNavigation, useRoute} from "@react-navigation/native";
+import {useFocusEffect, useNavigation, useRoute} from "@react-navigation/native";
 import {handleLogoutProcedure} from "../Util";
 import {getMealData, MealInterface} from "../repo/Meal";
 import {RefreshControl} from "react-native-gesture-handler";
 import {MealHeader} from "../components/meal/MealHeader";
 import {PreferenceCard} from "../components/meal/PreferenceCard";
-import {ForbiddenError, FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../utility/Errors";
+import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../utility/Errors";
 import {BackButton} from "../components/UI/BackButton";
 import {PageSpinner} from "../components/UI/PageSpinner";
 import {useTexts} from "../utility/TextKeys/TextKeys";
@@ -63,7 +63,6 @@ export function Meal() {
 
         }
     }
-
 
     async function onRefresh() {
         setRefreshing(true)
