@@ -24,7 +24,7 @@ export function UserCard({ user }: UserCardProps) {
                 borderRadius="full"
             />
             <Text fontSize="lg" mt="4" bold>
-                {useText('welcomeBackUsername', {username: user.userName, timeOfDay: useText(getGreetingBasedOnTime())})} asdf
+                {useText('welcomeBackUsername', {username: user.userName, timeOfDay: useText(getGreetingBasedOnTime())})}
             </Text>
         </Box>
     );

@@ -20,7 +20,6 @@ export async function syncCurrentUser(): Promise<UserInformation> {
     if (shouldSkipSync || isOffline) {
         const cachedUser = await getCurrentUser()
         if (cachedUser) {
-            console.log(`Cache hit 1`);
             return cachedUser;
         }
         if (isOffline) {
