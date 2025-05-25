@@ -6,8 +6,8 @@ import {useTexts} from "../utility/TextKeys/TextKeys";
 import {useNavigation} from "@react-navigation/native";
 import {getLanguageFromAsyncStorage} from "../context/settingsContext";
 import {showToast} from "../components/UI/Toast";
-import {GetAllGroupsFromBackend} from "../repo/Group";
 import {createTable, db} from "../utility/database";
+import {getAllGroups, SyncAllGroups} from "../repo/User";
 
 export function Test() {
     const [date, setDate] = useState(new Date(1598051730000));
@@ -52,8 +52,8 @@ export function Test() {
 
     async function getGroupsSync() {
         try {
-            const data = await GetAllGroupsFromBackend();
-            console.log('data', data);
+            await SyncAllGroups();
+            const data = await getAllGroups();
         } catch (e) {
             console.log('error', e);
             showToast({

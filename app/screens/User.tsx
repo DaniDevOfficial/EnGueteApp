@@ -14,7 +14,6 @@ import {RefreshControl} from "react-native-gesture-handler";
 import {PageSpinner} from "../components/UI/PageSpinner";
 import {GroupList} from "../components/user/GroupList";
 import {showToast} from "../components/UI/Toast";
-import {GetAllGroupsFromBackend, SyncAllGroups} from "../repo/Group";
 
 export function User() {
     const [userInformation, setUserInformation] = useState<UserType | undefined>()
@@ -57,7 +56,6 @@ export function User() {
 
     useEffect(() => {
         getUserData()
-        SyncAllGroups()
     }, [])
 
     useEffect(() => {
