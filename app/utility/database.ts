@@ -1,5 +1,4 @@
 import * as SQLite from 'expo-sqlite';
-import * as string_decoder from "node:string_decoder";
 
 
 function openDatabase() {
@@ -9,7 +8,6 @@ function openDatabase() {
 export const db = openDatabase();
 
 export async function createTable() {
-    console.log('Creating table');
     await db.execAsync(`
         CREATE TABLE IF NOT EXISTS groups
         (
@@ -19,22 +17,26 @@ export async function createTable() {
             created_at TEXT                   DEFAULT (datetime('now')),
             last_sync  TEXT                   DEFAULT (datetime('now'))
             );
-
         CREATE TABLE IF NOT EXISTS cacheStatus (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             cacheKey TEXT UNIQUE,
             last_sync TEXT DEFAULT (datetime('now'))
         );
+
+        CREATE TABLE IF NOT EXISTS users (
+                user_id TEXT PRIMARY KEY,
+                username TEXT,
+                profile_picture TEXT,
+                last_sync TEXT DEFAULT (datetime('now'))
+        );
     `);
-    console.log('Table created');
+    return;
     //Log the entire database structure
-    /*
     const result = await db.getAllAsync('SELECT name FROM sqlite_master WHERE type="table"');
     console.log('Database structure:', result);
-     */
 }
 
-export async function checkIfCacheNeedsToBeSynced(cacheKey: string, cacheTimeSeconds: number = 20): Promise<boolean> {
+export async function needsToBeSynced(cacheKey: string, cacheTimeSeconds: number = 20): Promise<boolean> {
     const result: {last_sync: string} | null = await db.getFirstAsync(`SELECT last_sync FROM cacheStatus WHERE cacheKey = ?`, cacheKey);
     if (!result) {
         return true; // Cache does not exist, needs to be synced
@@ -43,6 +45,13 @@ export async function checkIfCacheNeedsToBeSynced(cacheKey: string, cacheTimeSec
     const lastSync = new Date(result.last_sync);
     const timeDifference = now.getTime() - lastSync.getTime();
     const timeDifferenceSeconds = timeDifference / 1000;
+    console.log({
+        cacheKey,
+        lastSync: result.last_sync,
+        now: now.toISOString(),
+        timeDifferenceSeconds,
+        cacheTimeSeconds
+    })
     return timeDifferenceSeconds >= cacheTimeSeconds;
 }
 

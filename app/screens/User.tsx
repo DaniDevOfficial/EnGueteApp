@@ -29,12 +29,8 @@ export function User() {
     async function getUserData() {
 
         try {
-            const authToken = await getAuthToken()
-            if (authToken === null) {
-                await handleLogoutProcedure(navigation)
-                return
-            }
-            const userInformationRes = await GetUserInformation(authToken);
+
+            const userInformationRes = await GetUserInformation();
 
             setUserInformation(userInformationRes)
             setGroupInformation(userInformationRes.groups)
@@ -50,7 +46,6 @@ export function User() {
                 description: getError(e.message),
                 status: "warning",
             })
-            console.log(e.message)
         }
     }
 

@@ -7,7 +7,8 @@ import {useNavigation} from "@react-navigation/native";
 import {getLanguageFromAsyncStorage} from "../context/settingsContext";
 import {showToast} from "../components/UI/Toast";
 import {createTable, db} from "../utility/database";
-import {getAllGroups, SyncAllGroups} from "../repo/User";
+
+import {getAllGroups, SyncAllGroups} from "../repo/sync/user/AllGroups";
 
 export function Test() {
     const [date, setDate] = useState(new Date(1598051730000));

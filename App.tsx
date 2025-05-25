@@ -4,8 +4,16 @@ import {RouterWrapper} from './app/Router';
 import {createTable} from "./app/utility/database";
 
 export default function App() {
+    async function createTableWrapper() {
+        try {
+            await createTable();
+        } catch (e) {
+            console.error("Error creating table:", e);
+        }
+    }
     useEffect(() => {
-        createTable()
+
+        createTableWrapper()
     }, []);
     return (
         <NativeBaseProvider>
