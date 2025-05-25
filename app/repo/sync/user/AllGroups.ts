@@ -1,15 +1,18 @@
 // @ts-ignore
 import {BACKEND_URL} from '@env';
-import {db} from "../../../utility/database";
+import {db, updateSyncStatus} from "../../../utility/database";
 import {timeoutPromiseFactory} from "../../../Util";
 import {getBasicAuthHeader} from "../../../utility/Auth";
 import {handleDefaultResponseAndHeaders} from "../../../utility/Response";
 import {Group} from "../../User";
+import {FRONTEND_ERRORS, TimeoutError} from "../../../utility/Errors";
 
 interface GroupSync {
     groups: Group[];
     deletedIds: string[];
 }
+
+export const userGroupsCacheKey = 'userGroups';
 
 
 export async function SyncAllGroups(): Promise<void> {
@@ -18,10 +21,26 @@ export async function SyncAllGroups(): Promise<void> {
 
 }
 
+export async function TrySyncAllGroups(): Promise<Group[]> {
+    try {
+        await SyncAllGroups();
+        await updateSyncStatus(userGroupsCacheKey);
+
+        return await getAllGroups();
+    } catch (error) {
+        if (error instanceof TimeoutError) {
+            const cachedGroups = await getAllGroups();
+            console.log('Cache hit 2 All Groups')
+            return cachedGroups;
+        }
+        throw error;
+    }
+}
+
 async function GetAllGroupsFromBackend(): Promise<GroupSync> {
     const url = BACKEND_URL + 'sync/groups';
     const timeoutPromise = timeoutPromiseFactory()
-    const fetchPromise = await fetch(url, {
+    const fetchPromise = fetch(url, {
         method: 'GET',
         headers: await getBasicAuthHeader(),
     });
@@ -40,6 +59,12 @@ async function storeAllGroupsInDatabase(groupSyncData: GroupSync): Promise<void>
     });
 }
 
+
 export async function getAllGroups(): Promise<Group[]> {
-    return await db.getAllAsync(`SELECT group_id as groupId, group_name AS groupName, user_count AS userCount, '' AS nextMealDate  FROM groups ORDER BY group_name ASC`);
+    return await db.getAllAsync(`SELECT group_id   as groupId,
+                                        group_name AS groupName,
+                                        user_count AS userCount,
+                                        ''         AS nextMealDate
+                                 FROM groups
+                                 ORDER BY group_name ASC`);
 }

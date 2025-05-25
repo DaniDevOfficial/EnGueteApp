@@ -1,7 +1,7 @@
 import {BACKEND_URL} from '@env';
 import {timeoutPromiseFactory} from "../Util";
 import {handleDefaultResponseAndHeaders} from "../utility/Response";
-import {FRONTEND_ERRORS, UnauthorizedError} from "../utility/Errors";
+import {FRONTEND_ERRORS, TimeoutError, UnauthorizedError} from "../utility/Errors";
 import {getAuthToken, getBasicAuthHeader, getRefreshToken} from "../utility/Auth";
 
 type ResponseAuth = {
@@ -82,8 +82,14 @@ export async function checkAuth() {
         headers: await getBasicAuthHeader(),
     });
 
+    try {
+        const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
+    } catch (error) {
+        if (error instanceof TimeoutError) {
+            return;
+        }
+        throw error
+    }
 
-    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
     await handleDefaultResponseAndHeaders(res);
-    return await res.json();
 }

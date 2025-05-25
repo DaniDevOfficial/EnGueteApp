@@ -1,7 +1,7 @@
 // @ts-ignore
 import {BACKEND_URL} from '@env';
 import {needsToBeSynced, updateSyncStatus} from "../utility/database";
-import {getAllGroups, SyncAllGroups} from "./sync/user/AllGroups";
+import {getAllGroups, SyncAllGroups, TrySyncAllGroups, userGroupsCacheKey} from "./sync/user/AllGroups";
 import {isDeviceOffline} from "../utility/Network/OnlineOffline";
 import {syncCurrentUser} from "./sync/user/UserInformation";
 
@@ -28,6 +28,7 @@ export interface Group {
 
 
 export async function GetUserInformation(): Promise<User> {
+    console.log('userInformation')
     const userData = await syncCurrentUser();
     const groups = await GetUserGroups();
     return {
@@ -39,17 +40,14 @@ export async function GetUserInformation(): Promise<User> {
 }
 
 export async function GetUserGroups(): Promise<Group[]> {
-    const cacheKey = 'userGroups';
     const isOffline = await isDeviceOffline();
-    const shouldSkipSync = !await needsToBeSynced(cacheKey);
+    const shouldSkipSync = !await needsToBeSynced(userGroupsCacheKey);
 
     if (shouldSkipSync || isOffline) {
         return await getAllGroups();
     }
-    await SyncAllGroups();
-    await updateSyncStatus(cacheKey);
 
-    return await getAllGroups();
+    return TrySyncAllGroups();
 }
 
 

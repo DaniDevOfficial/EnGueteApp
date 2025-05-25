@@ -35,7 +35,6 @@ async function trySyncCurrentUser(): Promise<UserInformation> {
         const user = await getUserFromBackend();
         await storeUserInDatabase(user);
         await updateSyncStatus(cacheKey);
-        console.log(`User synced successfully`);
         return user;
     } catch (error) {
         if (error instanceof TimeoutError) {
@@ -55,7 +54,7 @@ async function getUserFromBackend(): Promise<UserInformation> {
     const timeoutPromise = timeoutPromiseFactory()
     const url = BACKEND_URL + 'users/';
 
-    const fetchPromise = await fetch(url, {
+    const fetchPromise = fetch(url, {
         method: 'GET',
         headers: await getBasicAuthHeader(),
     });

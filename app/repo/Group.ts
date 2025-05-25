@@ -68,7 +68,7 @@ export async function GetGroupInformation(groupId: string): Promise<GroupRespons
 
     const timeoutPromise = timeoutPromiseFactory()
     const url = BACKEND_URL + 'groups?groupId=' + groupId + '&weekFilter=' + now.toISOString();
-    const fetchPromise = await fetch(url, {
+    const fetchPromise = fetch(url, {
         method: 'GET',
         headers: await getBasicAuthHeader(),
     });
@@ -81,7 +81,7 @@ export async function GetGroupInformation(groupId: string): Promise<GroupRespons
 export async function CreateNewGroup(groupInformation: NewGroupType): Promise<GroupIdResponse> {
     const url = BACKEND_URL + 'groups';
     const timeoutPromise = timeoutPromiseFactory()
-    const fetchPromise = await fetch(url, {
+    const fetchPromise = fetch(url, {
         method: 'POST',
         headers: await getBasicAuthHeader(),
         body: JSON.stringify(groupInformation),
@@ -100,7 +100,7 @@ export interface UpdateGroupNameType {
 export async function UpdateGroupName(groupInformation: UpdateGroupNameType): Promise<GroupIdResponse> {
     const url = BACKEND_URL + 'groups/name';
     const timeoutPromise = timeoutPromiseFactory()
-    const fetchPromise = await fetch(url, {
+    const fetchPromise = fetch(url, {
         method: 'PUT',
         headers: await getBasicAuthHeader(),
         body: JSON.stringify(groupInformation),
@@ -114,7 +114,7 @@ export async function UpdateGroupName(groupInformation: UpdateGroupNameType): Pr
 export async function DeleteGroupRequest(groupId: string): Promise<GroupIdResponse> {
     const url = BACKEND_URL + 'groups?groupId=' + groupId;
     const timeoutPromise = timeoutPromiseFactory()
-    const fetchPromise = await fetch(url, {
+    const fetchPromise = fetch(url, {
         method: 'DELETE',
         headers: await getBasicAuthHeader(),
     });
@@ -127,7 +127,7 @@ export async function DeleteGroupRequest(groupId: string): Promise<GroupIdRespon
 export async function LeaveGroupRequest(groupId: string): Promise<GroupIdResponse> {
     const url = BACKEND_URL + 'groups/leave?groupId=' + groupId;
     const timeoutPromise = timeoutPromiseFactory()
-    const fetchPromise = await fetch(url, {
+    const fetchPromise = fetch(url, {
         method: 'DELETE',
         headers: await getBasicAuthHeader(),
     });
@@ -140,7 +140,7 @@ export async function LeaveGroupRequest(groupId: string): Promise<GroupIdRespons
 export async function GetGroupMemberList(groupId: string): Promise<GroupMember[]> {
     const url = BACKEND_URL + 'groups/members?groupId=' + groupId;
     const timeoutPromise = timeoutPromiseFactory()
-    const fetchPromise = await fetch(url, {
+    const fetchPromise = fetch(url, {
         method: 'GET',
         headers: await getBasicAuthHeader(),
     });
@@ -161,7 +161,7 @@ export async function ChangeRole(requestData: RoleChangeRequest, roleChange: Rol
         url = BACKEND_URL + 'management/roles/remove';
     }
     const timeoutPromise = timeoutPromiseFactory()
-    const fetchPromise = await fetch(url, {
+    const fetchPromise = fetch(url, {
         method: 'POST',
         headers: await getBasicAuthHeader(),
         body: JSON.stringify(requestData),
@@ -175,7 +175,7 @@ export async function ChangeRole(requestData: RoleChangeRequest, roleChange: Rol
 export async function KickUserFromGroup(requestData: KickUserRequest){
     const url = BACKEND_URL + 'management/user/kick';
     const timeoutPromise = timeoutPromiseFactory()
-    const fetchPromise = await fetch(url, {
+    const fetchPromise = fetch(url, {
         method: 'POST',
         headers: await getBasicAuthHeader(),
         body: JSON.stringify(requestData),
@@ -189,7 +189,7 @@ export async function KickUserFromGroup(requestData: KickUserRequest){
 export async function GetGroupMeals(groupId: string, date: string): Promise<MealCard[]> {
     const url = BACKEND_URL + 'groups/meals?groupId=' + groupId + '&filterDate=' + date;
     const timeoutPromise = timeoutPromiseFactory()
-    const fetchPromise = await fetch(url, {
+    const fetchPromise = fetch(url, {
         method: 'GET',
         headers: await getBasicAuthHeader(),
     });
