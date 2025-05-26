@@ -3,7 +3,15 @@ import {BACKEND_URL} from '@env';
 import {timeoutPromiseFactory} from "../Util";
 import {getBasicAuthHeader} from "../utility/Auth";
 import {handleDefaultResponseAndHeaders} from "../utility/Response";
-import {db} from "../utility/database";
+import {db, needsToBeSynced} from "../utility/database";
+import {
+    getGroupInformation,
+    GroupInformationResponse,
+    singleGroupCacheKeySuffixId,
+    TrySyncGroup
+} from "./sync/group/information";
+import {isDeviceOffline} from "../utility/Network/OnlineOffline";
+import {getAllGroups, userGroupsCacheKey} from "./sync/user/AllGroups";
 
 export interface Group {
     groupInfo: GroupInformation
@@ -21,13 +29,7 @@ export interface GroupInformation {
     userRoles: string[],
     userRoleRights: string[],
 }
-export interface GroupInformationResponse {
-    groupId: string,
-    groupName: string,
-    userCount: string,
-    userRoles: string[],
-    userRoleRights?: string[],
-}
+
 export interface MealCard {
     mealId: string,
     title: string,
@@ -51,6 +53,7 @@ export interface GroupMember {
     userId: string,
     username: string,
     userRoles: string[],
+    profilePicture?: string,
 }
 export interface RoleChangeRequest {
     groupId: string,
@@ -64,18 +67,19 @@ export interface KickUserRequest {
 
 
 export async function GetGroupInformation(groupId: string): Promise<GroupResponse> {
-    const now = new Date();
+    const isOffline = await isDeviceOffline();
+    const shouldSkipSync = !await needsToBeSynced(singleGroupCacheKeySuffixId + groupId);
 
-    const timeoutPromise = timeoutPromiseFactory()
-    const url = BACKEND_URL + 'groups?groupId=' + groupId + '&weekFilter=' + now.toISOString();
-    const fetchPromise = fetch(url, {
-        method: 'GET',
-        headers: await getBasicAuthHeader(),
-    });
+    if (shouldSkipSync || isOffline) {
+        return { //TODO: CHANGE THIS STRUCTURE, SO IT ONLY RETURNS THE group information
+            groupInfo: await getGroupInformation(groupId),
+        };
+    }
 
-    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
-    await handleDefaultResponseAndHeaders(res)
-    return await res.json();
+    const groupInformation = await TrySyncGroup(groupId)
+    return {
+        groupInfo: groupInformation,
+    }
 }
 
 export async function CreateNewGroup(groupInformation: NewGroupType): Promise<GroupIdResponse> {

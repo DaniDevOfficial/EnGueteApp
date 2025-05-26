@@ -2,7 +2,7 @@
 import {BACKEND_URL} from '@env';
 import {needsToBeSynced, db, updateSyncStatus} from "../../../utility/database";
 import {timeoutPromiseFactory} from "../../../Util";
-import {getBasicAuthHeader, GetCurrentUserId} from "../../../utility/Auth";
+import {getBasicAuthHeader, GetCurrentUserId, GetSafeCurrentUserId} from "../../../utility/Auth";
 import {handleDefaultResponseAndHeaders} from "../../../utility/Response";
 import {FRONTEND_ERRORS, IsOfflineError, TimeoutError, UnauthorizedError} from "../../../utility/Errors";
 import {isDeviceOffline} from "../../../utility/Network/OnlineOffline";
@@ -39,7 +39,6 @@ async function trySyncCurrentUser(): Promise<UserInformation> {
         if (error instanceof TimeoutError) {
             const cachedUser = await getCurrentUser();
             if (cachedUser) {
-                console.log(`Cache hit 2`);
                 return cachedUser;
 
             }
@@ -70,11 +69,8 @@ async function storeUserInDatabase(user: UserInformation): Promise<void> {
     });
 }
 
-async function getCurrentUser(): Promise<UserInformation | null> {
-    const userId = await GetCurrentUserId();
-    if (!userId) {
-        throw new UnauthorizedError(FRONTEND_ERRORS.UNAUTHORIZED_ERROR);
-    }
+export async function getCurrentUser(): Promise<UserInformation | null> {
+    const userId = await GetSafeCurrentUserId();
     return await db.getFirstAsync<UserInformation>(`SELECT user_id AS userId, username, profile_picture AS profilePicture
                                                     FROM users
                                                     WHERE user_id = ?`, userId);

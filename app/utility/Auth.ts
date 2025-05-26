@@ -78,6 +78,14 @@ export async function GetCurrentUserId(): Promise<string | null> {
     return payload?.UserId || null;
 }
 
+export async function GetSafeCurrentUserId(): Promise<string> {
+    const userId = await GetCurrentUserId();
+    if (!userId) {
+        throw new UnauthorizedError(FRONTEND_ERRORS.UNAUTHORIZED_ERROR);
+    }
+    return userId;
+}
+
 // SAVE
 export async function saveAuthToken(value: string) {
     await AsyncStorage.setItem(AUTH_TOKEN_STRING, value);

@@ -30,7 +30,6 @@ export async function TrySyncAllGroups(): Promise<Group[]> {
     } catch (error) {
         if (error instanceof TimeoutError) {
             const cachedGroups = await getAllGroups();
-            console.log('Cache hit 2 All Groups')
             return cachedGroups;
         }
         throw error;

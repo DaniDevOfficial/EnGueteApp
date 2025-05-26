@@ -9,13 +9,16 @@ export const db = openDatabase();
 
 export async function createTable() {
     await db.execAsync(`
+        PRAGMA foreign_keys = ON;
+
         CREATE TABLE IF NOT EXISTS groups
         (
             group_id   TEXT PRIMARY KEY,
             group_name TEXT,
-            user_count INTEGER last_sync TEXT DEFAULT (datetime('now')),
-            created_at TEXT                   DEFAULT (datetime('now')),
-            last_sync  TEXT                   DEFAULT (datetime('now'))
+            user_count INTEGER,
+            last_sync TEXT  DEFAULT (datetime('now')),
+            created_at TEXT DEFAULT (datetime('now')),
+            last_sync  TEXT DEFAULT (datetime('now'))
             );
         CREATE TABLE IF NOT EXISTS cacheStatus (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -24,16 +27,37 @@ export async function createTable() {
         );
 
         CREATE TABLE IF NOT EXISTS users (
-                user_id TEXT PRIMARY KEY,
-                username TEXT,
-                profile_picture TEXT,
-                last_sync TEXT DEFAULT (datetime('now'))
+            user_id TEXT PRIMARY KEY,
+            username TEXT,
+            profile_picture TEXT,
+            last_sync TEXT DEFAULT (datetime('now'))
         );
-    `);
+        
+        CREATE TABLE IF NOT EXISTS user_group_roles (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            role TEXT NOT NULL,
+            user_id TEXT NOT NULL,
+            group_id TEXT NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+            FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE,
+            UNIQUE(user_id, group_id, role)
+        );
+            
+    `); //TODO add user_groups table and reference with the roles table for simple deletion later on
     return;
     //Log the entire database structure
     const result = await db.getAllAsync('SELECT name FROM sqlite_master WHERE type="table"');
     console.log('Database structure:', result);
+}
+
+export async function dropAllTables() {
+    await db.execAsync(`
+        DROP TABLE IF EXISTS groups;
+        DROP TABLE IF EXISTS cacheStatus;
+        DROP TABLE IF EXISTS users;
+        DROP TABLE IF EXISTS user_group_roles;
+    `);
+    console.log('All tables dropped');
 }
 
 export async function needsToBeSynced(cacheKey: string, cacheTimeSeconds: number = 20): Promise<boolean> {
