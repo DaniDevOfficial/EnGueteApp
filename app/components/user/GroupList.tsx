@@ -42,15 +42,13 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
     }
 
     function handleSearch(query: string) {
-        const filtered = groups.filter((group) =>
-            group.groupName.toLowerCase().includes(query.toLowerCase())
-        );
-        setFilteredGroups(filtered);
+
+        setFilteredGroups(groups);
     }
     useEffect(() => {
         handleSearch(searchQuery);
     }, [groups]);
-
+    console.log(groups)
     return (
         <>
             <Box

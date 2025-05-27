@@ -8,8 +8,8 @@ import {Group} from "../../User";
 import {FRONTEND_ERRORS, TimeoutError} from "../../../utility/Errors";
 
 interface GroupSync {
-    groups: Group[];
-    deletedIds: string[];
+    groups: Group[]|null;
+    deletedIds: string[]|null;
 }
 
 export const userGroupsCacheKey = 'userGroups';
@@ -50,12 +50,18 @@ async function GetAllGroupsFromBackend(): Promise<GroupSync> {
 }
 
 async function storeAllGroupsInDatabase(groupSyncData: GroupSync): Promise<void> {
+    if (groupSyncData.groups) {
     await db.withTransactionAsync(async () => {
         const now = new Date().toISOString();
         for (const group of groupSyncData.groups) {
             await db.runAsync('INSERT OR REPLACE INTO groups (group_id, group_name, user_count, last_sync) VALUES (?, ?, ?, ?)', group.groupId, group.groupName, group.userCount, now);
         }
     });
+    }
+
+    if (groupSyncData.deletedIds &&  groupSyncData.deletedIds.length > 0) {
+        await db.runAsync(`DELETE FROM groups WHERE group_id IN (${groupSyncData.deletedIds.map(() => '?').join(',')})`, ...groupSyncData.deletedIds);
+    }
 }
 
 

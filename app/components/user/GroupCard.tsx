@@ -38,7 +38,7 @@ export function GroupCard({group}: GroupCardProps) {
                     <Box>
 
                         <Text>
-                            {group.userCount.toString()}
+                            {group?.userCount.toString()}
                         </Text>
                     </Box>
                 </Flex>

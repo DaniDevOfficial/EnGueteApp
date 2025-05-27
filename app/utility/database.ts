@@ -13,10 +13,9 @@ export async function createTable() {
 
         CREATE TABLE IF NOT EXISTS groups
         (
-            group_id   TEXT PRIMARY KEY,
-            group_name TEXT,
-            user_count INTEGER,
-            last_sync TEXT  DEFAULT (datetime('now')),
+            group_id   TEXT PRIMARY KEY NOT NULL,
+            group_name TEXT NOT NULL,
+            user_count INTEGER DEFAULT 0,
             created_at TEXT DEFAULT (datetime('now')),
             last_sync  TEXT DEFAULT (datetime('now'))
             );
@@ -51,13 +50,32 @@ export async function createTable() {
 }
 
 export async function dropAllTables() {
+    try {
+
     await db.execAsync(`
         DROP TABLE IF EXISTS groups;
         DROP TABLE IF EXISTS cacheStatus;
         DROP TABLE IF EXISTS users;
         DROP TABLE IF EXISTS user_group_roles;
     `);
-    console.log('All tables dropped');
+        console.log('All tables dropped');
+    } catch (error) {
+        console.log('Error dropping tables:', error);
+    }
+}
+
+export async function clearDatabase() {
+    try {
+        await db.execAsync(`
+            DELETE FROM groups;
+            DELETE FROM cacheStatus;
+            DELETE FROM users;
+            DELETE FROM user_group_roles;
+        `);
+        console.log('Database cleared');
+    } catch (error) {
+        console.log('Error clearing database:', error);
+    }
 }
 
 export async function needsToBeSynced(cacheKey: string, cacheTimeSeconds: number = 20): Promise<boolean> {

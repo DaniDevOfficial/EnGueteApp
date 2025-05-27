@@ -84,6 +84,8 @@ export async function checkAuth() {
 
     try {
         const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
+        await handleDefaultResponseAndHeaders(res);
+
     } catch (error) {
         if (error instanceof TimeoutError) {
             return;
@@ -91,5 +93,4 @@ export async function checkAuth() {
         throw error
     }
 
-    await handleDefaultResponseAndHeaders(res);
 }

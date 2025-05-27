@@ -6,7 +6,7 @@ import {useTexts} from "../utility/TextKeys/TextKeys";
 import {useNavigation} from "@react-navigation/native";
 import {getLanguageFromAsyncStorage} from "../context/settingsContext";
 import {showToast} from "../components/UI/Toast";
-import {createTable, db} from "../utility/database";
+import {createTable, db, dropAllTables} from "../utility/database";
 
 import {getAllGroups, SyncAllGroups} from "../repo/sync/user/AllGroups";
 
@@ -67,8 +67,9 @@ export function Test() {
     }
 
     async function getDataFromSqlite() {
-        const allRows = await db.getAllAsync('SELECT * FROM test');
+        const allRows = await db.getAllAsync('SELECT * FROM groups');
         console.log('allRows', allRows);
+        await dropAllTables()
 
     }
     async function addTestData() {

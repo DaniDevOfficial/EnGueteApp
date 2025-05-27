@@ -9,6 +9,7 @@ import {voidAuthToken} from "../Util";
 import {getPendingInviteToken} from "../utility/DeepLinking";
 import {resetToUserScreen} from "../utility/navigation";
 import {TokenPopupHandler} from "../components/Utility/JoinGroupPopup";
+import {clearDatabase} from "../utility/database";
 
 export function Home() {
     const [loading, setLoading] = useState(true);
@@ -33,6 +34,7 @@ export function Home() {
             } catch (e) {
                 await voidAuthToken();
                 setLoading(false);
+                await clearDatabase();
                 //do nothing, because an error just means that the user is not logged in
             }
         }
