@@ -40,7 +40,18 @@ export async function createTable() {
             FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
             FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE,
             UNIQUE(user_id, group_id, role)
+        );  
+        CREATE TABLE IF NOT EXISTS user_groups (
+            id TEXT PRIMARY KEY,
+            user_id TEXT NOT NULL,
+            group_id TEXT NOT NULL,
+            joined_at TEXT NOT NULL,
+            last_sync TEXT DEFAULT (datetime('now')),
+            FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+            FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE,
+            UNIQUE(user_id, group_id)
         );
+        
         CREATE TABLE IF NOT EXISTS meals (
             meal_id TEXT PRIMARY KEY,
             group_id TEXT NOT NULL,
