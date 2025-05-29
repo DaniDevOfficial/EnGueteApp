@@ -13,6 +13,7 @@ export function MealFilterSection({onDateChange}: Props) {
     const [primaryText, setPrimaryText] = useState<string>("");
     const [secondaryText, setSecondaryText] = useState<string | null>("");
     const [currentDate, setCurrentDate] = useState<Date>(getWednesdayOfWeek());
+    const [loading, setLoading] = useState(false);
     const text = useTexts(['currentWeek', 'lastWeek', 'nextWeek']);
 
     function handleTextChange(date: Date) {
@@ -34,9 +35,16 @@ export function MealFilterSection({onDateChange}: Props) {
     }
 
     async function handleDateChange(date: Date) {
-        date = getWednesdayOfWeek(date)
-        setCurrentDate(date);
-        await onDateChange(date);
+        if (loading) return;
+
+        setLoading(true);
+        try {
+            const normalizedDate = getWednesdayOfWeek(date);
+            setCurrentDate(normalizedDate);
+            await onDateChange(normalizedDate);
+        } finally {
+            setLoading(false);
+        }
     }
 
 
@@ -63,11 +71,10 @@ export function MealFilterSection({onDateChange}: Props) {
                     icon={<Icon as={MaterialIcons} name="chevron-left"/>}
                     borderRadius="full"
                     variant="ghost"
-                    onPress={() => handleWeekChange(-7)}
+                    onPress={() => !loading && handleWeekChange(-7)}
                 />
                 <Pressable
-                    onPress={() =>
-                        showDatePicker("date", (e: any, date: Date) => {
+                    onPress={() => !loading && showDatePicker("date", (e: any, date: Date) => {
                             handleDateChange(date)
                         }, currentDate)
                     }
