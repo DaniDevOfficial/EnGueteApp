@@ -1,7 +1,7 @@
 // @ts-ignore
 import {BACKEND_URL} from '@env';
 import {MealCard} from "../../Group";
-import {getWeekDuration} from "../../../utility/Dates";
+import {getFirstDayOfLastMonth, getLastDayOfNextMonth, getWeekDuration} from "../../../utility/Dates";
 import {db, updateSyncStatus} from "../../../utility/database";
 import {TimeoutError} from "../../../utility/Errors";
 import {timeoutPromiseFactory} from "../../../Util";
@@ -38,6 +38,7 @@ export async function TrySyncMeals(groupId: string, dates: DateDuration): Promis
 async function SyncAllMeals(groupId: string, dates: DateDuration): Promise<void> {
     const mealResponse = await getMealsFromBackend(groupId, dates);
     await storeAllMealsInDatabase(mealResponse.meals, groupId);
+    await deleteMealsInDatabase(groupId);
 }
 
 async function getMealsFromBackend(groupId: string, dates: DateDuration): Promise<MealsSyncResponse> {
@@ -72,6 +73,19 @@ async function storeAllMealsInDatabase(meals: MealCard[], groupId: string): Prom
     });
 }
 
+async function deleteMealsInDatabase(mealIds: string[]): Promise<void> {
+    await db.withTransactionAsync(async () => {
+        for (const mealId of mealIds) {
+
+            await db.runAsync(`
+                DELETE
+                FROM meals
+                WHERE meal_id = ?;
+            `, mealId);
+        }
+    })
+}
+
 export async function getMeals(groupId: string, date: Date): Promise<MealCard[]> {
 
     const {start, end} = getWeekDuration(date);
@@ -85,7 +99,7 @@ export async function getMeals(groupId: string, date: Date): Promise<MealCard[]>
                meal_type         AS mealType,
                notes             AS notes,
                participant_count AS participantCount,
-               user_preference  AS userPreference,
+               user_preference   AS userPreference,
                is_cook           AS isCook
         FROM meals
         WHERE group_id = ?
@@ -111,11 +125,9 @@ async function handleSyncStateKeys(groupId: string, dates: DateDuration): Promis
     }
 }
 
-
 export function buildCacheKey(groupId: string, date: Date): string {
     return cacheKeyBase + groupId + '_' + date.getFullYear() + '_' + (date.getMonth() + 1);
 }
-
 
 export function buildDateDuration(date: Date): DateDuration {
     return {
@@ -125,18 +137,3 @@ export function buildDateDuration(date: Date): DateDuration {
     }
 }
 
-function getFirstDayOfLastMonth(date: Date): Date {
-    const copy = new Date(date);
-    copy.setDate(1);
-    copy.setMonth(copy.getMonth() - 1);
-    copy.setHours(0, 0, 0)
-    return copy;
-}
-
-function getLastDayOfNextMonth(date: Date): Date {
-    const copy = new Date(date);
-    copy.setMonth(copy.getMonth() + 2);
-    copy.setDate(0); // this is kinda abusing how the Date object in js work but it's fine
-    copy.setHours(23, 59, 59);
-    return copy;
-}
