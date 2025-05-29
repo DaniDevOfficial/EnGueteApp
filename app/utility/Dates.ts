@@ -109,7 +109,7 @@ export function getGreetingBasedOnTime(): 'morning' | 'day' | 'afternoon' | 'eve
     }
 }
 
-export function getWeekDuration(date: Date) {
+export function getWeekDuration(date: Date): {start: Date, end: Date} {
     const startOfWeek = new Date(date);
     const endOfWeek = new Date(date);
 

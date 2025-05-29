@@ -41,6 +41,23 @@ export async function createTable() {
             FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE,
             UNIQUE(user_id, group_id, role)
         );
+        CREATE TABLE IF NOT EXISTS meals (
+            meal_id TEXT PRIMARY KEY,
+            group_id TEXT NOT NULL,
+            title TEXT NOT NULL,
+            closed Integer,
+            fulfilled Integer,
+            date_time TEXT DEFAULT (datetime('now')),
+            meal_type TEXT NOT NULL,
+            notes  TEXT NOT NULL,
+            participant_count TEXT NOT NULL,
+            user_preference TEXT NOT NULL,
+            is_cook TEXT NOT NULL,
+            last_sync TEXT DEFAULT (datetime('now')),
+            
+            FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE
+
+        )
             
     `); //TODO add user_groups table and reference with the roles table for simple deletion later on
     return;
@@ -57,6 +74,7 @@ export async function dropAllTables() {
         DROP TABLE IF EXISTS cacheStatus;
         DROP TABLE IF EXISTS users;
         DROP TABLE IF EXISTS user_group_roles;
+        DROP TABLE IF EXISTS meals;
     `);
         console.log('All tables dropped');
     } catch (error) {

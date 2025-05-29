@@ -48,7 +48,6 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
     useEffect(() => {
         handleSearch(searchQuery);
     }, [groups]);
-    console.log(groups)
     return (
         <>
             <Box

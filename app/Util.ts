@@ -2,6 +2,7 @@ import {useNavigation} from "@react-navigation/native";
 import {removeAuthToken, removeRefreshToken} from "./utility/Auth";
 import {resetToHomeScreen} from "./utility/navigation";
 import {FRONTEND_ERRORS, TimeoutError} from "./utility/Errors";
+import {clearDatabase} from "./utility/database";
 
 const TIMEOUT = 3000;
 type NavigationType = ReturnType<typeof useNavigation>;
@@ -14,8 +15,8 @@ export async function voidAuthToken() {
 
 export async function handleLogoutProcedure(navigation: NavigationType) {
     await voidAuthToken()
+    await clearDatabase()
     //TODO: remove user data from context
-    //TODO: delte userdata from sqlite
     resetToHomeScreen(navigation);
 }
 

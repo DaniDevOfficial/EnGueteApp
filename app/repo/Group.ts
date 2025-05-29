@@ -12,6 +12,7 @@ import {
 } from "./sync/group/information";
 import {isDeviceOffline} from "../utility/Network/OnlineOffline";
 import {getAllGroups, userGroupsCacheKey} from "./sync/user/AllGroups";
+import {buildCacheKey, buildDateDuration, getMeals, TrySyncMeals} from "./sync/meal/AllMealsInGroup";
 
 export interface Group {
     groupInfo: GroupInformation
@@ -152,7 +153,7 @@ export async function GetGroupMemberList(groupId: string): Promise<GroupMember[]
     const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
     await handleDefaultResponseAndHeaders(res)
     return await res.json();
-}
+} //TODO: change this to use the sync function
 
 export enum RoleChange {
     PROMOTION,
@@ -191,15 +192,16 @@ export async function KickUserFromGroup(requestData: KickUserRequest){
 }
 
 export async function GetGroupMeals(groupId: string, date: string): Promise<MealCard[]> {
-    const url = BACKEND_URL + 'groups/meals?groupId=' + groupId + '&filterDate=' + date;
-    const timeoutPromise = timeoutPromiseFactory()
-    const fetchPromise = fetch(url, {
-        method: 'GET',
-        headers: await getBasicAuthHeader(),
-    });
+    const dateObject = new Date(date);
 
-    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
-    await handleDefaultResponseAndHeaders(res)
-    return await res.json();
+    const isOffline = await isDeviceOffline();
+    const shouldSkipSync = !await needsToBeSynced(buildCacheKey(groupId, dateObject));
+
+    if (shouldSkipSync || isOffline) {
+        return getMeals(groupId, dateObject);
+    }
+
+    const dates = buildDateDuration(dateObject);
+    return TrySyncMeals(groupId, dates);
 }
 

@@ -67,14 +67,15 @@ export function Test() {
     }
 
     async function getDataFromSqlite() {
-        const allRows = await db.getAllAsync('SELECT * FROM groups');
-        console.log('allRows', allRows);
-        await dropAllTables()
-
+        console.log(123)
+        const allRows = await db.getAllAsync('SELECT * FROM cacheStatus');
+        console.log(allRows);
     }
     async function addTestData() {
         await db.runAsync('INSERT INTO test (value, intValue) VALUES (?, ?)', value, 1);
     }
+
+
 
     useEffect(() => {
         createTable();
@@ -98,7 +99,7 @@ export function Test() {
                 <Text>Sync Groups</Text>
             </Button>
             <Button onPress={getDataFromSqlite}>
-                <Text>SQLite</Text>
+                <Text>getDataFromSqlite</Text>
             </Button>
             <Input
                 value={value}

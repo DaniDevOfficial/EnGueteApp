@@ -1,0 +1,142 @@
+// @ts-ignore
+import {BACKEND_URL} from '@env';
+import {MealCard} from "../../Group";
+import {getWeekDuration} from "../../../utility/Dates";
+import {db, updateSyncStatus} from "../../../utility/database";
+import {TimeoutError} from "../../../utility/Errors";
+import {timeoutPromiseFactory} from "../../../Util";
+import {handleDefaultResponseAndHeaders} from "../../../utility/Response";
+import {getBasicAuthHeader} from "../../../utility/Auth";
+
+export interface DateDuration {
+    startDate: Date;
+    endDate: Date;
+    currentWeekDate: Date;
+}
+
+interface MealsSyncResponse {
+    meals: MealCard[];
+    deletedIds: string[];
+}
+
+// Structure is: base + groupId + _ + year + _ month
+export const cacheKeyBase = 'groupMeals_'
+
+export async function TrySyncMeals(groupId: string, dates: DateDuration): Promise<MealCard[]> {
+    try {
+        await SyncAllMeals(groupId, dates);
+        await handleSyncStateKeys(groupId, dates);
+        return await getMeals(groupId, dates.currentWeekDate);
+    } catch (error) {
+        if (error instanceof TimeoutError) {
+            return await getMeals(groupId, dates.currentWeekDate);
+        }
+        throw error;
+    }
+}
+
+async function SyncAllMeals(groupId: string, dates: DateDuration): Promise<void> {
+    const mealResponse = await getMealsFromBackend(groupId, dates);
+    await storeAllMealsInDatabase(mealResponse.meals, groupId);
+}
+
+async function getMealsFromBackend(groupId: string, dates: DateDuration): Promise<MealsSyncResponse> {
+    const url = BACKEND_URL + 'sync/group/meals?groupId=' + groupId + '&startDate=' + dates.startDate.toISOString() + '&endDate=' + dates.endDate.toISOString();
+
+    const timeoutPromise = timeoutPromiseFactory()
+    const fetchPromise = fetch(url, {
+        method: 'GET',
+        headers: await getBasicAuthHeader(),
+    });
+
+    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
+    await handleDefaultResponseAndHeaders(res)
+    const data = await res.json();
+
+    return {
+        meals: Array.isArray(data.meals) ? data.meals : [],
+        deletedIds: Array.isArray(data.deletedIds) ? data.deletedIds : [],
+    };
+}
+
+async function storeAllMealsInDatabase(meals: MealCard[], groupId: string): Promise<void> {
+    await db.withTransactionAsync(async () => {
+        const now = new Date().toISOString();
+        for (const meal of meals) {
+            await db.runAsync(`
+                INSERT
+                OR REPLACE INTO meals (meal_id, group_id, title, closed, fulfilled, date_time, meal_type, notes, participant_count, user_preference, is_cook, last_sync) 
+                VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?);
+            `, meal.mealId, groupId, meal.title, meal.closed, meal.fulfilled, meal.dateTime, meal.mealType, meal.notes, meal.participantCount, meal.userPreference, meal.isCook, now);
+        }
+    });
+}
+
+export async function getMeals(groupId: string, date: Date): Promise<MealCard[]> {
+
+    const {start, end} = getWeekDuration(date);
+
+    return await db.getAllAsync<MealCard>(`
+        SELECT meal_id           AS mealId,
+               title,
+               closed,
+               fulfilled,
+               date_time         AS dateTime,
+               meal_type         AS mealType,
+               notes             AS notes,
+               participant_count AS participantCount,
+               user_preference  AS userPreference,
+               is_cook           AS isCook
+        FROM meals
+        WHERE group_id = ?
+          AND date_time >= ?
+          AND date_time <= ?
+    `, groupId, start.toISOString(), end.toISOString());
+
+
+}
+
+async function handleSyncStateKeys(groupId: string, dates: DateDuration): Promise<void> {
+    let current = new Date(dates.startDate);
+
+    const end = new Date(dates.endDate);
+    end.setDate(1);
+    end.setHours(0, 0, 0, 0);
+
+    while (current <= end) {
+        const cacheKey = buildCacheKey(groupId, current);
+        await updateSyncStatus(cacheKey);
+
+        current = new Date(current.getFullYear(), current.getMonth() + 1, 1, 0, 0, 0, 0);
+    }
+}
+
+
+export function buildCacheKey(groupId: string, date: Date): string {
+    return cacheKeyBase + groupId + '_' + date.getFullYear() + '_' + (date.getMonth() + 1);
+}
+
+
+export function buildDateDuration(date: Date): DateDuration {
+    return {
+        currentWeekDate: date,
+        startDate: getFirstDayOfLastMonth(date),
+        endDate: getLastDayOfNextMonth(date),
+    }
+}
+
+function getFirstDayOfLastMonth(date: Date): Date {
+    const copy = new Date(date);
+    copy.setDate(1);
+    copy.setMonth(copy.getMonth() - 1);
+    copy.setHours(0, 0, 0)
+    return copy;
+}
+
+function getLastDayOfNextMonth(date: Date): Date {
+    const copy = new Date(date);
+    copy.setMonth(copy.getMonth() + 2);
+    copy.setDate(0); // this is kinda abusing how the Date object in js work but it's fine
+    copy.setHours(23, 59, 59);
+    return copy;
+}
