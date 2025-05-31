@@ -80,12 +80,18 @@ export async function createTable() {
 export async function dropAllTables() {
     try {
 
+
+
     await db.execAsync(`
-        DROP TABLE IF EXISTS groups;
         DROP TABLE IF EXISTS cacheStatus;
-        DROP TABLE IF EXISTS users;
+        DROP TABLE IF EXISTS test;
+
         DROP TABLE IF EXISTS user_group_roles;
+        DROP TABLE IF EXISTS user_groups;
         DROP TABLE IF EXISTS meals;
+
+        DROP TABLE IF EXISTS groups;
+        DROP TABLE IF EXISTS users;
     `);
         console.log('All tables dropped');
     } catch (error) {

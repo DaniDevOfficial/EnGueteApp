@@ -71,8 +71,34 @@ export function Test() {
         const allRows = await db.getAllAsync('SELECT * FROM cacheStatus');
         console.log(allRows);
     }
+
     async function addTestData() {
         await db.runAsync('INSERT INTO test (value, intValue) VALUES (?, ?)', value, 1);
+    }
+
+    async function getDatabaseStructure() {
+        try {
+            const tables = await db.getAllAsync('SELECT name FROM sqlite_master WHERE type="table"');
+            console.log('Database structure:', tables);
+        } catch (e) {
+            console.error('Error getting database structure:', e);
+        }
+    }
+
+    async function clearDatabase() {
+        try {
+            await dropAllTables();
+        } catch (e) {
+            console.error('Error clearing database:', e);
+        }
+    }
+
+    async function rebuildDatabse() {
+        try {
+            await createTable();
+        } catch (e) {
+            console.error('Error clearing database:', e);
+        }
     }
 
 
@@ -101,6 +127,16 @@ export function Test() {
             <Button onPress={getDataFromSqlite}>
                 <Text>getDataFromSqlite</Text>
             </Button>
+            <Button onPress={getDatabaseStructure}>
+                <Text>get Database Structure</Text>
+            </Button>
+
+            <Button onPress={clearDatabase}>
+                <Text>clear Database</Text>
+            </Button>
+            <Button onPress={rebuildDatabse}>
+                <Text>rebuild Database</Text>
+            </Button>
             <Input
                 value={value}
                 onChangeText={setValue}
@@ -108,7 +144,7 @@ export function Test() {
 
             </Input>
             <Button onPress={addTestData}>
-            Add Test  Data
+                Add Test Data
             </Button>
             <Text>selected: {date.toLocaleString()}</Text>
         </SafeAreaView>

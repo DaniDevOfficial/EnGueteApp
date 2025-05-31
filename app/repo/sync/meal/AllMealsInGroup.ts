@@ -38,7 +38,7 @@ export async function TrySyncMeals(groupId: string, dates: DateDuration): Promis
 async function SyncAllMeals(groupId: string, dates: DateDuration): Promise<void> {
     const mealResponse = await getMealsFromBackend(groupId, dates);
     await storeAllMealsInDatabase(mealResponse.meals, groupId);
-    await deleteMealsInDatabase(groupId);
+    await deleteMealsInDatabase(mealResponse.deletedIds);
 }
 
 async function getMealsFromBackend(groupId: string, dates: DateDuration): Promise<MealsSyncResponse> {

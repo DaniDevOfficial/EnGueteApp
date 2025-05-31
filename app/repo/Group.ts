@@ -13,6 +13,7 @@ import {
 import {isDeviceOffline} from "../utility/Network/OnlineOffline";
 import {getAllGroups, userGroupsCacheKey} from "./sync/user/AllGroups";
 import {buildCacheKey, buildDateDuration, getMeals, TrySyncMeals} from "./sync/meal/AllMealsInGroup";
+import {TrySyncGroupMembers} from "./sync/group/memberList";
 
 export interface Group {
     groupInfo: GroupInformation
@@ -52,6 +53,8 @@ export interface GroupIdResponse {
 export interface GroupMember {
     groupId: string,
     userId: string,
+    userGroupId: string,
+    joinedAt: string,
     username: string,
     userRoles: string[],
     profilePicture?: string,
@@ -149,10 +152,12 @@ export async function GetGroupMemberList(groupId: string): Promise<GroupMember[]
         method: 'GET',
         headers: await getBasicAuthHeader(),
     });
-
+    return await TrySyncGroupMembers(groupId);
     const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
     await handleDefaultResponseAndHeaders(res)
-    return await res.json();
+    const resData = await res.json();
+    console.log(resData);
+    return resData;
 } //TODO: change this to use the sync function
 
 export enum RoleChange {
