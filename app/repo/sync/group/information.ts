@@ -5,8 +5,8 @@ import {getBasicAuthHeader, GetSafeCurrentUserId} from "../../../utility/Auth";
 import {handleDefaultResponseAndHeaders} from "../../../utility/Response";
 import {db, updateSyncStatus} from "../../../utility/database";
 import {ForbiddenError, TimeoutError} from "../../../utility/Errors";
-import {GroupMemberSyncResponse} from "./members";
 import {GetUserRoleRights} from "../../../utility/Roles";
+import {GroupMemberSyncResponse, handleLocalGroupMembersSync} from "./memberList";
 
 
 export interface GroupInformationResponse {
@@ -40,7 +40,7 @@ export async function TrySyncGroup(groupId: string): Promise<GroupInformationRes
 async function SyncGroupInformation(groupId: string) {
     const data = await GetGroupInformationFromBackend(groupId);
     await storeGroupInformationInDatabase(data.groupInfo);
-    await storeGroupMembers(data.members, groupId);
+    await handleLocalGroupMembersSync(data.members);
 }
 
 export async function getGroupInformation(groupId: string): Promise<GroupInformationResponse> {
@@ -77,37 +77,20 @@ async function GetGroupInformationFromBackend(groupId: string): Promise<GroupInf
         method: 'GET',
         headers: await getBasicAuthHeader(),
     });
-
+    // @ts-ignore
     const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
     await handleDefaultResponseAndHeaders(res)
-    return await res.json();
-}
+    const data = await res.json();
+
+    return {
+        groupInfo: data.groupInfo,
+        members: {
+            members: Array.isArray(data.members) ? data.members : [],
+            deletedIds: Array.isArray(data.deletedIds) ? data.deletedIds : [],
+        },
+    };}
 
 async function storeGroupInformationInDatabase(group: GroupInformationResponse) {
     const now = new Date().toISOString();
     await db.runAsync('INSERT OR REPLACE INTO groups (group_id, group_name, user_count, last_sync) VALUES (?, ?, ?, ?)', group.groupId, group.groupName, group.userCount, now);
-}
-
-async function storeGroupMembers(membersSync: GroupMemberSyncResponse, groupId: string) {
-    const members = membersSync.members;
-    await db.withTransactionAsync(async () => {
-        for (const member of members) {
-            await db.runAsync(`
-                INSERT OR REPLACE INTO users (user_id, username, profile_picture, last_sync)
-                VALUES (?, ?, ?, ?)
-            `, member.userId, member.username, member.profilePicture ?? '', new Date().toISOString());
-            //TODO: add user_groups sync too
-            await db.runAsync(`
-                DELETE FROM user_group_roles
-                WHERE user_id = ? AND group_id = ?
-            `, member.userId, groupId);
-
-            for (const role of member.userRoles) {
-                await db.runAsync(`
-                    INSERT OR REPLACE INTO user_group_roles (role, user_id, group_id)
-                    VALUES (?, ?, ?)
-                `, role, member.userId, groupId);
-            }
-        }
-    });
 }

@@ -46,13 +46,14 @@ export async function getGroupMembers(groupId: string): Promise<GroupMember[]> {
                u.username,
                group_concat(ur.role) AS userRolesString,
                u.profile_picture     AS profilePicture,
-               ug.joined_at         AS joinedAt
+               ug.joined_at          AS joinedAt
         FROM user_groups ug
                  INNER JOIN users u ON ug.user_id = u.user_id
-                 INNER JOIN user_group_roles ur ON ur.group_id = ug.group_id AND ur.user_id = u.user_id
+                 LEFT JOIN user_group_roles ur ON ur.group_id = ug.group_id AND ur.user_id = u.user_id
         WHERE ug.group_id = ?
-        GROUP BY ug.group_id, u.user_id, u.username, ur.role;
+        GROUP BY ug.id, ug.group_id, u.user_id, u.username, u.profile_picture, ug.joined_at;
     `, groupId);
+
     return data.map((member: GroupMemberDBRow): GroupMember => ({
         groupId: member.groupId,
         userGroupId: member.userGroupId,
@@ -80,6 +81,7 @@ async function getGroupMembersFromBackend(groupId: string): Promise<GroupMemberS
         headers: await getBasicAuthHeader(),
     });
 
+    // @ts-ignore
     const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
     await handleDefaultResponseAndHeaders(res)
     const data = await res.json();
@@ -88,6 +90,16 @@ async function getGroupMembersFromBackend(groupId: string): Promise<GroupMemberS
         members: Array.isArray(data.members) ? data.members : [],
         deletedIds: Array.isArray(data.deletedIds) ? data.deletedIds : [],
     };
+}
+
+export async function handleLocalGroupMembersSync(data: GroupMemberSyncResponse): Promise<void> {
+    if (data.members.length > 0) {
+        await storeGroupMembers(data.members);
+    }
+
+    if (data.deletedIds.length > 0) {
+        await deleteGroupMembers(data.deletedIds);
+    }
 }
 
 async function storeGroupMembers(data: GroupMember[]) {
@@ -105,8 +117,24 @@ async function storeGroupMembers(data: GroupMember[]) {
                 INSERT
                 OR REPLACE INTO user_groups (id, group_id, user_id, joined_at, last_sync) 
                 VALUES (?, ?, ?, ?, ?);
-            `, member.userGroupId, member.groupId, member.userId, member.joinedAt,now);
+            `, member.userGroupId, member.groupId, member.userId, member.joinedAt, now);
+
+            await db.runAsync(`
+                DELETE
+                FROM user_group_roles
+                WHERE user_id = ?
+                  AND group_id = ?
+            `, member.userId, member.groupId);
+
+            for (const role of member.userRoles) {
+                await db.runAsync(`
+                    INSERT
+                    OR REPLACE INTO user_group_roles (role, user_id, group_id)
+                    VALUES (?, ?, ?)
+                `, role, member.userId, member.groupId);
+            }
         }
+
     });
 }
 
@@ -114,7 +142,8 @@ async function deleteGroupMembers(userGroupIds: string[]): Promise<void> {
     await db.withTransactionAsync(async () => {
         for (const userGroupId of userGroupIds) {
             await db.runAsync(`
-                DELETE FROM user_groups
+                DELETE
+                FROM user_groups
                 WHERE id = ?;
             `, userGroupId);
         }
