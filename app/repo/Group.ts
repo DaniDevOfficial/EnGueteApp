@@ -13,12 +13,13 @@ import {
 import {isDeviceOffline} from "../utility/Network/OnlineOffline";
 import {getAllGroups, userGroupsCacheKey} from "./sync/user/AllGroups";
 import {buildCacheKey, buildDateDuration, getMeals, TrySyncMeals} from "./sync/meal/AllMealsInGroup";
-import {TrySyncGroupMembers} from "./sync/group/memberList";
+import {getGroupMembers, groupMembersCacheKey, TrySyncGroupMembers} from "./sync/group/memberList";
 
 export interface Group {
     groupInfo: GroupInformation
     meals?: MealCard[]
 }
+
 export interface GroupResponse {
     groupInfo: GroupInformationResponse
     meals?: MealCard[]
@@ -44,12 +45,15 @@ export interface MealCard {
     userPreference: string,
     isCook: boolean,
 }
+
 export interface NewGroupType {
     groupName: string,
 }
+
 export interface GroupIdResponse {
     groupId: string,
 }
+
 export interface GroupMember {
     groupId: string,
     userId: string,
@@ -59,11 +63,13 @@ export interface GroupMember {
     userRoles: string[],
     profilePicture?: string,
 }
+
 export interface RoleChangeRequest {
     groupId: string,
     userId: string,
     role: string,
 }
+
 export interface KickUserRequest {
     groupId: string,
     userId: string,
@@ -75,7 +81,7 @@ export async function GetGroupInformation(groupId: string): Promise<GroupRespons
     const shouldSkipSync = !await needsToBeSynced(singleGroupCacheKeySuffixId + groupId);
 
     if (shouldSkipSync || isOffline) {
-        return { //TODO: CHANGE THIS STRUCTURE, SO IT ONLY RETURNS THE group information
+        return {
             groupInfo: await getGroupInformation(groupId),
         };
     }
@@ -146,19 +152,16 @@ export async function LeaveGroupRequest(groupId: string): Promise<GroupIdRespons
 }
 
 export async function GetGroupMemberList(groupId: string): Promise<GroupMember[]> {
-    const url = BACKEND_URL + 'groups/members?groupId=' + groupId;
-    const timeoutPromise = timeoutPromiseFactory()
-    const fetchPromise = fetch(url, {
-        method: 'GET',
-        headers: await getBasicAuthHeader(),
-    });
+
+    const isOffline = await isDeviceOffline();
+    const shouldSkipSync = !await needsToBeSynced(groupMembersCacheKey + groupId);
+
+    if (shouldSkipSync || isOffline) {
+        return await getGroupMembers(groupId);
+    }
+
     return await TrySyncGroupMembers(groupId);
-    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
-    await handleDefaultResponseAndHeaders(res)
-    const resData = await res.json();
-    console.log(resData);
-    return resData;
-} //TODO: change this to use the sync function
+}
 
 export enum RoleChange {
     PROMOTION,
@@ -182,7 +185,7 @@ export async function ChangeRole(requestData: RoleChangeRequest, roleChange: Rol
     return await res.json();
 }
 
-export async function KickUserFromGroup(requestData: KickUserRequest){
+export async function KickUserFromGroup(requestData: KickUserRequest) {
     const url = BACKEND_URL + 'management/user/kick';
     const timeoutPromise = timeoutPromiseFactory()
     const fetchPromise = fetch(url, {

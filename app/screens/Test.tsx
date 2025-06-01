@@ -101,7 +101,10 @@ export function Test() {
         }
     }
 
-
+    async function getAllRoles() {
+        const roles = await db.getAllAsync('SELECT * FROM user_group_roles');
+        console.log('Roles:', roles);
+    }
 
     useEffect(() => {
         createTable();
@@ -136,6 +139,9 @@ export function Test() {
             </Button>
             <Button onPress={rebuildDatabse}>
                 <Text>rebuild Database</Text>
+            </Button>
+            <Button onPress={getAllRoles}>
+                <Text>ROLES</Text>
             </Button>
             <Input
                 value={value}

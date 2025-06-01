@@ -3,7 +3,7 @@ import React, {useCallback, useEffect, useState} from "react";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {GetGroupMeals, MealCard as MealCardType} from "../../repo/Group";
 import {MealCard} from "./MealCard";
-import {MealFilterSection} from "./MealFilterSection";
+import {getWednesdayOfWeek, MealFilterSection} from "./MealFilterSection";
 import {useGroup} from "../../context/groupContext";
 import {RefreshControl} from "react-native-gesture-handler";
 import {showToast} from "../UI/Toast";
@@ -24,7 +24,7 @@ export function MealList({tempMeals}: MealListProps) {
     const {group, setGroup} = useGroup();
     const navigation = useNavigation();
     const [loading, setLoading] = React.useState(false);
-    const [date, setDate] = React.useState(group.filterDate);
+    const [date, setDate] = React.useState(getWednesdayOfWeek());
     const [meals, setMeals] = React.useState<MealCardType[]>(tempMeals);
     const [shouldReload, setShouldReload] = useState(false);
 
@@ -88,7 +88,7 @@ export function MealList({tempMeals}: MealListProps) {
         <Box
             pt={4}
         >
-            <MealFilterSection onDateChange={loadMeals}/>
+            <MealFilterSection onDateChange={loadMeals} setDate={setDate}/>
             <ScrollView
                 contentContainerStyle={{flexGrow: 1}}
                 width={"100%"}

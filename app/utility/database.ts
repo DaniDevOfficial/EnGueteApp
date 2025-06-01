@@ -81,18 +81,17 @@ export async function dropAllTables() {
     try {
 
 
+        await db.execAsync(`
+            DROP TABLE IF EXISTS cacheStatus;
+            DROP TABLE IF EXISTS test;
 
-    await db.execAsync(`
-        DROP TABLE IF EXISTS cacheStatus;
-        DROP TABLE IF EXISTS test;
+            DROP TABLE IF EXISTS user_group_roles;
+            DROP TABLE IF EXISTS user_groups;
+            DROP TABLE IF EXISTS meals;
 
-        DROP TABLE IF EXISTS user_group_roles;
-        DROP TABLE IF EXISTS user_groups;
-        DROP TABLE IF EXISTS meals;
-
-        DROP TABLE IF EXISTS groups;
-        DROP TABLE IF EXISTS users;
-    `);
+            DROP TABLE IF EXISTS groups;
+            DROP TABLE IF EXISTS users;
+        `);
         console.log('All tables dropped');
     } catch (error) {
         console.log('Error dropping tables:', error);
@@ -102,10 +101,14 @@ export async function dropAllTables() {
 export async function clearDatabase() {
     try {
         await db.execAsync(`
-            DELETE FROM groups;
-            DELETE FROM cacheStatus;
-            DELETE FROM users;
-            DELETE FROM user_group_roles;
+            DELETE
+            FROM groups;
+            DELETE
+            FROM cacheStatus;
+            DELETE
+            FROM users;
+            DELETE
+            FROM user_group_roles;
         `);
         console.log('Database cleared');
     } catch (error) {
@@ -114,7 +117,9 @@ export async function clearDatabase() {
 }
 
 export async function needsToBeSynced(cacheKey: string, cacheTimeSeconds: number = 20): Promise<boolean> {
-    const result: {last_sync: string} | null = await db.getFirstAsync(`SELECT last_sync FROM cacheStatus WHERE cacheKey = ?`, cacheKey);
+    const result: { last_sync: string } | null = await db.getFirstAsync(`SELECT last_sync
+                                                                         FROM cacheStatus
+                                                                         WHERE cacheKey = ?`, cacheKey);
     if (!result) {
         return true; // Cache does not exist, needs to be synced
     }
@@ -122,20 +127,24 @@ export async function needsToBeSynced(cacheKey: string, cacheTimeSeconds: number
     const lastSync = new Date(result.last_sync);
     const timeDifference = now.getTime() - lastSync.getTime();
     const timeDifferenceSeconds = timeDifference / 1000;
-    console.log({
-        cacheKey,
-        lastSync: result.last_sync,
-        now: now.toISOString(),
-        timeDifferenceSeconds,
-        cacheTimeSeconds
-    })
+    if (false) {
+
+        console.log({
+            cacheKey,
+            lastSync: result.last_sync,
+            now: now.toISOString(),
+            timeDifferenceSeconds,
+            cacheTimeSeconds
+        });
+    }
     return timeDifferenceSeconds >= cacheTimeSeconds;
 }
 
 export async function updateSyncStatus(cacheKey: string) {
     const now = new Date().toISOString();
     await db.runAsync(`
-        INSERT OR REPLACE INTO cacheStatus (cacheKey, last_sync)
+        INSERT
+        OR REPLACE INTO cacheStatus (cacheKey, last_sync)
         VALUES (?, ?)
     `, cacheKey, now);
 }

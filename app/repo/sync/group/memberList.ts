@@ -7,7 +7,7 @@ import {TimeoutError} from "../../../utility/Errors";
 import {getBasicAuthHeader} from "../../../utility/Auth";
 import {handleDefaultResponseAndHeaders} from "../../../utility/Response";
 
-const groupMembersCacheKey = "groupMembers_";
+export const groupMembersCacheKey = "groupMembers_";
 
 
 export interface GroupMemberSyncResponse {
@@ -68,8 +68,7 @@ export async function getGroupMembers(groupId: string): Promise<GroupMember[]> {
 async function SyncMembers(groupId: string) {
 
     const data = await getGroupMembersFromBackend(groupId);
-    await storeGroupMembers(data.members);
-    await deleteGroupMembers(data.deletedIds);
+    await handleLocalGroupMembersSync(data);
 }
 
 

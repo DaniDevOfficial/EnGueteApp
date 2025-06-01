@@ -6,7 +6,7 @@ import {handleDefaultResponseAndHeaders} from "../../../utility/Response";
 import {db, updateSyncStatus} from "../../../utility/database";
 import {ForbiddenError, TimeoutError} from "../../../utility/Errors";
 import {GetUserRoleRights} from "../../../utility/Roles";
-import {GroupMemberSyncResponse, handleLocalGroupMembersSync} from "./memberList";
+import {groupMembersCacheKey, GroupMemberSyncResponse, handleLocalGroupMembersSync} from "./memberList";
 
 
 export interface GroupInformationResponse {
@@ -28,6 +28,7 @@ export async function TrySyncGroup(groupId: string): Promise<GroupInformationRes
     try {
         await SyncGroupInformation(groupId);
         await updateSyncStatus(singleGroupCacheKeySuffixId + groupId);
+        await updateSyncStatus(groupMembersCacheKey + groupId);
         return await getGroupInformation(groupId);
     } catch (error) {
         if (error instanceof TimeoutError) {
@@ -81,12 +82,11 @@ async function GetGroupInformationFromBackend(groupId: string): Promise<GroupInf
     const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
     await handleDefaultResponseAndHeaders(res)
     const data = await res.json();
-
     return {
         groupInfo: data.groupInfo,
         members: {
-            members: Array.isArray(data.members) ? data.members : [],
-            deletedIds: Array.isArray(data.deletedIds) ? data.deletedIds : [],
+            members: Array.isArray(data.members.members) ? data.members.members : [],
+            deletedIds: Array.isArray(data.members.deletedIds) ? data.members.deletedIds : [],
         },
     };}
 
