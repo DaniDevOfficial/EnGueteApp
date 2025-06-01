@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Box, Button, Flex, FormControl, Input, Modal, Pressable, Switch, Text, useToast} from 'native-base';
-import {MealParticipants, saveMealPreference} from "../../repo/Meal";
+import {MealPreference, saveMealPreference} from "../../repo/Meal";
 import {ForbiddenError, FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {useNavigation} from "@react-navigation/native";
 import {handleLogoutProcedure} from "../../Util";
@@ -10,7 +10,7 @@ import {showToast} from "../UI/Toast";
 import {resetToUserScreen} from "../../utility/navigation";
 
 
-export function PreferenceCard({mealParticipants}: { mealParticipants: MealParticipants }) {
+export function PreferenceCard({mealParticipants}: { mealParticipants: MealPreference }) {
     const toast = useToast();
     const getError = useErrorText();
     const text = useTexts(['error', 'errorPleaseEnterCorrectText', 'save', 'cancel', 'editMealPreference']);

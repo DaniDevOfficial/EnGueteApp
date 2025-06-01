@@ -4,6 +4,10 @@ import {timeoutPromiseFactory} from "../Util";
 import {MealCard} from "./Group";
 import {handleDefaultResponseAndHeaders} from "../utility/Response";
 import {getBasicAuthHeader} from "../utility/Auth";
+import {getMeal, singularMealCacheKey, TryAndSyncSingularMeal} from "./sync/meal/singularMeal";
+import {isDeviceOffline} from "../utility/Network/OnlineOffline";
+import {needsToBeSynced} from "../utility/database";
+import {getGroupMembers, groupMembersCacheKey, TrySyncGroupMembers} from "./sync/group/memberList";
 
 export interface NewMealResponse {
     mealId: string,
@@ -11,10 +15,10 @@ export interface NewMealResponse {
 
 export interface MealInterface {
     mealInformation: MealCard,
-    mealParticipants: MealParticipants[]
+    mealPreferences: MealPreference[]
 }
 
-export interface MealParticipants {
+export interface MealPreference {
     userId: string,
     mealId: string,
     username: string,
@@ -40,11 +44,10 @@ export async function createNewMeal(newMeal: NewMealType): Promise<NewMealRespon
     return await res.json()
 }
 
-export async function getMealData(mealId: string): Promise<MealInterface> {
+export async function getMealData(mealId: string, groupId: string): Promise<MealInterface> {
     const url = BACKEND_URL + 'meals?mealId=' + mealId
-
     const timeoutPromise = timeoutPromiseFactory()
-
+    console.log(await getMeal(mealId));
     const fetchPromise = fetch(url, {
         method: 'GET',
         headers: await getBasicAuthHeader(),
@@ -56,6 +59,14 @@ export async function getMealData(mealId: string): Promise<MealInterface> {
     await handleDefaultResponseAndHeaders(res)
 
     return await res.json()
+    const isOffline = await isDeviceOffline();
+    const shouldSkipSync = !await needsToBeSynced(singularMealCacheKey + groupId);
+
+    if (shouldSkipSync || isOffline) {
+        return await getMeal(mealId);
+    }
+
+    return await TryAndSyncSingularMeal(mealId, groupId)
 }
 
 export async function saveMealPreference(userId: string, mealId: string, preference: string | null, isCook: boolean | null): Promise<void> {

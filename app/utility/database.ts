@@ -67,8 +67,21 @@ export async function createTable() {
             last_sync TEXT DEFAULT (datetime('now')),
             
             FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE
+        );
+        
+        CREATE TABLE IF NOT EXISTS meal_preference (
+            id TEXT PRIMARY KEY,
+            preference TEXT NOT NULL,
+            is_cook INTEGER NOT NULL,
+            meal_id TEXT NOT NULL,
+            user_id TEXT NOT NULL,
+            user_group_id TEXT NOT NULL,
+            last_sync  TEXT DEFAULT (datetime('now')),
 
-        )
+            FOREIGN KEY (meal_id) REFERENCES meals(meal_id) ON DELETE CASCADE,
+            FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+            FOREIGN KEY (user_group_id) REFERENCES user_groups(id) ON DELETE CASCADE
+        );
             
     `); //TODO add user_groups table and reference with the roles table for simple deletion later on
     return;
