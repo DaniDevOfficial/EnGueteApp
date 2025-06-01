@@ -84,21 +84,23 @@ export function PreferenceCard({mealParticipants}: { mealParticipants: MealPrefe
                 <Modal.Content>
                     <Modal.Header>Edit Meal Preference</Modal.Header>
                     <Modal.Body>
-                        <FormControl>
-                            <FormControl.Label>New Preference</FormControl.Label>
-                            <Input
-                                value={newPreference ?? ''}
-                                onChangeText={setNewPreference}
-                                placeholder="Enter new meal preference"
-                            />
-                        </FormControl>
-                        <FormControl>
-                            <FormControl.Label>Is Cook 👨‍🍳</FormControl.Label>
-                            <Switch
-                                isChecked={newIsCook ?? false}
-                                onChange={(e) => setNewIsCook(e.nativeEvent.value)}
-                            />
-                        </FormControl>
+
+                            <FormControl>
+                                <FormControl.Label>New Preference</FormControl.Label>
+                                <Input
+                                    value={newPreference ?? ''}
+                                    onChangeText={setNewPreference}
+                                    placeholder="Enter new meal preference"
+                                />
+                            </FormControl>
+                            <FormControl display={'flex'} alignItems={'flex-start'}>
+
+                                <FormControl.Label>Is Cook 👨‍🍳</FormControl.Label>
+                                <Switch
+                                    isChecked={newIsCook ?? false}
+                                    onChange={(e) => setNewIsCook(e.nativeEvent.value)}
+                                />
+                            </FormControl>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onPress={handleSave}>Save</Button>

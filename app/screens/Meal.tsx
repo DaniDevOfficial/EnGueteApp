@@ -36,7 +36,6 @@ export function Meal() {
     async function getMealInformation() {
         try {
             const res = await getMealData(mealId, group.groupId)
-            console.log(res)
             setMealInformation(res)
             setLoading(false)
         } catch (e) {
