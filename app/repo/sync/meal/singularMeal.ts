@@ -4,14 +4,19 @@ import {FRONTEND_ERRORS, NotFoundError, TimeoutError} from "../../../utility/Err
 import {GetGroupMemberList, MealCard} from "../../Group";
 import {MealInterface, MealPreference} from "../../Meal";
 import {db} from "../../../utility/database";
+import {timeoutPromiseFactory} from "../../../Util";
+import {getBasicAuthHeader} from "../../../utility/Auth";
+import {handleDefaultResponseAndHeaders} from "../../../utility/Response";
+
+import {DEFAULT_UNDECIDED_PREFERENCE} from "../../../utility/TextKeys/TextKeys";
 
 export const singularMealCacheKey = 'singularMeal_';
 
 export async function TryAndSyncSingularMeal(mealId: string, groupId: string): Promise<MealInterface> {
     try {
         await SyncMealFromBackend(mealId);
-        await GetGroupMemberList(mealId); // This is so we are up to date with the group members, so no unsynced participants are stored
-        return getMeal(groupId);
+        await GetGroupMemberList(groupId); // This is so we are up to date with the group members, so no unsynced participants are stored
+        return getMeal(mealId);
     } catch (error) {
         if (error instanceof TimeoutError) {
             return getMeal(mealId);
@@ -22,7 +27,7 @@ export async function TryAndSyncSingularMeal(mealId: string, groupId: string): P
 
 interface PreferenceSyncResponse {
     preferenceId: string;
-    userGroupsId: string;
+    userGroupId: string;
     mealId: string;
     userId: string;
     isCook: boolean;
@@ -84,6 +89,25 @@ async function getMealPreferences(mealId: string): Promise<MealPreference[]|any>
         existingPreferences,
         notExistingPreferences
     })
+    const allPreferences =  [...existingPreferences, ...notExistingPreferences]
+
+    //Sort By name and preference undecided should be at the end
+    allPreferences.sort((a, b) => {
+        a.isCook = Boolean(a.isCook);
+        b.isCook = Boolean(b.isCook);
+
+        if (a.preference === DEFAULT_UNDECIDED_PREFERENCE && b.preference !== DEFAULT_UNDECIDED_PREFERENCE) return 1;
+        if (b.preference === DEFAULT_UNDECIDED_PREFERENCE && a.preference !== DEFAULT_UNDECIDED_PREFERENCE) return -1;
+
+        if (a.preference.toLowerCase() < b.preference.toLowerCase()) return -1;
+        if (a.preference.toLowerCase() > b.preference.toLowerCase()) return 1;
+
+        if (a.username.toLowerCase() < b.username.toLowerCase()) return -1;
+        if (a.username.toLowerCase() > b.username.toLowerCase()) return 1;
+        return 0;
+    });
+
+    return allPreferences;
 }
 
 async function getExistingPreferences(mealId: string): Promise<MealPreference[]> {
@@ -122,7 +146,27 @@ async function getNotExistingPreferencesForAllMembers(mealId: string): Promise<M
 
 
 async function getMealFromBackend(mealId: string): Promise<MealSyncResponse> {
+    const url = BACKEND_URL + 'sync/group/meal?mealId=' + mealId
+    const timeoutPromise = timeoutPromiseFactory()
 
+    const fetchPromise = fetch(url, {
+        method: 'GET',
+        headers: await getBasicAuthHeader(),
+    });
+
+    // @ts-ignore
+    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
+
+    await handleDefaultResponseAndHeaders(res)
+
+    const data = await res.json()
+    return {
+        mealInformation: data.mealInformation,
+        mealPreferences: {
+            preferences: Array.isArray(data.mealPreferences.preferences) ? data.mealPreferences.preferences : [],
+            deletedIds: Array.isArray(data.mealPreferences.deletedIds) ? data.mealPreferences.deletedIds : []
+        }
+    }
 }
 
 async function storeMealInDatabase(meal: any): Promise<void> {
@@ -135,14 +179,14 @@ async function handleMealPreferences(mealPreferences: MealPreferenceSyncResponse
         for (const preference of mealPreferences.preferences) {
             await db.runAsync(`
                 INSERT
-                OR REPLACE INTO meal_preferences (id, user_group_id, meal_id, user_id, is_cook, preference, lastSync) 
+                OR REPLACE INTO meal_preference (id, user_group_id, meal_id, user_id, is_cook, preference, last_sync) 
                 VALUES (?, ?, ?, ?, ?, ?, ?);
-            `, preference.preferenceId, preference.userGroupsId, preference.mealId, preference.userId, preference.isCook, preference.preference, now);
+            `, preference.preferenceId, preference.userGroupId, preference.mealId, preference.userId, preference.isCook, preference.preference, now);
         }
         for (const deletedId of mealPreferences.deletedIds) {
             await db.runAsync(`
                 DELETE
-                FROM meal_preferences
+                FROM meal_preference
                 WHERE id = ?;
             `, deletedId);
         }

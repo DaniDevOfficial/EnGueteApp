@@ -45,20 +45,6 @@ export async function createNewMeal(newMeal: NewMealType): Promise<NewMealRespon
 }
 
 export async function getMealData(mealId: string, groupId: string): Promise<MealInterface> {
-    const url = BACKEND_URL + 'meals?mealId=' + mealId
-    const timeoutPromise = timeoutPromiseFactory()
-    console.log(await getMeal(mealId));
-    const fetchPromise = fetch(url, {
-        method: 'GET',
-        headers: await getBasicAuthHeader(),
-    });
-
-    // @ts-ignore
-    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
-
-    await handleDefaultResponseAndHeaders(res)
-
-    return await res.json()
     const isOffline = await isDeviceOffline();
     const shouldSkipSync = !await needsToBeSynced(singularMealCacheKey + groupId);
 

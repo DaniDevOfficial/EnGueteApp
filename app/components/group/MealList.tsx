@@ -84,6 +84,10 @@ export function MealList({tempMeals}: MealListProps) {
         }, [])
     );
 
+    useEffect(() => {
+        loadMeals(date);
+    }, []);
+
     return (
         <Box
             pt={4}

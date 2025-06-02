@@ -35,6 +35,7 @@ export interface GroupInformation {
 
 export interface MealCard {
     mealId: string,
+    groupId: string,
     title: string,
     closed: boolean,
     fulfilled: boolean,
