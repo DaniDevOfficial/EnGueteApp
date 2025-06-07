@@ -169,8 +169,15 @@ async function getMealFromBackend(mealId: string): Promise<MealSyncResponse> {
     }
 }
 
-async function storeMealInDatabase(meal: any): Promise<void> {
-
+async function storeMealInDatabase(meal: MealCard): Promise<void> {
+       await db.withTransactionAsync(async () => {
+        const now = new Date().toISOString();
+        await db.runAsync(`
+            INSERT
+            OR REPLACE INTO meals (meal_id, group_id, title, closed, fulfilled, date_time, meal_type, notes, participant_count, user_preference, is_cook, last_sync)
+            VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?);
+            `, meal.mealId, meal.groupId, meal.title, meal.closed, meal.fulfilled, meal.dateTime, meal.mealType, meal.notes, meal.participantCount, meal.userPreference, Number(meal.isCook), now);
+    })
 }
 
 async function handleMealPreferences(mealPreferences: MealPreferenceSyncResponse): Promise<void> {

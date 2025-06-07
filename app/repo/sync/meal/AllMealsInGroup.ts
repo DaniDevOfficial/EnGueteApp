@@ -86,11 +86,25 @@ async function deleteMealsInDatabase(mealIds: string[]): Promise<void> {
     })
 }
 
+interface MealFromDatabase {
+    mealId: string;
+    title: string;
+    closed: boolean;
+    fulfilled: boolean;
+    dateTime: string;
+    mealType: string;
+    notes: string | null;
+    participantCount: number;
+    userPreference: string | null;
+    isCook: boolean;
+}
+
 export async function getMeals(groupId: string, date: Date): Promise<MealCard[]> {
 
     const {start, end} = getWeekDuration(date);
 
-    return await db.getAllAsync<MealCard>(`
+
+    const data =    await db.getAllAsync<MealCard>(`
         SELECT meal_id           AS mealId,
                title,
                closed,
@@ -107,7 +121,11 @@ export async function getMeals(groupId: string, date: Date): Promise<MealCard[]>
           AND date_time <= ?
     `, groupId, start.toISOString(), end.toISOString());
 
+    data.map(meal => {
+        meal.isCook = !(!Number(meal.isCook));
+    })
 
+    return data;
 }
 
 async function handleSyncStateKeys(groupId: string, dates: DateDuration): Promise<void> {

@@ -9,6 +9,7 @@ import {showToast} from "../components/UI/Toast";
 import {createTable, db, dropAllTables} from "../utility/database";
 
 import {getAllGroups, SyncAllGroups} from "../repo/sync/user/AllGroups";
+import {getMeals} from "../repo/sync/meal/AllMealsInGroup";
 
 export function Test() {
     const [date, setDate] = useState(new Date(1598051730000));
@@ -88,22 +89,47 @@ export function Test() {
     async function clearDatabase() {
         try {
             await dropAllTables();
+            console.log('Database strucutre droppped successfully');
         } catch (e) {
-            console.error('Error clearing database:', e);
+            console.error('Error dropping database:', e);
         }
     }
 
     async function rebuildDatabse() {
         try {
             await createTable();
+            console.log('Database structure rebuilt successfully');
         } catch (e) {
-            console.error('Error clearing database:', e);
+            console.error('Error rebuilding databse:', e);
         }
     }
 
     async function getAllRoles() {
         const roles = await db.getAllAsync('SELECT * FROM user_group_roles');
         console.log('Roles:', roles);
+    }
+
+    async function getAllMeals() {
+        const tmp = await db.getAllAsync(`
+    SELECT * FROM meals
+    `)
+        console.log({tmp})
+    }
+
+    async function loadMeals() {
+        console.log(await getMeals('f15279d3-d622-475d-ad29-7d4869d10983', new Date()))
+    }
+
+    async function logEntireLogTable() {
+        const logEntries = await db.getAllAsync('SELECT * FROM log');
+        console.log('Log Entries:', logEntries);
+    }
+    async function addLogEntry() {
+        const now = new Date().toISOString();
+        await db.runAsync(`
+            INSERT INTO log (log_level, message, timestamp)
+            VALUES ('INFO', 'Test log entry', ?);
+        `, now);
     }
 
     useEffect(() => {
@@ -135,7 +161,7 @@ export function Test() {
             </Button>
 
             <Button onPress={clearDatabase}>
-                <Text>clear Database</Text>
+                <Text>drop Database</Text>
             </Button>
             <Button onPress={rebuildDatabse}>
                 <Text>rebuild Database</Text>
@@ -151,6 +177,18 @@ export function Test() {
             </Input>
             <Button onPress={addTestData}>
                 Add Test Data
+            </Button>
+            <Button onPress={getAllMeals}>
+                GetAllMeals
+            </Button>
+            <Button onPress={loadMeals}>
+                load group meals
+            </Button>
+            <Button onPress={logEntireLogTable}>
+                log Entire Log Table
+            </Button>
+            <Button onPress={addLogEntry}>
+                add log Entire to Log Table
             </Button>
             <Text>selected: {date.toLocaleString()}</Text>
         </SafeAreaView>

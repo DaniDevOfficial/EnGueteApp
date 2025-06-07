@@ -56,17 +56,17 @@ export async function createTable() {
             meal_id TEXT PRIMARY KEY,
             group_id TEXT NOT NULL,
             title TEXT NOT NULL,
-            closed Integer,
-            fulfilled Integer,
+            closed Integer NOT NULL DEFAULT 0,
+            fulfilled Integer NOT NULL DEFAULT 0,
             date_time TEXT DEFAULT (datetime('now')),
             meal_type TEXT NOT NULL,
             notes  TEXT NOT NULL,
             participant_count TEXT NOT NULL,
             user_preference TEXT NOT NULL,
-            is_cook TEXT NOT NULL,
-            last_sync TEXT DEFAULT (datetime('now')),
-            
+            is_cook INTEGER NOT NULL,
+            last_sync TEXT DEFAULT (datetime('now'))
             FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE
+
         );
         
         CREATE TABLE IF NOT EXISTS meal_preference (
@@ -82,10 +82,16 @@ export async function createTable() {
             FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
             FOREIGN KEY (user_group_id) REFERENCES user_groups(id) ON DELETE CASCADE
         );
-            
+        
+        CREATE TABLE IF NOT EXISTS log (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            log_level TEXT NOT NULL,
+            message TEXT NOT NULL,
+            timestamp TEXT DEFAULT (datetime('now'))
+        );
     `); //TODO add user_groups table and reference with the roles table for simple deletion later on
-    return;
     //Log the entire database structure
+    return;
     const result = await db.getAllAsync('SELECT name FROM sqlite_master WHERE type="table"');
     console.log('Database structure:', result);
 }
@@ -97,6 +103,7 @@ export async function dropAllTables() {
         await db.execAsync(`
             DROP TABLE IF EXISTS cacheStatus;
             DROP TABLE IF EXISTS test;
+            DROP TABLE IF EXISTS log;
 
             DROP TABLE IF EXISTS user_group_roles;
             DROP TABLE IF EXISTS user_groups;
@@ -118,6 +125,8 @@ export async function clearDatabase() {
             FROM groups;
             DELETE
             FROM cacheStatus;
+            DELETE
+            FROM log;
             DELETE
             FROM users;
             DELETE

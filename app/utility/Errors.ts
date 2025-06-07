@@ -102,6 +102,7 @@ export function useErrorText() {
 
     function getErrorText(errorKey: string): string {
         console.log(`Error Key: ${errorKey}, Language: ${language}`);
+        console.trace()
         // @ts-ignore
         return ErrorTextKey[errorKey]?.[language] ?? ErrorTextKey[FRONTEND_ERRORS.UNKNOWN_ERROR]?.[language];
     }
