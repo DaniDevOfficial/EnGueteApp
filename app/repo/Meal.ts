@@ -44,14 +44,15 @@ export async function createNewMeal(newMeal: NewMealType): Promise<NewMealRespon
     return await res.json()
 }
 
-export async function getMealData(mealId: string, groupId: string): Promise<MealInterface> {
+export async function getMealData(mealId: string, groupId: string, forceSync: boolean = true): Promise<MealInterface> {
     const isOffline = await isDeviceOffline();
-    const shouldSkipSync = !await needsToBeSynced(singularMealCacheKey + groupId);
+    const shouldSkipSync = !await needsToBeSynced(singularMealCacheKey + mealId);
 
-    if (shouldSkipSync || isOffline) {
-        return await getMeal(mealId);
+    if (!forceSync) {
+        if (shouldSkipSync || isOffline) {
+            return await getMeal(mealId);
+        }
     }
-
     return await TryAndSyncSingularMeal(mealId, groupId)
 }
 

@@ -33,9 +33,9 @@ export function Meal() {
         getMealInformation();
     }, []);
 
-    async function getMealInformation() {
+    async function getMealInformation(forceSync: boolean = false) {
         try {
-            const res = await getMealData(mealId, group.groupId)
+            const res = await getMealData(mealId, group.groupId, forceSync)
             setMealInformation(res)
             setLoading(false)
         } catch (e) {
@@ -85,7 +85,7 @@ export function Meal() {
             >
                 <MealHeader mealInformation={mealInformation.mealInformation}/>
                 {mealInformation.mealPreferences && mealInformation.mealPreferences.map((participant) => (
-                    <PreferenceCard mealParticipants={participant} key={participant.userId}/>
+                    <PreferenceCard mealParticipants={participant} forceRefresh={getMealInformation} key={participant.userId}/>
                 ))}
             </ScrollView>
         </>

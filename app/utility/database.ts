@@ -142,6 +142,7 @@ export async function needsToBeSynced(cacheKey: string, cacheTimeSeconds: number
                                                                          FROM cacheStatus
                                                                          WHERE cacheKey = ?`, cacheKey);
     if (!result) {
+        console.log(`CacheKey ${cacheKey} does not exist, needs to be synced`);
         return true; // Cache does not exist, needs to be synced
     }
     const now = new Date();

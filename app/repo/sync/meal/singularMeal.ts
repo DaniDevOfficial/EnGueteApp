@@ -3,7 +3,7 @@ import {BACKEND_URL} from '@env';
 import {FRONTEND_ERRORS, NotFoundError, TimeoutError} from "../../../utility/Errors";
 import {GetGroupMemberList, MealCard} from "../../Group";
 import {MealInterface, MealPreference} from "../../Meal";
-import {db} from "../../../utility/database";
+import {db, updateSyncStatus} from "../../../utility/database";
 import {timeoutPromiseFactory} from "../../../Util";
 import {getBasicAuthHeader} from "../../../utility/Auth";
 import {handleDefaultResponseAndHeaders} from "../../../utility/Response";
@@ -17,6 +17,7 @@ export async function TryAndSyncSingularMeal(mealId: string, groupId: string): P
     try {
         await SyncMealFromBackend(mealId);
         await GetGroupMemberList(groupId); // This is so we are up to date with the group members, so no unsynced participants are stored
+        await updateSyncStatus(singularMealCacheKey + mealId);
         return getMeal(mealId);
     } catch (error) {
         if (error instanceof TimeoutError) {
@@ -86,10 +87,6 @@ async function getMealPreferences(mealId: string): Promise<MealPreference[]|any>
 //IN the future this should also handle the fulfilled and closed states of the meal
     const existingPreferences = await getExistingPreferences(mealId);
     const notExistingPreferences = await getNotExistingPreferencesForAllMembers(mealId);
-    console.log({
-        existingPreferences,
-        notExistingPreferences
-    })
     const allPreferences =  [...existingPreferences, ...notExistingPreferences]
 
     //Sort By name and preference undecided should be at the end
