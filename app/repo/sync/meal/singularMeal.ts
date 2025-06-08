@@ -79,6 +79,11 @@ async function getMealInformation(mealId: string): Promise<MealCard> {
     if (!data) {
         throw new NotFoundError(FRONTEND_ERRORS.NOT_FOUND_ERROR);
     }
+
+    data.isCook = Boolean(data.isCook);
+    data.closed = Boolean(data.closed);
+    data.fulfilled = Boolean(data.fulfilled);
+
     return data;
 }
 
@@ -91,9 +96,6 @@ async function getMealPreferences(mealId: string): Promise<MealPreference[]|any>
 
     //Sort By name and preference undecided should be at the end
     allPreferences.sort((a, b) => {
-        a.isCook = Boolean(a.isCook);
-        b.isCook = Boolean(b.isCook);
-
         if (a.preference === DEFAULT_UNDECIDED_PREFERENCE && b.preference !== DEFAULT_UNDECIDED_PREFERENCE) return 1;
         if (b.preference === DEFAULT_UNDECIDED_PREFERENCE && a.preference !== DEFAULT_UNDECIDED_PREFERENCE) return -1;
 
@@ -104,6 +106,10 @@ async function getMealPreferences(mealId: string): Promise<MealPreference[]|any>
         if (a.username.toLowerCase() > b.username.toLowerCase()) return 1;
         return 0;
     });
+
+    allPreferences.map((preference) => {
+        preference.isCook = Boolean(preference.isCook);
+    })
 
     return allPreferences;
 }

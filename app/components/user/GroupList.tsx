@@ -85,19 +85,19 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
             />
 
             <Text fontWeight={"bold"} fontSize={"2xl"}>{text.yourGroups}</Text>
-        {groups.length > 0 && (
-            <InputGroup w={'100%'} justifyContent={'center'} alignItems={'center'}>
-                <Input
-                    width={'70%'}
-                    onChangeText={(text) => {
-                        setSearchQuery(text);
-                        handleSearch(text);
-                    }}
-                    placeholder={text.searchForGroup}
-                    value={searchQuery}
-                />
-            </InputGroup>
-        )}
+            {groups.length > 0 && (
+                <InputGroup w={'100%'} justifyContent={'center'} alignItems={'center'}>
+                    <Input
+                        width={'70%'}
+                        onChangeText={(text) => {
+                            setSearchQuery(text);
+                            handleSearch(text);
+                        }}
+                        placeholder={text.searchForGroup}
+                        value={searchQuery}
+                    />
+                </InputGroup>
+            )}
             <ScrollView
                 w={'100%'}
                 contentContainerStyle={{flexGrow: 1}}
