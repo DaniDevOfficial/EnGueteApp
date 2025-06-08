@@ -72,6 +72,7 @@ export function MealList({tempMeals}: MealListProps) {
             return;
         }
         setTimeout(() => {
+            console.log('test')
             loadMeals(date)
         }, 100) // this is because the animation is not finished yet and a statechange will cause a re-render. it's a bit hacky but it works
         //TODO: find a better way to do this

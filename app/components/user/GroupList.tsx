@@ -1,8 +1,8 @@
 import {Box, Input, InputGroup, Pressable, ScrollView, Text, useToast, VStack} from "native-base";
 import {RefreshControl} from "react-native-gesture-handler";
 import {GroupCard} from "./GroupCard";
-import React, {useEffect, useState} from "react";
-import {useNavigation} from "@react-navigation/native";
+import React, {useCallback, useEffect, useState} from "react";
+import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import {GetUserGroups, Group} from "../../repo/User";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {UnauthorizedError, useErrorText} from "../../utility/Errors";
@@ -19,6 +19,8 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
     const [groups, setGroups] = useState(groupsDefault);
     const [filteredGroups, setFilteredGroups] = useState(groups);
     const [searchQuery, setSearchQuery] = useState('');
+    const [shouldReload, setShouldReload] = useState(false);
+
 
     async function onRefresh() {
         setRefreshing(true);
@@ -45,6 +47,24 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
 
         setFilteredGroups(groups);
     }
+    useEffect(() => {
+        if (!shouldReload) {
+            return;
+        }
+        setTimeout(() => {
+            onRefresh()
+            setShouldReload(false);
+        }, 100) // this is because the animation is not finished yet and a statechange will cause a re-render. it's a bit hacky but it works
+        //TODO: find a better way to do this
+
+    }, [shouldReload]);
+
+    useFocusEffect(
+        useCallback(() => {
+            setShouldReload(true);
+        }, [])
+    );
+
     useEffect(() => {
         handleSearch(searchQuery);
     }, [groups]);
