@@ -101,39 +101,41 @@ export async function handleLocalGroupMembersSync(data: GroupMemberSyncResponse)
     }
 }
 
-async function storeGroupMembers(data: GroupMember[]) {
+async function storeGroupMembers(data: GroupMember[]): Promise<void> {
     await db.withTransactionAsync(async () => {
         const now = new Date().toISOString();
+
         for (const member of data) {
+            await db.runAsync(`
+                INSERT INTO users (user_id, username, profile_picture, last_sync)
+                VALUES (?, ?, ?, ?)
+                    ON CONFLICT(user_id) DO UPDATE SET
+                    username = excluded.username,
+                                                profile_picture = excluded.profile_picture,
+                                                last_sync = excluded.last_sync;
+            `, member.userId, member.username, member.profilePicture ?? '', now);
 
             await db.runAsync(`
-                INSERT
-                OR REPLACE INTO users (user_id, username, profile_picture, last_sync) 
-            VALUES (?, ?, ?, ?);
-            `, member.userId, member.username, member.profilePicture ?? '', now)
-
-            await db.runAsync(`
-                INSERT
-                OR REPLACE INTO user_groups (id, group_id, user_id, joined_at, last_sync) 
-                VALUES (?, ?, ?, ?, ?);
+                INSERT INTO user_groups (id, group_id, user_id, joined_at, last_sync)
+                VALUES (?, ?, ?, ?, ?)
+                    ON CONFLICT(id) DO UPDATE SET
+                    joined_at = excluded.joined_at,
+                                           last_sync = excluded.last_sync;
             `, member.userGroupId, member.groupId, member.userId, member.joinedAt, now);
 
             await db.runAsync(`
-                DELETE
-                FROM user_group_roles
-                WHERE user_id = ?
-                  AND group_id = ?
+                DELETE FROM user_group_roles
+                WHERE user_id = ? AND group_id = ?
             `, member.userId, member.groupId);
 
             for (const role of member.userRoles) {
                 await db.runAsync(`
-                    INSERT
-                    OR REPLACE INTO user_group_roles (role, user_id, group_id)
+                    INSERT INTO user_group_roles (role, user_id, group_id)
                     VALUES (?, ?, ?)
+                        ON CONFLICT(user_id, group_id, role) DO NOTHING;
                 `, role, member.userId, member.groupId);
             }
         }
-
     });
 }
 

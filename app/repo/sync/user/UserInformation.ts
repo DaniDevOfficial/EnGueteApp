@@ -65,7 +65,19 @@ async function getUserFromBackend(): Promise<UserInformation> {
 async function storeUserInDatabase(user: UserInformation): Promise<void> {
     await db.withTransactionAsync(async () => {
         const now = new Date().toISOString();
-        await db.runAsync('INSERT OR REPLACE INTO users (user_id, username, profile_picture, last_sync) VALUES (?, ?, ?, ?)', user.userId, user.username, user.profilePicture ?? '', now);
+
+        await db.runAsync(`
+                    INSERT INTO users (user_id, username, profile_picture, last_sync)
+                    VALUES (?, ?, ?, ?) ON CONFLICT(user_id) DO
+                    UPDATE SET
+                        username = excluded.username,
+                        profile_picture = excluded.profile_picture,
+                        last_sync = excluded.last_sync;
+            `,
+            user.userId,
+            user.username,
+            user.profilePicture ?? '',
+            now);
     });
 }
 

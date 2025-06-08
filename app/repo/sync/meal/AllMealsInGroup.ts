@@ -37,7 +37,7 @@ export async function TrySyncMeals(groupId: string, dates: DateDuration): Promis
 
 async function SyncAllMeals(groupId: string, dates: DateDuration): Promise<void> {
     const mealResponse = await getMealsFromBackend(groupId, dates);
-    await storeAllMealsInDatabase(mealResponse.meals, groupId);
+    await storeMealsInDatabase(mealResponse.meals);
     await deleteMealsInDatabase(mealResponse.deletedIds);
 }
 
@@ -60,18 +60,48 @@ async function getMealsFromBackend(groupId: string, dates: DateDuration): Promis
     };
 }
 
-async function storeAllMealsInDatabase(meals: MealCard[], groupId: string): Promise<void> {
+export async function storeMealsInDatabase(meals: MealCard[] | MealCard): Promise<void> {
+    const now = new Date().toISOString();
+    const mealList = Array.isArray(meals) ? meals : [meals];
+
     await db.withTransactionAsync(async () => {
-        const now = new Date().toISOString();
-        for (const meal of meals) {
+        for (const meal of mealList) {
             await db.runAsync(`
-                INSERT
-                OR REPLACE INTO meals (meal_id, group_id, title, closed, fulfilled, date_time, meal_type, notes, participant_count, user_preference, is_cook, last_sync) 
-                VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?);
-            `, meal.mealId, groupId, meal.title, meal.closed, meal.fulfilled, meal.dateTime, meal.mealType, meal.notes, meal.participantCount, meal.userPreference, meal.isCook, now);
+                        INSERT INTO meals (
+                            meal_id, group_id, title, closed, fulfilled, date_time,
+                            meal_type, notes, participant_count, user_preference,
+                            is_cook, last_sync
+                        )
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                            ON CONFLICT(meal_id) DO UPDATE SET
+                            group_id = excluded.group_id,
+                                                        title = excluded.title,
+                                                        closed = excluded.closed,
+                                                        fulfilled = excluded.fulfilled,
+                                                        date_time = excluded.date_time,
+                                                        meal_type = excluded.meal_type,
+                                                        notes = excluded.notes,
+                                                        participant_count = excluded.participant_count,
+                                                        user_preference = excluded.user_preference,
+                                                        is_cook = excluded.is_cook,
+                                                        last_sync = excluded.last_sync;
+                `,
+                meal.mealId,
+                meal.groupId,
+                meal.title,
+                meal.closed,
+                meal.fulfilled,
+                meal.dateTime,
+                meal.mealType,
+                meal.notes,
+                meal.participantCount,
+                meal.userPreference,
+                Number(meal.isCook),
+                now);
         }
     });
 }
+
 
 async function deleteMealsInDatabase(mealIds: string[]): Promise<void> {
     await db.withTransactionAsync(async () => {

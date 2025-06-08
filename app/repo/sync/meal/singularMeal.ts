@@ -9,6 +9,7 @@ import {getBasicAuthHeader} from "../../../utility/Auth";
 import {handleDefaultResponseAndHeaders} from "../../../utility/Response";
 
 import {DEFAULT_UNDECIDED_PREFERENCE} from "../../../utility/TextKeys/TextKeys";
+import {storeMealsInDatabase} from "./AllMealsInGroup";
 
 export const singularMealCacheKey = 'singularMeal_';
 
@@ -53,7 +54,7 @@ export async function getMeal(mealId: string): Promise<MealInterface> {
 
 async function SyncMealFromBackend(mealId: string): Promise<any> {
     const data = await getMealFromBackend(mealId);
-    await storeMealInDatabase(data.mealInformation);
+    await storeMealsInDatabase(data.mealInformation);
     await handleMealPreferences(data.mealPreferences);
 
 }
@@ -170,14 +171,30 @@ async function getMealFromBackend(mealId: string): Promise<MealSyncResponse> {
 }
 
 async function storeMealInDatabase(meal: MealCard): Promise<void> {
-       await db.withTransactionAsync(async () => {
+    await db.withTransactionAsync(async () => {
         const now = new Date().toISOString();
         await db.runAsync(`
-            INSERT
-            OR REPLACE INTO meals (meal_id, group_id, title, closed, fulfilled, date_time, meal_type, notes, participant_count, user_preference, is_cook, last_sync)
-            VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?);
-            `, meal.mealId, meal.groupId, meal.title, meal.closed, meal.fulfilled, meal.dateTime, meal.mealType, meal.notes, meal.participantCount, meal.userPreference, Number(meal.isCook), now);
-    })
+                    INSERT INTO meals (meal_id, group_id, title, closed, fulfilled, date_time,
+                                       meal_type, notes, participant_count, user_preference,
+                                       is_cook, last_sync)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(meal_id) DO
+                    UPDATE SET
+                        group_id = excluded.group_id,
+                        title = excluded.title,
+                        closed = excluded.closed,
+                        fulfilled = excluded.fulfilled,
+                        date_time = excluded.date_time,
+                        meal_type = excluded.meal_type,
+                        notes = excluded.notes,
+                        participant_count = excluded.participant_count,
+                        user_preference = excluded.user_preference,
+                        is_cook = excluded.is_cook,
+                        last_sync = excluded.last_sync;
+            `,
+            meal.mealId, meal.groupId, meal.title, meal.closed, meal.fulfilled,
+            meal.dateTime, meal.mealType, meal.notes, meal.participantCount,
+            meal.userPreference, Number(meal.isCook), now);
+    });
 }
 
 async function handleMealPreferences(mealPreferences: MealPreferenceSyncResponse): Promise<void> {

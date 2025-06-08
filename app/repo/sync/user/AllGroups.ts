@@ -8,8 +8,8 @@ import {Group} from "../../User";
 import {FRONTEND_ERRORS, TimeoutError} from "../../../utility/Errors";
 
 interface GroupSync {
-    groups: Group[]|null;
-    deletedIds: string[]|null;
+    groups: Group[] | null;
+    deletedIds: string[] | null;
 }
 
 export const userGroupsCacheKey = 'userGroups';
@@ -50,17 +50,34 @@ async function GetAllGroupsFromBackend(): Promise<GroupSync> {
 }
 
 async function storeAllGroupsInDatabase(groupSyncData: GroupSync): Promise<void> {
-    if (groupSyncData.groups) {
-    await db.withTransactionAsync(async () => {
-        const now = new Date().toISOString();
-        for (const group of groupSyncData.groups) {
-            await db.runAsync('INSERT OR REPLACE INTO groups (group_id, group_name, user_count, last_sync) VALUES (?, ?, ?, ?)', group.groupId, group.groupName, group.userCount, now);
-        }
-    });
+    const now = new Date().toISOString();
+    const groups = groupSyncData.groups;
+    if (groups) {
+        await db.withTransactionAsync(async () => {
+            for (const group of groups) {
+                await db.runAsync(`
+                            INSERT INTO groups (group_id, group_name, user_count, last_sync)
+                            VALUES (?, ?, ?, ?) ON CONFLICT(group_id) DO
+                            UPDATE SET
+                                group_name = excluded.group_name,
+                                user_count = excluded.user_count,
+                                last_sync = excluded.last_sync;
+                    `,
+                    group.groupId,
+                    group.groupName,
+                    group.userCount,
+                    now);
+            }
+        });
     }
 
-    if (groupSyncData.deletedIds &&  groupSyncData.deletedIds.length > 0) {
-        await db.runAsync(`DELETE FROM groups WHERE group_id IN (${groupSyncData.deletedIds.map(() => '?').join(',')})`, ...groupSyncData.deletedIds);
+    if (groupSyncData.deletedIds?.length) {
+        await db.runAsync(
+            `DELETE
+             FROM groups
+             WHERE group_id IN (${groupSyncData.deletedIds.map(() => '?').join(',')})`,
+            ...groupSyncData.deletedIds
+        );
     }
 }
 

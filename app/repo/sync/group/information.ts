@@ -90,7 +90,20 @@ async function GetGroupInformationFromBackend(groupId: string): Promise<GroupInf
         },
     };}
 
-async function storeGroupInformationInDatabase(group: GroupInformationResponse) {
+async function storeGroupInformationInDatabase(group: GroupInformationResponse): Promise<void> {
     const now = new Date().toISOString();
-    await db.runAsync('INSERT OR REPLACE INTO groups (group_id, group_name, user_count, last_sync) VALUES (?, ?, ?, ?)', group.groupId, group.groupName, group.userCount, now);
+    await db.runAsync(`
+    INSERT INTO groups (
+      group_id, group_name, user_count, last_sync
+    )
+    VALUES (?, ?, ?, ?)
+    ON CONFLICT(group_id) DO UPDATE SET
+      group_name = excluded.group_name,
+      user_count = excluded.user_count,
+      last_sync = excluded.last_sync;
+  `,
+        group.groupId,
+        group.groupName,
+        group.userCount,
+        now);
 }

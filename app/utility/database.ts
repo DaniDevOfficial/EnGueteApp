@@ -64,7 +64,7 @@ export async function createTable() {
             participant_count TEXT NOT NULL,
             user_preference TEXT NOT NULL,
             is_cook INTEGER NOT NULL,
-            last_sync TEXT DEFAULT (datetime('now'))
+            last_sync TEXT DEFAULT (datetime('now')),
             FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE
 
         );
@@ -106,7 +106,6 @@ export async function dropAllTables() {
             DROP TABLE IF EXISTS log;
 
             DROP TABLE IF EXISTS user_group_roles;
-            DROP TABLE IF EXISTS user_groups;
             DROP TABLE IF EXISTS meals;
 
             DROP TABLE IF EXISTS groups;
