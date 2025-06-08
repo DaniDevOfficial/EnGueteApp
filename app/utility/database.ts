@@ -141,7 +141,7 @@ export async function needsToBeSynced(cacheKey: string, cacheTimeSeconds: number
     const result: { last_sync: string } | null = await db.getFirstAsync(`SELECT last_sync
                                                                          FROM cacheStatus
                                                                          WHERE cacheKey = ?`, cacheKey);
-    if (!result) {
+    if (result === null) {
         console.log(`CacheKey ${cacheKey} does not exist, needs to be synced`);
         return true; // Cache does not exist, needs to be synced
     }
@@ -153,6 +153,7 @@ export async function needsToBeSynced(cacheKey: string, cacheTimeSeconds: number
 
         console.log({
             cacheKey,
+            // @ts-ignore
             lastSync: result.last_sync,
             now: now.toISOString(),
             timeDifferenceSeconds,

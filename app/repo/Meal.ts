@@ -1,5 +1,6 @@
-import {NewMealType} from "../screens/newMeal";
+// @ts-ignore
 import {BACKEND_URL} from '@env';
+import {NewMealType} from "../screens/newMeal";
 import {timeoutPromiseFactory} from "../Util";
 import {MealCard} from "./Group";
 import {handleDefaultResponseAndHeaders} from "../utility/Response";

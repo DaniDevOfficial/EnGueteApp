@@ -9,7 +9,7 @@ import {mealPreferenceText, useTexts} from "../../utility/TextKeys/TextKeys";
 import {showToast} from "../UI/Toast";
 import {resetToUserScreen} from "../../utility/navigation";
 
-export function PreferenceCard({mealParticipants, forceRefresh}: { mealParticipants: MealPreference, forceRefresh?: (arg0: boolean) => Promise<void> }) {
+export function PreferenceCard({mealParticipants, forceRefresh}: { mealParticipants: MealPreference, forceRefresh: (arg0: boolean) => Promise<void> }) {
     const toast = useToast();
     const getError = useErrorText();
     const text = useTexts(['error', 'errorPleaseEnterCorrectText', 'save', 'cancel', 'editPreferences', 'newPreference', 'isCook']);

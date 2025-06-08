@@ -31,7 +31,7 @@ export function Login() {
 
     const navigation = useNavigation()
 
-    const text = useTexts(['error', 'welcomeBack', 'pleaseSignIn', 'username', 'enterUsername', 'password', 'enterPassword', 'login', 'orCreateAnAccount', 'bothAreRequired']);
+    const text = useTexts(['error', 'welcomeBack', 'pleaseSignIn', 'username', 'enterUsername', 'password', 'enterPassword', 'login', 'orCreateAnAccount', 'allFieldsAreRequired']);
     const toast = useToast();
     const getError = useErrorText();
     async function handleSubmit() {
@@ -39,7 +39,7 @@ export function Login() {
             showToast({
                 toast,
                 title: text.error,
-                description: text.bothFieldsAreRequired,
+                description: text.allFieldsAreRequired,
                 status: "warning",
             })
             return;

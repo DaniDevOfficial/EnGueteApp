@@ -47,6 +47,7 @@ export function Group() {
                     userRoleRights = groupInformation.groupInfo.userRoleRights;
                 }
                 groupInformation.groupInfo.userRoleRights = userRoleRights;
+                // @ts-ignore this is fine because we make sure that the roleRights are at least a emty array TODO: remove this when cleaning up all the server responses where null can be returnend insetead of the intended value
                 setGroupInformation(groupInformation)
 
                 setGroup({

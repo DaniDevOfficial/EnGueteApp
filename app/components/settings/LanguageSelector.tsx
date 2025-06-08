@@ -1,7 +1,9 @@
 import {Box, HStack, Pressable, ScrollView, Text} from "native-base";
 import React, {useEffect, useRef} from "react";
 import {useText} from "../../utility/TextKeys/TextKeys";
+// @ts-ignore
 import germanFlag from '../../assets/flags/german.png';
+// @ts-ignore
 import englishFlag from '../../assets/flags/english.png';
 import {Animated} from "react-native";
 import {Language, useSettings} from "../../context/settingsContext";

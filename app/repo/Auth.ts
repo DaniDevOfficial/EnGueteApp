@@ -1,3 +1,5 @@
+
+// @ts-ignore
 import {BACKEND_URL} from '@env';
 import {timeoutPromiseFactory} from "../Util";
 import {handleDefaultResponseAndHeaders} from "../utility/Response";

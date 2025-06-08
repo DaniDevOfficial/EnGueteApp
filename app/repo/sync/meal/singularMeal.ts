@@ -145,7 +145,7 @@ async function getNotExistingPreferencesForAllMembers(mealId: string): Promise<M
         WHERE m.meal_id = ?
           AND mp.id IS NULL;
     `;
-    return await db.getAllAsync<MealPreference[]>(query, mealId);
+    return await db.getAllAsync<MealPreference>(query, mealId);
 }
 
 
