@@ -39,6 +39,7 @@ export type GroupTextType =
     | 'youWereInvited'
     | 'joinGroup'
     | 'maybeLater'
+    | 'noGroupsFound'
     ;
 
 export type GroupTextKeyType = {
@@ -200,7 +201,11 @@ export const GroupTextKey: GroupTextKeyType = {
     'maybeLater': {
         german: 'Vielleicht später',
         english: 'Maybe later',
-    }
+    },
+    'noGroupsFound': {
+        german: 'Keine Gruppen gefunden 😞',
+        english: 'No groups found 😞',
+    },
 }
 
 type tmp = string

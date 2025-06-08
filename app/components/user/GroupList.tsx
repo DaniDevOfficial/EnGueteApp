@@ -11,7 +11,7 @@ import {handleLogoutProcedure} from "../../Util";
 
 export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
     const navigation = useNavigation();
-    const text = useTexts(['youAreInNoGroup', 'startByJoiningOrCreating', 'yourGroups', 'createNewGroup', 'searchForGroup', 'error']);
+    const text = useTexts(['youAreInNoGroup', 'startByJoiningOrCreating', 'yourGroups', 'createNewGroup', 'searchForGroup', 'error', 'noGroupsFound']);
     const toast = useToast();
     const getError = useErrorText();
 
@@ -44,9 +44,16 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
     }
 
     function handleSearch(query: string) {
+        console.log(query)
+        const lowerCaseQuery = query.toLowerCase();
+        const groupsFiltered = groupsDefault.filter((group) => {
+            return group.groupName.toLowerCase().includes(lowerCaseQuery) ||
+                group.groupId.toLowerCase().includes(lowerCaseQuery);
+        });
 
-        setFilteredGroups(groups);
+        setFilteredGroups(groupsFiltered);
     }
+
     useEffect(() => {
         if (!shouldReload) {
             return;
@@ -78,19 +85,19 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
             />
 
             <Text fontWeight={"bold"} fontSize={"2xl"}>{text.yourGroups}</Text>
-            {filteredGroups.length > 0 && (
-                <InputGroup w={'100%'} justifyContent={'center'} alignItems={'center'}>
-                    <Input
-                        width={'70%'}
-                        onChangeText={(text) => {
-                            setSearchQuery(text);
-                            handleSearch(text);
-                        }}
-                        placeholder={text.searchForGroup}
-                        value={searchQuery}
-                    />
-                </InputGroup>
-            )}
+        {groups.length > 0 && (
+            <InputGroup w={'100%'} justifyContent={'center'} alignItems={'center'}>
+                <Input
+                    width={'70%'}
+                    onChangeText={(text) => {
+                        setSearchQuery(text);
+                        handleSearch(text);
+                    }}
+                    placeholder={text.searchForGroup}
+                    value={searchQuery}
+                />
+            </InputGroup>
+        )}
             <ScrollView
                 w={'100%'}
                 contentContainerStyle={{flexGrow: 1}}
@@ -104,13 +111,21 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
                         ))
                     ) : (
                         <Box mt={5}>
-                            <Text color={"gray.500"} textAlign={"center"}>
-                                {text.youAreInNoGroup}
-                            </Text>
+                            {groups.length > 0 ? (
+                                <Text color={"gray.500"} textAlign={"center"}>
+                                    {text.noGroupsFound}
+                                </Text>
+                            ) : (
 
-                            <Text color={"gray.500"} textAlign={"center"}>
-                                {text.startByJoiningOrCreating}
-                            </Text>
+                                <>
+                                    <Text color={"gray.500"} textAlign={"center"}>
+                                        {text.youAreInNoGroup}
+                                    </Text>
+                                    <Text color={"gray.500"} textAlign={"center"}>
+                                        {text.startByJoiningOrCreating}
+                                    </Text>
+                                </>
+                            )}
                         </Box>
                     )}
                 </VStack>
