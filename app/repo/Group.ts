@@ -3,7 +3,7 @@ import {BACKEND_URL} from '@env';
 import {timeoutPromiseFactory} from "../Util";
 import {getBasicAuthHeader} from "../utility/Auth";
 import {handleDefaultResponseAndHeaders} from "../utility/Response";
-import {db, needsToBeSynced} from "../utility/database";
+import {needsToBeSynced} from "../utility/database";
 import {
     getGroupInformation,
     GroupInformationResponse,
@@ -11,7 +11,6 @@ import {
     TrySyncGroup
 } from "./sync/group/information";
 import {isDeviceOffline} from "../utility/Network/OnlineOffline";
-import {getAllGroups, userGroupsCacheKey} from "./sync/user/AllGroups";
 import {buildCacheKey, buildDateDuration, getMeals, TrySyncMeals} from "./sync/meal/AllMealsInGroup";
 import {getGroupMembers, groupMembersCacheKey, TrySyncGroupMembers} from "./sync/group/memberList";
 

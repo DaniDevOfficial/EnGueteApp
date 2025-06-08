@@ -1,4 +1,4 @@
-import {Box, Heading, Text} from "native-base";
+import {Box, Heading} from "native-base";
 import React from "react";
 
 export function Title({ title, color }: { title?: string, color?: string }): React.JSX.Element {

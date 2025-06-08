@@ -4,7 +4,6 @@ import {createNewMeal} from "../repo/Meal";
 import {StackActions, useNavigation} from "@react-navigation/native";
 import {useGroup} from "../context/groupContext";
 import {PERMISSIONS} from "../utility/Roles";
-import {DateTimePickerAndroid} from "@react-native-community/datetimepicker";
 import {getSwissDateTimeDisplay} from "../utility/Dates";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {BackButton} from "../components/UI/BackButton";

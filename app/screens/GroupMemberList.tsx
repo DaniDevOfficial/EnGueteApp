@@ -31,7 +31,7 @@ export function GroupMemberList() {
         canPromoteToManager: false,
     });
     const [refreshing, setRefreshing] = useState(false);
-
+    
     async function loadGroupMembers() {
         try {
             const groupMembers = await GetGroupMemberList(group.groupId);

@@ -1,10 +1,10 @@
 // @ts-ignore
 import {BACKEND_URL} from '@env';
-import {needsToBeSynced, db, updateSyncStatus} from "../../../utility/database";
+import {db, needsToBeSynced, updateSyncStatus} from "../../../utility/database";
 import {timeoutPromiseFactory} from "../../../Util";
-import {getBasicAuthHeader, GetCurrentUserId, GetSafeCurrentUserId} from "../../../utility/Auth";
+import {getBasicAuthHeader, GetSafeCurrentUserId} from "../../../utility/Auth";
 import {handleDefaultResponseAndHeaders} from "../../../utility/Response";
-import {FRONTEND_ERRORS, IsOfflineError, TimeoutError, UnauthorizedError} from "../../../utility/Errors";
+import {FRONTEND_ERRORS, IsOfflineError, TimeoutError} from "../../../utility/Errors";
 import {isDeviceOffline} from "../../../utility/Network/OnlineOffline";
 
 interface UserInformation {

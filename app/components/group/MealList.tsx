@@ -7,10 +7,9 @@ import {getWednesdayOfWeek, MealFilterSection} from "./MealFilterSection";
 import {useGroup} from "../../context/groupContext";
 import {RefreshControl} from "react-native-gesture-handler";
 import {showToast} from "../UI/Toast";
-import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Errors";
+import {NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {handleLogoutProcedure} from "../../Util";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";
-import {NOT_FOUND} from "../../utility/HttpResponseCodes";
 import {resetToUserScreen} from "../../utility/navigation";
 
 interface MealListProps {

@@ -5,7 +5,7 @@ import {timeoutPromiseFactory} from "../../../Util";
 import {getBasicAuthHeader} from "../../../utility/Auth";
 import {handleDefaultResponseAndHeaders} from "../../../utility/Response";
 import {Group} from "../../User";
-import {FRONTEND_ERRORS, TimeoutError} from "../../../utility/Errors";
+import {TimeoutError} from "../../../utility/Errors";
 
 interface GroupSync {
     groups: Group[] | null;

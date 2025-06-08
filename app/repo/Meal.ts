@@ -7,7 +7,6 @@ import {getBasicAuthHeader} from "../utility/Auth";
 import {getMeal, singularMealCacheKey, TryAndSyncSingularMeal} from "./sync/meal/singularMeal";
 import {isDeviceOffline} from "../utility/Network/OnlineOffline";
 import {needsToBeSynced} from "../utility/database";
-import {getGroupMembers, groupMembersCacheKey, TrySyncGroupMembers} from "./sync/group/memberList";
 
 export interface NewMealResponse {
     mealId: string,

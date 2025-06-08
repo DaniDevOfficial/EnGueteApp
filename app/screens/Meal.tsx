@@ -1,7 +1,7 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ScrollView, useToast} from "native-base";
 import {useGroup} from "../context/groupContext";
-import {useFocusEffect, useNavigation, useRoute} from "@react-navigation/native";
+import {useNavigation, useRoute} from "@react-navigation/native";
 import {handleLogoutProcedure} from "../Util";
 import {getMealData, MealInterface} from "../repo/Meal";
 import {RefreshControl} from "react-native-gesture-handler";

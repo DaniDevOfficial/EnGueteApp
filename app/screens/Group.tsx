@@ -1,14 +1,11 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {useFocusEffect, useNavigation, useRoute} from '@react-navigation/native';
-import {Box, Button, Flex, Heading, ScrollView, Text, useToast} from 'native-base';
+import React, {useEffect, useState} from 'react';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {Box, Button, useToast} from 'native-base';
 import {handleLogoutProcedure} from "../Util";
 import {GetGroupInformation, Group as GroupInformationType} from "../repo/Group";
-import {GroupInformationHeader} from "../components/group/GroupInformationHeader";
-import {MealCard} from "../components/group/MealCard";
-import {RefreshControl} from "react-native-gesture-handler";
 import {useGroup} from "../context/groupContext";
 import {PERMISSIONS} from "../utility/Roles";
-import {ForbiddenError, UnauthorizedError, useErrorText} from "../utility/Errors";
+import {UnauthorizedError, useErrorText} from "../utility/Errors";
 import {BackButton} from "../components/UI/BackButton";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 import {EditButton} from "../components/UI/EditButton";

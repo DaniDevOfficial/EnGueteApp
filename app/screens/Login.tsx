@@ -10,13 +10,14 @@ import {
     HStack,
     Input,
     Pressable,
-    Text, useToast,
+    Text,
+    useToast,
     VStack
 } from "native-base";
 import {SignIntoAccount} from "../repo/Auth";
 import {useNavigation} from "@react-navigation/native";
 import {resetToUserScreen} from "../utility/navigation";
-import {useText, useTexts} from "../utility/TextKeys/TextKeys";
+import {useTexts} from "../utility/TextKeys/TextKeys";
 
 import {getPendingInviteToken} from "../utility/DeepLinking";
 import {TokenPopupHandler} from "../components/Utility/JoinGroupPopup";

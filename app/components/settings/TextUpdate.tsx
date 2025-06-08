@@ -2,12 +2,11 @@ import {Button, FormControl, HStack, Icon, Input, Modal, Text, useToast} from "n
 import {TouchableOpacity} from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import React, {useState} from "react";
-import {useText, useTexts} from "../../utility/TextKeys/TextKeys";
+import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {useNavigation} from "@react-navigation/native";
-import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Errors";
+import {UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {showToast} from "../UI/Toast";
 import {handleLogoutProcedure} from "../../Util";
-import {resetToUserScreen} from "../../utility/navigation";
 
 
 interface TextUpdateProps {

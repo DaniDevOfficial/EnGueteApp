@@ -1,6 +1,5 @@
 import React from "react";
 import {Alert, CloseIcon, HStack, IconButton, Pressable, Text, useToast, VStack} from "native-base";
-import {useText} from "../../utility/TextKeys/TextKeys";
 
 /**
  * 🥐 Show a toast message using the custom ToastAlert component
