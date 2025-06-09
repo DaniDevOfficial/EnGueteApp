@@ -109,7 +109,7 @@ export function getGreetingBasedOnTime(): 'morning' | 'day' | 'afternoon' | 'eve
     }
 }
 
-export function getWeekDuration(date: Date) {
+export function getWeekDuration(date: Date): {start: Date, end: Date} {
     const startOfWeek = new Date(date);
     const endOfWeek = new Date(date);
 
@@ -151,7 +151,6 @@ export function getFancyWeekDisplay(date: Date) {
     return null;
 }
 
-
 export function getDateDurationWeek(date: Date) {
     const {start, end} = getWeekDuration(date);
 
@@ -159,4 +158,20 @@ export function getDateDurationWeek(date: Date) {
     const endDate = end.toLocaleDateString("de-CH", {day: "2-digit", month: "2-digit", year: 'numeric'});
 
     return `${startDate} - ${endDate}`;
+}
+
+export function getFirstDayOfLastMonth(date: Date): Date {
+    const copy = new Date(date);
+    copy.setDate(1);
+    copy.setMonth(copy.getMonth() - 1);
+    copy.setHours(0, 0, 0)
+    return copy;
+}
+
+export function getLastDayOfNextMonth(date: Date): Date {
+    const copy = new Date(date);
+    copy.setMonth(copy.getMonth() + 2);
+    copy.setDate(0); // this is kinda abusing how the Date object in js work but it's fine
+    copy.setHours(23, 59, 59);
+    return copy;
 }

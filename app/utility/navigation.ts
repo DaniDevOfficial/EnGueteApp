@@ -1,4 +1,4 @@
-import {CommonActions, NavigationProp} from "@react-navigation/native";
+import {CommonActions} from "@react-navigation/native";
 
 
 export function resetToHomeScreen(navigation: unknown) {

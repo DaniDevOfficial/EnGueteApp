@@ -6,6 +6,8 @@ export type ErrorTextType =
     | 'ifYouSeeThisPleaseReport'
     | 'unauthorizedError'
     | 'forbiddenError'
+    | 'isOfflineError'
+    | 'noConnectionToTheServerError'
     | 'youAreNotAllowedToPerformThisAction'
     | 'notFoundError'
     | 'internalServerError'
@@ -64,6 +66,14 @@ export const ErrorTextKey: ErrorTextKeyType = {
     forbiddenError: {
         german: 'Zugriff verweigert',
         english: 'Access denied',
+    },
+    isOfflineError: {
+        german: 'Diese Aktion ist offline nicht verfügbar',
+        english: 'This action is not available offline',
+    },
+    noConnectionToTheServerError: {
+        german: 'Keine Verbindung zum Server. Bitte überprüfe deine Internetverbindung oder versuche es später erneut.',
+        english: 'No connection to the server. Please check your internet connection or try again later.',
     },
     youAreNotAllowedToPerformThisAction: {
         german: 'Du bist nicht berechtigt, diese Aktion auszuführen',

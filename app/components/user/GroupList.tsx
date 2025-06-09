@@ -1,8 +1,8 @@
 import {Box, Input, InputGroup, Pressable, ScrollView, Text, useToast, VStack} from "native-base";
 import {RefreshControl} from "react-native-gesture-handler";
 import {GroupCard} from "./GroupCard";
-import React, {useEffect, useState} from "react";
-import {useNavigation} from "@react-navigation/native";
+import React, {useCallback, useEffect, useState} from "react";
+import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import {GetUserGroups, Group} from "../../repo/User";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {UnauthorizedError, useErrorText} from "../../utility/Errors";
@@ -11,7 +11,7 @@ import {handleLogoutProcedure} from "../../Util";
 
 export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
     const navigation = useNavigation();
-    const text = useTexts(['youAreInNoGroup', 'startByJoiningOrCreating', 'yourGroups', 'createNewGroup', 'searchForGroup', 'error']);
+    const text = useTexts(['youAreInNoGroup', 'startByJoiningOrCreating', 'yourGroups', 'createNewGroup', 'searchForGroup', 'error', 'noGroupsFound']);
     const toast = useToast();
     const getError = useErrorText();
 
@@ -19,15 +19,15 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
     const [groups, setGroups] = useState(groupsDefault);
     const [filteredGroups, setFilteredGroups] = useState(groups);
     const [searchQuery, setSearchQuery] = useState('');
+    const [shouldReload, setShouldReload] = useState(false);
+
 
     async function onRefresh() {
         setRefreshing(true);
         try {
-
             const groupsResponse = await GetUserGroups()
             setGroups(groupsResponse)
         } catch (e) {
-
 
             showToast({
                 toast,
@@ -44,15 +44,37 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
     }
 
     function handleSearch(query: string) {
-        const filtered = groups.filter((group) =>
-            group.groupName.toLowerCase().includes(query.toLowerCase())
-        );
-        setFilteredGroups(filtered);
+        console.log(query)
+        const lowerCaseQuery = query.toLowerCase();
+        const groupsFiltered = groupsDefault.filter((group) => {
+            return group.groupName.toLowerCase().includes(lowerCaseQuery) ||
+                group.groupId.toLowerCase().includes(lowerCaseQuery);
+        });
+
+        setFilteredGroups(groupsFiltered);
     }
+
+    useEffect(() => {
+        if (!shouldReload) {
+            return;
+        }
+        setTimeout(() => {
+            onRefresh()
+            setShouldReload(false);
+        }, 100) // this is because the animation is not finished yet and a statechange will cause a re-render. it's a bit hacky but it works
+        //TODO: find a better way to do this
+
+    }, [shouldReload]);
+
+    useFocusEffect(
+        useCallback(() => {
+            setShouldReload(true);
+        }, [])
+    );
+
     useEffect(() => {
         handleSearch(searchQuery);
     }, [groups]);
-
     return (
         <>
             <Box
@@ -63,7 +85,7 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
             />
 
             <Text fontWeight={"bold"} fontSize={"2xl"}>{text.yourGroups}</Text>
-            {filteredGroups.length > 0 && (
+            {groups.length > 0 && (
                 <InputGroup w={'100%'} justifyContent={'center'} alignItems={'center'}>
                     <Input
                         width={'70%'}
@@ -89,13 +111,21 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
                         ))
                     ) : (
                         <Box mt={5}>
-                            <Text color={"gray.500"} textAlign={"center"}>
-                                {text.youAreInNoGroup}
-                            </Text>
+                            {groups.length > 0 ? (
+                                <Text color={"gray.500"} textAlign={"center"}>
+                                    {text.noGroupsFound}
+                                </Text>
+                            ) : (
 
-                            <Text color={"gray.500"} textAlign={"center"}>
-                                {text.startByJoiningOrCreating}
-                            </Text>
+                                <>
+                                    <Text color={"gray.500"} textAlign={"center"}>
+                                        {text.youAreInNoGroup}
+                                    </Text>
+                                    <Text color={"gray.500"} textAlign={"center"}>
+                                        {text.startByJoiningOrCreating}
+                                    </Text>
+                                </>
+                            )}
                         </Box>
                     )}
                 </VStack>

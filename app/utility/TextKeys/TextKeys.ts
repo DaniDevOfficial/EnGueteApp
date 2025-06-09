@@ -27,8 +27,10 @@ export function useTexts<T extends readonly TextKey[]>(textKeys: T): {[K in T[nu
 }
 
 
+export const DEFAULT_UNDECIDED_PREFERENCE = 'undecided';
+
 export function mealPreferenceText(preferenceText: string): string {
-    if (preferenceText === 'undecided') {
+    if (preferenceText === DEFAULT_UNDECIDED_PREFERENCE) {
         return useText('undecided');
     }
     return preferenceText;

@@ -25,7 +25,6 @@ export function DeleteGroup() {
 
     const text = useTexts(['deleteGroup', 'error', 'errorPleaseEnterCorrectText', 'cancel'])
 
-
     async function handleDelete() {
 
         if (value !== requiredText) {

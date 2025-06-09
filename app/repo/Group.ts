@@ -3,11 +3,22 @@ import {BACKEND_URL} from '@env';
 import {timeoutPromiseFactory} from "../Util";
 import {getBasicAuthHeader} from "../utility/Auth";
 import {handleDefaultResponseAndHeaders} from "../utility/Response";
+import {needsToBeSynced} from "../utility/database";
+import {
+    getGroupInformation,
+    GroupInformationResponse,
+    singleGroupCacheKeySuffixId,
+    TrySyncGroup
+} from "./sync/group/information";
+import {isDeviceOffline} from "../utility/Network/OnlineOffline";
+import {buildCacheKey, buildDateDuration, getMeals, TrySyncMeals} from "./sync/meal/AllMealsInGroup";
+import {getGroupMembers, groupMembersCacheKey, TrySyncGroupMembers} from "./sync/group/memberList";
 
 export interface Group {
     groupInfo: GroupInformation
     meals?: MealCard[]
 }
+
 export interface GroupResponse {
     groupInfo: GroupInformationResponse
     meals?: MealCard[]
@@ -20,15 +31,10 @@ export interface GroupInformation {
     userRoles: string[],
     userRoleRights: string[],
 }
-export interface GroupInformationResponse {
-    groupId: string,
-    groupName: string,
-    userCount: string,
-    userRoles: string[],
-    userRoleRights?: string[],
-}
+
 export interface MealCard {
     mealId: string,
+    groupId: string,
     title: string,
     closed: boolean,
     fulfilled: boolean,
@@ -39,23 +45,31 @@ export interface MealCard {
     userPreference: string,
     isCook: boolean,
 }
+
 export interface NewGroupType {
     groupName: string,
 }
+
 export interface GroupIdResponse {
     groupId: string,
 }
+
 export interface GroupMember {
     groupId: string,
     userId: string,
+    userGroupId: string,
+    joinedAt: string,
     username: string,
     userRoles: string[],
+    profilePicture?: string,
 }
+
 export interface RoleChangeRequest {
     groupId: string,
     userId: string,
     role: string,
 }
+
 export interface KickUserRequest {
     groupId: string,
     userId: string,
@@ -63,24 +77,25 @@ export interface KickUserRequest {
 
 
 export async function GetGroupInformation(groupId: string): Promise<GroupResponse> {
-    const now = new Date();
+    const isOffline = await isDeviceOffline();
+    const shouldSkipSync = !await needsToBeSynced(singleGroupCacheKeySuffixId + groupId);
 
-    const timeoutPromise = timeoutPromiseFactory()
-    const url = BACKEND_URL + 'groups?groupId=' + groupId + '&weekFilter=' + now.toISOString();
-    const fetchPromise = await fetch(url, {
-        method: 'GET',
-        headers: await getBasicAuthHeader(),
-    });
+    if (shouldSkipSync || isOffline) {
+        return {
+            groupInfo: await getGroupInformation(groupId),
+        };
+    }
 
-    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
-    await handleDefaultResponseAndHeaders(res)
-    return await res.json();
+    const groupInformation = await TrySyncGroup(groupId)
+    return {
+        groupInfo: groupInformation,
+    }
 }
 
 export async function CreateNewGroup(groupInformation: NewGroupType): Promise<GroupIdResponse> {
     const url = BACKEND_URL + 'groups';
     const timeoutPromise = timeoutPromiseFactory()
-    const fetchPromise = await fetch(url, {
+    const fetchPromise = fetch(url, {
         method: 'POST',
         headers: await getBasicAuthHeader(),
         body: JSON.stringify(groupInformation),
@@ -99,7 +114,7 @@ export interface UpdateGroupNameType {
 export async function UpdateGroupName(groupInformation: UpdateGroupNameType): Promise<GroupIdResponse> {
     const url = BACKEND_URL + 'groups/name';
     const timeoutPromise = timeoutPromiseFactory()
-    const fetchPromise = await fetch(url, {
+    const fetchPromise = fetch(url, {
         method: 'PUT',
         headers: await getBasicAuthHeader(),
         body: JSON.stringify(groupInformation),
@@ -113,7 +128,7 @@ export async function UpdateGroupName(groupInformation: UpdateGroupNameType): Pr
 export async function DeleteGroupRequest(groupId: string): Promise<GroupIdResponse> {
     const url = BACKEND_URL + 'groups?groupId=' + groupId;
     const timeoutPromise = timeoutPromiseFactory()
-    const fetchPromise = await fetch(url, {
+    const fetchPromise = fetch(url, {
         method: 'DELETE',
         headers: await getBasicAuthHeader(),
     });
@@ -126,7 +141,7 @@ export async function DeleteGroupRequest(groupId: string): Promise<GroupIdRespon
 export async function LeaveGroupRequest(groupId: string): Promise<GroupIdResponse> {
     const url = BACKEND_URL + 'groups/leave?groupId=' + groupId;
     const timeoutPromise = timeoutPromiseFactory()
-    const fetchPromise = await fetch(url, {
+    const fetchPromise = fetch(url, {
         method: 'DELETE',
         headers: await getBasicAuthHeader(),
     });
@@ -137,16 +152,15 @@ export async function LeaveGroupRequest(groupId: string): Promise<GroupIdRespons
 }
 
 export async function GetGroupMemberList(groupId: string): Promise<GroupMember[]> {
-    const url = BACKEND_URL + 'groups/members?groupId=' + groupId;
-    const timeoutPromise = timeoutPromiseFactory()
-    const fetchPromise = await fetch(url, {
-        method: 'GET',
-        headers: await getBasicAuthHeader(),
-    });
 
-    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
-    await handleDefaultResponseAndHeaders(res)
-    return await res.json();
+    const isOffline = await isDeviceOffline();
+    const shouldSkipSync = !await needsToBeSynced(groupMembersCacheKey + groupId);
+
+    if (shouldSkipSync || isOffline) {
+        return await getGroupMembers(groupId);
+    }
+
+    return await TrySyncGroupMembers(groupId);
 }
 
 export enum RoleChange {
@@ -160,7 +174,7 @@ export async function ChangeRole(requestData: RoleChangeRequest, roleChange: Rol
         url = BACKEND_URL + 'management/roles/remove';
     }
     const timeoutPromise = timeoutPromiseFactory()
-    const fetchPromise = await fetch(url, {
+    const fetchPromise = fetch(url, {
         method: 'POST',
         headers: await getBasicAuthHeader(),
         body: JSON.stringify(requestData),
@@ -171,10 +185,10 @@ export async function ChangeRole(requestData: RoleChangeRequest, roleChange: Rol
     return await res.json();
 }
 
-export async function KickUserFromGroup(requestData: KickUserRequest){
+export async function KickUserFromGroup(requestData: KickUserRequest) {
     const url = BACKEND_URL + 'management/user/kick';
     const timeoutPromise = timeoutPromiseFactory()
-    const fetchPromise = await fetch(url, {
+    const fetchPromise = fetch(url, {
         method: 'POST',
         headers: await getBasicAuthHeader(),
         body: JSON.stringify(requestData),
@@ -186,14 +200,16 @@ export async function KickUserFromGroup(requestData: KickUserRequest){
 }
 
 export async function GetGroupMeals(groupId: string, date: string): Promise<MealCard[]> {
-    const url = BACKEND_URL + 'groups/meals?groupId=' + groupId + '&filterDate=' + date;
-    const timeoutPromise = timeoutPromiseFactory()
-    const fetchPromise = await fetch(url, {
-        method: 'GET',
-        headers: await getBasicAuthHeader(),
-    });
+    const dateObject = new Date(date);
 
-    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
-    await handleDefaultResponseAndHeaders(res)
-    return await res.json();
+    const isOffline = await isDeviceOffline();
+    const shouldSkipSync = !await needsToBeSynced(buildCacheKey(groupId, dateObject));
+
+    if (shouldSkipSync || isOffline) {
+        return getMeals(groupId, dateObject);
+    }
+
+    const dates = buildDateDuration(dateObject);
+    return TrySyncMeals(groupId, dates);
 }
+

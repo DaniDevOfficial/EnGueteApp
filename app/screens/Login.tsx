@@ -10,13 +10,14 @@ import {
     HStack,
     Input,
     Pressable,
-    Text, useToast,
+    Text,
+    useToast,
     VStack
 } from "native-base";
 import {SignIntoAccount} from "../repo/Auth";
 import {useNavigation} from "@react-navigation/native";
 import {resetToUserScreen} from "../utility/navigation";
-import {useText, useTexts} from "../utility/TextKeys/TextKeys";
+import {useTexts} from "../utility/TextKeys/TextKeys";
 
 import {getPendingInviteToken} from "../utility/DeepLinking";
 import {TokenPopupHandler} from "../components/Utility/JoinGroupPopup";
@@ -30,7 +31,7 @@ export function Login() {
 
     const navigation = useNavigation()
 
-    const text = useTexts(['error', 'welcomeBack', 'pleaseSignIn', 'username', 'enterUsername', 'password', 'enterPassword', 'login', 'orCreateAnAccount', 'bothAreRequired']);
+    const text = useTexts(['error', 'welcomeBack', 'pleaseSignIn', 'username', 'enterUsername', 'password', 'enterPassword', 'login', 'orCreateAnAccount', 'allFieldsAreRequired']);
     const toast = useToast();
     const getError = useErrorText();
     async function handleSubmit() {
@@ -38,7 +39,7 @@ export function Login() {
             showToast({
                 toast,
                 title: text.error,
-                description: text.bothFieldsAreRequired,
+                description: text.allFieldsAreRequired,
                 status: "warning",
             })
             return;

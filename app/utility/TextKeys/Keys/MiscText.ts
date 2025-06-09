@@ -75,7 +75,7 @@ export const MiscTextKey: MiscTextKeyType = {
         english: 'QR code',
     },
     'currentWeek': {
-        german: 'Jetzige Woche',
+        german: 'Diese Woche',
         english: 'Current week',
     },
     'lastWeek': {

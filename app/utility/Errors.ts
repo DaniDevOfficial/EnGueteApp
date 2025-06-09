@@ -43,6 +43,13 @@ export class NotFoundError extends Error {
     }
 }
 
+export class IsOfflineError extends Error {
+    constructor(message: any) {
+        super(message);
+        this.name = 'IsOfflineError';
+    }
+}
+
 export class TimeoutError extends Error {
     constructor(message: any) {
         super(message);
@@ -57,6 +64,9 @@ export const FRONTEND_ERRORS = {
     NOT_FOUND_ERROR: "notFoundError",
     INTERNAL_SERVER_ERROR: "internalServerError",
     BAD_REQUEST_ERROR: "badRequestError",
+    IS_OFFLINE_ERROR: "isOfflineError",
+
+    NO_CONNECTION_TO_THE_SERVER_ERROR: "noConnectionToTheServerError",
 
     NOT_ALLOWED_TO_PERFORM_ACTION: "youAreNotAllowedToPerformThisAction",
 
@@ -91,6 +101,8 @@ export function useErrorText() {
     const { language } = useSettings();
 
     function getErrorText(errorKey: string): string {
+        console.log(`Error Key: ${errorKey}, Language: ${language}`);
+        console.trace()
         // @ts-ignore
         return ErrorTextKey[errorKey]?.[language] ?? ErrorTextKey[FRONTEND_ERRORS.UNKNOWN_ERROR]?.[language];
     }

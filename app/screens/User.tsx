@@ -1,16 +1,13 @@
-import {Box, Button, Pressable, ScrollView, Text, useToast, VStack} from 'native-base'
+import {Box, Button, useToast} from 'native-base'
 import React, {useEffect, useState} from 'react'
 import {handleLogoutProcedure} from "../Util";
 import {useNavigation} from "@react-navigation/native";
 import {GetUserInformation, Group, User as UserType} from "../repo/User";
 import {useUser} from "../context/userContext";
 import {UserCard} from "../components/user/UserCard";
-import {GroupCard} from "../components/user/GroupCard";
-import {ForbiddenError, UnauthorizedError, useErrorText} from "../utility/Errors";
-import {getAuthToken} from "../utility/Auth";
+import {UnauthorizedError, useErrorText} from "../utility/Errors";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 import {EditButton} from "../components/UI/EditButton";
-import {RefreshControl} from "react-native-gesture-handler";
 import {PageSpinner} from "../components/UI/PageSpinner";
 import {GroupList} from "../components/user/GroupList";
 import {showToast} from "../components/UI/Toast";
@@ -27,13 +24,10 @@ export function User() {
     const {user, setUser: setUser} = useUser();
 
     async function getUserData() {
+
         try {
-            const authToken = await getAuthToken()
-            if (authToken === null) {
-                await handleLogoutProcedure(navigation)
-                return
-            }
-            const userInformationRes = await GetUserInformation(authToken);
+
+            const userInformationRes = await GetUserInformation();
 
             setUserInformation(userInformationRes)
             setGroupInformation(userInformationRes.groups)
@@ -49,7 +43,6 @@ export function User() {
                 description: getError(e.message),
                 status: "warning",
             })
-            console.log(e.message)
         }
     }
 

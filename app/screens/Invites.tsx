@@ -1,3 +1,5 @@
+// @ts-ignore
+import {DEFAULT_APP_URL} from '@env'
 import React, {useEffect, useState} from "react";
 import {BackButton} from "../components/UI/BackButton";
 import {useTexts} from "../utility/TextKeys/TextKeys";
@@ -10,7 +12,6 @@ import {useNavigation} from "@react-navigation/native";
 import {CreateInvite} from "../components/group/CreateInvite";
 import {InviteCard} from "../components/group/InviteCard";
 import {CanPerformAction, PERMISSIONS} from "../utility/Roles";
-import {DEFAULT_APP_URL} from '@env'
 import {PageSpinner} from "../components/UI/PageSpinner";
 import {showToast} from "../components/UI/Toast";
 import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../utility/Errors";

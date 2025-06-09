@@ -1,14 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {Box, Button, Flex, Heading, ScrollView, Text, useToast} from 'native-base';
+import {Box, Button, useToast} from 'native-base';
 import {handleLogoutProcedure} from "../Util";
 import {GetGroupInformation, Group as GroupInformationType} from "../repo/Group";
-import {GroupInformationHeader} from "../components/group/GroupInformationHeader";
-import {MealCard} from "../components/group/MealCard";
-import {RefreshControl} from "react-native-gesture-handler";
 import {useGroup} from "../context/groupContext";
 import {PERMISSIONS} from "../utility/Roles";
-import {ForbiddenError, UnauthorizedError, useErrorText} from "../utility/Errors";
+import {UnauthorizedError, useErrorText} from "../utility/Errors";
 import {BackButton} from "../components/UI/BackButton";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 import {EditButton} from "../components/UI/EditButton";
@@ -37,6 +34,7 @@ export function Group() {
         getGroupData()
     }, [groupId]);
 
+
     async function getGroupData() {
         try {
 
@@ -49,6 +47,7 @@ export function Group() {
                     userRoleRights = groupInformation.groupInfo.userRoleRights;
                 }
                 groupInformation.groupInfo.userRoleRights = userRoleRights;
+                // @ts-ignore this is fine because we make sure that the roleRights are at least a emty array TODO: remove this when cleaning up all the server responses where null can be returnend insetead of the intended value
                 setGroupInformation(groupInformation)
 
                 setGroup({

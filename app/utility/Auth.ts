@@ -37,6 +37,27 @@ export interface SimpleAuthHeaderWithJson extends Record<string, string> {
     'Content-Type': string;
 }
 
+type JWTPayload = {
+    UserId: string;
+    Username: string;
+    Exp: number;
+};
+
+function decodeJwt(token: string): JWTPayload | null {
+    try {
+        const parts = token.split(".");
+
+        if (parts.length !== 3) {
+            return null
+        }
+
+        const payload = parts[1];
+        return JSON.parse(atob(payload));
+    } catch (error) {
+        return null;
+    }
+}
+
 
 // GET
 export async function getAuthToken() {
@@ -44,6 +65,25 @@ export async function getAuthToken() {
 }
 export async function getRefreshToken() {
     return AsyncStorage.getItem(REFRESH_TOKEN_STRING);
+}
+
+
+
+export async function GetCurrentUserId(): Promise<string | null> {
+    const authToken = await getRefreshToken();
+    if (!authToken) {
+        return null;
+    }
+    const payload = decodeJwt(authToken);
+    return payload?.UserId || null;
+}
+
+export async function GetSafeCurrentUserId(): Promise<string> {
+    const userId = await GetCurrentUserId();
+    if (!userId) {
+        throw new UnauthorizedError(FRONTEND_ERRORS.UNAUTHORIZED_ERROR);
+    }
+    return userId;
 }
 
 // SAVE

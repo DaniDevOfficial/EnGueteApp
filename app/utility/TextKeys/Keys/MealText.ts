@@ -12,12 +12,9 @@ export type MealTextType =
     | 'mealDescriptionPlaceholder'
     | 'noNotes'
     | 'editPreferences'
+    | 'newPreference'
     | 'preference'
     | 'isCook'
-    | 'nameOfTheMeal'
-    | 'enterANameForTheMeal'
-    | 'typeOfMealExample'
-    | 'whenTheMealWillTakePlace'
     ;
 
 export type MealTextKeyType = {
@@ -72,12 +69,16 @@ export const MealTextKey: MealTextKeyType = {
         german: 'Präferenze bearbeiten',
         english: 'Edit preference',
     },
-    'preference': {
+    'newPreference': {
         german: 'Neue Präferenz',
         english: 'New preference',
     },
+    'preference': {
+        german: 'Präferenz',
+        english: 'Preference'
+    },
     'isCook': {
-        german: 'Ist Koch ein Koch? 👨‍🍳',
+        german: 'Ist ein Koch? 👨‍🍳',
         english: 'Is cook? 👨‍🍳 ',
     },
 }

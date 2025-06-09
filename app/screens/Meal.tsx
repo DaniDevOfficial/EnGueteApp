@@ -7,7 +7,7 @@ import {getMealData, MealInterface} from "../repo/Meal";
 import {RefreshControl} from "react-native-gesture-handler";
 import {MealHeader} from "../components/meal/MealHeader";
 import {PreferenceCard} from "../components/meal/PreferenceCard";
-import {ForbiddenError, FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../utility/Errors";
+import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../utility/Errors";
 import {BackButton} from "../components/UI/BackButton";
 import {PageSpinner} from "../components/UI/PageSpinner";
 import {useTexts} from "../utility/TextKeys/TextKeys";
@@ -33,9 +33,9 @@ export function Meal() {
         getMealInformation();
     }, []);
 
-    async function getMealInformation() {
+    async function getMealInformation(forceSync: boolean = false) {
         try {
-            const res = await getMealData(mealId)
+            const res = await getMealData(mealId, group.groupId, forceSync)
             setMealInformation(res)
             setLoading(false)
         } catch (e) {
@@ -64,7 +64,6 @@ export function Meal() {
         }
     }
 
-
     async function onRefresh() {
         setRefreshing(true)
         await getMealInformation()
@@ -85,8 +84,8 @@ export function Meal() {
                 }
             >
                 <MealHeader mealInformation={mealInformation.mealInformation}/>
-                {mealInformation.mealParticipants && mealInformation.mealParticipants.map((participant) => (
-                    <PreferenceCard mealParticipants={participant} key={participant.userId}/>
+                {mealInformation.mealPreferences && mealInformation.mealPreferences.map((participant) => (
+                    <PreferenceCard mealParticipants={participant} forceRefresh={getMealInformation} key={participant.userId}/>
                 ))}
             </ScrollView>
         </>

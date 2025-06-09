@@ -4,7 +4,6 @@ import {createNewMeal} from "../repo/Meal";
 import {StackActions, useNavigation} from "@react-navigation/native";
 import {useGroup} from "../context/groupContext";
 import {PERMISSIONS} from "../utility/Roles";
-import {DateTimePickerAndroid} from "@react-native-community/datetimepicker";
 import {getSwissDateTimeDisplay} from "../utility/Dates";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {BackButton} from "../components/UI/BackButton";
@@ -140,7 +139,7 @@ export function NewMeal() {
             <BackButton/>
             <VStack space={4} padding={4}>
 
-                <FormControl isRequired isInvalid={errors.title}>
+                <FormControl isRequired isInvalid={Boolean(errors.title)}>
                     <FormControl.Label>{text.mealName}</FormControl.Label>
                     <Input
                         value={title}
@@ -167,7 +166,7 @@ export function NewMeal() {
                             leftIcon={<WarningOutlineIcon size="xs"/>}>{errors.type}</FormControl.ErrorMessage>
                     ) : null}
                 </FormControl>
-                <FormControl isRequired isInvalid={errors.scheduledAt}>
+                <FormControl isRequired isInvalid={Boolean(errors.scheduledAt)}>
                     <FormControl.Label>{text.scheduledAt}</FormControl.Label>
                     <Input
                         value={scheduledAt /*TODO DatePicker */}
@@ -193,7 +192,9 @@ export function NewMeal() {
                         value={notes}
                         onChangeText={setNotes}
                         placeholder={text.mealDescriptionPlaceholder}
-                    />
+                        tvParallaxProperties={undefined}
+                        onTextInput={undefined}
+                        autoCompleteType={undefined}                    />
                 </FormControl>
                 <Button onPress={handleSubmit} isDisabled={isDisabledSubmit}>
                     {text.createNewMeal}

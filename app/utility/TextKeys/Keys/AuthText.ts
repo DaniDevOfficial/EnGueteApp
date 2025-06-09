@@ -8,6 +8,7 @@ export type AuthTextType =
     | 'newAccountGreetingsText'
     | 'createNewAccount'
     | 'createAccount'
+    | 'allFieldsAreRequired'
     | 'username'
     | 'password'
     | 'email'
@@ -59,6 +60,10 @@ export const AuthTextKey: AuthTextKeyType = {
     'createAccount': {
         german: 'Konto erstellen',
         english: 'Create account',
+    },
+    'allFieldsAreRequired': {
+        german: 'Alle Felder sind notwendig',
+        english: 'All fields are required',
     },
     'username': {
         german: 'Benutzername',
