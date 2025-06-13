@@ -1,4 +1,4 @@
-import {Box, Input, InputGroup, Pressable, ScrollView, Text, useToast, VStack} from "native-base";
+import {Box, Button, Flex, Icon, Input, InputGroup, Pressable, ScrollView, Text, useToast, VStack} from "native-base";
 import {RefreshControl} from "react-native-gesture-handler";
 import {GroupCard} from "./GroupCard";
 import React, {useCallback, useEffect, useState} from "react";
@@ -8,6 +8,7 @@ import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {showToast} from "../UI/Toast";
 import {handleLogoutProcedure} from "../../Util";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
     const navigation = useNavigation();
@@ -76,36 +77,66 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
         handleSearch(searchQuery);
     }, [groups]);
     return (
-        <>
-            <Box
-                height="1px"
-                width="90%"
-                backgroundColor="coolGray.300"
-                marginY="3px"
-            />
+        <VStack
+            space={4}
+            w={'100%'}
+        >
+            <InputGroup w={'100%'} justifyContent={'center'} alignItems={'center'}>
+                <Input
+                    width={'100%'}
+                    onChangeText={(text) => {
+                        setSearchQuery(text);
+                        handleSearch(text);
+                    }}
+                    placeholder={text.searchForGroup}
+                    value={searchQuery}
+                    InputLeftElement={
+                        <Icon
+                            as={<Ionicons name="search"/>}
+                            size={5}
+                            ml="2"
+                            color="gray.400"
+                        />
+                    }
+                />
+            </InputGroup>
+            <Flex
+                flexDir={'row'}
+                justifyContent={'space-between'}
+                alignItems={'center'}
+            >
+                <Text
+                    fontSize={'lg'}
+                    fontWeight={'bold'}
+                >
+                    {text.yourGroups}
+                </Text>
+                <Button>
+                    <Flex flexDir={'row'} justifyContent={'space-between'} alignItems={'center'}>
 
-            <Text fontWeight={"bold"} fontSize={"2xl"}>{text.yourGroups}</Text>
-            {groups.length > 0 && (
-                <InputGroup w={'100%'} justifyContent={'center'} alignItems={'center'}>
-                    <Input
-                        width={'70%'}
-                        onChangeText={(text) => {
-                            setSearchQuery(text);
-                            handleSearch(text);
-                        }}
-                        placeholder={text.searchForGroup}
-                        value={searchQuery}
-                    />
-                </InputGroup>
-            )}
+                        <Icon
+                            as={<Ionicons name="add"/>}
+                            size={5}
+                            color="white"
+                        />
+                        <Text
+                            color={'white'}
+                        >
+                            {text.createNewGroup}
+                        </Text>
+                    </Flex>
+                </Button>
+            </Flex>
+
             <ScrollView
-                w={'100%'}
                 contentContainerStyle={{flexGrow: 1}}
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
                 }
+                w={'100%'}
             >
-                <VStack alignItems="center" w={'100%'}>
+
+                <VStack alignItems="center">
                     {filteredGroups && filteredGroups.length > 0 ? (filteredGroups.map((group) => (
                             <GroupCard group={group} key={group.groupId}/>
                         ))
@@ -131,14 +162,9 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
                 </VStack>
 
             </ScrollView>
-            <Pressable
-                onPress={() => {
-                    navigation.navigate('test')
-                }}
-            >
-                <Text>Test</Text>
-            </Pressable>
-        </>
+
+
+        </VStack>
 
     )
 }
