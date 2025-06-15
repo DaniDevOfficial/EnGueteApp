@@ -19,6 +19,8 @@ export type AuthTextType =
     | 'orLogin'
     | 'welcomeBackUsername'
     | 'updateUsername'
+    | 'editUsername'
+    | 'account'
     | 'clearLocalData'
     | 'clearLocalDataQuestionText'
     | 'logoutQuestionText'
@@ -107,6 +109,14 @@ export const AuthTextKey: AuthTextKeyType = {
     'updateUsername': {
         german: 'Nutzernamen aktualisieren',
         english: 'Update username',
+    },
+    'account': {
+        german: 'Account',
+        english: 'Account',
+    },
+    'editUsername': {
+        german: 'Nutzernamen bearieten',
+        english: 'Edit username',
     },
     'clearLocalData': {
         german: 'Lokalen Daten löschen',

@@ -13,16 +13,19 @@ import { useUser } from "../../context/userContext";
 import {ConfirmationModal} from "../UI/ConfirmationModal";
 import {DeleteAccountModal} from "./DeleteAccountModal";
 import {clearDatabase} from "../../utility/database";
+import {Option, SettingsSectionStack} from "../UI/SettingSectionStack";
+
+
 
 export function DangerZone() {
     const navigation = useNavigation();
     const toast = useToast();
-    const text = useTexts(['logout', 'error', 'errorNoOfflineLogout']);
     const user = useUser();
-    const requiredText = useText('deleteAccountRequiredText', { username: user.user.userName });
-    const texts = useTexts(['deleteAccount', 'error', 'errorPleaseEnterCorrectText', 'cancel', 'confirm']);
-    const modalText = useTexts(['clearLocalData', 'logout', 'deleteAccount', 'clearLocalDataQuestionText', 'logoutQuestionText']);
     const getError = useErrorText();
+
+    const text = useTexts(['logout', 'error', 'errorNoOfflineLogout', 'dataAndPrivacy', 'errorPleaseEnterCorrectText']);
+    const requiredText = useText('deleteAccountRequiredText', { username: user.user.userName });
+    const modalText = useTexts(['clearLocalData', 'logout', 'deleteAccount', 'clearLocalDataQuestionText', 'logoutQuestionText']);
 
     const [isLogoutModalVisible, setLogoutModalVisible] = useState(false);
     const [isClearDataModalVisible, setClearDataModalVisible] = useState(false);
@@ -56,8 +59,8 @@ export function DangerZone() {
         if (input !== requiredText) {
             showToast({
                 toast,
-                title: texts.error,
-                description: texts.errorPleaseEnterCorrectText,
+                title: text.error,
+                description: text.errorPleaseEnterCorrectText,
                 status: 'error',
             });
             return;
@@ -70,7 +73,7 @@ export function DangerZone() {
         } catch (e) {
             showToast({
                 toast,
-                title: texts.error,
+                title: text.error,
                 description: getError(e.message),
                 status: 'error',
             });
@@ -79,7 +82,7 @@ export function DangerZone() {
         }
     }
 
-    const options = [
+    const options: Option[] = [
         {
             label: useText('clearLocalData'),
             icon: 'trash',
@@ -103,54 +106,8 @@ export function DangerZone() {
 
     return (
         <>
-            <VStack space={2}>
-                <Box>
-                    <Text fontWeight="bold" fontSize="xl">Data & Privacy</Text>
-                </Box>
-                <VStack
-                    borderColor="coolGray.300"
-                    borderWidth={1}
-                    borderRadius="md"
-                    px={2}
-                >
-                    {options.map((option, index) => (
-                        <Pressable key={index} onPress={option.onPress}>
-                            <HStack justifyContent="space-between" alignItems="center">
-                                <HStack
-                                    alignItems="center"
-                                    space={2}
-                                    p={2}
-                                    borderRadius="md"
-                                    bg="coolGray.100"
-                                >
-                                    <Icon
-                                        color={option.iconColor || 'coolGray.500'}
-                                        size={6}
-                                        as={Ionicons}
-                                        name={option.icon}
-                                    />
-                                    <Text
-                                        color={option.textColor || 'coolGray.800'}
-                                        fontWeight="medium"
-                                    >
-                                        {option.label}
-                                    </Text>
-                                </HStack>
-                                <Icon
-                                    as={Ionicons}
-                                    name="chevron-forward-outline"
-                                    size={5}
-                                />
-                            </HStack>
-                            {index < options.length - 1 && (
-                                <Box height="1px" bg="coolGray.200" mx={2} my={1} />
-                            )}
-                        </Pressable>
-                    ))}
-                </VStack>
-            </VStack>
+            <SettingsSectionStack title={text.dataAndPrivacy} options={options} />
 
-            {/* Modal Popups */}
             <ConfirmationModal
                 isOpen={isClearDataModalVisible}
                 onClose={() => setClearDataModalVisible(false)}

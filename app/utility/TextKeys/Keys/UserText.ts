@@ -3,6 +3,7 @@
 // replace the User with the actual name of the TextKeyGroup.
 export type UserTextType =
     | 'userSettings'
+    | 'dataAndPrivacy'
     | 'dangerZone'
     ;
 
@@ -18,7 +19,10 @@ export const UserTextKey: UserTextKeyType = {
         german: 'Nutzer Einstellungen',
         english: 'User Settings',
     },
-    'dangerZone': {
+    'dataAndPrivacy': {
+        german: 'Daten & Privatsphäre',
+        english: 'Data & Privacy',
+    },    'dangerZone': {
         german: 'Gefahrenzone',
         english: 'Danger Zone',
     },
