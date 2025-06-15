@@ -1,4 +1,17 @@
-import {Box, Button, Flex, Icon, Input, InputGroup, Pressable, ScrollView, Text, useToast, VStack} from "native-base";
+import {
+    Box,
+    Button,
+    Flex,
+    HStack,
+    Icon,
+    Input,
+    InputGroup,
+    Pressable,
+    ScrollView,
+    Text,
+    useToast,
+    VStack
+} from "native-base";
 import {RefreshControl} from "react-native-gesture-handler";
 import {GroupCard} from "./GroupCard";
 import React, {useCallback, useEffect, useState} from "react";
@@ -111,8 +124,10 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
                 >
                     {text.yourGroups}
                 </Text>
-                <Button>
-                    <Flex flexDir={'row'} justifyContent={'space-between'} alignItems={'center'}>
+                <Button
+                    borderRadius={30}
+                >
+                    <HStack flexDir={'row'} space={2} justifyContent={'space-between'} alignItems={'center'}>
 
                         <Icon
                             as={<Ionicons name="add"/>}
@@ -124,7 +139,7 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
                         >
                             {text.createNewGroup}
                         </Text>
-                    </Flex>
+                    </HStack>
                 </Button>
             </Flex>
 

@@ -65,10 +65,18 @@ export function LanguageSelector() {
     };
 
     return (
-        <Box flex={1} alignItems={'center'}>
+        <Box flex={1}>
             <Text mb={2} fontSize={'xl'} fontWeight="bold">
                 {useText('language')}
             </Text>
+
+
+            <Box
+                borderRadius={10}
+            >
+
+
+
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                 <HStack space={2} overflow={'auto'}>
                     {renderLanguageOption('german', germanFlag, 'Deutsch')}
@@ -76,6 +84,7 @@ export function LanguageSelector() {
                 </HStack>
 
             </ScrollView>
+            </Box>
         </Box>
     );
 }

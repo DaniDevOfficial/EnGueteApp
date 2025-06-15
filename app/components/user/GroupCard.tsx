@@ -58,7 +58,9 @@ export function GroupCard({group}: GroupCardProps) {
                                     {group?.userCount.toString()}
                                 </Text>
                             </HStack>
-                            <HStack>
+                            <HStack
+                                space={2}
+                            >
                                 <Ionicons name={'time-outline'} size={20}/>
                                 <Text>
                                     Soon

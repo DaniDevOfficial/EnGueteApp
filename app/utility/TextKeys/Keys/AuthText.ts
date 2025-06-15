@@ -19,6 +19,9 @@ export type AuthTextType =
     | 'orLogin'
     | 'welcomeBackUsername'
     | 'updateUsername'
+    | 'clearLocalData'
+    | 'clearLocalDataQuestionText'
+    | 'logoutQuestionText'
     | 'deleteAccount'
     | 'deleteAccountRequiredText'
     | 'thisActionCannotBeUndone'
@@ -104,6 +107,18 @@ export const AuthTextKey: AuthTextKeyType = {
     'updateUsername': {
         german: 'Nutzernamen aktualisieren',
         english: 'Update username',
+    },
+    'clearLocalData': {
+        german: 'Lokalen Daten löschen',
+        english: 'Delete local data',
+    },
+    'clearLocalDataQuestionText': {
+        german: 'Willst du wirklich alle lokalen Daten löschen? Dies wird alle gespeicherten Daten auf diesem Gerät entfernen.',
+        english: 'Do you really want to delete all local data? This will remove all saved data on this device.',
+    },
+    'logoutQuestionText': {
+        german: 'Möchtest du dich wirklich ausloggen?',
+        english: 'Do you really want to logout?',
     },
     'deleteAccount': {
         german: 'Account löschen',

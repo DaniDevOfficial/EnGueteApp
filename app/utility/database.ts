@@ -118,7 +118,7 @@ export async function dropAllTables() {
 }
 
 export async function clearDatabase() {
-    try {
+    try { //TODO: clean this up
         await db.execAsync(`
             DELETE
             FROM groups;

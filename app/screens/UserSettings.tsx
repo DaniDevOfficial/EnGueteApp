@@ -55,7 +55,7 @@ export function UserSettings() {
             <PageTitleSection title={text.userSettings}/>
 
             <ScrollView>
-                <VStack maxH={'100%'} flex={1} alignItems="center" p={"10px 5px"} space={4}>
+                <VStack maxH={'100%'} flex={1} p={"10px 5px"} space={4}>
 
                     <Box position="relative" width="70px" height="70px">
                         <Image
