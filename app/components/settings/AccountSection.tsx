@@ -130,20 +130,24 @@ export function AccountSection() {
                 </VStack>
 
                 <SettingsSectionStack title={text.account} options={options}/>
-                <TextModalUpdate
-                    text={user.user.userName}
-                    title={text.updateUsername}
-                    isOpen={editUsernameModalOpen}
-                    onClose={() => setEditUsernameModalOpen(false)}
-                    onSuccess={handleEditUsername}
-                />
-                <PasswordModalUpdate
-                    text={user.user.userName}
-                    title={text.updateUsername}
-                    isOpen={editPasswordModalOpen}
-                    onClose={() => setEditPasswordModalOpen(false)}
-                    onSuccess={handleEditPassword}
-                />
+                <Box
+                    height={0}
+                >
+
+                    <TextModalUpdate
+                        text={user.user.userName}
+                        title={text.updateUsername}
+                        isOpen={editUsernameModalOpen}
+                        onClose={() => setEditUsernameModalOpen(false)}
+                        onSuccess={handleEditUsername}
+                    />
+
+                    <PasswordModalUpdate
+                        isOpen={editPasswordModalOpen}
+                        onClose={() => setEditPasswordModalOpen(false)}
+                        onSuccess={handleEditPassword}
+                    />
+                </Box>
             </VStack>
         </>
     )

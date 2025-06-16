@@ -11,19 +11,17 @@ import {PasswordInput} from "../UI/PasswordInput";
 
 
 interface PasswordModalUpdateProps {
-    title: string;
-    text: string;
     isOpen: boolean;
     onClose: () => void;
     onSuccess: (oldPassword: string, newPassword: string) => Promise<void>;
 }
 
-export function PasswordModalUpdate({title, text, onSuccess, isOpen, onClose }: PasswordModalUpdateProps) {
+export function PasswordModalUpdate({onSuccess, isOpen, onClose}: PasswordModalUpdateProps) {
     const toast = useToast();
     const navigation = useNavigation();
     const getError = useErrorText();
 
-    const textKeys = useTexts(['save', 'cancel', 'error']);
+    const textKeys = useTexts(['save', 'cancel', 'error', 'allFieldsAreRequired', 'passwordDoesNotMatchError', 'enterYourOldPassword', 'enterYourNewPassword', 'confirmYourNewPassword', 'editPassword']);
 
     const [oldPassword, setOldPassword] = useState<string>('');
     const [newPassword, setNewPassword] = useState<string>('');
@@ -37,7 +35,7 @@ export function PasswordModalUpdate({title, text, onSuccess, isOpen, onClose }: 
             showToast({
                 toast,
                 title: textKeys.error,
-                description: "All fields are required.",
+                description: textKeys.allFieldsAreRequired,
                 status: "error",
             });
             return;
@@ -47,7 +45,7 @@ export function PasswordModalUpdate({title, text, onSuccess, isOpen, onClose }: 
             showToast({
                 toast,
                 title: textKeys.error,
-                description: "New passwords do not match.",
+                description: textKeys.passwordDoesNotMatchError,
                 status: "error",
             });
             return;
@@ -57,7 +55,7 @@ export function PasswordModalUpdate({title, text, onSuccess, isOpen, onClose }: 
         try {
             setIsSaving(true);
             await onSuccess(oldPassword, newPassword);
-            onClose();
+            handleClose();
         } catch (e) {
 
             showToast({
@@ -76,51 +74,59 @@ export function PasswordModalUpdate({title, text, onSuccess, isOpen, onClose }: 
         }
     }
 
+    function handleClose() {
+        setOldPassword('');
+        setNewPassword('');
+        setConfirmNewPassword('');
+        onClose();
+    }
+
+
     return (
         <>
-            <Modal isOpen={isOpen} onClose={() => onClose()}>
+            <Modal isOpen={isOpen} onClose={() => handleClose()}>
                 <Modal.Content>
-                    <Modal.Header>Update Password</Modal.Header>
+                    <Modal.Header>{textKeys.editPassword}</Modal.Header>
                     <Modal.Body>
                         <VStack
                             space={2}
                         >
 
-                        <FormControl>
-                            <Text>
-                                {`Enter Your Old password`}
-                            </Text>
-                            <PasswordInput
-                                value={oldPassword}
-                                onChangeText={setOldPassword}
-                                placeholder={`Enter Your Old Password`}
-                            />
-                        </FormControl>
-                        <FormControl>
-                            <Text>
-                                {`Enter Your New password`}
-                            </Text>
-                            <PasswordInput
-                                value={newPassword}
-                                onChangeText={setNewPassword}
-                                placeholder={`Enter new password`}
-                            />
-                        </FormControl>
-                        <FormControl>
-                            <Text>
-                                {`Confirm Your New password`}
-                            </Text>
-                            <PasswordInput
-                                value={confirmNewPassword}
-                                onChangeText={setConfirmNewPassword}
-                                placeholder={`Enter new password again to confirm}`}
-                            />
-                        </FormControl>
+                            <FormControl>
+                                <Text>
+                                    {textKeys.enterYourOldPassword}
+                                </Text>
+                                <PasswordInput
+                                    value={oldPassword}
+                                    onChangeText={setOldPassword}
+                                    placeholder={textKeys.enterYourOldPassword}
+                                />
+                            </FormControl>
+                            <FormControl>
+                                <Text>
+                                    {textKeys.enterYourNewPassword}
+                                </Text>
+                                <PasswordInput
+                                    value={newPassword}
+                                    onChangeText={setNewPassword}
+                                    placeholder={textKeys.enterYourNewPassword}
+                                />
+                            </FormControl>
+                            <FormControl>
+                                <Text>
+                                    {textKeys.confirmYourNewPassword}
+                                </Text>
+                                <PasswordInput
+                                    value={confirmNewPassword}
+                                    onChangeText={setConfirmNewPassword}
+                                    placeholder={textKeys.confirmYourNewPassword}
+                                />
+                            </FormControl>
                         </VStack>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button isLoading={isSaving} onPress={handleSave}>{textKeys.save}</Button>
-                        <Button variant="ghost" isLoading={isSaving} onPress={() => onClose()}>
+                        <Button variant="ghost" isLoading={isSaving} onPress={() => handleClose()}>
                             {textKeys.cancel}
                         </Button>
                     </Modal.Footer>

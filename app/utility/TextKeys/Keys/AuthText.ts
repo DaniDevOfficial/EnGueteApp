@@ -14,6 +14,10 @@ export type AuthTextType =
     | 'email'
     | 'enterUsername'
     | 'enterPassword'
+    | 'enterYourOldPassword'
+    | 'enterYourNewPassword'
+    | 'confirmYourNewPassword'
+    | 'editPassword'
     | 'enterEmail'
     | 'orCreateAnAccount'
     | 'orLogin'
@@ -89,6 +93,22 @@ export const AuthTextKey: AuthTextKeyType = {
     'enterPassword': {
         german: 'Passwort eingeben',
         english: 'Enter your password',
+    },
+    'enterYourOldPassword': {
+        german: 'Altes Passwort eingeben',
+        english: 'Enter your old password',
+    },
+    'enterYourNewPassword': {
+        german: 'Neues Passwort eingeben',
+        english: 'Enter your new password',
+    },
+    'confirmYourNewPassword': {
+        german: 'Neues Passwort bestätigen',
+        english: 'Confirm your new password',
+    },
+    'editPassword': {
+        german: 'Passwort bearbeiten',
+        english: 'Edit password',
     },
     'enterEmail': {
         german: 'E-Mail eingeben',
