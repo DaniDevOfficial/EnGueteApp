@@ -11,14 +11,19 @@ import {updateUsername} from "../../repo/settings/User";
 import {showToast} from "../UI/Toast";
 import {handleLogoutProcedure} from "../../Util";
 import {Option, SettingsSectionStack} from "../UI/SettingSectionStack";
+import {TextModalUpdate} from "./TextModalUpdate";
+import {PasswordModalUpdate} from "./PasswordModalUpdate";
 
 export function AccountSection() {
     const user = useUser();
-    const [imageSrc, setImageSrc] = useState(user.user.profilePicture || 'https://imebehavioralhealth.com/wp-content/uploads/2021/10/user-icon-placeholder-1.png');
     const text = useTexts(['updateUsername', 'userSettings', 'error', 'username', 'account', 'email', 'password']);
     const toast = useToast();
     const getError = useErrorText();
     const navigation = useNavigation();
+
+    const [imageSrc, setImageSrc] = useState(user.user.profilePicture || 'https://imebehavioralhealth.com/wp-content/uploads/2021/10/user-icon-placeholder-1.png');
+    const [editUsernameModalOpen, setEditUsernameModalOpen] = useState<boolean>(false);
+    const [editPasswordModalOpen, setEditPasswordModalOpen] = useState<boolean>(false);
 
     function handleEditImage() {
     }
@@ -44,25 +49,28 @@ export function AccountSection() {
         }
     }
 
+    async function handleEditPassword(oldPassword: string, newPassword: string) {
+
+    }
+
     const options: Option[] = [
         {
             label: text.username,
             onPress: () => {
-                console.log('Edit Username Pressed');
+                setEditUsernameModalOpen(true);
             },
             icon: 'person-outline'
         },
         {
             label: text.email,
             onPress: () => {
-                console.log('email Settings Pressed');
             },
             icon: 'mail-outline'
         },
         {
             label: text.password,
             onPress: () => {
-                console.log('password Pressed');
+                setEditPasswordModalOpen(true);
             },
             icon: 'lock-closed-outline'
         }
@@ -122,6 +130,20 @@ export function AccountSection() {
                 </VStack>
 
                 <SettingsSectionStack title={text.account} options={options}/>
+                <TextModalUpdate
+                    text={user.user.userName}
+                    title={text.updateUsername}
+                    isOpen={editUsernameModalOpen}
+                    onClose={() => setEditUsernameModalOpen(false)}
+                    onSuccess={handleEditUsername}
+                />
+                <PasswordModalUpdate
+                    text={user.user.userName}
+                    title={text.updateUsername}
+                    isOpen={editPasswordModalOpen}
+                    onClose={() => setEditPasswordModalOpen(false)}
+                    onSuccess={handleEditPassword}
+                />
             </VStack>
         </>
     )
