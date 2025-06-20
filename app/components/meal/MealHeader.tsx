@@ -1,31 +1,74 @@
 import React from 'react';
-import {Flex, Heading, Text} from "native-base";
+import {Box, Flex, Heading, HStack, Icon, Text, VStack} from "native-base";
 import {MealCard} from "../../repo/Group";
-import {toNormalDateTime} from "../../utility/Dates";
+import {getTime, semiNormalDateTime, toNormalDateTime} from "../../utility/Dates";
 import {useText} from "../../utility/TextKeys/TextKeys";
+import {Ionicons} from "@expo/vector-icons";
 
 export function MealHeader({mealInformation}: { mealInformation: MealCard }) {
-    const whenText = toNormalDateTime(mealInformation.dateTime)
+    const whenText = semiNormalDateTime(mealInformation.dateTime)
+    const time = getTime(mealInformation.dateTime);
 
     return (
-        <Flex alignItems={'center'} flexDir={'column'}>
+        <VStack paddingTop={5} space={2}>
+
             <Heading>
                 {mealInformation.title}
             </Heading>
-            <Text>
-                {mealInformation.mealType}
-            </Text>
-            <Text>
-                {whenText}
-            </Text>
-            <Text
-                fontStyle={mealInformation.notes ? "normal" : "italic"}
-                color={mealInformation.notes ? "black" : "gray.500"}
-            >
-                {mealInformation.notes || useText('noNotes')}
-            </Text>
 
-        </Flex>
+            <HStack
+                space={5}
+            >
+
+                <HStack space={2}>
+                    <Icon
+                        as={Ionicons}
+                        name={'calendar-outline'}
+                        size={5}
+                    />
+                    <Text>
+                        {whenText}
+                    </Text>
+                </HStack>
+
+                <HStack space={2}>
+                    <Icon
+                        as={Ionicons}
+                        name={'time-outline'}
+                        size={5}
+                    />
+                    <Text>
+                        {time}
+                    </Text>
+                </HStack>
+            </HStack>
+
+            <HStack space={2}>
+                <Icon
+                    as={Ionicons}
+                    name={'bulb-outline'}
+                    size={5}
+                />
+                <Text>
+                    {mealInformation.mealType}
+                </Text>
+            </HStack>
+
+            <Box
+                p={2}
+                backgroundColor={'coolGray.200'}
+                borderRadius={5}
+            >
+
+                <Text
+                    fontStyle={mealInformation.notes ? "normal" : "italic"}
+                    color={mealInformation.notes ? "black" : "gray.500"}
+                >
+                    {mealInformation.notes || useText('noNotes')}
+                </Text>
+            </Box>
+
+        </VStack>
     );
 }
 

@@ -129,7 +129,7 @@ export function AccountSection() {
                     </Text>
                 </VStack>
 
-                <SettingsSectionStack title={text.account} options={options}/>
+                <SettingsSectionStack title={text.account} options={options} />
                 <Box
                     height={0}
                 >

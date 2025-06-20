@@ -87,6 +87,31 @@ export function toNormalDateTime(dateTimeString: string) {
     })}`;
 }
 
+export function semiNormalDateTime(dateTimeString: string) {
+    const now = new Date();
+    const target = new Date(dateTimeString);
+    const weekDay = useText(dayNames[target.getDay()]);
+    const month = useText(monthNames[target.getMonth()]);
+    const day = target.getDay();
+    const year = target.getFullYear();
+
+    let response = '';
+    if (now.getFullYear() === year) {
+        response = `${weekDay}, ${day} ${month}`;
+    } else {
+        response = `${weekDay}, ${day} ${month} ${year}`;
+    }
+
+    return response;
+}
+
+export function getTime(dateTimeString: string): string {
+    const target = new Date(dateTimeString);
+    return target.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", hour12: false});
+}
+
+
+
 export function getSwissDateTimeDisplay(dateTime: Date) {
     const date = dateTime.toLocaleDateString("de-CH");
     const time = dateTime.toLocaleTimeString("de-CH", {hour: "2-digit", minute: "2-digit", hour12: false});
