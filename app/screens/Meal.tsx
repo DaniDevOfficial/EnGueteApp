@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, useToast} from "native-base";
+import {Box, Heading, ScrollView, Text, useToast, VStack} from "native-base";
 import {useGroup} from "../context/groupContext";
 import {useNavigation, useRoute} from "@react-navigation/native";
 import {handleLogoutProcedure} from "../Util";
@@ -18,7 +18,7 @@ export function Meal() {
     const [mealInformation, setMealInformation] = useState<MealInterface | undefined>();
     const [loading, setLoading] = useState(true)
     const [refreshing, setRefreshing] = useState(false)
-    const text = useTexts(['error']);
+    const text = useTexts(['error', 'noParticipants', 'participants']);
     const toast = useToast();
     const getError = useErrorText();
 
@@ -73,7 +73,6 @@ export function Meal() {
     if (!mealInformation || loading) {
         return <PageSpinner/>
     }
-
     return (
         <>
             <BackButton/>
@@ -83,10 +82,31 @@ export function Meal() {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
                 }
             >
-                <MealHeader mealInformation={mealInformation.mealInformation}/>
-                {mealInformation.mealPreferences && mealInformation.mealPreferences.map((participant) => (
-                    <PreferenceCard mealParticipants={participant} forceRefresh={getMealInformation} key={participant.userId}/>
-                ))}
+                <VStack space={6}>
+
+                    <MealHeader mealInformation={mealInformation.mealInformation}/>
+
+
+                    <VStack
+                        space={3}
+                    >
+                        <Heading
+                            fontSize={"xl"}
+                        >
+                            {text.participants}
+                        </Heading>
+                        {mealInformation.mealPreferences && mealInformation.mealPreferences.length > 0 ? mealInformation.mealPreferences.map((participant) => (
+                            <PreferenceCard mealParticipants={participant} forceRefresh={getMealInformation}
+                                            key={participant.userId}/>
+                        )) : (
+                            <>
+                                <Text color={"gray.500"} textAlign={"center"}>
+                                    {text.noParticipants}
+                                </Text>
+                            </>
+                        )}
+                    </VStack>
+                </VStack>
             </ScrollView>
         </>
     );
