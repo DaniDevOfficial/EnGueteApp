@@ -96,12 +96,12 @@ export function toNormalDateTime(dateTimeString: string) {
     })}`;
 }
 
-export function semiNormalDateTime(dateTimeString: string) {
+export function semiNormalDateTime(dateTimeString: string, withTime: boolean = false): string {
     const now = new Date();
     const target = new Date(dateTimeString);
     const weekDay = useText(dayNames[target.getDay()]);
     const month = useText(monthNames[target.getMonth()]);
-    const day = target.getDay();
+    const day = target.getDate();
     const year = target.getFullYear();
 
     let response = '';
@@ -109,6 +109,15 @@ export function semiNormalDateTime(dateTimeString: string) {
         response = `${weekDay}, ${day} ${month}`;
     } else {
         response = `${weekDay}, ${day} ${month} ${year}`;
+    }
+
+    if (withTime) {
+        const options: Intl.DateTimeFormatOptions = {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+        };
+        response += ` ${target.toLocaleTimeString([], options)}`;
     }
 
     return response;

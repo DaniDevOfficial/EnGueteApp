@@ -2,7 +2,7 @@ import React from 'react';
 import {Box, Flex, Pressable, Text} from 'native-base';
 import {useNavigation} from "@react-navigation/native";
 import {MealCard as MealCardType} from "../../repo/Group";
-import {getFancyTimeDisplay} from "../../utility/Dates";
+import {getFancyTimeDisplay, semiNormalDateTime} from "../../utility/Dates";
 import {getParticipantsText} from "../../utility/TextGeneration";
 import {PillTag} from "../UI/Pilltag";
 import {mealPreferenceText} from "../../utility/TextKeys/TextKeys";
@@ -20,7 +20,7 @@ export function MealCard({meal}: MealCardProps) {
         navigation.navigate('meal', { mealId: meal.mealId });
     }
     
-    const whenText = getFancyTimeDisplay(meal.dateTime)
+    const whenText = semiNormalDateTime(meal.dateTime, true)
     const participantsText = getParticipantsText(meal.participantCount)
     return (
         <Pressable onPress={handleNavigate} alignItems={'center'} width={'100%'}>

@@ -146,7 +146,7 @@ function List({meals = []}: { meals: MealCardType[] }) {
                 return (
                     <React.Fragment key={meal.mealId}>
                         {showDay && (
-                            <Text fontWeight="bold" mt={4} mb={2}>
+                            <Text fontWeight="bold" mt={4} >
                                 📅 {currentDayName}
                             </Text>
                         )}
