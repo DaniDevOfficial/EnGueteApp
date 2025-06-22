@@ -1,8 +1,17 @@
 import {useText} from "./TextKeys/TextKeys";
 
 
+type weekDay = "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
+
 const dayNames: ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 const monthNames: ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"] = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+
+export function getDayName(dayIndex: number): weekDay {
+    if (dayIndex < 0 || dayIndex > 6) {
+        throw new Error("Invalid day index");
+    }
+    return dayNames[dayIndex];
+}
 
 
 export function getFancyTimeDisplay(dateTimeString: string): string {

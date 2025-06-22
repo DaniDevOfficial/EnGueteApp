@@ -149,6 +149,7 @@ export async function getMeals(groupId: string, date: Date): Promise<MealCard[]>
         WHERE group_id = ?
           AND date_time >= ?
           AND date_time <= ?
+        ORDER BY date_time ASC;
     `, groupId, start.toISOString(), end.toISOString());
 
     data.map(meal => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Flex, Heading, HStack, Icon, Text, VStack} from "native-base";
+import {Box, Flex, Heading, HStack, Icon, ScrollView, Text, VStack} from "native-base";
 import {MealCard} from "../../repo/Group";
 import {getTime, semiNormalDateTime, toNormalDateTime} from "../../utility/Dates";
 import {useText} from "../../utility/TextKeys/TextKeys";
@@ -54,19 +54,23 @@ export function MealHeader({mealInformation}: { mealInformation: MealCard }) {
                 </Text>
             </HStack>
 
+
             <Box
                 p={2}
-                backgroundColor={'coolGray.200'}
+                backgroundColor="coolGray.200"
                 borderRadius={5}
+                maxHeight={150}
             >
-
-                <Text
-                    fontStyle={mealInformation.notes ? "normal" : "italic"}
-                    color={mealInformation.notes ? "black" : "gray.500"}
-                >
-                    {mealInformation.notes || useText('noNotes')}
-                </Text>
+                <ScrollView>
+                    <Text
+                        fontStyle={mealInformation.notes ? "normal" : "italic"}
+                        color={mealInformation.notes ? "black" : "gray.500"}
+                    >
+                        {mealInformation.notes || useText('noNotes')}
+                    </Text>
+                </ScrollView>
             </Box>
+
 
         </VStack>
     );

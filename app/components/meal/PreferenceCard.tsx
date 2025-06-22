@@ -87,9 +87,11 @@ export function PreferenceCard({mealParticipants, forceRefresh}: {
         <Pressable onPress={handlePress}>
 
             <Box
-                shadow={"1"}
+                shadow={"2"}
+                borderColor={"light.200"}
+                borderWidth={1}
                 borderRadius="md"
-                backgroundColor="white"
+                backgroundColor="light.100"
                 p={2}
             >
                 <HStack
