@@ -87,7 +87,7 @@ export function PreferenceCard({mealParticipants, forceRefresh}: {
         <Pressable onPress={handlePress}>
 
             <Box
-                shadow={"2"}
+                shadow={"1"}
                 borderColor={"light.200"}
                 borderWidth={1}
                 borderRadius="md"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {BackButton} from "../components/UI/BackButton";
 import {Button, ScrollView, useToast, VStack} from "native-base";
 import {useUser} from "../context/userContext";
