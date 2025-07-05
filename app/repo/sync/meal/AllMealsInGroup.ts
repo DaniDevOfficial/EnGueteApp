@@ -154,6 +154,9 @@ export async function getMeals(groupId: string, date: Date): Promise<MealCard[]>
 
     data.map(meal => {
         meal.isCook = !(!Number(meal.isCook));
+        meal.fulfilled = !(!Number(meal.fulfilled));
+        meal.closed = !(!Number(meal.closed));
+        meal.participantCount = Number(meal.participantCount);
     })
 
     return data;
