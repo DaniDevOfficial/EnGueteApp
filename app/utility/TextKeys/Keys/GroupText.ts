@@ -40,6 +40,10 @@ export type GroupTextType =
     | 'joinGroup'
     | 'maybeLater'
     | 'noGroupsFound'
+    | 'groupInformation'
+    | 'editGroupInformation'
+    | 'membersAndInvites'
+    | 'groupActions'
     ;
 
 export type GroupTextKeyType = {
@@ -205,6 +209,22 @@ export const GroupTextKey: GroupTextKeyType = {
     'noGroupsFound': {
         german: 'Keine Gruppen gefunden 😞',
         english: 'No groups found 😞',
+    },
+    'groupInformation': {
+        german: 'Gruppeninformation',
+        english: 'Group Information',
+    },
+    'editGroupInformation': {
+        german: 'Gruppeninformation bearbeiten',
+        english: 'Edit group information',
+    },
+    'membersAndInvites': {
+        german: 'Mitglieder & Einladungen',
+        english: 'Members & Invites',
+    },
+    'groupActions': {
+        german: 'Gruppenaktionen',
+        english: 'Group Actions',
     },
 }
 

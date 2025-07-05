@@ -85,19 +85,19 @@ export function DangerZone() {
     const options: Option[] = [
         {
             label: useText('clearLocalData'),
-            icon: 'trash',
+            icon: 'delete-sweep',
             onPress: () => setClearDataModalVisible(true),
             iconColor: 'yellow.500',
         },
         {
             label: useText('logout'),
-            icon: 'log-out-outline',
+            icon: 'logout',
             onPress: () => setLogoutModalVisible(true),
             iconColor: 'blue.400',
         },
         {
             label: useText('deleteAccount'),
-            icon: 'close-circle-outline',
+            icon: 'delete-forever',
             onPress: () => setDeleteModalVisible(true),
             textColor: 'red.500',
             iconColor: 'red.500',

@@ -72,11 +72,10 @@ export function AccountSection() {
             onPress: () => {
                 setEditPasswordModalOpen(true);
             },
-            icon: 'lock-closed-outline'
+            icon: 'lock-outline'
         }
 
     ];
-    console.log(user.user)
 
     return (
         <>

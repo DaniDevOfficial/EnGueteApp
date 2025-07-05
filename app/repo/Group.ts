@@ -148,6 +148,7 @@ export async function LeaveGroupRequest(groupId: string): Promise<GroupIdRespons
 
     const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
     await handleDefaultResponseAndHeaders(res)
+    //TODO: delete group from local storage sqlite
     return await res.json();
 }
 

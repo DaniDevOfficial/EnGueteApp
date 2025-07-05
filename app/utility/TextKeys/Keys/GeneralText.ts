@@ -10,6 +10,7 @@ export type GeneralTextType =
     | 'okay'
     | 'close'
     | 'confirm'
+    | 'areYouSureYouWantToPerfomThisAction'
     ;
 
 export type GeneralTextKeyType = {
@@ -52,5 +53,9 @@ export const GeneralTextKey: GeneralTextKeyType = {
     'confirm': {
         german: 'Bestätigen',
         english: 'Confirm',
+    },
+    'areYouSureYouWantToPerfomThisAction': {
+        german: 'Bist du sicher, dass du diese Aktion ausführen möchtest?',
+        english: 'Are you sure you want to perform this action?',
     },
 }

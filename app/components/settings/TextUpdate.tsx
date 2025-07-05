@@ -72,7 +72,7 @@ export function TextUpdate({title, text, onSuccess, readonly = false}: TextUpdat
                             <Input
                                 value={value}
                                 onChangeText={setValue}
-                                placeholder={`Enter new ${title}`}
+                                placeholder={`${title}`}
                             />
                         </FormControl>
                     </Modal.Body>

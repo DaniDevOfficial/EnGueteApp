@@ -163,7 +163,7 @@ export const AuthTextKey: AuthTextKeyType = {
         english: 'This action cannot be undone',
     },
     'pleaseEnterTextToConfirm': {
-        german: 'Bitte geben Sie den Text ein, um zu bestätigen: [text]',
-        english: 'Please enter the text to confirm: [text]',
+        german: 'Um die Aktion zu bestätigen, bitte den Text eingeben: [text]',
+        english: 'To confirm the action, please enter the text: [text]',
     },
 }

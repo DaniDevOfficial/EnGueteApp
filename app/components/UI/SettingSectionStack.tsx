@@ -1,6 +1,7 @@
 import {Box, HStack, Icon, Pressable, Text, VStack} from "native-base";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import React from "react";
+import {MaterialIcons} from "@expo/vector-icons";
 
 export interface Option {
     label: string;
@@ -22,6 +23,7 @@ export function SettingsSectionStack({options, title}: { options: Option[], titl
                 borderWidth={1}
                 borderRadius="md"
                 px={2}
+                py={2}
             >
                 {options.map((option, index) => (
                     <Pressable key={index} onPress={option.onPress}>
@@ -36,7 +38,7 @@ export function SettingsSectionStack({options, title}: { options: Option[], titl
                                 <Icon
                                     color={option.iconColor || 'coolGray.500'}
                                     size={6}
-                                    as={Ionicons}
+                                    as={MaterialIcons}
                                     name={option.icon}
                                 />
                                 <Text
