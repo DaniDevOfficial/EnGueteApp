@@ -1,5 +1,5 @@
 // @ts-ignore
-import {BACKEND_URL} from '@env';
+
 import {timeoutPromiseFactory} from "../Util";
 import {getBasicAuthHeader} from "../utility/Auth";
 import {handleDefaultResponseAndHeaders} from "../utility/Response";
@@ -93,7 +93,7 @@ export async function GetGroupInformation(groupId: string): Promise<GroupRespons
 }
 
 export async function CreateNewGroup(groupInformation: NewGroupType): Promise<GroupIdResponse> {
-    const url = BACKEND_URL + 'groups';
+    const url = process.env.EXPO_PUBLIC_API_URL + 'groups';
     const timeoutPromise = timeoutPromiseFactory()
     const fetchPromise = fetch(url, {
         method: 'POST',
@@ -112,7 +112,7 @@ export interface UpdateGroupNameType {
 }
 
 export async function UpdateGroupName(groupInformation: UpdateGroupNameType): Promise<GroupIdResponse> {
-    const url = BACKEND_URL + 'groups/name';
+    const url = process.env.EXPO_PUBLIC_API_URL + 'groups/name';
     const timeoutPromise = timeoutPromiseFactory()
     const fetchPromise = fetch(url, {
         method: 'PUT',
@@ -126,7 +126,7 @@ export async function UpdateGroupName(groupInformation: UpdateGroupNameType): Pr
 }
 
 export async function DeleteGroupRequest(groupId: string): Promise<GroupIdResponse> {
-    const url = BACKEND_URL + 'groups?groupId=' + groupId;
+    const url = process.env.EXPO_PUBLIC_API_URL + 'groups?groupId=' + groupId;
     const timeoutPromise = timeoutPromiseFactory()
     const fetchPromise = fetch(url, {
         method: 'DELETE',
@@ -139,7 +139,7 @@ export async function DeleteGroupRequest(groupId: string): Promise<GroupIdRespon
 }
 
 export async function LeaveGroupRequest(groupId: string): Promise<GroupIdResponse> {
-    const url = BACKEND_URL + 'groups/leave?groupId=' + groupId;
+    const url = process.env.EXPO_PUBLIC_API_URL + 'groups/leave?groupId=' + groupId;
     const timeoutPromise = timeoutPromiseFactory()
     const fetchPromise = fetch(url, {
         method: 'DELETE',
@@ -170,9 +170,9 @@ export enum RoleChange {
 }
 
 export async function ChangeRole(requestData: RoleChangeRequest, roleChange: RoleChange) {
-    let url = BACKEND_URL + 'management/roles/add';
+    let url = process.env.EXPO_PUBLIC_API_URL + 'management/roles/add';
     if (roleChange === RoleChange.DEMOTION) {
-        url = BACKEND_URL + 'management/roles/remove';
+        url = process.env.EXPO_PUBLIC_API_URL + 'management/roles/remove';
     }
     const timeoutPromise = timeoutPromiseFactory()
     const fetchPromise = fetch(url, {
@@ -187,7 +187,7 @@ export async function ChangeRole(requestData: RoleChangeRequest, roleChange: Rol
 }
 
 export async function KickUserFromGroup(requestData: KickUserRequest) {
-    const url = BACKEND_URL + 'management/user/kick';
+    const url = process.env.EXPO_PUBLIC_API_URL + 'management/user/kick';
     const timeoutPromise = timeoutPromiseFactory()
     const fetchPromise = fetch(url, {
         method: 'POST',

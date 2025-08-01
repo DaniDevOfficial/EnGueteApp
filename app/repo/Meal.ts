@@ -1,5 +1,5 @@
 // @ts-ignore
-import {BACKEND_URL} from '@env';
+
 import {NewMealType} from "../screens/newMeal";
 import {timeoutPromiseFactory} from "../Util";
 import {MealCard} from "./Group";
@@ -29,7 +29,7 @@ export interface MealPreference {
 
 export async function createNewMeal(newMeal: NewMealType): Promise<NewMealResponse> {
 
-    const url = BACKEND_URL + 'meals'
+    const url = process.env.EXPO_PUBLIC_API_URL + 'meals'
     const timeoutPromise = timeoutPromiseFactory()
     const fetchPromise = fetch(url, {
         method: 'POST',
@@ -57,7 +57,7 @@ export async function getMealData(mealId: string, groupId: string, forceSync: bo
 }
 
 export async function saveMealPreference(userId: string, mealId: string, preference: string | null, isCook: boolean | null): Promise<void> {
-    const url = BACKEND_URL + 'meals/preferences'
+    const url = process.env.EXPO_PUBLIC_API_URL + 'meals/preferences'
     const timeoutPromise = timeoutPromiseFactory()
 
     const fetchPromise = fetch(url, {

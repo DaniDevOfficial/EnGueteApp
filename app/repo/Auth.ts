@@ -1,6 +1,6 @@
 
 // @ts-ignore
-import {BACKEND_URL} from '@env';
+
 import {timeoutPromiseFactory} from "../Util";
 import {handleDefaultResponseAndHeaders} from "../utility/Response";
 import {FRONTEND_ERRORS, TimeoutError, UnauthorizedError} from "../utility/Errors";
@@ -15,7 +15,7 @@ export async function SignIntoAccount(
     username: string,
     password: string
 ): Promise<ResponseAuth> {
-    const url = `${BACKEND_URL}auth/signin`;
+    const url = `${process.env.EXPO_PUBLIC_API_URL}auth/signin`;
 
     const data = {
         username,
@@ -44,7 +44,7 @@ export async function CreateNewAccount(
     email: string,
     password: string,
 ): Promise<ResponseAuth> {
-    const url = `${BACKEND_URL}auth/signup`;
+    const url = `${process.env.EXPO_PUBLIC_API_URL}auth/signup`;
 
     const data = {
         username: username,
@@ -77,7 +77,7 @@ export async function checkAuth() {
     if (refreshToken === null) {
         throw new UnauthorizedError(FRONTEND_ERRORS.UNAUTHORIZED_ERROR);
     }
-    const URL = BACKEND_URL + 'auth/check';
+    const URL = process.env.EXPO_PUBLIC_API_URL + 'auth/check';
     const timeoutPromise = timeoutPromiseFactory();
     const fetchPromise = fetch(URL, {
         method: 'GET',

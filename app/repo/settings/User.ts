@@ -1,11 +1,11 @@
 // @ts-ignore
-import {BACKEND_URL} from '@env';
+
 import {getBasicAuthHeader} from "../../utility/Auth";
 import {timeoutPromiseFactory} from "../../Util";
 import {handleDefaultResponseAndHeaders, handleResponse} from "../../utility/Response";
 
 export async function updateUsername(newUsername: string) {
-    const url = BACKEND_URL + 'users/username/';
+    const url = process.env.EXPO_PUBLIC_API_URL + 'users/username/';
 
     const data = {
         username: newUsername,
@@ -23,7 +23,7 @@ export async function updateUsername(newUsername: string) {
 }
 
 export async function deleteCurrentUser() {
-    const url = BACKEND_URL + 'users/';
+    const url = process.env.EXPO_PUBLIC_API_URL + 'users/';
     const timeoutPromise = timeoutPromiseFactory();
     const fetchPromise = fetch(url, {
         method: 'DELETE',
@@ -36,7 +36,7 @@ export async function deleteCurrentUser() {
 }
 
 export async function handleBackendLogout() {
-    const url = BACKEND_URL + 'auth/logout/';
+    const url = process.env.EXPO_PUBLIC_API_URL + 'auth/logout/';
     const timeoutPromise = timeoutPromiseFactory();
     const fetchPromise = fetch(url, {
         method: 'POST',

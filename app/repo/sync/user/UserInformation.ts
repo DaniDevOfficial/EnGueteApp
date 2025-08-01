@@ -1,5 +1,5 @@
 // @ts-ignore
-import {BACKEND_URL} from '@env';
+
 import {db, needsToBeSynced, updateSyncStatus} from "../../../utility/database";
 import {timeoutPromiseFactory} from "../../../Util";
 import {getBasicAuthHeader, GetSafeCurrentUserId} from "../../../utility/Auth";
@@ -50,7 +50,7 @@ async function trySyncCurrentUser(): Promise<UserInformation> {
 
 async function getUserFromBackend(): Promise<UserInformation> {
     const timeoutPromise = timeoutPromiseFactory()
-    const url = BACKEND_URL + 'users/';
+    const url = process.env.EXPO_PUBLIC_API_URL + 'users/';
 
     const fetchPromise = fetch(url, {
         method: 'GET',

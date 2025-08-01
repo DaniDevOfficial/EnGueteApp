@@ -1,5 +1,5 @@
 // @ts-ignore
-import {BACKEND_URL} from '@env';
+
 import {MealCard} from "../../Group";
 import {getFirstDayOfLastMonth, getLastDayOfNextMonth, getWeekDuration} from "../../../utility/Dates";
 import {db, updateSyncStatus} from "../../../utility/database";
@@ -42,7 +42,7 @@ async function SyncAllMeals(groupId: string, dates: DateDuration): Promise<void>
 }
 
 async function getMealsFromBackend(groupId: string, dates: DateDuration): Promise<MealsSyncResponse> {
-    const url = BACKEND_URL + 'sync/group/meals?groupId=' + groupId + '&startDate=' + dates.startDate.toISOString() + '&endDate=' + dates.endDate.toISOString();
+    const url = process.env.EXPO_PUBLIC_API_URL + 'sync/group/meals?groupId=' + groupId + '&startDate=' + dates.startDate.toISOString() + '&endDate=' + dates.endDate.toISOString();
 
     const timeoutPromise = timeoutPromiseFactory()
     const fetchPromise = fetch(url, {

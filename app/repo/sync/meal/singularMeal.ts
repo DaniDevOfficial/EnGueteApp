@@ -1,5 +1,5 @@
 // @ts-ignore
-import {BACKEND_URL} from '@env';
+
 import {FRONTEND_ERRORS, NotFoundError, TimeoutError} from "../../../utility/Errors";
 import {GetGroupMemberList, MealCard} from "../../Group";
 import {MealInterface, MealPreference} from "../../Meal";
@@ -150,7 +150,7 @@ async function getNotExistingPreferencesForAllMembers(mealId: string): Promise<M
 
 
 async function getMealFromBackend(mealId: string): Promise<MealSyncResponse> {
-    const url = BACKEND_URL + 'sync/group/meal?mealId=' + mealId
+    const url = process.env.EXPO_PUBLIC_API_URL + 'sync/group/meal?mealId=' + mealId
     const timeoutPromise = timeoutPromiseFactory()
 
     const fetchPromise = fetch(url, {
