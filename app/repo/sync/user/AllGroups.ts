@@ -1,5 +1,5 @@
 // @ts-ignore
-import {BACKEND_URL} from '@env';
+
 import {db, updateSyncStatus} from "../../../utility/database";
 import {timeoutPromiseFactory} from "../../../Util";
 import {getBasicAuthHeader} from "../../../utility/Auth";
@@ -37,7 +37,7 @@ export async function TrySyncAllGroups(): Promise<Group[]> {
 }
 
 async function GetAllGroupsFromBackend(): Promise<GroupSync> {
-    const url = BACKEND_URL + 'sync/groups';
+    const url = process.env.EXPO_PUBLIC_API_URL + 'sync/groups';
     const timeoutPromise = timeoutPromiseFactory()
     const fetchPromise = fetch(url, {
         method: 'GET',

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useFocusEffect, useNavigation, useRoute} from '@react-navigation/native';
 import {Box, Button, useToast} from 'native-base';
 import {handleLogoutProcedure} from "../Util";
 import {GetGroupInformation, Group as GroupInformationType} from "../repo/Group";
@@ -26,13 +26,17 @@ export function Group() {
     const [groupInformation, setGroupInformation] = useState<GroupInformationType | undefined>()
     const [loading, setLoading] = useState(true)
 
-
-
-
     const navigation = useNavigation()
-    useEffect(() => {
-        getGroupData()
-    }, [groupId]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            getGroupData()
+
+            return () => {
+                // this runs when the screen is unfocused, so we dont do anythin
+            };
+        }, [])
+    );
 
 
     async function getGroupData() {
@@ -83,9 +87,7 @@ export function Group() {
     function handleNavigate() {
 
         // @ts-ignore
-        navigation.navigate('group', {
-            screen: 'newMeal',
-        });
+        navigation.navigate('newMeal');
     }
 
 

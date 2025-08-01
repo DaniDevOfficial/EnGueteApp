@@ -31,4 +31,8 @@ export function timeoutPromiseFactory<T>(
     );
 }
 
+export enum Environment {
+    PRODUCTION = 'production',
+    DEVELOPMENT = 'development',
+}
 

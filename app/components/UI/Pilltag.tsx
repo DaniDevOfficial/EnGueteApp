@@ -13,6 +13,7 @@ export function PillTag({text, colorScheme = 'black'}: PillProps) {
             py="0.5"
             borderRadius="full"
             borderColor={`${colorScheme}.500`}
+            background={`${colorScheme}.100`}
             borderWidth={'1px'}
             mx="1"
         >

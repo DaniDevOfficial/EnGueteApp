@@ -1,8 +1,17 @@
 import {useText} from "./TextKeys/TextKeys";
 
 
+type weekDay = "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
+
 const dayNames: ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 const monthNames: ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"] = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+
+export function getDayName(dayIndex: number): weekDay {
+    if (dayIndex < 0 || dayIndex > 6) {
+        throw new Error("Invalid day index");
+    }
+    return dayNames[dayIndex];
+}
 
 
 export function getFancyTimeDisplay(dateTimeString: string): string {
@@ -86,6 +95,40 @@ export function toNormalDateTime(dateTimeString: string) {
         time: target.toLocaleTimeString([], options)
     })}`;
 }
+
+export function semiNormalDateTime(dateTimeString: string, withTime: boolean = false): string {
+    const now = new Date();
+    const target = new Date(dateTimeString);
+    const weekDay = useText(dayNames[target.getDay()]);
+    const month = useText(monthNames[target.getMonth()]);
+    const day = target.getDate();
+    const year = target.getFullYear();
+
+    let response = '';
+    if (now.getFullYear() === year) {
+        response = `${weekDay}, ${day} ${month}`;
+    } else {
+        response = `${weekDay}, ${day} ${month} ${year}`;
+    }
+
+    if (withTime) {
+        const options: Intl.DateTimeFormatOptions = {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+        };
+        response += ` ${target.toLocaleTimeString([], options)}`;
+    }
+
+    return response;
+}
+
+export function getTime(dateTimeString: string): string {
+    const target = new Date(dateTimeString);
+    return target.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", hour12: false});
+}
+
+
 
 export function getSwissDateTimeDisplay(dateTime: Date) {
     const date = dateTime.toLocaleDateString("de-CH");

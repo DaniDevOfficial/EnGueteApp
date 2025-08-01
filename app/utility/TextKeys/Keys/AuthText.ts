@@ -14,11 +14,20 @@ export type AuthTextType =
     | 'email'
     | 'enterUsername'
     | 'enterPassword'
+    | 'enterYourOldPassword'
+    | 'enterYourNewPassword'
+    | 'confirmYourNewPassword'
+    | 'editPassword'
     | 'enterEmail'
     | 'orCreateAnAccount'
     | 'orLogin'
     | 'welcomeBackUsername'
     | 'updateUsername'
+    | 'editUsername'
+    | 'account'
+    | 'clearLocalData'
+    | 'clearLocalDataQuestionText'
+    | 'logoutQuestionText'
     | 'deleteAccount'
     | 'deleteAccountRequiredText'
     | 'thisActionCannotBeUndone'
@@ -85,6 +94,22 @@ export const AuthTextKey: AuthTextKeyType = {
         german: 'Passwort eingeben',
         english: 'Enter your password',
     },
+    'enterYourOldPassword': {
+        german: 'Altes Passwort eingeben',
+        english: 'Enter your old password',
+    },
+    'enterYourNewPassword': {
+        german: 'Neues Passwort eingeben',
+        english: 'Enter your new password',
+    },
+    'confirmYourNewPassword': {
+        german: 'Neues Passwort bestätigen',
+        english: 'Confirm your new password',
+    },
+    'editPassword': {
+        german: 'Passwort bearbeiten',
+        english: 'Edit password',
+    },
     'enterEmail': {
         german: 'E-Mail eingeben',
         english: 'Enter your email',
@@ -105,6 +130,26 @@ export const AuthTextKey: AuthTextKeyType = {
         german: 'Nutzernamen aktualisieren',
         english: 'Update username',
     },
+    'account': {
+        german: 'Account',
+        english: 'Account',
+    },
+    'editUsername': {
+        german: 'Nutzernamen bearieten',
+        english: 'Edit username',
+    },
+    'clearLocalData': {
+        german: 'Lokalen Daten löschen',
+        english: 'Delete local data',
+    },
+    'clearLocalDataQuestionText': {
+        german: 'Willst du wirklich alle lokalen Daten löschen? Dies wird alle gespeicherten Daten auf diesem Gerät entfernen.',
+        english: 'Do you really want to delete all local data? This will remove all saved data on this device.',
+    },
+    'logoutQuestionText': {
+        german: 'Möchtest du dich wirklich ausloggen?',
+        english: 'Do you really want to logout?',
+    },
     'deleteAccount': {
         german: 'Account löschen',
         english: 'Delete account',
@@ -118,7 +163,7 @@ export const AuthTextKey: AuthTextKeyType = {
         english: 'This action cannot be undone',
     },
     'pleaseEnterTextToConfirm': {
-        german: 'Bitte geben Sie den Text ein, um zu bestätigen: [text]',
-        english: 'Please enter the text to confirm: [text]',
+        german: 'Um die Aktion zu bestätigen, bitte den Text eingeben: [text]',
+        english: 'To confirm the action, please enter the text: [text]',
     },
 }

@@ -1,5 +1,5 @@
 // @ts-ignore
-import {BACKEND_URL} from '@env';
+
 import {MealCard} from "../../Group";
 import {getFirstDayOfLastMonth, getLastDayOfNextMonth, getWeekDuration} from "../../../utility/Dates";
 import {db, updateSyncStatus} from "../../../utility/database";
@@ -42,7 +42,7 @@ async function SyncAllMeals(groupId: string, dates: DateDuration): Promise<void>
 }
 
 async function getMealsFromBackend(groupId: string, dates: DateDuration): Promise<MealsSyncResponse> {
-    const url = BACKEND_URL + 'sync/group/meals?groupId=' + groupId + '&startDate=' + dates.startDate.toISOString() + '&endDate=' + dates.endDate.toISOString();
+    const url = process.env.EXPO_PUBLIC_API_URL + 'sync/group/meals?groupId=' + groupId + '&startDate=' + dates.startDate.toISOString() + '&endDate=' + dates.endDate.toISOString();
 
     const timeoutPromise = timeoutPromiseFactory()
     const fetchPromise = fetch(url, {
@@ -149,10 +149,14 @@ export async function getMeals(groupId: string, date: Date): Promise<MealCard[]>
         WHERE group_id = ?
           AND date_time >= ?
           AND date_time <= ?
+        ORDER BY date_time ASC;
     `, groupId, start.toISOString(), end.toISOString());
 
     data.map(meal => {
         meal.isCook = !(!Number(meal.isCook));
+        meal.fulfilled = !(!Number(meal.fulfilled));
+        meal.closed = !(!Number(meal.closed));
+        meal.participantCount = Number(meal.participantCount);
     })
 
     return data;

@@ -11,13 +11,17 @@ import {NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Erro
 import {handleLogoutProcedure} from "../../Util";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import {resetToUserScreen} from "../../utility/navigation";
+import {getDayName} from "../../utility/Dates";
 
 interface MealListProps {
     tempMeals: MealCardType[];
 }
 
 export function MealList({tempMeals}: MealListProps) {
-    const text = useTexts(['noMealsInThisWeek', 'error']);
+    const text = useTexts(['error']);
+
+    const weekdayNames = useTexts(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']);
+
     const toast = useToast();
     const getError = useErrorText();
     const {group, setGroup} = useGroup();
@@ -109,18 +113,47 @@ export function MealList({tempMeals}: MealListProps) {
                     paddingBottom={10}
                 >
 
-                    {meals && meals.length > 0 ? meals.map((meal) => (
-                            <MealCard meal={meal} key={meal.mealId}/>
-                        )
-                    ) : (
-                        <Box py={10}>
-                            <Text>
-                                {text.noMealsInThisWeek}
-                            </Text>
-                        </Box>
-                    )}
+                    <List meals={meals}/>
                 </Flex>
             </ScrollView>
         </Box>
     )
+}
+
+
+function List({meals = []}: { meals: MealCardType[] }) {
+    let lastDayName = '';
+    const weekdayNames = useTexts(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']);
+    const text = useTexts(['noMealsInThisWeek']);
+
+    if (!meals.length) {
+        return (
+            <Box py={10}>
+                <Text>{text.noMealsInThisWeek}</Text>
+            </Box>
+        );
+    }
+
+    return (
+        <>
+            {meals.map((meal) => {
+                const dayOfWeek = new Date(meal.dateTime).getDay();
+                const currentDayName = weekdayNames[getDayName(dayOfWeek)] || '';
+
+                const showDay = currentDayName !== lastDayName;
+                if (showDay) lastDayName = currentDayName;
+
+                return (
+                    <React.Fragment key={meal.mealId}>
+                        {showDay && (
+                            <Text fontWeight="bold" mt={4} >
+                                📅 {currentDayName}
+                            </Text>
+                        )}
+                        <MealCard meal={meal}/>
+                    </React.Fragment>
+                );
+            })}
+        </>
+    );
 }

@@ -1,5 +1,5 @@
 // @ts-ignore
-import {BACKEND_URL} from '@env';
+
 import {timeoutPromiseFactory} from "../../../Util";
 import {getBasicAuthHeader, GetSafeCurrentUserId} from "../../../utility/Auth";
 import {handleDefaultResponseAndHeaders} from "../../../utility/Response";
@@ -73,7 +73,7 @@ WHERE group_id = ?`, groupId);
 async function GetGroupInformationFromBackend(groupId: string): Promise<GroupInformationWrapper> {
 
     const timeoutPromise = timeoutPromiseFactory()
-    const url = BACKEND_URL + 'sync/group?groupId=' + groupId;
+    const url = process.env.EXPO_PUBLIC_API_URL + 'sync/group?groupId=' + groupId;
     const fetchPromise = fetch(url, {
         method: 'GET',
         headers: await getBasicAuthHeader(),

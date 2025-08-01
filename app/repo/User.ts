@@ -1,5 +1,5 @@
 // @ts-ignore
-import {BACKEND_URL} from '@env';
+
 import {needsToBeSynced} from "../utility/database";
 import {getAllGroups, TrySyncAllGroups, userGroupsCacheKey} from "./sync/user/AllGroups";
 import {isDeviceOffline} from "../utility/Network/OnlineOffline";

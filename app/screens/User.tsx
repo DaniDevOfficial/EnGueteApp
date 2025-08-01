@@ -1,6 +1,6 @@
-import {Box, Button, useToast} from 'native-base'
+import {Box, Button, Pressable, useToast} from 'native-base'
 import React, {useEffect, useState} from 'react'
-import {handleLogoutProcedure} from "../Util";
+import {Environment, handleLogoutProcedure} from "../Util";
 import {useNavigation} from "@react-navigation/native";
 import {GetUserInformation, Group, User as UserType} from "../repo/User";
 import {useUser} from "../context/userContext";
@@ -82,9 +82,18 @@ export function User() {
                 <UserCard user={user}/>
                 <GroupList groupsDefault={groupInformation}/>
             </Box>
-            <Button my={4} onPress={handleNavigate}>
-                {text.createNewGroup}
-            </Button>
+
+            {process.env.ENV === Environment.DEVELOPMENT && (
+
+
+                <Button
+                    onPress={() => {
+                        navigation.navigate('test')
+                    }}
+                >
+                    Test
+                </Button>
+            )}
         </>
     )
 }

@@ -12,26 +12,29 @@ import {handleLogoutProcedure} from "../../Util";
 interface TextUpdateProps {
     title: string;
     text: string;
-    readonly?: boolean;
+    isOpen: boolean;
+    onClose: () => void;
     onSuccess: (text: string) => Promise<void>;
 }
 
-export function TextUpdate({title, text, onSuccess, readonly = false}: TextUpdateProps) {
+export function TextModalUpdate({title, text, onSuccess, isOpen, onClose }: TextUpdateProps) {
     const toast = useToast();
     const navigation = useNavigation();
     const getError = useErrorText();
 
     const textKeys = useTexts(['save', 'cancel', 'error']);
 
-    const [isModalVisible, setModalVisible] = useState(false);
     const [value, setValue] = useState<string>(text);
     const [isSaving, setIsSaving] = useState(false);
 
     async function handleSave() {
+
+
+
         try {
             setIsSaving(true);
             await onSuccess(value);
-            setModalVisible(false);
+            onClose();
         } catch (e) {
 
             showToast({
@@ -52,19 +55,7 @@ export function TextUpdate({title, text, onSuccess, readonly = false}: TextUpdat
 
     return (
         <>
-            <HStack alignItems="center" space={4} mt={4} mb={2}>
-                <Text fontSize="xl" fontWeight="bold">
-                    {text}
-                </Text>
-
-                {!readonly && (
-                    <TouchableOpacity onPress={() => setModalVisible(true)}>
-                        <Icon as={Ionicons} name="create-outline" size={6} color="black"/>
-                    </TouchableOpacity>
-                )}
-            </HStack>
-
-            <Modal isOpen={isModalVisible} onClose={() => setModalVisible(false)}>
+            <Modal isOpen={isOpen} onClose={() => onClose()}>
                 <Modal.Content>
                     <Modal.Header>{title}</Modal.Header>
                     <Modal.Body>
@@ -72,13 +63,13 @@ export function TextUpdate({title, text, onSuccess, readonly = false}: TextUpdat
                             <Input
                                 value={value}
                                 onChangeText={setValue}
-                                placeholder={`${title}`}
+                                placeholder={`Enter new ${title}`}
                             />
                         </FormControl>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button isLoading={isSaving} onPress={handleSave}>{textKeys.save}</Button>
-                        <Button variant="ghost" onPress={() => setModalVisible(false)}>
+                        <Button variant="ghost" isLoading={isSaving} onPress={() => onClose()}>
                             {textKeys.cancel}
                         </Button>
                     </Modal.Footer>

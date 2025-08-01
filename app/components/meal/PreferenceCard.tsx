@@ -1,5 +1,18 @@
 import React, {useState} from 'react';
-import {Box, Button, Flex, FormControl, Input, Modal, Pressable, Switch, Text, useToast} from 'native-base';
+import {
+    Box,
+    Button,
+    Flex,
+    FormControl,
+    HStack,
+    Image,
+    Input,
+    Modal,
+    Pressable,
+    Switch,
+    Text,
+    useToast, VStack
+} from 'native-base';
 import {MealPreference, saveMealPreference} from "../../repo/Meal";
 import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {useNavigation} from "@react-navigation/native";
@@ -9,7 +22,10 @@ import {mealPreferenceText, useTexts} from "../../utility/TextKeys/TextKeys";
 import {showToast} from "../UI/Toast";
 import {resetToUserScreen} from "../../utility/navigation";
 
-export function PreferenceCard({mealParticipants, forceRefresh}: { mealParticipants: MealPreference, forceRefresh: (arg0: boolean) => Promise<void> }) {
+export function PreferenceCard({mealParticipants, forceRefresh}: {
+    mealParticipants: MealPreference,
+    forceRefresh: (arg0: boolean) => Promise<void>
+}) {
     const toast = useToast();
     const getError = useErrorText();
     const text = useTexts(['error', 'errorPleaseEnterCorrectText', 'save', 'cancel', 'editPreferences', 'newPreference', 'isCook']);
@@ -68,17 +84,42 @@ export function PreferenceCard({mealParticipants, forceRefresh}: { mealParticipa
     }
 
     return (
-        <Pressable onPress={handlePress} alignItems="center">
-            <Box alignItems="center" p="4" borderRadius="md" backgroundColor={"coolGray.300"} width={'95%'} my={2}>
-                <Flex justifyContent={"space-between"} alignItems={'center'} flexDir={'row'} width={"100%"}>
-                    <Text>{mealParticipants.username}</Text>
-                    {/*@ts-ignore*/}
-                    <Flex gap={4} flexDir={'row'} alignItems={'center'}>
-                        {mealParticipants.isCook && <Text>👨‍🍳</Text>}
-                        <PillTag text={mealPreferenceText(mealParticipants.preference)}/>
-                    </Flex>
-                </Flex>
+        <Pressable onPress={handlePress}>
+
+            <Box
+                shadow={"1"}
+                borderColor={"light.200"}
+                borderWidth={1}
+                borderRadius="md"
+                backgroundColor="light.100"
+                p={2}
+            >
+                <HStack
+                    space={3}
+                    alignItems={'center'}
+                >
+                    <Image
+                        source={{uri: "https://imebehavioralhealth.com/wp-content/uploads/2021/10/user-icon-placeholder-1.png"}}
+                        alt="Profile picture"
+                        width="50px"
+                        height="50px"
+                        borderRadius="full"
+                    />
+                    <VStack>
+
+                        <HStack
+                            space={3}
+                        >
+                            <Text fontSize="xl" fontWeight="bold">{mealParticipants.username}</Text>
+                            {mealParticipants.isCook && <PillTag text={'👨‍🍳'} colorScheme={'orange'}/>}
+                        </HStack>
+                        <Text
+                            color="coolGray.600">{mealParticipants.preference ? mealPreferenceText(mealParticipants.preference) : text.errorPleaseEnterCorrectText}</Text>
+                    </VStack>
+                </HStack>
             </Box>
+
+
 
             <Modal isOpen={isModalVisible} onClose={() => setModalVisible(false)}>
                 <Modal.Content>

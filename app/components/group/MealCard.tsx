@@ -1,11 +1,12 @@
 import React from 'react';
-import {Box, Flex, Pressable, Text} from 'native-base';
+import {Box, Flex, Icon, Pressable, Text} from 'native-base';
 import {useNavigation} from "@react-navigation/native";
 import {MealCard as MealCardType} from "../../repo/Group";
-import {getFancyTimeDisplay} from "../../utility/Dates";
+import {getFancyTimeDisplay, semiNormalDateTime} from "../../utility/Dates";
 import {getParticipantsText} from "../../utility/TextGeneration";
 import {PillTag} from "../UI/Pilltag";
 import {mealPreferenceText} from "../../utility/TextKeys/TextKeys";
+import {MaterialIcons} from "@expo/vector-icons";
 
 type MealCardProps = {
     meal: MealCardType;
@@ -20,11 +21,23 @@ export function MealCard({meal}: MealCardProps) {
         navigation.navigate('meal', { mealId: meal.mealId });
     }
     
-    const whenText = getFancyTimeDisplay(meal.dateTime)
+    const whenText = semiNormalDateTime(meal.dateTime, true)
     const participantsText = getParticipantsText(meal.participantCount)
+    console.log(meal)
     return (
         <Pressable onPress={handleNavigate} alignItems={'center'} width={'100%'}>
-            <Box alignItems="center" p="4" borderRadius="md" backgroundColor={"coolGray.300"} width={'95%'} my={2}>
+            <Box alignItems="center" p="4" borderRadius="md" shadow={'5'} backgroundColor={meal.closed ? 'coolGray.200' : 'white'} width={'95%'} my={2} position={'relative'}>
+                {meal.fulfilled && (
+                    <Box position="absolute" top={-11} right={-10}>
+                        <Icon
+                            as={MaterialIcons}
+                            name="check-circle"
+                            size="lg"
+                            color="green.500"
+                        />
+                    </Box>
+                )}
+
                 <Flex
                     justifyContent={"space-between"}
                     flexDir={'row'}
