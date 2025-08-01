@@ -1,5 +1,3 @@
-// @ts-ignore
-import {DEFAULT_APP_URL} from '@env'
 import React, {useEffect, useState} from "react";
 import {BackButton} from "../components/UI/BackButton";
 import {useTexts} from "../utility/TextKeys/TextKeys";
