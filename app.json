@@ -33,6 +33,7 @@
     },
     "plugins": [
       "expo-sqlite"
-    ]
+    ],
+    "owner": "danidevofficial"
   }
 }
