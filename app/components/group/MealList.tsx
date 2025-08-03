@@ -1,4 +1,4 @@
-import {Box, Flex, ScrollView, Text, useToast} from "native-base";
+import {Box, Flex, HStack, ScrollView, Text, useToast, VStack} from "native-base";
 import React, {useCallback, useEffect, useState} from "react";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {GetGroupMeals, MealCard as MealCardType} from "../../repo/Group";
@@ -11,7 +11,7 @@ import {NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Erro
 import {handleLogoutProcedure} from "../../Util";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import {resetToUserScreen} from "../../utility/navigation";
-import {getDayName} from "../../utility/Dates";
+import {getDayName, semiNormalDateTime} from "../../utility/Dates";
 
 interface MealListProps {
     tempMeals: MealCardType[];
@@ -142,13 +142,19 @@ function List({meals = []}: { meals: MealCardType[] }) {
 
                 const showDay = currentDayName !== lastDayName;
                 if (showDay) lastDayName = currentDayName;
-
                 return (
                     <React.Fragment key={meal.mealId}>
                         {showDay && (
-                            <Text fontWeight="bold" mt={4} >
-                                📅 {currentDayName}
-                            </Text>
+                            <VStack
+                                justifyContent={'center'}
+                                alignItems={'center'}
+                            >
+
+                                <Text fontWeight="bold" mt={4}>
+                                    📅 {semiNormalDateTime(meal.dateTime)}
+                                </Text>
+                            </VStack>
+
                         )}
                         <MealCard meal={meal}/>
                     </React.Fragment>

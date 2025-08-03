@@ -1,12 +1,13 @@
 import React from 'react';
-import {Box, Flex, Icon, Pressable, Text} from 'native-base';
+import {Box, Flex, HStack, Icon, Pressable, Text} from 'native-base';
 import {useNavigation} from "@react-navigation/native";
 import {MealCard as MealCardType} from "../../repo/Group";
-import {getFancyTimeDisplay, semiNormalDateTime} from "../../utility/Dates";
+import {getFancyTimeDisplay, getTime, semiNormalDateTime} from "../../utility/Dates";
 import {getParticipantsText} from "../../utility/TextGeneration";
 import {PillTag} from "../UI/Pilltag";
 import {mealPreferenceText} from "../../utility/TextKeys/TextKeys";
 import {MaterialIcons} from "@expo/vector-icons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 type MealCardProps = {
     meal: MealCardType;
@@ -18,10 +19,10 @@ export function MealCard({meal}: MealCardProps) {
     function handleNavigate() {
 
         // @ts-ignore
-        navigation.navigate('meal', { mealId: meal.mealId });
+        navigation.navigate('meal', {mealId: meal.mealId});
     }
-    
-    const whenText = semiNormalDateTime(meal.dateTime, true)
+
+    const whenText = getTime(meal.dateTime)
     const participantsText = getParticipantsText(meal.participantCount)
     console.log(meal)
     return (
@@ -50,15 +51,20 @@ export function MealCard({meal}: MealCardProps) {
                         <Text isTruncated>
                             {meal.title}
                         </Text>
-                        <Text isTruncated>{whenText}</Text>
+                        <HStack space={1}>
+                            <Ionicons name={'time-outline'} size={20}/>
+
+                            <Text isTruncated>{whenText}</Text>
+                        </HStack>
                     </Flex>
                     <Flex alignItems={'flex-end'} w={'50%'}>
+
                         <Text isTruncated>
                             {participantsText}
                         </Text>
                         <Flex flexDir={'row'}>
-                            {meal.isCook && <PillTag text={'‍👨‍🍳'} />}
-                            <PillTag text={mealPreferenceText(meal.userPreference)} colorScheme={'orange'} />
+                            {meal.isCook && <PillTag text={'‍👨‍🍳'}/>}
+                            <PillTag text={mealPreferenceText(meal.userPreference)} colorScheme={'orange'}/>
                         </Flex>
                     </Flex>
                 </Flex>
