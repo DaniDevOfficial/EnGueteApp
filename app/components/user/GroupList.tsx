@@ -68,6 +68,10 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
         setFilteredGroups(groupsFiltered);
     }
 
+    function handleNewGroupNavigate() {
+        navigation.navigate('newGroup');
+    }
+
     useEffect(() => {
         if (!shouldReload) {
             return;
@@ -126,6 +130,7 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
                 </Text>
                 <Button
                     borderRadius={30}
+                    onPress={handleNewGroupNavigate}
                 >
                     <HStack flexDir={'row'} space={2} justifyContent={'space-between'} alignItems={'center'}>
 
