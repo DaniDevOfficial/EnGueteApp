@@ -73,7 +73,6 @@ export function RouterWrapper() {
 
 export function Router() {
     const {user} = useUser();
-    const [handledUrls] = useState(new Set<string>());
     const [inviteToken, setInviteToken] = useState<string | null>(null);
 
     useEffect(() => {
@@ -86,10 +85,6 @@ export function Router() {
 
     async function handleUrl(url: string) {
         setInviteToken(null);
-        if (handledUrls.has(url)) {
-            return;
-        }
-        handledUrls.add(url);
         const {path, queryParams} = Linking.parse(url);
         const inviteToken = queryParams?.token;
 
