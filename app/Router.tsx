@@ -21,6 +21,7 @@ import {Invites} from "./screens/Invites";
 import * as Linking from 'expo-linking';
 import {getRefreshToken} from "./utility/Auth";
 import {TokenPopupHandler} from "./components/Utility/JoinGroupPopup";
+import {setPendingInviteToken} from "./utility/DeepLinking";
 
 const Stack = createStackNavigator();
 
@@ -90,10 +91,12 @@ export function Router() {
 
         if (path === 'invite' && inviteToken && inviteToken !== '' && typeof inviteToken === 'string') {
             const refreshToken = await getRefreshToken();
-            if (user.userId !== '' && refreshToken) {
+            if (refreshToken) {
                 setTimeout(() => {
                     setInviteToken(inviteToken);
                 }, 500);
+            } else {
+                await setPendingInviteToken(inviteToken);
             }
         }
     }

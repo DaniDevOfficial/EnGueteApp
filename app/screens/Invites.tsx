@@ -87,7 +87,7 @@ export function Invites() {
                 <VStack alignItems="center" w={'100%'}>
                     {inviteTokens.length > 0 ? (inviteTokens.map((inviteToken, key) => (
                             <InviteCard key={key} inviteToken={inviteToken.inviteToken}
-                                        inviteLink={process.env.EXPO_PUBLIC_WEB_URL + 'invite/' + inviteToken.inviteToken}
+                                        inviteLink={process.env.EXPO_PUBLIC_WEB_URL + '#/invite/' + inviteToken.inviteToken}
                                         canVoid={canVoid} expiryDate={inviteToken.expiresAt} onVoid={onRefresh}/>
                         ))
                     ) : (
