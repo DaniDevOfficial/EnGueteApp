@@ -58,9 +58,8 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
     }
 
     function handleSearch(query: string) {
-        console.log(query)
         const lowerCaseQuery = query.toLowerCase();
-        const groupsFiltered = groupsDefault.filter((group) => {
+        const groupsFiltered = groups.filter((group) => {
             return group.groupName.toLowerCase().includes(lowerCaseQuery) ||
                 group.groupId.toLowerCase().includes(lowerCaseQuery);
         });
