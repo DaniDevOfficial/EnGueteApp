@@ -24,7 +24,6 @@ export function MealCard({meal}: MealCardProps) {
 
     const whenText = getTime(meal.dateTime)
     const participantsText = getParticipantsText(meal.participantCount)
-    console.log(meal)
     return (
         <Pressable onPress={handleNavigate} alignItems={'center'} width={'100%'}>
             <Box alignItems="center" p="4" borderRadius="md" shadow={'5'} backgroundColor={meal.closed ? 'coolGray.200' : 'white'} width={'95%'} my={2} position={'relative'}>

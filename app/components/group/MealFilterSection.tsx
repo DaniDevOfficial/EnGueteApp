@@ -8,14 +8,20 @@ import {showDatePicker} from "../Utility/DatePicker";
 interface Props {
     onDateChange: (date: Date) => Promise<void>;
     setDate: Dispatch<SetStateAction<Date>>;
+    defaultDate: Date;
 }
 
-export function MealFilterSection({onDateChange, setDate}: Props) {
+export function MealFilterSection({onDateChange, setDate, defaultDate}: Props) {
     const [primaryText, setPrimaryText] = useState<string>("");
     const [secondaryText, setSecondaryText] = useState<string | null>("");
-    const [currentDate, setCurrentDate] = useState<Date>(getWednesdayOfWeek());
+    const [currentDate, setCurrentDate] = useState<Date>(defaultDate);
     const [loading, setLoading] = useState(false);
     const text = useTexts(['currentWeek', 'lastWeek', 'nextWeek']);
+
+    if (currentDate !== defaultDate) {
+        setCurrentDate(defaultDate); // a bit hacky because we abuse react reloading on state change but its fine
+        handleDateChange(defaultDate);
+    }
 
     function handleTextChange(date: Date) {
         const fancyText = getFancyWeekDisplay(date);
@@ -27,13 +33,12 @@ export function MealFilterSection({onDateChange, setDate}: Props) {
             setSecondaryText(null)
         }
     }
-
     async function handleWeekChange(amount: number) {
-        const newDate = new Date(currentDate);
-        newDate.setDate(newDate.getDate() + amount);
+        const newDate = addDaysToDate(currentDate, amount);
         setDate(newDate)
         await handleDateChange(newDate);
     }
+
 
     async function handleDateChange(date: Date) {
         if (loading) return;
@@ -105,13 +110,19 @@ export function MealFilterSection({onDateChange, setDate}: Props) {
     );
 }
 
+export function addDaysToDate(date: Date, amount: number) {
+    const newDate = new Date(date);
+    newDate.setDate(newDate.getDate() + amount);
+    return newDate;
+}
+
 export function getWednesdayOfWeek(date: Date = new Date()) {
     const day = (date.getDay()) % 6;
     const offsetMap: Record<number, number> = {
         0: -4,
-        1:  2,
-        2:  1,
-        3:  0,
+        1: 2,
+        2: 1,
+        3: 0,
         4: -1,
         5: -2,
         6: -3

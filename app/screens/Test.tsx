@@ -120,6 +120,14 @@ export function Test() {
         console.log(await getMeals('f15279d3-d622-475d-ad29-7d4869d10983', new Date()))
     }
 
+    async function getGroups() {
+        const user_groups = await db.getAllAsync('SELECT * FROM user_groups')
+        const groups = await db.getAllAsync('SELECT * FROM groups')
+        console.log({user_groups, groups})
+    }
+
+
+
     async function logEntireLogTable() {
         const logEntries = await db.getAllAsync('SELECT * FROM log');
         console.log('Log Entries:', logEntries);
@@ -181,8 +189,8 @@ export function Test() {
             <Button onPress={getAllMeals}>
                 GetAllMeals
             </Button>
-            <Button onPress={loadMeals}>
-                load group meals
+            <Button onPress={getGroups}>
+                load groups
             </Button>
             <Button onPress={logEntireLogTable}>
                 log Entire Log Table

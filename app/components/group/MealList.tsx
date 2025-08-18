@@ -3,9 +3,9 @@ import React, {useCallback, useEffect, useState} from "react";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {GetGroupMeals, MealCard as MealCardType} from "../../repo/Group";
 import {MealCard} from "./MealCard";
-import {getWednesdayOfWeek, MealFilterSection} from "./MealFilterSection";
+import {addDaysToDate, getWednesdayOfWeek, MealFilterSection} from "./MealFilterSection";
 import {useGroup} from "../../context/groupContext";
-import {RefreshControl} from "react-native-gesture-handler";
+import {PanGestureHandler, RefreshControl, State} from "react-native-gesture-handler";
 import {showToast} from "../UI/Toast";
 import {NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {handleLogoutProcedure} from "../../Util";
@@ -75,7 +75,6 @@ export function MealList({tempMeals}: MealListProps) {
             return;
         }
         setTimeout(() => {
-            console.log('test')
             loadMeals(date)
         }, 100) // this is because the animation is not finished yet and a statechange will cause a re-render. it's a bit hacky but it works
         //TODO: find a better way to do this
@@ -92,31 +91,47 @@ export function MealList({tempMeals}: MealListProps) {
         loadMeals(date);
     }, []);
 
-    return (
-        <Box
-            pt={4}
-        >
-            <MealFilterSection onDateChange={loadMeals} setDate={setDate}/>
-            <ScrollView
-                contentContainerStyle={{flexGrow: 1}}
-                width={"100%"}
-                minH={"100%"}
-                refreshControl={
-                    <RefreshControl refreshing={loading} onRefresh={reloadMeals}/>
-                }
-            >
-                <Flex
-                    flexDir={'column'}
-                    alignItems={'center'}
-                    justifyContent={'center'}
-                    width={"100%"}
-                    paddingBottom={10}
-                >
 
-                    <List meals={meals}/>
-                </Flex>
-            </ScrollView>
-        </Box>
+
+    return (
+        <PanGestureHandler
+            onEnded={({nativeEvent}) => {
+                // when the user spam swipes there might be some issues, because meals will be loaded wrong but for now we ignore it
+
+                if (nativeEvent.translationX < -50) {
+                    setDate(addDaysToDate(date, 7))
+                } else if (nativeEvent.translationX > 50) {
+                    setDate(addDaysToDate(date, -7));
+                }
+            }}
+        >
+            <Box
+                pt={4}
+            >
+                <MealFilterSection onDateChange={loadMeals} setDate={setDate} defaultDate={date}/>
+
+                <ScrollView
+                    contentContainerStyle={{flexGrow: 1}}
+                    width={"100%"}
+                    minH={"100%"}
+                    refreshControl={
+                        <RefreshControl refreshing={loading} onRefresh={reloadMeals}/>
+                    }
+                >
+                    <Flex
+                        flexDir={'column'}
+                        alignItems={'center'}
+                        justifyContent={'center'}
+                        width={"100%"}
+                        paddingBottom={10}
+                    >
+
+                        <List meals={meals}/>
+                    </Flex>
+                </ScrollView>
+
+            </Box>
+        </PanGestureHandler>
     )
 }
 
