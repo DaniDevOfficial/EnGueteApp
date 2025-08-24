@@ -88,6 +88,7 @@ export const FRONTEND_ERRORS = {
     PASSWORD_DOES_NOT_MATCH_ERROR: "passwordDoesNotMatchError",
 
     USERNAME_IS_ALREADY_TAKEN_ERROR: "usernameIsAlreadyTakenError",
+    USERNAME_OR_EMAIL_IS_ALREADY_TAKEN_ERROR: "usernameOrEmailIsAlreadyTakenError",
     WRONG_USERNAME_OR_PASSWORD_ERROR: "wrongUsernameOrPasswordError",
 
     MEAL_DOES_NOT_EXIST_ERROR: "mealDoesNotExistError",
@@ -98,7 +99,7 @@ export const FRONTEND_ERRORS = {
 }
 
 export function useErrorText() {
-    const { language } = useSettings();
+    const {language} = useSettings();
 
     function getErrorText(errorKey: string): string {
         console.log(`Error Key: ${errorKey}, Language: ${language}`);

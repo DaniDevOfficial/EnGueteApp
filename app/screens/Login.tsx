@@ -28,6 +28,7 @@ export function Login() {
     const [username, setUsername] = useState('Dani1-123');
     const [password, setPassword] = useState('Dani1-123');
     const [inviteToken, setInviteToken] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
 
     const navigation = useNavigation()
 
@@ -35,6 +36,7 @@ export function Login() {
     const toast = useToast();
     const getError = useErrorText();
     async function handleSubmit() {
+        setLoading(true);
         if (!username || !password) {
             showToast({
                 toast,
@@ -59,6 +61,7 @@ export function Login() {
                 description: getError(e.message),
                 status: "error",
             })
+            setLoading(false);
         }
     }
 
@@ -106,6 +109,7 @@ export function Login() {
                         mt="5"
                         colorScheme="primary"
                         _text={{fontSize: "md"}}
+                        isLoading={loading}
                         onPress={handleSubmit}
                     >
                         {text.login}

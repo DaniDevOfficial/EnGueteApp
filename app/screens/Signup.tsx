@@ -30,6 +30,7 @@ export function Signup() {
     const [email, setEmail] = useState('1232@gmail.com');
     const [error, setError] = useState('');
     const [inviteToken, setInviteToken] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
 
     const navigation = useNavigation();
     const text = useTexts(['error', 'newAccountGreetingsText', 'createNewAccount', 'username', 'enterUsername', 'email', 'enterEmail', 'password', 'enterPassword', 'createNewAccount', 'orLogin', 'bothFieldsAreRequired']);
@@ -37,6 +38,7 @@ export function Signup() {
     const getError = useErrorText();
 
     async function handleSubmit() {
+        setLoading(true);
         setError('');
         if (!username || !password) {
             showToast({
@@ -62,6 +64,7 @@ export function Signup() {
                 status: "error",
             })
         }
+        setLoading(false)
     }
 
     return (
@@ -119,6 +122,7 @@ export function Signup() {
                         mt="5"
                         colorScheme="primary"
                         _text={{fontSize: "md"}}
+                        isLoading={loading}
                         onPress={handleSubmit}
                     >
                         {text.createNewAccount}

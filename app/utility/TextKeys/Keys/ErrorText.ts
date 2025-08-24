@@ -25,6 +25,7 @@ export type ErrorTextType =
     | 'passwordFormatTooLongError'
     | 'passwordDoesNotMatchError'
     | 'usernameIsAlreadyTakenError'
+    | 'usernameOrEmailIsAlreadyTakenError'
     | 'wrongUsernameOrPasswordError'
     | 'mealDoesNotExistError'
     | 'filtersAreNotValidError'
@@ -142,6 +143,10 @@ export const ErrorTextKey: ErrorTextKeyType = {
     usernameIsAlreadyTakenError: {
         german: 'Benutzername ist bereits vergeben',
         english: 'Username is already taken',
+    },
+    usernameOrEmailIsAlreadyTakenError: {
+        german: 'Benutzername oder Email sind bereits vergeben',
+        english: 'Username or Email are already taken',
     },
     wrongUsernameOrPasswordError: {
         german: 'Falscher Benutzername oder Passwort',

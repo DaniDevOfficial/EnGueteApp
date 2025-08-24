@@ -8,9 +8,13 @@ import {useTexts} from "../utility/TextKeys/TextKeys";
 
 export function NewGroup() {
     const [title, setTitle] = useState<string | undefined>();
+    const [loading, setLoading] = useState<boolean>(false);
+
+
     const navigation = useNavigation();
-    const text = useTexts(['createNewGroup', 'groupName'])
+    const text = useTexts(['createNewGroup', 'groupName', 'enterANameForTheGroup'])
     async function handleSubmit() {
+        setLoading(true);
         try {
             const data: NewGroupType = {
                 // @ts-ignore
@@ -27,9 +31,11 @@ export function NewGroup() {
                     },
                 })
             );
+            return;
         } catch (e) {
             console.log(e.message());
         }
+        setLoading(false);
 
     }
 
@@ -45,11 +51,11 @@ export function NewGroup() {
                         value={title}
                         onChangeText={(text) => setTitle(text)}
                         p={3}
-                        placeholder="Enter a title for the Group"
+                        placeholder={text.enterANameForTheGroup}
                     />
                 </FormControl>
 
-                <Button onPress={handleSubmit} isDisabled={!title}>
+                <Button onPress={handleSubmit} isDisabled={!title} isLoading={loading}>
                     {text.createNewGroup}
                 </Button>
             </VStack>

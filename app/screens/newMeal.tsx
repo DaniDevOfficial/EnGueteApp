@@ -33,7 +33,7 @@ export function NewMeal() {
     const [scheduledAt, setScheduledAt] = useState<string | undefined>();
     const [scheduledAtDate, setScheduledAtDate] = useState<Date>(new Date());
     const [notes, setNotes] = useState<string | undefined>();
-
+    const [loading, setLoading] = useState<boolean>(false);
 
     const [touched, setTouched] = useState({
         title: false,
@@ -65,7 +65,7 @@ export function NewMeal() {
 
     async function handleSubmit() {
         if (isDisabledSubmit) return;
-
+        setLoading(true);
         try {
             const data: NewMealType = {
                 // @ts-ignore
@@ -85,6 +85,7 @@ export function NewMeal() {
                     mealId: res.mealId,
                 })
             );
+            return;
         } catch (e) {
             showToast({
                 toast,
@@ -101,7 +102,7 @@ export function NewMeal() {
             }
 
         }
-
+        setLoading(true);
         setTouched({type: false, title: false, scheduledAt: false});
     }
 
@@ -116,6 +117,7 @@ export function NewMeal() {
             navigation.goBack();
         }
     }, []);
+
     function onChangeDatePicker(event: any, selectedDate?: Date) {
         if (!selectedDate) return;
 
@@ -194,9 +196,9 @@ export function NewMeal() {
                         placeholder={text.mealDescriptionPlaceholder}
                         tvParallaxProperties={undefined}
                         onTextInput={undefined}
-                        autoCompleteType={undefined}                    />
+                        autoCompleteType={undefined}/>
                 </FormControl>
-                <Button onPress={handleSubmit} isDisabled={isDisabledSubmit}>
+                <Button onPress={handleSubmit} isDisabled={isDisabledSubmit} isLoading={loading}>
                     {text.createNewMeal}
                 </Button>
             </VStack>

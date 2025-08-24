@@ -14,6 +14,7 @@ export type GroupTextType =
     | 'createNewGroup'
     | 'searchForGroup'
     | 'groupName'
+    | 'enterANameForTheGroup'
     | 'deleteGroup'
     | 'deleteGroupRequiredText'
     | 'memberList'
@@ -105,6 +106,10 @@ export const GroupTextKey: GroupTextKeyType = {
     'groupName': {
         german: 'Gruppenname',
         english: 'Group name',
+    },
+    'enterANameForTheGroup': {
+        german: 'Einen Namen für die Gruppe eingeben',
+        english: 'Enter a name for the group',
     },
     'deleteGroup': {
         german: 'Gruppe löschen',
