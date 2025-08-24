@@ -153,9 +153,8 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
                 }
                 w={'100%'}
+                h={'70%'}
             >
-
-                <VStack alignItems="center">
                     {filteredGroups && filteredGroups.length > 0 ? (filteredGroups.map((group) => (
                             <GroupCard group={group} key={group.groupId}/>
                         ))
@@ -178,7 +177,6 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
                             )}
                         </Box>
                     )}
-                </VStack>
 
             </ScrollView>
 

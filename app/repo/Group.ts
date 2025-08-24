@@ -190,7 +190,7 @@ export async function KickUserFromGroup(requestData: KickUserRequest) {
     const url = process.env.EXPO_PUBLIC_API_URL + 'management/user/kick';
     const timeoutPromise = timeoutPromiseFactory()
     const fetchPromise = fetch(url, {
-        method: 'POST',
+        method: 'DELETE',
         headers: await getBasicAuthHeader(),
         body: JSON.stringify(requestData),
     });
