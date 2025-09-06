@@ -25,16 +25,15 @@ import {setPendingInviteToken} from "./utility/DeepLinking";
 
 const Stack = createStackNavigator();
 
-function withBaseLayout<T>(Component: ComponentType<T>) {
+function withBaseLayout<T>(Component: ComponentType<T>, noPadding = false) {
     return function WrappedComponent(props: T): ReactElement {
         return (
-            <BaseLayout>
+            <BaseLayout noPadding={noPadding}>
                 <Component {...props} />
             </BaseLayout>
         );
     };
 }
-
 
 function GroupContextStack() {
     const GroupStack = createStackNavigator();
@@ -53,7 +52,7 @@ function GroupContextStack() {
     );
 }
 
-const HomeScreen = withBaseLayout(Home);
+const HomeScreen = withBaseLayout(Home, true);
 const LoginScreen = withBaseLayout(Login);
 const SignupScreen = withBaseLayout(Signup);
 const UserScreen = withBaseLayout(User);
