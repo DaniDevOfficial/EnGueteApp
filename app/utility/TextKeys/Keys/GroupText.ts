@@ -4,6 +4,7 @@ export type GroupTextType =
     | 'noParticipants'
     | 'youAreInNoGroup'
     | 'startByJoiningOrCreating'
+    | 'groups'
     | 'yourGroups'
     | 'noQuantity'
     | 'oneParticipant'
@@ -66,6 +67,10 @@ export const GroupTextKey: GroupTextKeyType = {
     'startByJoiningOrCreating': {
         german: 'Beginne damit, einer Gruppe beizutreten oder eine zu erstellen 🦾',
         english: 'Start by joining or creating a group 🦾',
+    },
+    'groups': {
+        german: 'Gruppen',
+        english: 'Groups',
     },
     'yourGroups': {
         german: 'Deine Gruppen',

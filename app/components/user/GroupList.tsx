@@ -25,7 +25,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 
 export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
     const navigation = useNavigation();
-    const text = useTexts(['youAreInNoGroup', 'startByJoiningOrCreating', 'yourGroups', 'createNewGroup', 'searchForGroup', 'error', 'noGroupsFound']);
+    const text = useTexts(['youAreInNoGroup', 'startByJoiningOrCreating', 'groups', 'createNewGroup', 'searchForGroup', 'error', 'noGroupsFound']);
     const toast = useToast();
     const getError = useErrorText();
 
@@ -93,95 +93,114 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
         handleSearch(searchQuery);
     }, [groups]);
     return (
-        <VStack
-            space={4}
-            w={'100%'}
-        >
-            <InputGroup w={'100%'} justifyContent={'center'} alignItems={'center'}>
-                <Input
-                    width={'100%'}
-                    onChangeText={(text) => {
-                        setSearchQuery(text);
-                        handleSearch(text);
-                    }}
-                    placeholder={text.searchForGroup}
-                    value={searchQuery}
-                    InputLeftElement={
-                        <Icon
-                            as={<Ionicons name="search"/>}
-                            size={5}
-                            ml="2"
-                            color="gray.400"
-                        />
-                    }
-                />
-            </InputGroup>
-            <Flex
-                flexDir={'row'}
-                justifyContent={'space-between'}
-                alignItems={'center'}
-            >
-                <Text
-                    fontSize={'lg'}
-                    fontWeight={'bold'}
-                >
-                    {text.yourGroups}
-                </Text>
-                <Button
-                    borderRadius={30}
-                    onPress={handleNewGroupNavigate}
-                >
-                    <HStack flexDir={'row'} space={2} justifyContent={'space-between'} alignItems={'center'}>
-
-                        <Icon
-                            as={<Ionicons name="add"/>}
-                            size={5}
-                            color="white"
-                        />
-                        <Text
-                            color={'white'}
-                        >
-                            {text.createNewGroup}
-                        </Text>
-                    </HStack>
-                </Button>
-            </Flex>
-
-            <ScrollView
-                contentContainerStyle={{flexGrow: 1}}
-                refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
-                }
+        <Box flex={1} >
+            <VStack
+                space={6}
                 w={'100%'}
-                h={'70%'}
+                flex={1}
+                pb={60}
             >
-                    {filteredGroups && filteredGroups.length > 0 ? (filteredGroups.map((group) => (
-                            <GroupCard group={group} key={group.groupId}/>
-                        ))
-                    ) : (
-                        <Box mt={5}>
-                            {groups.length > 0 ? (
-                                <Text color={"gray.500"} textAlign={"center"}>
-                                    {text.noGroupsFound}
-                                </Text>
-                            ) : (
+                <InputGroup w={'100%'} justifyContent={'center'} alignItems={'center'}>
+                    <Input
+                        width={'100%'}
+                        onChangeText={(text) => {
+                            setSearchQuery(text);
+                            handleSearch(text);
+                        }}
+                        fontSize={'md'}
+                        py={2}
+                        px={2}
+                        borderRadius={'100'}
+                        placeholder={text.searchForGroup
+                        }
+                        value={searchQuery}
+                        InputLeftElement={
+                            <Icon
+                                as={<Ionicons name="search"/>}
+                                size={5}
+                                ml="4"
+                                color="gray.400"
+                            />
+                        }
+                    />
+                </InputGroup>
+                <VStack
+                    space={2}
+                >
 
-                                <>
+                    <Flex
+                        flexDir={'row'}
+                        justifyContent={'space-between'}
+                        alignItems={'center'}
+                    >
+                        <Text
+                            fontSize={'lg'}
+                            fontWeight={'bold'}
+                        >
+                            {text.groups}
+                        </Text>
+
+                    </Flex>
+
+                    <ScrollView
+                        contentContainerStyle={{flexGrow: 1}}
+                        refreshControl={
+                            <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+                        }
+                        flex={1}
+                        w={'100%'}
+                        overflowY={'hidden'}
+                    >
+                        {filteredGroups && filteredGroups.length > 0 ? (filteredGroups.map((group) => (
+                                <GroupCard group={group} key={group.groupId}/>
+                            ))
+                        ) : (
+                            <Box mt={5}>
+                                {groups.length > 0 ? (
                                     <Text color={"gray.500"} textAlign={"center"}>
-                                        {text.youAreInNoGroup}
+                                        {text.noGroupsFound}
                                     </Text>
-                                    <Text color={"gray.500"} textAlign={"center"}>
-                                        {text.startByJoiningOrCreating}
-                                    </Text>
-                                </>
-                            )}
-                        </Box>
-                    )}
+                                ) : (
 
-            </ScrollView>
+                                    <>
+                                        <Text color={"gray.500"} textAlign={"center"}>
+                                            {text.youAreInNoGroup}
+                                        </Text>
+                                        <Text color={"gray.500"} textAlign={"center"}>
+                                            {text.startByJoiningOrCreating}
+                                        </Text>
+                                    </>
+                                )}
+                            </Box>
+                        )}
+
+                    </ScrollView>
+                </VStack>
 
 
-        </VStack>
-
+            </VStack>
+        </Box>
     )
 }
+
+/**
+ <Button
+ borderRadius={30}
+ onPress={handleNewGroupNavigate}
+ >
+ <HStack flexDir={'row'} space={2} justifyContent={'space-between'} alignItems={'center'}>
+
+ <Icon
+ as={<Ionicons name="add"/>}
+ size={5}
+ color="white"
+ />
+ <Text
+ color={'white'}
+ >
+ {text.createNewGroup}
+ </Text>
+ </HStack>
+ </Button>
+
+ */

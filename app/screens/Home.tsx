@@ -199,7 +199,7 @@ function getPilltagWithLeftIcon(text: string): React.JSX.Element {
                     w={'36px'}
                     h={'36px'}
                     source={eatIcon}
-                    alt="Pizza with hands"
+                    alt="Eat Icon"
                     resizeMode="contain"
                 />
             </Box>
