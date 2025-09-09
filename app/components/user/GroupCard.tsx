@@ -4,6 +4,7 @@ import {Box, Flex, HStack, Image, Pressable, Text, VStack} from 'native-base';
 import {useNavigation} from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import eatIcon from "../../assets/icons/eatIcon.png";
+import {ProfilePictureList} from "../UI/ProfilePictureList";
 
 type GroupCardProps = {
     group: Group;
@@ -61,21 +62,24 @@ export function GroupCard({group}: GroupCardProps) {
                             {/** Name And Group Type */}
                             <Box paddingX={4}>
 
-                            <Box>
-                                <Text
-                                    fontSize={16}
-                                >
-                                    Home
-                                </Text>
-                                <Text
-                                    fontSize={20}
-                                    fontWeight={'bold'}
-                                >
-                                    {group.groupName}
-                                </Text>
+                                <Box>
+                                    <Text
+                                        fontSize={16}
+                                    >
+                                        Home
+                                    </Text>
+                                    <Text
+                                        fontSize={20}
+                                        fontWeight={'bold'}
+                                    >
+                                        {group.groupName}
+                                    </Text>
+                                </Box>
                             </Box>
                             {/** Users in group image */}
-                            </Box>
+                            <ProfilePictureList
+                                profilePictures={['https://i0.wp.com/picjumbo.com/wp-content/uploads/palm-tree-and-sky-in-early-evening-free-image.jpg?w=600&quality=80','https://i0.wp.com/picjumbo.com/wp-content/uploads/man-on-a-snowy-hill-with-the-moon-free-image.jpeg?w=600&quality=80','https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg','https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg','https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg','https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg','https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg','https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg']}
+                                totalAmount={null}/>
 
                         </VStack>
 
@@ -137,12 +141,3 @@ export function GroupCard({group}: GroupCardProps) {
 }
 
 
-function profilePictureList({profilePictures, totalAmount = null}: {profilePictures: number[], totalAmount: number|null}) {
-
-
-    return (
-        <Box>
-
-        </Box>
-    )
-}
