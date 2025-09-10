@@ -4,7 +4,11 @@ import {Box, Flex, HStack, Image, Pressable, Text, VStack} from 'native-base';
 import {useNavigation} from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import eatIcon from "../../assets/icons/eatIcon.png";
+import arrowGoOn from '../../assets/icons/arrow-up-right.png';
+import backgroundWithHeart from '../../assets/background/plateWithHeart.png';
+
 import {ProfilePictureList} from "../UI/ProfilePictureList";
+import {PillTag} from "../UI/Pilltag";
 
 type GroupCardProps = {
     group: Group;
@@ -26,6 +30,15 @@ export function GroupCard({group}: GroupCardProps) {
     }
 
 
+    const iconSize = '35px';
+    const iconSizeSmoll = '25px';
+    const images = [];
+
+    for (let i = 0; i < group.userCount; i++) {
+        images.push('https://i0.wp.com/picjumbo.com/wp-content/uploads/palm-tree-and-sky-in-early-evening-free-image.jpg?w=600&quality=80')
+    }
+
+
     return (
         <Box p={2}>
 
@@ -33,12 +46,28 @@ export function GroupCard({group}: GroupCardProps) {
                 <Box
                     width="100%"
                     backgroundColor="#EDEDED"
-                    padding={4}
-                    px={3}
+                    padding={5}
+                    px={4}
                     shadow={1}
-                    borderRadius={10}
+                    borderRadius={20}
+                    overflow="hidden"
+
                 >
-                    <HStack>
+                    <Image
+                        source={backgroundWithHeart}
+                        alt="backgroundWithHeart"
+                        style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            right: -60,
+                            width: '100%',
+                            height: '90%',
+                            zIndex: -1,
+                        }}
+                        resizeMode="contain"
+                    />
+
+                    <HStack justifyContent="space-between">
                         <VStack
                             space={3}
                             justifyContent="center"
@@ -52,15 +81,15 @@ export function GroupCard({group}: GroupCardProps) {
                             >
 
                                 <Image
-                                    w={'25px'}
-                                    h={'25px'}
+                                    w={iconSize}
+                                    h={iconSize}
                                     source={eatIcon}
                                     alt="eatIcon"
                                     resizeMode="contain"
                                 />
                             </Box>
                             {/** Name And Group Type */}
-                            <Box paddingX={4}>
+                            <Box paddingX={2}>
 
                                 <Box>
                                     <Text
@@ -78,61 +107,33 @@ export function GroupCard({group}: GroupCardProps) {
                             </Box>
                             {/** Users in group image */}
                             <ProfilePictureList
-                                profilePictures={['https://i0.wp.com/picjumbo.com/wp-content/uploads/palm-tree-and-sky-in-early-evening-free-image.jpg?w=600&quality=80','https://i0.wp.com/picjumbo.com/wp-content/uploads/man-on-a-snowy-hill-with-the-moon-free-image.jpeg?w=600&quality=80','https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg','https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg','https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg','https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg','https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg','https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg']}
-                                totalAmount={null}/>
+                                profilePictures={images}
+                                totalAmount={group.userCount}/>
 
                         </VStack>
 
+                        <VStack justifyContent="space-between" alignItems="flex-end">
+
+                            <PillTag text={'Soon'} colorScheme={'orange'} />
+
+                            <Box
+                                padding={'12px'}
+                                backgroundColor={'white'}
+                                borderRadius="100"
+                            >
+
+                                <Image
+                                    w={iconSizeSmoll}
+                                    h={iconSizeSmoll}
+                                    source={arrowGoOn}
+                                    alt="arrowGoOn"
+                                    resizeMode="contain"
+                                />
+                            </Box>
+                        </VStack>
+
                     </HStack>
-                </Box>
-            </Pressable>
 
-
-            <Pressable width={'100%'} onPress={handleNavigate}>
-                <Box width={'100%'} alignItems="center" p="4" borderRadius="md" borderWidth={'1px'}
-                     borderColor={"coolGray.300"} my={2}>
-                    <Flex
-                        flexDir={'column'}
-                        width={'100%'}
-                    >
-                        <HStack
-                            justifyContent={'space-between'}
-                        >
-                            <Text
-                                fontSize={'md'}
-                                fontWeight={'bold'}
-                            >
-                                {group.groupName}
-                            </Text>
-                            <Ionicons name={'chevron-forward-outline'} size={20}/>
-
-                        </HStack>
-                        <Flex
-
-                        >
-                            <HStack
-                                justifyContent={'space-between'}
-                                space={6}
-                            >
-
-                                <HStack>
-                                    <Ionicons name={'person-outline'} size={20}/>
-                                    <Text>
-                                        {group?.userCount.toString()}
-                                    </Text>
-                                </HStack>
-                                <HStack
-                                    space={2}
-                                >
-                                    <Ionicons name={'time-outline'} size={20}/>
-                                    <Text>
-                                        Soon
-                                    </Text>
-                                </HStack>
-                            </HStack>
-
-                        </Flex>
-                    </Flex>
                 </Box>
             </Pressable>
         </Box>
