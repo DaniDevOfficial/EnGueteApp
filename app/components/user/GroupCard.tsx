@@ -9,13 +9,15 @@ import backgroundWithHeart from '../../assets/background/plateWithHeart.png';
 
 import {ProfilePictureList} from "../UI/ProfilePictureList";
 import {PillTag} from "../UI/Pilltag";
+import {green} from "react-native-reanimated/lib/typescript/Colors";
 
 type GroupCardProps = {
     group: Group;
+    color: 'orange' | 'yellow';
 };
 
 
-export function GroupCard({group}: GroupCardProps) {
+export function GroupCard({group, color}: GroupCardProps) {
     const navigation = useNavigation();
 
     function handleNavigate() {
@@ -45,7 +47,7 @@ export function GroupCard({group}: GroupCardProps) {
             <Pressable onPress={handleNavigate}>
                 <Box
                     width="100%"
-                    backgroundColor="#EDEDED"
+                    backgroundColor={color === 'orange' ? "#FFDAC2" : '#FFEAAD'}
                     padding={5}
                     px={4}
                     shadow={1}
@@ -67,9 +69,10 @@ export function GroupCard({group}: GroupCardProps) {
                         resizeMode="contain"
                     />
 
-                    <HStack justifyContent="space-between">
+                    <HStack  justifyContent="space-between">
                         <VStack
                             space={3}
+                            maxW={'240px'}
                             justifyContent="center"
                             alignItems="flex-start"
                         >

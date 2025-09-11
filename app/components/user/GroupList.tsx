@@ -139,7 +139,25 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
                         >
                             {text.groups}
                         </Text>
+                        <Button
+                            borderRadius={30}
+                            onPress={handleNewGroupNavigate}
+                            background={'orange.400'}
+                        >
+                            <HStack flexDir={'row'} space={2} justifyContent={'space-between'} alignItems={'center'}>
 
+                                <Icon
+                                    as={<Ionicons name="add"/>}
+                                    size={5}
+                                    color="white"
+                                />
+                                <Text
+                                    color={'white'}
+                                >
+                                    {text.createNewGroup}
+                                </Text>
+                            </HStack>
+                        </Button>
                     </Flex>
 
                     <ScrollView
@@ -151,8 +169,8 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
                         w={'100%'}
                         overflowY={'hidden'}
                     >
-                        {filteredGroups && filteredGroups.length > 0 ? (filteredGroups.map((group) => (
-                                <GroupCard group={group} key={group.groupId}/>
+                        {filteredGroups && filteredGroups.length > 0 ? (filteredGroups.map((group, index) => (
+                                <GroupCard color={index % 2 === 0 ? 'orange' : 'yellow'} group={group} key={group.groupId}/>
                             ))
                         ) : (
                             <Box mt={5}>
@@ -184,23 +202,6 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
 }
 
 /**
- <Button
- borderRadius={30}
- onPress={handleNewGroupNavigate}
- >
- <HStack flexDir={'row'} space={2} justifyContent={'space-between'} alignItems={'center'}>
 
- <Icon
- as={<Ionicons name="add"/>}
- size={5}
- color="white"
- />
- <Text
- color={'white'}
- >
- {text.createNewGroup}
- </Text>
- </HStack>
- </Button>
 
  */
