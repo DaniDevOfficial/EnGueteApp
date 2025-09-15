@@ -1,15 +1,14 @@
 import React from 'react';
 import {Group} from '../../repo/User';
-import {Box, Flex, HStack, Image, Pressable, Text, VStack} from 'native-base';
+import {Box, HStack, Image, Pressable, Text, VStack} from 'native-base';
 import {useNavigation} from "@react-navigation/native";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import eatIcon from "../../assets/icons/eatIcon.png";
 import arrowGoOn from '../../assets/icons/arrow-up-right.png';
 import backgroundWithHeart from '../../assets/background/plateWithHeart.png';
 
 import {ProfilePictureList} from "../UI/ProfilePictureList";
 import {PillTag} from "../UI/Pilltag";
-import {green} from "react-native-reanimated/lib/typescript/Colors";
+import {green, red} from "react-native-reanimated/lib/typescript/Colors";
 
 type GroupCardProps = {
     group: Group;
@@ -53,7 +52,6 @@ export function GroupCard({group, color}: GroupCardProps) {
                     shadow={1}
                     borderRadius={20}
                     overflow="hidden"
-
                 >
                     <Image
                         source={backgroundWithHeart}
@@ -61,12 +59,13 @@ export function GroupCard({group, color}: GroupCardProps) {
                         style={{
                             position: 'absolute',
                             bottom: 0,
-                            right: -60,
-                            width: '100%',
-                            height: '90%',
+                            right: 0,
                             zIndex: -1,
                         }}
-                        resizeMode="contain"
+                        width={'200px'}
+                        height={'160px'}
+                        resizeMethod={'scale'}
+                        resizeMode={'contain'}
                     />
 
                     <HStack  justifyContent="space-between">
