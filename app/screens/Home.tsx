@@ -134,7 +134,9 @@ export function Home() {
                     alignItems="center"
                     p={4}
                     borderRadius="100"
-                    onPress={() => navigation.navigate('signup')}
+                    onPress={() => {
+                        navigation.navigate('signup')
+                    }}
                 >
                     <Flex
                         justifyContent="space-between"
