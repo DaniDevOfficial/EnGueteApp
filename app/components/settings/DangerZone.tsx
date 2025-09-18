@@ -27,7 +27,7 @@ export function DangerZone() {
     const requiredText = useText('deleteAccountRequiredText', { username: user.user.userName });
     const modalText = useTexts(['clearLocalData', 'logout', 'deleteAccount', 'clearLocalDataQuestionText', 'logoutQuestionText']);
 
-    const [isLogoutModalVisible, setLogoutModalVisible] = useState(true);
+    const [isLogoutModalVisible, setLogoutModalVisible] = useState(false);
     const [isClearDataModalVisible, setClearDataModalVisible] = useState(false);
     const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
