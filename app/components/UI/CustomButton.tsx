@@ -3,19 +3,40 @@ import { Button, IButtonProps } from 'native-base'
 
 interface CustomButtonProps extends IButtonProps {
     children: ReactNode
+    onlyOutline?: boolean
     onPress?: () => void
 }
 
-export function CustomButton ({ children, onPress, ...props }: CustomButtonProps) {
+export function CustomButton ({ children, onPress, onlyOutline = false, ...props }: CustomButtonProps) {
+
+    if (onlyOutline) {
+        return (
+            <Button
+                borderRadius={30}
+                borderColor={"orange.600"}
+                backgroundColor={"white"}
+                borderWidth={1}
+                onPress={onPress}
+
+                {...props}
+                shadow={1}
+            >
+                {children}
+            </Button>
+        )
+    }
+
     return (
         <Button
             borderRadius={30}
             background={"orange.600"}
             onPress={onPress}
+
             {...props}
             shadow={5}
         >
             {children}
         </Button>
-    )
+    );
+
 }
