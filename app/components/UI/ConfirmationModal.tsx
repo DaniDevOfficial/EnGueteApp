@@ -52,10 +52,11 @@ export function ConfirmationModal({
                             <Text
                                 fontSize={'2xl'}
                                 fontWeight={'bold'}
+                                textAlign={'center'}
                             >
                                 {title}
                             </Text>
-                            <Text>{message}</Text>
+                            <Text textAlign={'center'}>{message}</Text>
                             {requiredText && (
                                 <>
                                     <FormControl>
