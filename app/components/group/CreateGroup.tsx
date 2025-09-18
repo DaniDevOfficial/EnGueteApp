@@ -11,7 +11,7 @@ import {UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {handleLogoutProcedure} from "../../Util";
 
 export function CreateGroup() {
-    const [isModalVisible, setModalVisible] = useState(true);
+    const [isModalVisible, setModalVisible] = useState(false);
     const [isLoading, setLoading] = useState(false);
     const [title, setTitle] = useState<string | undefined>();
 
@@ -84,11 +84,12 @@ export function CreateGroup() {
                     <Modal.Body width='100%' p={'5'}>
                         <Icon
                             as={<Ionicons name="close"/>}
-                            size={5}
+                            size={7}
                             position={'absolute'}
                             top={'5%'}
                             right={'5%'}
                             color="gray.400"
+                            onPress={() => setModalVisible(false)}
                         />
 
                         <VStack
