@@ -1,12 +1,48 @@
-import React from 'react';
-import {Button, HStack, Modal, Text, VStack} from 'native-base';
-import {useTexts} from "../../utility/TextKeys/TextKeys";
+import React, {useState} from 'react';
+import {Button, FormControl, HStack, Input, Modal, Text, useToast, VStack} from 'native-base';
+import {useText, useTexts} from "../../utility/TextKeys/TextKeys";
 import {CustomButton} from "./CustomButton";
+import {showToast} from "./Toast";
 
-export function ConfirmationModal({isOpen, onClose, onConfirm, title, message, isLoading = false}: {
-    isOpen: boolean; onClose: () => void; onConfirm: () => void; title: string; message: string; isLoading?: boolean;
+export function ConfirmationModal({
+                                      isOpen,
+                                      onClose,
+                                      onConfirm,
+                                      title,
+                                      message,
+                                      isLoading = false,
+                                      requiredText = undefined
+                                  }: {
+    isOpen: boolean;
+    onClose: () => void;
+    onConfirm: () => void;
+    title: string;
+    message: string;
+    isLoading?: boolean,
+    requiredText?: string;
 }) {
-    const text = useTexts(['cancel', 'confirm']);
+    const text = useTexts(['cancel', 'confirm', 'error']);
+    const toast = useToast();
+    const requiredTextInformation = useText('errorPleaseEnterCorrectText', {'text': requiredText ?? ''});
+    const [value, setValue] = useState<string>('');
+
+    function submitConfirmation() {
+        if (isLoading) {
+            return;
+        }
+
+        if (requiredText && requiredText !== value) {
+            showToast({
+                toast,
+                title: text.error,
+                description: requiredTextInformation,
+                status: 'warning',
+            });
+            return;
+        }
+        onConfirm();
+    }
+
     return (<Modal isOpen={isOpen} onClose={onClose}>
             <Modal.Content>
                 <Modal.Body>
@@ -20,13 +56,24 @@ export function ConfirmationModal({isOpen, onClose, onConfirm, title, message, i
                                 {title}
                             </Text>
                             <Text>{message}</Text>
+                            {requiredText && (
+                                <>
+                                    <FormControl>
+                                        <Input
+                                            value={value}
+                                            onChangeText={setValue}
+                                            placeholder={`${requiredText}`}
+                                        />
+                                    </FormControl>
+                                </>
+                            )}
                         </VStack>
                         <VStack space={2} alignItems="center" width='100%'>
 
                             <CustomButton
                                 width={'100%'}
                                 isLoading={isLoading}
-                                onPress={onConfirm}
+                                onPress={submitConfirmation}
                                 colorScheme="primary"
                             >
                                 {text.confirm}

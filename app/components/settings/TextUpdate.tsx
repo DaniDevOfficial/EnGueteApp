@@ -7,24 +7,25 @@ import {useNavigation} from "@react-navigation/native";
 import {UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {showToast} from "../UI/Toast";
 import {handleLogoutProcedure} from "../../Util";
+import {TextModalUpdate} from "./TextModalUpdate";
 
 
 interface TextUpdateProps {
     title: string;
-    text: string;
+    initialValue: string;
     readonly?: boolean;
     onSuccess: (text: string) => Promise<void>;
 }
 
-export function TextUpdate({title, text, onSuccess, readonly = false}: TextUpdateProps) {
+export function TextUpdate({title, initialValue, onSuccess, readonly = false}: TextUpdateProps) {
     const toast = useToast();
     const navigation = useNavigation();
     const getError = useErrorText();
 
-    const textKeys = useTexts(['save', 'cancel', 'error']);
+    const text = useTexts(['save', 'cancel', 'error']);
 
     const [isModalVisible, setModalVisible] = useState(false);
-    const [value, setValue] = useState<string>(text);
+    const [value, setValue] = useState<string>(initialValue);
     const [isSaving, setIsSaving] = useState(false);
 
     async function handleSave() {
@@ -36,7 +37,7 @@ export function TextUpdate({title, text, onSuccess, readonly = false}: TextUpdat
 
             showToast({
                 toast,
-                title: textKeys.error,
+                title: text.error,
                 description: getError(e.message),
                 status: "error",
             });
@@ -54,9 +55,8 @@ export function TextUpdate({title, text, onSuccess, readonly = false}: TextUpdat
         <>
             <HStack alignItems="center" space={4} mt={4} mb={2}>
                 <Text fontSize="xl" fontWeight="bold">
-                    {text}
+                    {initialValue}
                 </Text>
-
                 {!readonly && (
                     <TouchableOpacity onPress={() => setModalVisible(true)}>
                         <Icon as={Ionicons} name="create-outline" size={6} color="black"/>
@@ -64,26 +64,9 @@ export function TextUpdate({title, text, onSuccess, readonly = false}: TextUpdat
                 )}
             </HStack>
 
-            <Modal isOpen={isModalVisible} onClose={() => setModalVisible(false)}>
-                <Modal.Content>
-                    <Modal.Header>{title}</Modal.Header>
-                    <Modal.Body>
-                        <FormControl>
-                            <Input
-                                value={value}
-                                onChangeText={setValue}
-                                placeholder={`${title}`}
-                            />
-                        </FormControl>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button isLoading={isSaving} onPress={handleSave}>{textKeys.save}</Button>
-                        <Button variant="ghost" onPress={() => setModalVisible(false)}>
-                            {textKeys.cancel}
-                        </Button>
-                    </Modal.Footer>
-                </Modal.Content>
-            </Modal>
+            <TextModalUpdate title={title} initialValue={initialValue}
+                             isOpen={isModalVisible}
+                             onClose={() => setModalVisible(false)} onSuccess={onSuccess}/>
         </>
     )
 }

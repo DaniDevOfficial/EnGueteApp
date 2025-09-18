@@ -11,7 +11,6 @@ import { TimeoutError, useErrorText } from "../../utility/Errors";
 import { showToast } from "../UI/Toast";
 import { useUser } from "../../context/userContext";
 import {ConfirmationModal} from "../UI/ConfirmationModal";
-import {DeleteAccountModal} from "./DeleteAccountModal";
 import {clearDatabase} from "../../utility/database";
 import {Option, SettingsSectionStack} from "../UI/SettingSectionStack";
 
@@ -55,16 +54,7 @@ export function DangerZone() {
         }
     }
 
-    async function handleDeletingAccount(input: string) {
-        if (input !== requiredText) {
-            showToast({
-                toast,
-                title: text.error,
-                description: text.errorPleaseEnterCorrectText,
-                status: 'error',
-            });
-            return;
-        }
+    async function handleDeletingAccount() {
 
         try {
             setIsSaving(true);
@@ -130,14 +120,20 @@ export function DangerZone() {
                 title={modalText.logout}
                 message={modalText.logoutQuestionText}
             />
-
-            <DeleteAccountModal
+            <ConfirmationModal
                 isOpen={isDeleteModalVisible}
                 onClose={() => setDeleteModalVisible(false)}
+                onConfirm={() => {
+                    handleDeletingAccount();
+                    setDeleteModalVisible(false);
+                }}
+                isLoading={isSaving}
+                title={modalText.logout}
+                message={useText('pleaseEnterTextToConfirm', {'text': requiredText})}
                 requiredText={requiredText}
-                onConfirm={handleDeletingAccount}
-                isSaving={isSaving}
+
             />
+
         </>
     );
 }

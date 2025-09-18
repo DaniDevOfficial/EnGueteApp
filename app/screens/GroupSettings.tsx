@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {BackButton} from "../components/UI/BackButton";
 import {Button, ScrollView, useToast, VStack} from "native-base";
 import {useUser} from "../context/userContext";
@@ -16,15 +16,16 @@ import {resetToUserScreen} from "../utility/navigation";
 import {GroupInformation} from "../components/settings/Group/GroupInformation";
 import {MembersAndInvite} from "../components/settings/Group/MembersAndInvites";
 import {GroupActions} from "../components/settings/Group/GroupActions";
+import {TextModalUpdate} from "../components/settings/TextModalUpdate";
 
 
 export function GroupSettings() {
-    const user = useUser();
     const group = useGroup();
     const navigation = useNavigation();
     const text = useTexts(['updateGroupName', 'memberList', 'groupSettings', 'invites', 'error']);
     const toast = useToast();
     const getError = useErrorText();
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     async function handleEditGroupName(newGroupName: string) {
         const params: UpdateGroupNameType = {
@@ -68,10 +69,9 @@ export function GroupSettings() {
             <ScrollView>
                 <VStack space={6}>
                     <VStack maxH={'100%'} flex={1} alignItems="center" p={"10px 5px"}>
-                        <TextUpdate text={group.group.groupName} title={text.updateGroupName}
+                        <TextUpdate initialValue={group.group.groupName} title={text.updateGroupName}
                                     onSuccess={handleEditGroupName}
                                     readonly={!group.group.userRoleRights.includes(PERMISSIONS.CAN_UPDATE_GROUP)}/>
-
                     </VStack>
                     {group.group.userRoleRights.includes(PERMISSIONS.CAN_UPDATE_GROUP) && (
                         <GroupInformation/>
