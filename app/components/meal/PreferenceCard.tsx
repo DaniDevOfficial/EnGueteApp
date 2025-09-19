@@ -144,7 +144,6 @@ export function PreferenceCard({mealParticipants, forceRefresh}: {
                                     />
                                 </FormControl>
                                 <FormControl display={'flex'} alignItems={'center'}  justifyContent={'space-between'} flexDir={'row'}>
-
                                     <FormControl.Label>{text.isCook}</FormControl.Label>
                                     <Switch
                                         colorScheme={'orange'}

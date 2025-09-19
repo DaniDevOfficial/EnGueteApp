@@ -38,6 +38,8 @@ export type GroupTextType =
     | 'noActiveInviteTokens'
     | 'createInvite'
     | 'voidToken'
+    | 'invitation'
+    | 'shareInvitationLink'
     | 'groupInvite'
     | 'youWereInvited'
     | 'joinGroup'
@@ -204,6 +206,14 @@ export const GroupTextKey: GroupTextKeyType = {
     'voidToken': {
         german: 'Einladung ungültig machen',
         english: 'Void token',
+    },
+    'invitation': {
+        german: 'Einladung',
+        english: 'Invitation',
+    },
+    'shareInvitationLink': {
+        german: 'Teile den Einladungslink mit deiner Familie / Freunden, sodass sie beitreten können.',
+        english: 'Share the invitation link to your family / friends so they can join.',
     },
     'groupInvite': {
         german: 'Gruppen Einladung',

@@ -16,6 +16,7 @@ export type MiscTextType =
     | 'currentWeek'
     | 'lastWeek'
     | 'nextWeek'
+    | 'showInformation'
     ;
 
 export type MiscTextKeyType = {
@@ -85,5 +86,9 @@ export const MiscTextKey: MiscTextKeyType = {
     'nextWeek': {
         german: 'Nächste Woche',
         english: 'Next week',
+    },
+    'showInformation': {
+        german: 'Informationen anzeigen',
+        english: 'Show Information',
     },
 }

@@ -1,16 +1,31 @@
 import React, {useState} from "react";
-import {Box, Button, IconButton, Modal, Popover, Pressable, Text, useToast, VStack} from "native-base";
+import {
+    Box,
+    Icon,
+    IconButton,
+    Image,
+    Input,
+    Modal,
+    Popover,
+    Pressable,
+    Text,
+    useToast,
+    VStack
+} from "native-base";
 import {KebabIcon} from "../UI/Icons/KebabIcon";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {getFancyTimeDisplay} from "../../utility/Dates";
 import * as Clipboard from 'expo-clipboard';
-import QRCode from 'react-native-qrcode-svg';
 import {showToast} from "../UI/Toast";
 import {DeleteInviteToken} from "../../repo/group/Invites";
 import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {handleLogoutProcedure} from "../../Util";
 import {resetToUserScreen} from "../../utility/navigation";
 import {useNavigation} from "@react-navigation/native";
+import {CustomButton} from "../UI/CustomButton";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import groupIcon from "../../assets/PopupIcons/inviteIcon.png";
+import QRCode from "react-native-qrcode-svg";
 
 interface InviteCardProps {
     inviteToken: string;
@@ -21,26 +36,19 @@ interface InviteCardProps {
 }
 
 export function InviteCard({inviteToken, expiryDate, inviteLink, canVoid, onVoid}: InviteCardProps) {
-    const text = useTexts(['voidToken', 'actions', 'expiresAt', 'copyLink', 'copiedLink', 'showQr', 'qrCode', 'close']);
+    const text = useTexts(['voidToken', 'actions', 'expiresAt', 'copyLink', 'copiedLink', 'showInformation', 'qrCode', 'close', 'invitation', 'shareInvitationLink']);
     const toast = useToast();
     const navigation = useNavigation();
     const getError = useErrorText();
 
-
-    const [showQr, setShowQr] = useState(false);
+    const [showInformation, setShowInformation] = useState(false);
 
     const actions = [
-
         {
-            title: text.copyLink,
-            action: copyLink,
-
+            title: text.showInformation,
+            action: () => setShowInformation(true),
         },
-        {
-            title: text.showQr,
-            action: () => setShowQr(true),
-        },
-    ]
+    ];
 
     if (canVoid) {
         actions.push({
@@ -144,20 +152,61 @@ export function InviteCard({inviteToken, expiryDate, inviteLink, canVoid, onVoid
             </Popover>
 
 
-            <Modal isOpen={showQr} onClose={() => setShowQr(false)}>
+            <Modal isOpen={showInformation} onClose={() => setShowInformation(false)}>
                 <Modal.Content>
-                    <Modal.Header>{text.qrCode}</Modal.Header>
-                    <Modal.Body>
-                        <Box display="flex" justifyContent="center" alignItems="center">
+                    <Modal.Body width='100%' p={'5'}>
+                        <Icon
+                            as={<Ionicons name="close"/>}
+                            size={7}
+                            position={'absolute'}
+                            top={'5%'}
+                            right={'5%'}
+                            color="gray.400"
+                            onPress={() => setShowInformation(false)}
+                        />
+                        <VStack space={2}>
 
-                            <QRCode value={inviteLink} size={200}/>
-                        </Box>
+
+                            <VStack
+                                height='auto'
+                                width={'100%'}
+                                justifyContent={'center'}
+                                alignItems='center'
+                                space={'3'}
+                            >
+                                <Image
+                                    source={groupIcon}
+                                    alt="Profile picture"
+                                    width="100px"
+                                    height="110px"
+                                />
+
+
+                                <Text fontSize={'xl'} fontWeight='bold'>
+                                    {text.invitation}
+                                </Text>
+                                <Text textAlign={'center'} fontSize={'md'} fontWeight={'light'}>
+                                    {text.shareInvitationLink}
+                                </Text>
+
+                                <Box display="none" justifyContent="center" alignItems="center">
+                                    <QRCode value={inviteLink} size={100}/>
+                                </Box>
+                                <Input
+                                    value={inviteLink}
+                                />
+                            </VStack>
+
+
+                            <CustomButton width={'100%'} onPress={copyLink}>
+                                {text.copyLink}
+                            </CustomButton>
+                            <Text fontSize={'sm'} color="gray.500" textAlign={'center'} isTruncated>
+                                {getFancyTimeDisplay(expiryDate)}
+                            </Text>
+                        </VStack>
+
                     </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="ghost" onPress={() => setShowQr(false)}>
-                            {text.close}
-                        </Button>
-                    </Modal.Footer>
                 </Modal.Content>
             </Modal>
         </Box>
