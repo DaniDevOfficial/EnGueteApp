@@ -1,7 +1,7 @@
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {Icon} from 'native-base';
+import {Flex, Icon} from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
@@ -21,8 +21,16 @@ export function BackButton({color = 'black'}: BackButtonProps) {
                 left: 15,
                 zIndex: 10,
             }}
+
         >
-            <Icon as={Ionicons} name="arrow-back" size={6} color={`${color ?? 'black'}`} />
+            <Flex
+                backgroundColor={'gray.300'}
+                borderRadius={'100'}
+                p={'4px'}
+            >
+                <Icon  as={Ionicons} name="arrow-back"
+                      size={6} color={`${color ?? 'black'}`}/>
+            </Flex>
         </TouchableOpacity>
     );
 }

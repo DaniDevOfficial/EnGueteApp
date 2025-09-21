@@ -28,50 +28,52 @@ export function MealCard({meal}: MealCardProps) {
     return (
         <>
 
-        <Pressable onPress={handleNavigate}>
-            <Box alignItems="center" p="4" borderRadius="md" shadow={'5'} backgroundColor={meal.closed ? 'coolGray.200' : 'white'} width={'95%'} my={2} position={'relative'}>
-            {meal.fulfilled && (
-                <Box position="absolute" top={-11} right={-10}>
-                    <Icon
-                        as={MaterialIcons}
-                        name="check-circle"
-                        size="lg"
-                        color="green.500"
-                    />
-                </Box>
-            )}
-            <Flex
-                justifyContent={"space-between"}
-                flexDir={'row'}
-                width={"100%"}
-            >
-                <HStack
-                    w='50%'
-                    flexDir={'column'}
+            <Pressable onPress={handleNavigate}>
+                <Box alignItems="center" p="4" borderRadius="md" shadow={'5'}
+                     backgroundColor={meal.closed ? 'coolGray.200' : 'white'} width={'95%'} my={2}
+                     position={'relative'}>
+                    {meal.fulfilled && (
+                        <Box position="absolute" top={-11} right={-10}>
+                            <Icon
+                                as={MaterialIcons}
+                                name="check-circle"
+                                size="lg"
+                                color="green.500"
+                            />
+                        </Box>
+                    )}
+                    <Flex
+                        justifyContent={"space-between"}
+                        flexDir={'row'}
+                        width={"100%"}
+                    >
+                        <HStack
+                            w='50%'
+                            flexDir={'column'}
 
-                >
-                    <Text isTruncated fontSize={'xl'} fontWeight={'bold'}>
-                        {meal.title}
-                    </Text>
-                    <HStack space={2}>
-                        <Text isTruncated>{whenDate}</Text>
-                        <Text>|</Text>
-                        <Text isTruncated>{whenTimeDisplay}</Text>s
-                    </HStack>
-                </HStack>
-                <Flex alignItems={'flex-end'} w={'50%'}>
-                    <Text isTruncated>
-                        {participantsText}
-                    </Text>
-                    <Flex flexDir={'row'}>
-                        {meal.isCook && <PillTag text={'‍👨‍🍳'}/>}
-                        <PillTag text={mealPreferenceText(meal.userPreference)} colorScheme={'orange'}/>
+                        >
+                            <Text isTruncated fontSize={'xl'} fontWeight={'bold'}>
+                                {meal.title}
+                            </Text>
+                            <HStack space={2}>
+                                <Text isTruncated>{whenDate}</Text>
+                                <Text>|</Text>
+                                <Text isTruncated>{whenTimeDisplay}</Text>s
+                            </HStack>
+                        </HStack>
+                        <Flex alignItems={'flex-end'} w={'50%'}>
+                            <Text isTruncated>
+                                {participantsText}
+                            </Text>
+                            <Flex flexDir={'row'}>
+                                {meal.isCook && <PillTag text={'‍👨‍🍳'}/>}
+                                <PillTag text={mealPreferenceText(meal.userPreference)} colorScheme={'orange'}/>
+                            </Flex>
+                        </Flex>
                     </Flex>
-                </Flex>
-            </Flex>
-        </Box>
+                </Box>
 
-        </Pressable>
+            </Pressable>
 
         </>
     );

@@ -89,6 +89,8 @@ export function CreateInvite({groupId, onSuccess}: CreateInviteProps) {
             }
         }
         setIsSaving(false)
+        setExpiresAt('')
+        setExpiresAtDate(new Date());
 
     };
 
@@ -100,8 +102,6 @@ export function CreateInvite({groupId, onSuccess}: CreateInviteProps) {
             <Modal isOpen={isModalVisible} onClose={() => setModalVisible(false)}>
                 <Modal.Content>
                     <Modal.Body>
-
-
                         <Icon
                             as={<Ionicons name="close"/>}
                             size={7}
@@ -111,11 +111,7 @@ export function CreateInvite({groupId, onSuccess}: CreateInviteProps) {
                             color="gray.400"
                             onPress={() => setModalVisible(false)}
                         />
-
-
                         <VStack space={2}>
-
-
                             <VStack
                                 height='auto'
                                 width={'100%'}
@@ -123,12 +119,9 @@ export function CreateInvite({groupId, onSuccess}: CreateInviteProps) {
                                 alignItems='center'
                                 space={'3'}
                             >
-
-
                                 <Text fontSize={'xl'} fontWeight='bold'>
                                     {text.createInvite}
                                 </Text>
-
 
                                 <FormControl>
                                     <Input
@@ -150,7 +143,7 @@ export function CreateInvite({groupId, onSuccess}: CreateInviteProps) {
                                 </FormControl>
                             </VStack>
 
-                            <CustomButton width={'100%'} onPress={handleSave}>
+                            <CustomButton width={'100%'} onPress={handleSave} isLoading={isSaving}>
                                 {text.createInvite}
                             </CustomButton>
                             <CustomButton onlyOutline={true} onPress={() => setModalVisible(false)}>

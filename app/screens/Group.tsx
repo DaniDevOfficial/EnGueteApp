@@ -13,6 +13,7 @@ import {PageSpinner} from "../components/UI/PageSpinner";
 import {MealList} from "../components/group/MealList";
 import {Title} from "../components/UI/Icons/Title";
 import {showToast} from "../components/UI/Toast";
+import {CustomButton} from "../components/UI/CustomButton";
 
 export function Group() {
     const route = useRoute();
@@ -99,9 +100,9 @@ export function Group() {
             <MealList tempMeals={groupInformation.meals ?? []}/>
             {groupInformation.groupInfo.userRoleRights.includes(PERMISSIONS.CAN_CREATE_MEAL) && (
                 <Box position="absolute" bottom={4} left={4} right={4}>
-                    <Button onPress={handleNavigate}>
+                    <CustomButton onPress={handleNavigate}>
                         {text.createNewMeal}
-                    </Button>
+                    </CustomButton>
                 </Box>
             )}
         </>
