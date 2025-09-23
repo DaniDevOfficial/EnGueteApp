@@ -17,7 +17,7 @@ export function CustomButton ({ children, onPress, onlyOutline = false, ...props
                 backgroundColor={"white"}
                 borderWidth={1}
                 onPress={onPress}
-
+                _pressed={{ opacity: 0.6 }}
                 {...props}
                 shadow={1}
             >
@@ -31,7 +31,7 @@ export function CustomButton ({ children, onPress, onlyOutline = false, ...props
             borderRadius={30}
             background={"orange.600"}
             onPress={onPress}
-
+            _pressed={{ opacity: 0.6 }}
             {...props}
             shadow={5}
         >

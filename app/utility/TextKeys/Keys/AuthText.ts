@@ -8,6 +8,8 @@ export type AuthTextType =
     | 'pleaseSignIn'
     | 'newAccountGreetingsText'
     | 'createNewAccount'
+    | 'createNewAccountSlogan'
+    | 'createNewAccountInfoText'
     | 'createAccount'
     | 'allFieldsAreRequired'
     | 'username'
@@ -70,6 +72,14 @@ export const AuthTextKey: AuthTextKeyType = {
     'createNewAccount': {
         german: 'Ein neues Konto erstellen',
         english: 'Create a new account',
+    },
+    'createNewAccountSlogan': {
+        german: 'Essenszeit, einfach gemacht',
+        english: 'Meal Time, Made Simple',
+    },
+    'createNewAccountInfoText': {
+        german: 'Erstelle einen Account und sorge für unterhaltsame, stressfreie Mahlzeiten im echten Familienstil.',
+        english: 'Create an Account and keep meals fun, stress-free, and truly family-style',
     },
     'createAccount': {
         german: 'Konto erstellen',
