@@ -2,12 +2,10 @@ import React from 'react';
 import {Box, Flex, HStack, Icon, Pressable, Text, VStack} from 'native-base';
 import {useNavigation} from "@react-navigation/native";
 import {MealCard as MealCardType} from "../../repo/Group";
-import {getFancyTimeDisplay, getTime, semiNormalDateTime, shortDate} from "../../utility/Dates";
-import {getParticipantsText} from "../../utility/TextGeneration";
+import {getTime, shortDate} from "../../utility/Dates";
 import {PillTag} from "../UI/Pilltag";
 import {mealPreferenceText, useTexts} from "../../utility/TextKeys/TextKeys";
 import {MaterialIcons} from "@expo/vector-icons";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import {ProfilePictureList} from "../UI/ProfilePictureList";
 
 type MealCardProps = {
@@ -33,7 +31,6 @@ export function MealCard({meal}: MealCardProps) {
 
     const whenDate = shortDate(meal.dateTime);
     const whenTimeDisplay = getTime(meal.dateTime);
-    const participantsText = getParticipantsText(meal.participantCount)
     return (
         <>
 

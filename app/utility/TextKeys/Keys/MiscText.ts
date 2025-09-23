@@ -3,6 +3,7 @@
 export type MiscTextType =
     | 'at'
     | 'on'
+    | 'or'
     | 'isRequired'
     | 'placeholderIsRequired'
     | 'placeholderIsInvalid'
@@ -34,6 +35,10 @@ export const MiscTextKey: MiscTextKeyType = {
     'on': {
         german: 'Am',
         english: 'On',
+    },
+    'or': {
+        german: 'Oder',
+        english: 'Or',
     },
     'placeholderIsRequired': {
         german: '[what] ist erforderlich',

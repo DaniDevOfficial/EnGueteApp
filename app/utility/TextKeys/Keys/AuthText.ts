@@ -4,6 +4,7 @@ export type AuthTextType =
     | 'login'
     | 'signup'
     | 'welcomeBack'
+    | 'welcomeBackInfoText'
     | 'pleaseSignIn'
     | 'newAccountGreetingsText'
     | 'createNewAccount'
@@ -19,7 +20,7 @@ export type AuthTextType =
     | 'confirmYourNewPassword'
     | 'editPassword'
     | 'enterEmail'
-    | 'orCreateAnAccount'
+    | 'createAnAccount'
     | 'orLogin'
     | 'welcomeBackUsername'
     | 'updateUsername'
@@ -53,6 +54,10 @@ export const AuthTextKey: AuthTextKeyType = {
     'welcomeBack': {
         german: 'Willkommen zurück',
         english: 'Welcome back',
+    },
+    'welcomeBackInfoText': {
+        german: 'Melden dich an, um zu sehen, was heute auf dem Speiseplan steht, teil deine Vorlieben und setze dich mit uns an den Familientisch.',
+        english: 'Log in to see what’s cooking today, share your cravings, and join the family table.',
     },
     'pleaseSignIn': {
         german: 'Bitte Einloggen',
@@ -114,9 +119,9 @@ export const AuthTextKey: AuthTextKeyType = {
         german: 'E-Mail eingeben',
         english: 'Enter your email',
     },
-    'orCreateAnAccount': {
-        german: 'Oder ein Konto erstellen',
-        english: 'Or create an account',
+    'createAnAccount': {
+        german: 'Erstelle einen Account',
+        english: 'Create an account',
     },
     'orLogin': {
         german: 'Oder einloggen',

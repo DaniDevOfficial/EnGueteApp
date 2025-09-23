@@ -1,4 +1,4 @@
-import {Box, Flex, HStack, Image, Pressable, Text, VStack} from 'native-base'
+import {Box, Flex, HStack, Image, Pressable, StatusBar, Text, VStack} from 'native-base'
 import pizzaLanding from '../assets/flags/test.png';
 import bigLanding from '../assets/flags/test2.png';
 import continueOnIcon from '../assets/icons/continueOnIcon.png';
@@ -89,6 +89,10 @@ export function Home() {
 
         <Box flex={1} bg="#ffd043">
 
+            <StatusBar
+                backgroundColor="#ffd043"
+                barStyle="dark-content"
+            />
             <Box marginTop={79} marginLeft={5}>
                 <VStack space={0}>
                     <Box>
