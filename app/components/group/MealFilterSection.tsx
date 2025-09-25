@@ -76,6 +76,7 @@ export function MealFilterSection({onDateChange, setDate, defaultDate}: Props) {
                 <IconButton
                     icon={<Icon as={MaterialIcons} name="chevron-left"/>}
                     borderRadius="full"
+                    colorScheme={'orange'}
                     variant="ghost"
                     onPress={() => !loading && handleWeekChange(-7)}
                 />
@@ -102,6 +103,7 @@ export function MealFilterSection({onDateChange, setDate, defaultDate}: Props) {
                     icon={<Icon as={MaterialIcons} name="chevron-right"/>}
                     borderRadius="full"
                     variant="ghost"
+                    colorScheme={'orange'}
                     onPress={() => handleWeekChange(7)}
                 />
             </Flex>

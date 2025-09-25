@@ -171,9 +171,3 @@ export async function updateSyncStatus(cacheKey: string) {
         VALUES (?, ?)
     `, cacheKey, now);
 }
-
-export async function createDatabaseStructure() {
-    await db.execAsync(`
-        Take Snippet from random/scratch.sql
-    `);
-}

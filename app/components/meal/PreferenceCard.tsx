@@ -89,10 +89,10 @@ export function PreferenceCard({mealParticipants, forceRefresh}: {
 
             <Box
                 shadow={"1"}
-                borderColor={"light.200"}
+                borderColor={"orange.200"}
                 borderWidth={1}
                 borderRadius="md"
-                backgroundColor="light.100"
+                backgroundColor="coolGray.100"
                 p={2}
             >
                 <HStack
