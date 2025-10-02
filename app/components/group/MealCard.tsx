@@ -66,7 +66,7 @@ export function MealCard({meal}: MealCardProps) {
                                 <HStack space={2}>
                                     <Text isTruncated>{whenDate}</Text>
                                     <Text>{'|'}</Text>
-                                    <Text isTruncated>{whenTimeDisplay}</Text>s
+                                    <Text isTruncated>{whenTimeDisplay}</Text>
                                 </HStack>
                             </VStack>
                             <Flex flexDir={'row'}>
