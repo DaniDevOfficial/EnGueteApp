@@ -27,6 +27,7 @@ export type ErrorTextType =
     | 'usernameIsAlreadyTakenError'
     | 'usernameOrEmailIsAlreadyTakenError'
     | 'wrongUsernameOrPasswordError'
+    | 'hasToVerifyEmailError'
     | 'mealDoesNotExistError'
     | 'filtersAreNotValidError'
     | 'unknownError'
@@ -151,6 +152,10 @@ export const ErrorTextKey: ErrorTextKeyType = {
     wrongUsernameOrPasswordError: {
         german: 'Falscher Benutzername oder Passwort',
         english: 'Incorrect username or password',
+    },
+    hasToVerifyEmailError: {
+        german: 'Email muss Verifiziert werden. Eine neue Mail wurde verschickt',
+        english: 'Email has to be verified. A new mail has been sent out',
     },
     mealDoesNotExistError: {
         german: 'Mahlzeit existiert nicht',
