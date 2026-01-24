@@ -154,8 +154,8 @@ export const ErrorTextKey: ErrorTextKeyType = {
         english: 'Incorrect username or password',
     },
     hasToVerifyEmailError: {
-        german: 'Email muss Verifiziert werden. Eine neue Mail wurde verschickt',
-        english: 'Email has to be verified. A new mail has been sent out',
+        german: 'Email muss Verifiziert werden. Eine neue Mail wurde verschickt.',
+        english: 'Email has to be verified. A new mail has been sent out.',
     },
     mealDoesNotExistError: {
         german: 'Mahlzeit existiert nicht',

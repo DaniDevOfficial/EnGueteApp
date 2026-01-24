@@ -10,6 +10,10 @@ export type GeneralTextType =
     | 'okay'
     | 'close'
     | 'confirm'
+    | 'info'
+    | 'back'
+    | 'somethingWentWrong'
+    | 'pleaseTryAgain'
     | 'areYouSureYouWantToPerfomThisAction'
     ;
 
@@ -53,6 +57,22 @@ export const GeneralTextKey: GeneralTextKeyType = {
     'confirm': {
         german: 'Bestätigen',
         english: 'Confirm',
+    },
+    'info': {
+        german: 'Information',
+        english: 'Information',
+    },
+    'back': {
+        german: 'Zurück',
+        english: 'Back',
+    },
+    'somethingWentWrong': {
+        german: 'Etwas ist schief gelaufen',
+        english: 'Something went wrong',
+    },
+    'pleaseTryAgain': {
+        german: 'Bitte versuche es erneut',
+        english: 'Please try again',
     },
     'areYouSureYouWantToPerfomThisAction': {
         german: 'Bist du sicher, dass du diese Aktion ausführen möchtest?',

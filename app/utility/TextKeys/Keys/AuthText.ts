@@ -35,6 +35,12 @@ export type AuthTextType =
     | 'deleteAccountRequiredText'
     | 'thisActionCannotBeUndone'
     | 'pleaseEnterTextToConfirm'
+    | 'forgotPassword'
+    | 'pleaseEnterEmailForResetLink'
+    | 'sendResetLink'
+    | 'missingEmail'
+    | 'checkYourInbox'
+    | 'ifAnAccountExistsYouWillRecieveAResetEmail'
     ;
 
 export type AuthTextKeyType = {
@@ -180,5 +186,29 @@ export const AuthTextKey: AuthTextKeyType = {
     'pleaseEnterTextToConfirm': {
         german: 'Um die Aktion zu bestätigen, bitte den Text eingeben: [text]',
         english: 'To confirm the action, please enter the text: [text]',
+    },
+    'forgotPassword': {
+        german: 'Passwort vergessen',
+        english: 'Forgot password',
+    },
+    'pleaseEnterEmailForResetLink': {
+        german: 'Bitte gib deine email ein und wir werden dir einen Passwort Reset link zusenden',
+        english: 'Please enter your email and we will send you a reset link',
+    },
+    'sendResetLink': {
+        german: 'Link schicken',
+        english: 'Send reset link',
+    },
+    'missingEmail': {
+        german: 'Email fehlt',
+        english: 'Missing Email',
+    },
+    'checkYourInbox': {
+        german: 'Inbox überprüfen',
+        english: 'Check your inbox',
+    },
+    'ifAnAccountExistsYouWillRecieveAResetEmail': {
+        german: 'Falls ein Account existiert erhälst du einen Reset Link',
+        english: 'If an account exists, you’ll receive a reset link.',
     },
 }

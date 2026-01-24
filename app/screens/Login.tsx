@@ -113,6 +113,14 @@ export function Login() {
                                 rounded="md"
                             />
                         </FormControl>
+                        <Pressable
+                            onPress={() => {
+                                navigation.navigate('forgotPassword')
+                            }}>
+                            <Text color={'gray.500'} underline={true} fontSize={'xs'}>
+                                forgot password?
+                            </Text>
+                        </Pressable>
                     </VStack>
                     <VStack space={5} alignItems="center" w={'100%'}>
                         <CustomButton

@@ -22,7 +22,7 @@ import {useTexts} from "../utility/TextKeys/TextKeys";
 import {getPendingInviteToken} from "../utility/DeepLinking";
 import {TokenPopupHandler} from "../components/Utility/JoinGroupPopup";
 import {showToast} from "../components/UI/Toast";
-import {useErrorText} from "../utility/Errors";
+import {FRONTEND_ERRORS, useErrorText} from "../utility/Errors";
 import {CustomButton} from "../components/UI/CustomButton";
 
 export function Signup() {
@@ -34,7 +34,7 @@ export function Signup() {
     const [loading, setLoading] = useState(false);
 
     const navigation = useNavigation();
-    const text = useTexts(['error', 'newAccountGreetingsText', 'or', 'createNewAccount', 'createNewAccountSlogan', 'createNewAccountInfoText', 'username', 'enterUsername', 'email', 'enterEmail', 'password', 'enterPassword', 'createNewAccount', 'orLogin', 'bothFieldsAreRequired']);
+    const text = useTexts(['error', 'newAccountGreetingsText', 'or', 'createNewAccount', 'createNewAccountSlogan', 'createNewAccountInfoText', 'username', 'enterUsername', 'email', 'enterEmail', 'password', 'enterPassword', 'createNewAccount', 'orLogin', 'bothFieldsAreRequired', 'info']);
     const toast = useToast();
     const getError = useErrorText();
 
@@ -56,7 +56,12 @@ export function Signup() {
             if (token) {
                 setInviteToken(token);
             }
-            resetToUserScreen(navigation)
+            showToast({
+                toast,
+                title: text.info,
+                description: getError(FRONTEND_ERRORS.HAS_TO_VERIFY_EMAIL_ERROR),
+                status: "info",
+            })
         } catch (e) {
             showToast({
                 toast,
@@ -77,7 +82,7 @@ export function Signup() {
                 py={10}
             >
 
-                <VStack space={5} alignItems="center" w={'100%'}>
+                <VStack space={10} alignItems="center" w={'100%'}>
                     <VStack space={2} alignItems="center" w={'100%'}>
 
                         <Text
