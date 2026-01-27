@@ -11,8 +11,8 @@ import {useNavigation} from "@react-navigation/native";
 import {CustomButton} from "../components/UI/CustomButton";
 import {showToast} from "../components/UI/Toast";
 import {useTexts} from "../utility/TextKeys/TextKeys";
+import {resetPassword} from "../repo/Auth";
 
-// import {requestPasswordReset} from "../repo/Auth"; // 👈 implement later
 
 export function ForgotPassword() {
     const [email, setEmail] = useState('');
@@ -37,7 +37,7 @@ export function ForgotPassword() {
         try {
             setLoading(true);
 
-            // await requestPasswordReset(email);
+            await resetPassword(email);
             await new Promise(resolve => setTimeout(resolve, 800));
 
             showToast({

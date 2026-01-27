@@ -96,3 +96,26 @@ export async function checkAuth() {
     }
 
 }
+
+export async function resetPassword(email: string): Promise<ResponseAuth> {
+    const url = `${process.env.EXPO_PUBLIC_API_URL}auth/resetPassword`;
+
+    const data = {
+        email,
+    };
+
+    const timeoutPromise = timeoutPromiseFactory();
+
+    const fetchPromise = fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
+
+    const res: Response = await Promise.race([fetchPromise, timeoutPromise]);
+    await handleDefaultResponseAndHeaders(res)
+    return await res.json();
+
+}
