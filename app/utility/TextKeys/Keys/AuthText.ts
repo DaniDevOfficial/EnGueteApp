@@ -4,9 +4,12 @@ export type AuthTextType =
     | 'login'
     | 'signup'
     | 'welcomeBack'
+    | 'welcomeBackInfoText'
     | 'pleaseSignIn'
     | 'newAccountGreetingsText'
     | 'createNewAccount'
+    | 'createNewAccountSlogan'
+    | 'createNewAccountInfoText'
     | 'createAccount'
     | 'allFieldsAreRequired'
     | 'username'
@@ -19,7 +22,7 @@ export type AuthTextType =
     | 'confirmYourNewPassword'
     | 'editPassword'
     | 'enterEmail'
-    | 'orCreateAnAccount'
+    | 'createAnAccount'
     | 'orLogin'
     | 'welcomeBackUsername'
     | 'updateUsername'
@@ -32,6 +35,12 @@ export type AuthTextType =
     | 'deleteAccountRequiredText'
     | 'thisActionCannotBeUndone'
     | 'pleaseEnterTextToConfirm'
+    | 'forgotPassword'
+    | 'pleaseEnterEmailForResetLink'
+    | 'sendResetLink'
+    | 'missingEmail'
+    | 'checkYourInbox'
+    | 'ifAnAccountExistsYouWillRecieveAResetEmail'
     ;
 
 export type AuthTextKeyType = {
@@ -54,6 +63,10 @@ export const AuthTextKey: AuthTextKeyType = {
         german: 'Willkommen zurück',
         english: 'Welcome back',
     },
+    'welcomeBackInfoText': {
+        german: 'Melden dich an, um zu sehen, was heute auf dem Speiseplan steht, teil deine Vorlieben und setze dich mit uns an den Familientisch.',
+        english: 'Log in to see what’s cooking today, share your cravings, and join the family table.',
+    },
     'pleaseSignIn': {
         german: 'Bitte Einloggen',
         english: 'Please sign in',
@@ -65,6 +78,14 @@ export const AuthTextKey: AuthTextKeyType = {
     'createNewAccount': {
         german: 'Ein neues Konto erstellen',
         english: 'Create a new account',
+    },
+    'createNewAccountSlogan': {
+        german: 'Essenszeit, einfach gemacht',
+        english: 'Meal Time, Made Simple',
+    },
+    'createNewAccountInfoText': {
+        german: 'Erstelle einen Account und sorge für unterhaltsame, stressfreie Mahlzeiten im echten Familienstil.',
+        english: 'Create an Account and keep meals fun, stress-free, and truly family-style',
     },
     'createAccount': {
         german: 'Konto erstellen',
@@ -114,9 +135,9 @@ export const AuthTextKey: AuthTextKeyType = {
         german: 'E-Mail eingeben',
         english: 'Enter your email',
     },
-    'orCreateAnAccount': {
-        german: 'Oder ein Konto erstellen',
-        english: 'Or create an account',
+    'createAnAccount': {
+        german: 'Erstelle einen Account',
+        english: 'Create an account',
     },
     'orLogin': {
         german: 'Oder einloggen',
@@ -165,5 +186,29 @@ export const AuthTextKey: AuthTextKeyType = {
     'pleaseEnterTextToConfirm': {
         german: 'Um die Aktion zu bestätigen, bitte den Text eingeben: [text]',
         english: 'To confirm the action, please enter the text: [text]',
+    },
+    'forgotPassword': {
+        german: 'Passwort vergessen',
+        english: 'Forgot password',
+    },
+    'pleaseEnterEmailForResetLink': {
+        german: 'Bitte gib deine email ein und wir werden dir einen Passwort Reset link zusenden',
+        english: 'Please enter your email and we will send you a reset link',
+    },
+    'sendResetLink': {
+        german: 'Link schicken',
+        english: 'Send reset link',
+    },
+    'missingEmail': {
+        german: 'Email fehlt',
+        english: 'Missing Email',
+    },
+    'checkYourInbox': {
+        german: 'Inbox überprüfen',
+        english: 'Check your inbox',
+    },
+    'ifAnAccountExistsYouWillRecieveAResetEmail': {
+        german: 'Falls ein Account existiert erhälst du einen Reset Link',
+        english: 'If an account exists, you’ll receive a reset link.',
     },
 }

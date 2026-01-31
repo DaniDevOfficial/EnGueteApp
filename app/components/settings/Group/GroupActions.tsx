@@ -4,13 +4,13 @@ import {Option, SettingsSectionStack} from "../../UI/SettingSectionStack";
 import {PERMISSIONS} from "../../../utility/Roles";
 import {useGroup} from "../../../context/groupContext";
 import React, {useState} from "react";
-import {ConfirmModal} from "../ConfirmModal";
 import {DeleteGroupRequest, LeaveGroupRequest} from "../../../repo/Group";
 import {resetToUserScreen} from "../../../utility/navigation";
 import {showToast} from "../../UI/Toast";
 import {useToast} from "native-base";
 import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../../../utility/Errors";
 import {handleLogoutProcedure} from "../../../Util";
+import {ConfirmationModal} from "../../UI/ConfirmationModal";
 
 export function GroupActions() {
     const {group} = useGroup();
@@ -24,6 +24,7 @@ export function GroupActions() {
 
     const leaveInfoText = useText('leaveGroupInfoText', {'groupName': group.groupName});
     const deleteConfirmText = useText('deleteGroupRequiredText', {'groupName': group.groupName});
+    const confirmText = useText('pleaseEnterTextToConfirm', {'text': deleteConfirmText ?? ''});
 
     const options: Option[] = [
         {
@@ -99,19 +100,20 @@ export function GroupActions() {
         <>
             <SettingsSectionStack title={text.groupActions} options={options}/>
 
-            <ConfirmModal
+            <ConfirmationModal
                 title={text.leaveGroup}
                 isOpen={leaveGroupModalOpen}
                 onClose={() => setLeaveGroupModalOpen(false)}
-                onSuccess={handleLeave}
-                text={leaveInfoText}
+                onConfirm={handleLeave}
+                message={leaveInfoText}
             />
 
-            <ConfirmModal
+            <ConfirmationModal
                 title={text.deleteGroup}
+                message={confirmText}
                 isOpen={deleteGroupModalOpen}
                 onClose={() => setDeleteGroupModalOpen(false)}
-                onSuccess={handleDelete}
+                onConfirm={handleDelete}
                 requiredText={deleteConfirmText}
             />
 

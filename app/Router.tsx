@@ -22,19 +22,19 @@ import * as Linking from 'expo-linking';
 import {getRefreshToken} from "./utility/Auth";
 import {TokenPopupHandler} from "./components/Utility/JoinGroupPopup";
 import {setPendingInviteToken} from "./utility/DeepLinking";
+import {ForgotPassword} from "./screens/ForgotPassword";
 
 const Stack = createStackNavigator();
 
-function withBaseLayout<T>(Component: ComponentType<T>) {
+function withBaseLayout<T>(Component: ComponentType<T>, noPadding = false) {
     return function WrappedComponent(props: T): ReactElement {
         return (
-            <BaseLayout>
+            <BaseLayout noPadding={noPadding}>
                 <Component {...props} />
             </BaseLayout>
         );
     };
 }
-
 
 function GroupContextStack() {
     const GroupStack = createStackNavigator();
@@ -53,9 +53,10 @@ function GroupContextStack() {
     );
 }
 
-const HomeScreen = withBaseLayout(Home);
+const HomeScreen = withBaseLayout(Home, true);
 const LoginScreen = withBaseLayout(Login);
 const SignupScreen = withBaseLayout(Signup);
+const ForgotPasswordScreen = withBaseLayout(ForgotPassword);
 const UserScreen = withBaseLayout(User);
 const UserSettingsScreen = withBaseLayout(UserSettings);
 const NewGroupScreen = withBaseLayout(NewGroup);
@@ -78,6 +79,7 @@ export function Router() {
 
     useEffect(() => {
         const sub = Linking.addEventListener('url', ({url}) => handleUrl(url));
+        // @ts-ignore
         Linking.getInitialURL().then((url) => url && handleUrl(url));
 
         return () => sub.remove();
@@ -113,6 +115,7 @@ export function Router() {
                 <Stack.Screen name="home" component={HomeScreen}/>
                 <Stack.Screen name="login" component={LoginScreen}/>
                 <Stack.Screen name="signup" component={SignupScreen}/>
+                <Stack.Screen name="forgotPassword" component={ForgotPasswordScreen}/>
                 <Stack.Screen name="user" component={UserScreen}/>
                 <Stack.Screen name="userSettings" component={UserSettingsScreen}/>
                 <Stack.Screen name="newGroup" component={NewGroupScreen}/>

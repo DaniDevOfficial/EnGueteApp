@@ -3,6 +3,7 @@
 export type MiscTextType =
     | 'at'
     | 'on'
+    | 'or'
     | 'isRequired'
     | 'placeholderIsRequired'
     | 'placeholderIsInvalid'
@@ -16,6 +17,7 @@ export type MiscTextType =
     | 'currentWeek'
     | 'lastWeek'
     | 'nextWeek'
+    | 'showInformation'
     ;
 
 export type MiscTextKeyType = {
@@ -33,6 +35,10 @@ export const MiscTextKey: MiscTextKeyType = {
     'on': {
         german: 'Am',
         english: 'On',
+    },
+    'or': {
+        german: 'Oder',
+        english: 'Or',
     },
     'placeholderIsRequired': {
         german: '[what] ist erforderlich',
@@ -85,5 +91,9 @@ export const MiscTextKey: MiscTextKeyType = {
     'nextWeek': {
         german: 'Nächste Woche',
         english: 'Next week',
+    },
+    'showInformation': {
+        german: 'Informationen anzeigen',
+        english: 'Show Information',
     },
 }

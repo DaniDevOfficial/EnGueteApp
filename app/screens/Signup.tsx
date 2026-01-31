@@ -22,7 +22,8 @@ import {useTexts} from "../utility/TextKeys/TextKeys";
 import {getPendingInviteToken} from "../utility/DeepLinking";
 import {TokenPopupHandler} from "../components/Utility/JoinGroupPopup";
 import {showToast} from "../components/UI/Toast";
-import {useErrorText} from "../utility/Errors";
+import {FRONTEND_ERRORS, useErrorText} from "../utility/Errors";
+import {CustomButton} from "../components/UI/CustomButton";
 
 export function Signup() {
     const [username, setUsername] = useState('Dani1-123');
@@ -33,7 +34,7 @@ export function Signup() {
     const [loading, setLoading] = useState(false);
 
     const navigation = useNavigation();
-    const text = useTexts(['error', 'newAccountGreetingsText', 'createNewAccount', 'username', 'enterUsername', 'email', 'enterEmail', 'password', 'enterPassword', 'createNewAccount', 'orLogin', 'bothFieldsAreRequired']);
+    const text = useTexts(['error', 'newAccountGreetingsText', 'or', 'createNewAccount', 'createNewAccountSlogan', 'createNewAccountInfoText', 'username', 'enterUsername', 'email', 'enterEmail', 'password', 'enterPassword', 'createNewAccount', 'orLogin', 'bothFieldsAreRequired', 'info']);
     const toast = useToast();
     const getError = useErrorText();
 
@@ -55,7 +56,12 @@ export function Signup() {
             if (token) {
                 setInviteToken(token);
             }
-            resetToUserScreen(navigation)
+            showToast({
+                toast,
+                title: text.info,
+                description: getError(FRONTEND_ERRORS.HAS_TO_VERIFY_EMAIL_ERROR),
+                status: "info",
+            })
         } catch (e) {
             showToast({
                 toast,
@@ -68,85 +74,93 @@ export function Signup() {
     }
 
     return (
-        <Center flex={1} bg="coolGray.100">
-            {inviteToken && (
-                <TokenPopupHandler
-                    token={inviteToken}
-                />
-            )}
-            <Box safeArea p="5" py="8" w="90%" maxW="290" bg="white" rounded="lg" shadow={2}>
-                <Heading size="lg" fontWeight="600" color="coolGray.800" textAlign="center">
-                    {text.newAccountGreetingsText}
-                </Heading>
-                <Heading mt="1" color="coolGray.600" fontWeight="medium" size="xs" textAlign="center">
-                    {text.createNewAccount}
-                </Heading>
 
-                <VStack space={4} mt="5">
-                    <FormControl>
-                        <FormControl.Label>{text.username}</FormControl.Label>
-                        <Input
-                            value={username}
-                            onChangeText={(text) => setUsername(text)}
-                            variant="filled"
-                            p={3}
-                            placeholder={text.enterUsername}
-                            rounded="md"
-                        />
-                    </FormControl>
-                    <FormControl>
-                        <FormControl.Label>{text.email}</FormControl.Label>
-                        <Input
-                            value={email}
-                            onChangeText={(text) => setEmail(text)}
-                            variant="filled"
-                            p={3}
-                            placeholder={text.enterEmail}
-                            type="text"
-                            rounded="md"
-                        />
-                    </FormControl>
-                    <FormControl>
-                        <FormControl.Label>{text.password}</FormControl.Label>
-                        <Input
-                            value={password}
-                            onChangeText={(text) => setPassword(text)}
-                            variant="filled"
-                            p={3}
-                            placeholder={text.enterPassword}
-                            type="password"
-                            rounded="md"
-                        />
-                    </FormControl>
-                    <Button
-                        mt="5"
-                        colorScheme="primary"
-                        _text={{fontSize: "md"}}
-                        isLoading={loading}
-                        onPress={handleSubmit}
-                    >
-                        {text.createNewAccount}
-                    </Button>
+        <>
+            <Flex
+                justifyContent="center"
+                alignItems="center"
+                py={10}
+            >
+
+                <VStack space={10} alignItems="center" w={'100%'}>
+                    <VStack space={2} alignItems="center" w={'100%'}>
+
+                        <Text
+                            fontSize={'3xl'}
+                            fontWeight={'bold'}
+                        >
+                            {text.createNewAccountSlogan}!
+                        </Text>
+                        <Text
+                            width={'90%'}
+                            textAlign="center"
+                        >
+                            {text.createNewAccountInfoText}!
+                        </Text>
+                    </VStack>
+
+                    <VStack space={2} alignItems="center" w={'100%'}>
+                        <FormControl>
+                            <FormControl.Label>{text.username}</FormControl.Label>
+                            <Input
+                                value={username}
+                                onChangeText={(text) => setUsername(text)}
+                                p={3}
+                                placeholder={text.enterUsername}
+                                rounded="md"
+                            />
+                        </FormControl>
+                        <FormControl>
+                            <FormControl.Label>{text.email}</FormControl.Label>
+                            <Input
+                                value={email}
+                                onChangeText={(text) => setEmail(text)}
+                                p={3}
+                                placeholder={text.enterEmail}
+                                type="text"
+                                rounded="md"
+                            />
+                        </FormControl>
+                        <FormControl>
+                            <FormControl.Label>{text.password}</FormControl.Label>
+                            <Input
+                                value={password}
+                                onChangeText={(text) => setPassword(text)}
+                                p={3}
+                                placeholder={text.enterPassword}
+                                type="password"
+                                rounded="md"
+                            />
+                        </FormControl>
+                    </VStack>
+                    <VStack space={5} alignItems="center" w={'100%'}>
+                        <CustomButton
+                            w={'100%'}
+                            onPress={handleSubmit}
+                        >
+                            {text.createNewAccount}
+                        </CustomButton>
+
+                        <Text>
+                            {text.or}
+                        </Text>
+
+                        <CustomButton w={'100%'}
+                                      onPress={() => {
+                                          navigation.navigate('login')
+                                      }}
+                                      onlyOutline={true}
+                                      backgroundColor={'coolGray.100'}
+                        >
+                            <Text>
+                                {text.orLogin}
+                            </Text>
+                        </CustomButton>
+                    </VStack>
+
                 </VStack>
-                <Pressable
-                    onPress={() => {
-                        navigation.navigate('login')
-                    }}
-                >
-                    <Flex justifyContent={"center"} alignItems={"center"}>
-                        <Box w="90%" maxW="290" mt={5}>
-                            <HStack alignItems="center" space={2}>
-                                <Divider flex={1} bg="coolGray.300"/>
-                                <Text fontSize="sm" color="coolGray.400">
-                                    {text.orLogin}
-                                </Text>
-                                <Divider flex={1} bg="coolGray.300"/>
-                            </HStack>
-                        </Box>
-                    </Flex>
-                </Pressable>
+            </Flex>
+        </>
 
-            </Box>
-        </Center>
     );
 }

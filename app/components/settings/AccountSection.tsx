@@ -134,7 +134,7 @@ export function AccountSection() {
                 >
 
                     <TextModalUpdate
-                        text={user.user.userName}
+                        initialValue={user.user.userName}
                         title={text.updateUsername}
                         isOpen={editUsernameModalOpen}
                         onClose={() => setEditUsernameModalOpen(false)}

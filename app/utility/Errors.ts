@@ -90,6 +90,7 @@ export const FRONTEND_ERRORS = {
     USERNAME_IS_ALREADY_TAKEN_ERROR: "usernameIsAlreadyTakenError",
     USERNAME_OR_EMAIL_IS_ALREADY_TAKEN_ERROR: "usernameOrEmailIsAlreadyTakenError",
     WRONG_USERNAME_OR_PASSWORD_ERROR: "wrongUsernameOrPasswordError",
+    HAS_TO_VERIFY_EMAIL_ERROR: "hasToVerifyEmailError",
 
     MEAL_DOES_NOT_EXIST_ERROR: "mealDoesNotExistError",
 

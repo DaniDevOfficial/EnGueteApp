@@ -1,37 +1,95 @@
-import React from 'react';
-import {Button, HStack, Modal, Text} from 'native-base';
-import {useTexts} from "../../utility/TextKeys/TextKeys";
+import React, {useState} from 'react';
+import {Button, FormControl, HStack, Input, Modal, Text, useToast, VStack} from 'native-base';
+import {useText, useTexts} from "../../utility/TextKeys/TextKeys";
+import {CustomButton} from "./CustomButton";
+import {showToast} from "./Toast";
 
-export function ConfirmationModal({isOpen, onClose, onConfirm, title, message, isLoading = false}: {
+export function ConfirmationModal({
+                                      isOpen,
+                                      onClose,
+                                      onConfirm,
+                                      title,
+                                      message,
+                                      isLoading = false,
+                                      requiredText = undefined
+                                  }: {
     isOpen: boolean;
     onClose: () => void;
     onConfirm: () => void;
     title: string;
     message: string;
-    isLoading?: boolean;
+    isLoading?: boolean,
+    requiredText?: string;
 }) {
-    const text = useTexts(['cancel', 'confirm']);
-    return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+    const text = useTexts(['cancel', 'confirm', 'error']);
+    const toast = useToast();
+    const requiredTextInformation = useText('errorPleaseEnterCorrectText', {'text': requiredText ?? ''});
+    const [value, setValue] = useState<string>('');
+
+    function submitConfirmation() {
+        if (isLoading) {
+            return;
+        }
+
+        if (requiredText && requiredText !== value) {
+            showToast({
+                toast,
+                title: text.error,
+                description: requiredTextInformation,
+                status: 'warning',
+            });
+            return;
+        }
+        onConfirm();
+    }
+
+    return (<Modal isOpen={isOpen} onClose={onClose}>
             <Modal.Content>
-                <Modal.Header>{title}</Modal.Header>
                 <Modal.Body>
-                    <Text>{message}</Text>
+                    <VStack space={4}>
+                        <VStack space={2} alignItems="center" width='100%'>
+
+                            <Text
+                                fontSize={'2xl'}
+                                fontWeight={'bold'}
+                                textAlign={'center'}
+                            >
+                                {title}
+                            </Text>
+                            <Text textAlign={'center'}>{message}</Text>
+                            {requiredText && (
+                                <>
+                                    <FormControl>
+                                        <Input
+                                            value={value}
+                                            onChangeText={setValue}
+                                            placeholder={`${requiredText}`}
+                                        />
+                                    </FormControl>
+                                </>
+                            )}
+                        </VStack>
+                        <VStack space={2} alignItems="center" width='100%'>
+
+                            <CustomButton
+                                width={'100%'}
+                                isLoading={isLoading}
+                                onPress={submitConfirmation}
+                                colorScheme="primary"
+                            >
+                                {text.confirm}
+                            </CustomButton>
+                            <CustomButton width={'100%'} onlyOutline={true} onPress={onClose}>
+                                <Text>
+                                    {text.cancel}
+                                </Text>
+                            </CustomButton>
+
+                        </VStack>
+                    </VStack>
+
                 </Modal.Body>
-                <Modal.Footer>
-                    <HStack
-                        space={1}
-                    >
-                        <Button variant="ghost" onPress={onClose}>{text.cancel}</Button>
-                        <Button
-                            isLoading={isLoading}
-                            onPress={onConfirm}
-                            colorScheme="primary"
-                        >
-                            {text.confirm}
-                        </Button>
-                    </HStack>
-                </Modal.Footer>
+
             </Modal.Content>
         </Modal>
     );

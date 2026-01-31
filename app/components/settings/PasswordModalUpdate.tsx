@@ -8,6 +8,7 @@ import {UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {showToast} from "../UI/Toast";
 import {handleLogoutProcedure} from "../../Util";
 import {PasswordInput} from "../UI/PasswordInput";
+import {CustomButton} from "../UI/CustomButton";
 
 
 interface PasswordModalUpdateProps {
@@ -21,7 +22,7 @@ export function PasswordModalUpdate({onSuccess, isOpen, onClose}: PasswordModalU
     const navigation = useNavigation();
     const getError = useErrorText();
 
-    const textKeys = useTexts(['save', 'cancel', 'error', 'allFieldsAreRequired', 'passwordDoesNotMatchError', 'enterYourOldPassword', 'enterYourNewPassword', 'confirmYourNewPassword', 'editPassword']);
+    const text = useTexts(['save', 'cancel', 'error', 'allFieldsAreRequired', 'passwordDoesNotMatchError', 'enterYourOldPassword', 'enterYourNewPassword', 'confirmYourNewPassword', 'editPassword']);
 
     const [oldPassword, setOldPassword] = useState<string>('');
     const [newPassword, setNewPassword] = useState<string>('');
@@ -34,8 +35,8 @@ export function PasswordModalUpdate({onSuccess, isOpen, onClose}: PasswordModalU
         if (!oldPassword || !newPassword || !confirmNewPassword) {
             showToast({
                 toast,
-                title: textKeys.error,
-                description: textKeys.allFieldsAreRequired,
+                title: text.error,
+                description: text.allFieldsAreRequired,
                 status: "error",
             });
             return;
@@ -44,8 +45,8 @@ export function PasswordModalUpdate({onSuccess, isOpen, onClose}: PasswordModalU
         if (newPassword !== confirmNewPassword) {
             showToast({
                 toast,
-                title: textKeys.error,
-                description: textKeys.passwordDoesNotMatchError,
+                title: text.error,
+                description: text.passwordDoesNotMatchError,
                 status: "error",
             });
             return;
@@ -60,7 +61,7 @@ export function PasswordModalUpdate({onSuccess, isOpen, onClose}: PasswordModalU
 
             showToast({
                 toast,
-                title: textKeys.error,
+                title: text.error,
                 description: getError(e.message),
                 status: "error",
             });
@@ -86,50 +87,78 @@ export function PasswordModalUpdate({onSuccess, isOpen, onClose}: PasswordModalU
         <>
             <Modal isOpen={isOpen} onClose={() => handleClose()}>
                 <Modal.Content>
-                    <Modal.Header>{textKeys.editPassword}</Modal.Header>
                     <Modal.Body>
-                        <VStack
-                            space={2}
-                        >
 
-                            <FormControl>
-                                <Text>
-                                    {textKeys.enterYourOldPassword}
+                        <VStack space={4}>
+                            <VStack space={4} alignItems="center" width='100%'>
+
+                                <Text
+                                    fontSize={'xl'}
+                                    fontWeight={'bold'}
+                                >
+                                    {text.editPassword}
                                 </Text>
-                                <PasswordInput
-                                    value={oldPassword}
-                                    onChangeText={setOldPassword}
-                                    placeholder={textKeys.enterYourOldPassword}
-                                />
-                            </FormControl>
-                            <FormControl>
-                                <Text>
-                                    {textKeys.enterYourNewPassword}
-                                </Text>
-                                <PasswordInput
-                                    value={newPassword}
-                                    onChangeText={setNewPassword}
-                                    placeholder={textKeys.enterYourNewPassword}
-                                />
-                            </FormControl>
-                            <FormControl>
-                                <Text>
-                                    {textKeys.confirmYourNewPassword}
-                                </Text>
-                                <PasswordInput
-                                    value={confirmNewPassword}
-                                    onChangeText={setConfirmNewPassword}
-                                    placeholder={textKeys.confirmYourNewPassword}
-                                />
-                            </FormControl>
+
+
+                                <VStack
+                                    space={2}
+                                >
+
+                                    <FormControl>
+
+                                        <Text my={2}>
+                                            {text.enterYourOldPassword}
+                                        </Text>
+                                        <PasswordInput
+
+                                            value={oldPassword}
+                                            onChangeText={setOldPassword}
+                                            placeholder={text.enterYourOldPassword}
+                                        />
+                                    </FormControl>
+                                    <FormControl>
+                                        <Text my={2}>
+                                            {text.enterYourNewPassword}
+                                        </Text>
+                                        <PasswordInput
+                                            value={newPassword}
+                                            onChangeText={setNewPassword}
+                                            placeholder={text.enterYourNewPassword}
+                                        />
+                                    </FormControl>
+                                    <FormControl>
+                                        <Text my={2}>
+                                            {text.confirmYourNewPassword}
+                                        </Text>
+                                        <PasswordInput
+                                            value={confirmNewPassword}
+                                            onChangeText={setConfirmNewPassword}
+                                            placeholder={text.confirmYourNewPassword}
+                                        />
+                                    </FormControl>
+                                </VStack>
+
+                            </VStack>
+                            <VStack space={2} alignItems="center" width='100%'>
+
+                                <CustomButton
+                                    width={'100%'}
+                                    isLoading={isSaving}
+                                    onPress={handleSave}
+                                    colorScheme="primary"
+                                >
+                                    {text.save}
+                                </CustomButton>
+                                <CustomButton width={'100%'} onlyOutline={true} onPress={onClose}>
+                                    <Text>
+                                        {text.cancel}
+                                    </Text>
+                                </CustomButton>
+
+                            </VStack>
                         </VStack>
+
                     </Modal.Body>
-                    <Modal.Footer>
-                        <Button isLoading={isSaving} onPress={handleSave}>{textKeys.save}</Button>
-                        <Button variant="ghost" isLoading={isSaving} onPress={() => handleClose()}>
-                            {textKeys.cancel}
-                        </Button>
-                    </Modal.Footer>
                 </Modal.Content>
             </Modal>
         </>

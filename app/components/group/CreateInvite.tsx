@@ -1,10 +1,16 @@
 import React, {useState} from "react";
 import {useText, useTexts} from "../../utility/TextKeys/TextKeys";
-import {Button, FormControl, Icon, Input, Modal} from "native-base";
-import {getSwissDateTimeDisplay} from "../../utility/Dates";
+import {Box, Button, FormControl, Icon, Image, Input, Modal, Text, useToast, VStack} from "native-base";
+import {getFancyTimeDisplay, getSwissDateTimeDisplay} from "../../utility/Dates";
 import {DateTimePickerAndroid} from "@react-native-community/datetimepicker";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {CreateInviteToken, CreateInviteTokenRequest} from "../../repo/group/Invites";
+import {CustomButton} from "../UI/CustomButton";
+import {showToast} from "../UI/Toast";
+import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Errors";
+import {handleLogoutProcedure} from "../../Util";
+import {resetToUserScreen} from "../../utility/navigation";
+import {useNavigation} from "@react-navigation/native";
 
 
 interface CreateInviteProps {
@@ -14,12 +20,16 @@ interface CreateInviteProps {
 
 
 export function CreateInvite({groupId, onSuccess}: CreateInviteProps) {
-    const text = useTexts(['createInvite']);
+    const text = useTexts(['createInvite', 'whenTheMealWillTakePlace']);
+    const toast = useToast();
+    const navigation = useNavigation();
+    const getError = useErrorText();
 
     const [expiresAt, setExpiresAt] = useState<string>();
     const [expiresAtDate, setExpiresAtDate] = useState<Date>(new Date);
     const [isModalVisible, setModalVisible] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
+
     function onChangeDatePicker(event: any, selectedDate?: Date) {
         if (!selectedDate) return;
 
@@ -33,6 +43,7 @@ export function CreateInvite({groupId, onSuccess}: CreateInviteProps) {
             value: selectedDate,
             onChange,
             mode: currentMode,
+
             is24Hour: true,
         });
     };
@@ -57,43 +68,91 @@ export function CreateInvite({groupId, onSuccess}: CreateInviteProps) {
             await onSuccess();
             setModalVisible(false)
         } catch (e) {
-            console.error(e); //TODO: error handling
+
+            showToast({
+                toast,
+                title: text.createInvite,
+                description: getError(e.message),
+                status: "error",
+            });
+
+            if (e instanceof UnauthorizedError) {
+                await handleLogoutProcedure(navigation)
+                return;
+            }
+            if (e instanceof NotFoundError) {
+                if (e.message === FRONTEND_ERRORS.GROUP_DOES_NOT_EXIST_ERROR) {
+                    resetToUserScreen(navigation)
+                    return;
+                }
+                return;
+            }
         }
         setIsSaving(false)
+        setExpiresAt('')
+        setExpiresAtDate(new Date());
 
     };
 
     return (
         <>
-            <Button onPress={() => setModalVisible(true)} my={4}>
+            <CustomButton onPress={() => setModalVisible(true)} my={4}>
                 {text.createInvite}
-            </Button>
+            </CustomButton>
             <Modal isOpen={isModalVisible} onClose={() => setModalVisible(false)}>
                 <Modal.Content>
-                    <Modal.Header>{text.createInvite}</Modal.Header>
                     <Modal.Body>
-                        <FormControl>
-                            <Input
-                                value={expiresAt}
-                                isReadOnly={true}
-                                p={3}
-                                placeholder="When the meal will take place"
-                                InputRightElement={
-                                    <Button onPress={() => {
-                                        showDatepicker()
-                                    }} size="xs" p={3}>
-                                        <Icon as={Ionicons} name="calendar" size={5} color={`white`}/>
-                                    </Button>
-                                }
-                            />
-                        </FormControl>
+                        <Icon
+                            as={<Ionicons name="close"/>}
+                            size={7}
+                            position={'absolute'}
+                            top={'5%'}
+                            right={'5%'}
+                            color="gray.400"
+                            onPress={() => setModalVisible(false)}
+                        />
+                        <VStack space={2}>
+                            <VStack
+                                height='auto'
+                                width={'100%'}
+                                justifyContent={'center'}
+                                alignItems='center'
+                                space={'3'}
+                            >
+                                <Text fontSize={'xl'} fontWeight='bold'>
+                                    {text.createInvite}
+                                </Text>
+
+                                <FormControl>
+                                    <Input
+                                        value={expiresAt}
+                                        isReadOnly={true}
+                                        p={3}
+                                        placeholder={text.whenTheMealWillTakePlace}
+                                        InputRightElement={
+                                            <Button
+                                                backgroundColor={'green.800'}
+                                                onPress={() => {
+                                                    showDatepicker()
+                                                }} size="xs" p={3}>
+                                                <Icon as={Ionicons} name="calendar" backgroundColor={'orange'} size={5}
+                                                      color={`white`}/>
+                                            </Button>
+                                        }
+                                    />
+                                </FormControl>
+                            </VStack>
+
+                            <CustomButton width={'100%'} onPress={handleSave} isLoading={isSaving}>
+                                {text.createInvite}
+                            </CustomButton>
+                            <CustomButton onlyOutline={true} onPress={() => setModalVisible(false)}>
+                                <Text>
+                                    {useText('cancel')}
+                                </Text>
+                            </CustomButton>
+                        </VStack>
                     </Modal.Body>
-                    <Modal.Footer>
-                        <Button isLoading={isSaving} onPress={handleSave}>{useText('save')}</Button>
-                        <Button variant="ghost" onPress={() => setModalVisible(false)}>
-                            {useText('cancel')}
-                        </Button>
-                    </Modal.Footer>
                 </Modal.Content>
             </Modal>
         </>

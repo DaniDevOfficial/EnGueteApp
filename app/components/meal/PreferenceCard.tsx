@@ -21,6 +21,7 @@ import {PillTag} from "../UI/Pilltag";
 import {mealPreferenceText, useTexts} from "../../utility/TextKeys/TextKeys";
 import {showToast} from "../UI/Toast";
 import {resetToUserScreen} from "../../utility/navigation";
+import {CustomButton} from "../UI/CustomButton";
 
 export function PreferenceCard({mealParticipants, forceRefresh}: {
     mealParticipants: MealPreference,
@@ -88,10 +89,10 @@ export function PreferenceCard({mealParticipants, forceRefresh}: {
 
             <Box
                 shadow={"1"}
-                borderColor={"light.200"}
+                borderColor={"orange.200"}
                 borderWidth={1}
                 borderRadius="md"
-                backgroundColor="light.100"
+                backgroundColor="coolGray.100"
                 p={2}
             >
                 <HStack
@@ -120,35 +121,57 @@ export function PreferenceCard({mealParticipants, forceRefresh}: {
             </Box>
 
 
-
             <Modal isOpen={isModalVisible} onClose={() => setModalVisible(false)}>
                 <Modal.Content>
-                    <Modal.Header>{text.editPreferences}</Modal.Header>
                     <Modal.Body>
 
-                        <FormControl>
-                            <FormControl.Label>{text.newPreference}</FormControl.Label>
-                            <Input
-                                value={newPreference}
-                                onChangeText={setNewPreference}
-                                placeholder={text.newPreference}
-                            />
-                        </FormControl>
-                        <FormControl display={'flex'} alignItems={'flex-start'}>
+                        <VStack space={4}>
+                            <VStack space={2} alignItems="center" width='100%'>
 
-                            <FormControl.Label>{text.isCook}</FormControl.Label>
-                            <Switch
-                                isChecked={newIsCook ?? false}
-                                onChange={(e) => setNewIsCook(e.nativeEvent.value)}
-                            />
-                        </FormControl>
+                                <Text
+                                    fontSize={'2xl'}
+                                    fontWeight={'bold'}
+                                    textAlign={'center'}
+                                >
+                                    {text.editPreferences}
+                                </Text>
+                                <FormControl>
+                                    <FormControl.Label>{text.newPreference}</FormControl.Label>
+                                    <Input
+                                        value={newPreference}
+                                        onChangeText={setNewPreference}
+                                        placeholder={text.newPreference}
+                                    />
+                                </FormControl>
+                                <FormControl display={'flex'} alignItems={'center'}  justifyContent={'space-between'} flexDir={'row'}>
+                                    <FormControl.Label>{text.isCook}</FormControl.Label>
+                                    <Switch
+                                        colorScheme={'orange'}
+                                        isChecked={newIsCook ?? false}
+                                        onChange={(e) => setNewIsCook(e.nativeEvent.value)}
+                                    />
+                                </FormControl>
+                            </VStack>
+                            <VStack space={2} alignItems="center" width='100%'>
+
+                                <CustomButton
+                                    width={'100%'}
+                                    isLoading={false}
+                                    onPress={handleSave}
+                                    colorScheme="primary"
+                                >
+                                    {text.save}
+                                </CustomButton>
+                                <CustomButton width={'100%'} onlyOutline={true} onPress={() => setModalVisible(false)}>
+                                    <Text>
+                                        {text.cancel}
+                                    </Text>
+                                </CustomButton>
+
+                            </VStack>
+                        </VStack>
+
                     </Modal.Body>
-                    <Modal.Footer>
-                        <Button onPress={handleSave}>{text.save}</Button>
-                        <Button variant="ghost" onPress={() => setModalVisible(false)}>
-                            {text.cancel}
-                        </Button>
-                    </Modal.Footer>
                 </Modal.Content>
             </Modal>
         </Pressable>

@@ -128,6 +128,18 @@ export function getTime(dateTimeString: string): string {
     return target.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", hour12: false});
 }
 
+// Format: MonthShort DayOfMonth, Year
+// Example: Sep 8, 2025
+export function shortDate(dateTimeString: string) {
+    const target = new Date(dateTimeString);
+
+    const monthShort = target.toLocaleString("en-US", { month: "short" });
+    const day = target.getDate();
+    const year = target.getFullYear();
+
+    return `${monthShort} ${day}, ${year}`;
+}
+
 
 
 export function getSwissDateTimeDisplay(dateTime: Date) {

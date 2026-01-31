@@ -15,6 +15,9 @@ export type MealTextType =
     | 'newPreference'
     | 'preference'
     | 'isCook'
+    | 'open'
+    | 'closed'
+    | 'finished'
     ;
 
 export type MealTextKeyType = {
@@ -76,6 +79,18 @@ export const MealTextKey: MealTextKeyType = {
     'preference': {
         german: 'Präferenz',
         english: 'Preference'
+    },
+    'open': {
+        german: 'Offen',
+        english: 'Open'
+    },
+    'closed': {
+        german: 'Geschlossen',
+        english: 'Closed'
+    },
+    'finished': {
+        german: 'Beendet',
+        english: 'Finished'
     },
     'isCook': {
         german: 'Ist ein Koch? 👨‍🍳',

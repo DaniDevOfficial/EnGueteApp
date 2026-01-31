@@ -4,6 +4,7 @@ export type GroupTextType =
     | 'noParticipants'
     | 'youAreInNoGroup'
     | 'startByJoiningOrCreating'
+    | 'groups'
     | 'yourGroups'
     | 'noQuantity'
     | 'oneParticipant'
@@ -11,7 +12,9 @@ export type GroupTextType =
     | 'noMealsInThisGroup'
     | 'noMealsInThisWeek'
     | 'createNewMeal'
+    | 'createMeal'
     | 'createNewGroup'
+    | 'createNewGroupInformationText'
     | 'searchForGroup'
     | 'groupName'
     | 'enterANameForTheGroup'
@@ -35,7 +38,10 @@ export type GroupTextType =
     | 'updateGroupName'
     | 'noActiveInviteTokens'
     | 'createInvite'
+    | 'whenTheMealWillTakePlace'
     | 'voidToken'
+    | 'invitation'
+    | 'shareInvitationLink'
     | 'groupInvite'
     | 'youWereInvited'
     | 'joinGroup'
@@ -67,6 +73,10 @@ export const GroupTextKey: GroupTextKeyType = {
         german: 'Beginne damit, einer Gruppe beizutreten oder eine zu erstellen 🦾',
         english: 'Start by joining or creating a group 🦾',
     },
+    'groups': {
+        german: 'Gruppen',
+        english: 'Groups',
+    },
     'yourGroups': {
         german: 'Deine Gruppen',
         english: 'Your Groups',
@@ -95,9 +105,17 @@ export const GroupTextKey: GroupTextKeyType = {
         german: 'Neue Mahlzeit erstellen',
         english: 'Create new meal',
     },
+    'createMeal': {
+        german: 'Neue Mahlzeit',
+        english: 'New meal',
+    },
     'createNewGroup': {
         german: 'Neue Gruppe erstellen',
         english: 'Create new group',
+    },
+    'createNewGroupInformationText': {
+        german: 'Mahlzeiten teilen, entscheiden wer kocht, und Präferenzen im Blick behalten. Alles an einem Ort.',
+        english: 'Share meals, decide who’s cooking, and keep track of preferences. All in one place.',
     },
     'searchForGroup': {
         german: 'Nach Gruppe suchen',
@@ -191,13 +209,25 @@ export const GroupTextKey: GroupTextKeyType = {
         german: 'Einladung erstellen',
         english: 'Create invite',
     },
+    'whenTheMealWillTakePlace': {
+        german: 'Wann die Mahlzeit stattfinden wird',
+        english: 'When the meal will take place',
+    },
     'voidToken': {
         german: 'Einladung ungültig machen',
         english: 'Void token',
     },
+    'invitation': {
+        german: 'Einladung',
+        english: 'Invitation',
+    },
+    'shareInvitationLink': {
+        german: 'Teile den Einladungslink mit deiner Familie / Freunden, sodass sie beitreten können.',
+        english: 'Share the invitation link to your family / friends so they can join.',
+    },
     'groupInvite': {
         german: 'Gruppen Einladung',
-        english: 'Group Invite',
+        english: 'Group Invite'
     },
     'youWereInvited': {
         german: 'Du wurdest in eine Gruppe eingeladen eingeladen 🎉',

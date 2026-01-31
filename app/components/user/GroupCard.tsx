@@ -1,15 +1,22 @@
 import React from 'react';
 import {Group} from '../../repo/User';
-import {Box, Flex, HStack, Pressable, Text} from 'native-base';
+import {Box, HStack, Image, Pressable, Text, VStack} from 'native-base';
 import {useNavigation} from "@react-navigation/native";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import eatIcon from "../../assets/icons/eatIcon.png";
+import arrowGoOn from '../../assets/icons/arrow-up-right.png';
+import backgroundWithHeart from '../../assets/background/plateWithHeart.png';
+
+import {ProfilePictureList} from "../UI/ProfilePictureList";
+import {PillTag} from "../UI/Pilltag";
+import {green, red} from "react-native-reanimated/lib/typescript/Colors";
 
 type GroupCardProps = {
     group: Group;
+    color: 'orange' | 'yellow';
 };
 
 
-export function GroupCard({group}: GroupCardProps) {
+export function GroupCard({group, color}: GroupCardProps) {
     const navigation = useNavigation();
 
     function handleNavigate() {
@@ -24,53 +31,116 @@ export function GroupCard({group}: GroupCardProps) {
     }
 
 
-    return (
-        <Pressable width={'100%'} onPress={handleNavigate}>
-            <Box width={'100%'} alignItems="center" p="4" borderRadius="md" borderWidth={'1px'} borderColor={"coolGray.300"} my={2}>
-                <Flex
-                    flexDir={'column'}
-                    width={'100%'}
-                >
-                    <HStack
-                        justifyContent={'space-between'}
+    const iconSize = '35px';
+    const iconSizeSmoll = '25px';
+    const images = [];
 
-                    >
-                        <Text
-                            fontSize={'md'}
-                            fontWeight={'bold'}
+    for (let i = 0; i < group.userCount; i++) {
+        images.push('https://i0.wp.com/picjumbo.com/wp-content/uploads/palm-tree-and-sky-in-early-evening-free-image.jpg?w=600&quality=80')
+    }
+
+
+    return (
+        <Box p={2}>
+
+            <Pressable onPress={handleNavigate}>
+                <Box
+                    width="100%"
+                    backgroundColor={color === 'orange' ? "#FFDAC2" : '#FFEAAD'}
+                    padding={5}
+                    px={4}
+                    shadow={1}
+                    borderRadius={20}
+                    overflow="hidden"
+                >
+                    <Image
+                        source={backgroundWithHeart}
+                        alt="backgroundWithHeart"
+                        style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            right: 0,
+                            zIndex: -1,
+                        }}
+                        width={'200px'}
+                        height={'160px'}
+                        resizeMethod={'scale'}
+                        resizeMode={'contain'}
+                    />
+
+                    <HStack  justifyContent="space-between">
+                        <VStack
+                            space={3}
+                            maxW={'240px'}
+                            justifyContent="center"
+                            alignItems="flex-start"
                         >
-                            {group.groupName}
-                        </Text>
-                        <Ionicons name={'chevron-forward-outline'} size={20}/>
+                            {/** Icon */}
+                            <Box
+                                padding={'8px'}
+                                backgroundColor={'white'}
+                                borderRadius="100"
+                            >
+
+                                <Image
+                                    w={iconSize}
+                                    h={iconSize}
+                                    source={eatIcon}
+                                    alt="eatIcon"
+                                    resizeMode="contain"
+                                />
+                            </Box>
+                            {/** Name And Group Type */}
+                            <Box paddingX={2}>
+
+                                <Box>
+                                    <Text
+                                        fontSize={16}
+                                    >
+                                        Home
+                                    </Text>
+                                    <Text
+                                        fontSize={20}
+                                        fontWeight={'bold'}
+                                    >
+                                        {group.groupName}
+                                    </Text>
+                                </Box>
+                            </Box>
+                            {/** Users in group image */}
+                            <ProfilePictureList
+                                profilePictures={images}
+                                totalAmount={group.userCount}/>
+
+                        </VStack>
+
+                        <VStack justifyContent="space-between" alignItems="flex-end">
+
+                            <PillTag text={'Soon'} colorScheme={'orange'} />
+
+                            <Box
+                                padding={'12px'}
+                                backgroundColor={'white'}
+                                borderRadius="100"
+                            >
+
+                                <Image
+                                    w={iconSizeSmoll}
+                                    h={iconSizeSmoll}
+                                    source={arrowGoOn}
+                                    alt="arrowGoOn"
+                                    resizeMode="contain"
+                                />
+                            </Box>
+                        </VStack>
 
                     </HStack>
-                    <Flex
 
-                    >
-                        <HStack
-                            justifyContent={'space-between'}
-                            space={6}
-                        >
+                </Box>
+            </Pressable>
+        </Box>
 
-                            <HStack>
-                                <Ionicons name={'person-outline'} size={20}/>
-                                <Text>
-                                    {group?.userCount.toString()}
-                                </Text>
-                            </HStack>
-                            <HStack
-                                space={2}
-                            >
-                                <Ionicons name={'time-outline'} size={20}/>
-                                <Text>
-                                    Soon
-                                </Text>
-                            </HStack>
-                        </HStack>
-
-                    </Flex>
-                </Flex>
-            </Box>
-        </Pressable>
     );
 }
+
+

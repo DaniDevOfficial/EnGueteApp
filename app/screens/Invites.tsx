@@ -26,7 +26,7 @@ export function Invites() {
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const [inviteTokens, setInviteTokens] = useState<InviteToken[]>([]);
-    const [saving, setSaving] = useState<boolean>(true);
+
     const canVoid = CanPerformAction(group.userRoleRights, PERMISSIONS.CAN_VOID_INVITE_LINKS);
 
     async function loadInvites() {
