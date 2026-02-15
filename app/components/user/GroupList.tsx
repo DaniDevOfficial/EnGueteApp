@@ -23,6 +23,7 @@ import {showToast} from "../UI/Toast";
 import {handleLogoutProcedure} from "../../Util";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {CreateGroup} from "../group/CreateGroup";
+import {JoinGroup} from "../group/JoinGroup";
 
 export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
     const navigation = useNavigation();
@@ -140,7 +141,15 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
                         >
                             {text.groups}
                         </Text>
-                        <CreateGroup />
+                        <HStack
+                            space={2}
+                            alignItems={'center'}
+                        >
+                            <JoinGroup />
+
+
+                            <CreateGroup/>
+                        </HStack>
                     </Flex>
 
                     <ScrollView

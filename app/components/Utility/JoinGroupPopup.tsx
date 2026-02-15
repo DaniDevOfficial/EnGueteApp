@@ -32,7 +32,7 @@ export function TokenPopupHandler({token}: { token: string }) {
     return null;
 }
 
-async function handleJoiningGroup(token: string, navigation: any) {
+export async function handleJoiningGroup(token: string, navigation: any) {
     const response = await JoinGroupWithToken(token);
     //TODO: error handeling
     if (navigation) {
