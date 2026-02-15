@@ -1,5 +1,4 @@
-import {Box, HStack, Icon, Image, Input, Modal, Text, useToast, VStack} from "native-base";
-import groupIcon from '../../assets/PopupIcons/groupIcon.png';
+import {Box, HStack, Icon, Image, Input, Modal, Pressable, Text, useToast, VStack} from "native-base";
 import {useText, useTexts} from "../../utility/TextKeys/TextKeys";
 import React, {useState} from "react";
 import {CustomButton} from "../UI/CustomButton";
@@ -7,38 +6,42 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import {StackActions, useNavigation} from "@react-navigation/native";
 import {CreateNewGroup, NewGroupType} from "../../repo/Group";
 import {showToast} from "../UI/Toast";
-import {UnauthorizedError, useErrorText} from "../../utility/Errors";
+import {FRONTEND_ERRORS, UnauthorizedError, useErrorText} from "../../utility/Errors";
+import inviteIcon from "../../assets/PopupIcons/inviteIcon.png";
 import {handleLogoutProcedure} from "../../Util";
 
-export function CreateGroup() {
+import {handleJoiningGroup} from "../Utility/JoinGroupPopup";
+import {JoinGroupWithToken} from "../../repo/group/Invites";
+
+export function JoinGroup() {
     const [isModalVisible, setModalVisible] = useState(false);
     const [isLoading, setLoading] = useState(false);
-    const [title, setTitle] = useState<string | undefined>();
+    const [token, setToken] = useState<string | undefined>();
 
-    const text = useTexts(['createNewGroup', 'createNewGroupInformationText', 'groupName', 'error']);
+    const text = useTexts(['joinGroup', 'joinGroupInfoText', 'inviteToken', 'error']);
     const navigation = useNavigation();
     const getError = useErrorText();
     const toast = useToast();
 
-    async function handleSubmit() {
+    async function handleJoin() {
         setLoading(true);
         try {
-            const data: NewGroupType = {
-                // @ts-ignore
-                groupName: title,
+
+            if (token === undefined) {
+                throw new Error(FRONTEND_ERRORS.INVALID_INVITE_TOKEN_ERROR);
             }
-            const res = await CreateNewGroup(data)
+
+            const response = await JoinGroupWithToken(token);
 
             // @ts-ignore
             navigation.dispatch(
                 StackActions.replace('group', {
                     screen: 'groupDetails',
                     params: {
-                        groupId: res.groupId,
+                        groupId: response.groupId,
                     },
                 })
             );
-            return;
         } catch (e) {
             showToast({
                 toast,
@@ -58,13 +61,19 @@ export function CreateGroup() {
     return (
         <>
 
-            <CustomButton onPress={() => setModalVisible(true)}>
-                <HStack flexDir='row' space={2} justifyContent='space-between' alignItems='center'>
-                    <Text color='white' fontWeight='bold' fontSize='xl'>
-                        {' '} + {' '}
-                    </Text>
+            <CustomButton onlyOutline={true} onPress={() => setModalVisible(true)} >
+                <HStack flexDir='row' space={2} justifyContent='center' alignItems='center'>
+                    <Pressable>
+                        <Icon
+                            as={<Ionicons name="enter-outline"/>}
+                            size={6}
+                            color="orange.500"
+                        />
+                    </Pressable>
                 </HStack>
             </CustomButton>
+
+
             <Modal
                 _backdrop={{
                     bg: "coolGray.900", // backdrop color
@@ -94,27 +103,28 @@ export function CreateGroup() {
                             alignItems='center'
                             space={'3'}
                         >
+
                             <Image
-                                source={groupIcon}
-                                alt="Profile picture"
-                                width="170px"
-                                height="150px"
+                                source={inviteIcon}
+                                alt="inviteIcon"
+                                width="100px"
+                                height="110px"
                             />
 
 
                             <Text fontSize={'xl'} fontWeight='bold'>
-                                {text.createNewGroup}
+                                {text.joinGroup}
                             </Text>
                             <Text textAlign={'center'} fontSize={'md'} fontWeight={'light'}>
-                                {text.createNewGroupInformationText}
+                                {text.joinGroupInfoText}
                             </Text>
                             <Input
-                                placeholder={text.groupName}
-                                value={title}
-                                onChangeText={setTitle}
+                                placeholder={text.inviteToken}
+                                value={token}
+                                onChangeText={setToken}
                             />
-                            <CustomButton width={'100%'} isLoading={isLoading} onPress={() => handleSubmit()}>
-                                {useText('createNewGroup')}
+                            <CustomButton width={'100%'} isLoading={isLoading} onPress={() => handleJoin()}>
+                                {text.joinGroup}
                             </CustomButton>
                         </VStack>
                     </Modal.Body>

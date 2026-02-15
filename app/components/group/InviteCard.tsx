@@ -24,7 +24,6 @@ import {resetToUserScreen} from "../../utility/navigation";
 import {useNavigation} from "@react-navigation/native";
 import {CustomButton} from "../UI/CustomButton";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import groupIcon from "../../assets/PopupIcons/inviteIcon.png";
 import QRCode from "react-native-qrcode-svg";
 
 interface InviteCardProps {
@@ -174,12 +173,6 @@ export function InviteCard({inviteToken, expiryDate, inviteLink, canVoid, onVoid
                                 alignItems='center'
                                 space={'3'}
                             >
-                                <Image
-                                    source={groupIcon}
-                                    alt="Profile picture"
-                                    width="100px"
-                                    height="110px"
-                                />
 
 
                                 <Text fontSize={'xl'} fontWeight='bold'>
@@ -189,7 +182,7 @@ export function InviteCard({inviteToken, expiryDate, inviteLink, canVoid, onVoid
                                     {text.shareInvitationLink}
                                 </Text>
 
-                                <Box display="none" justifyContent="center" alignItems="center">
+                                <Box display="block" justifyContent="center" alignItems="center">
                                     <QRCode value={inviteLink} size={100}/>
                                 </Box>
                                 <Input

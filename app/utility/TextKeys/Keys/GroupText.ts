@@ -45,6 +45,8 @@ export type GroupTextType =
     | 'groupInvite'
     | 'youWereInvited'
     | 'joinGroup'
+    | 'joinGroupInfoText'
+    | 'inviteToken'
     | 'maybeLater'
     | 'noGroupsFound'
     | 'groupInformation'
@@ -236,6 +238,14 @@ export const GroupTextKey: GroupTextKeyType = {
     'joinGroup': {
         german: 'Gruppe beitreten',
         english: 'Join group',
+    },
+    'joinGroupInfoText': {
+        german: 'Den Einaldungstoken eingeben und der Gruppe beitreten',
+        english: 'Enter the invite token and join the group',
+    },
+    'inviteToken': {
+        german: 'Einladung',
+        english: 'Invite Token',
     },
     'maybeLater': {
         german: 'Vielleicht später',
