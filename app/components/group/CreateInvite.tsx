@@ -20,7 +20,7 @@ interface CreateInviteProps {
 
 
 export function CreateInvite({groupId, onSuccess}: CreateInviteProps) {
-    const text = useTexts(['createInvite', 'whenTheMealWillTakePlace']);
+    const text = useTexts(['createInvite', 'whenTheInviteWillBeInvalid']);
     const toast = useToast();
     const navigation = useNavigation();
     const getError = useErrorText();
@@ -128,16 +128,24 @@ export function CreateInvite({groupId, onSuccess}: CreateInviteProps) {
                                         value={expiresAt}
                                         isReadOnly={true}
                                         p={3}
-                                        placeholder={text.whenTheMealWillTakePlace}
+                                        placeholder={text.whenTheInviteWillBeInvalid}
                                         InputRightElement={
                                             <Button
-                                                backgroundColor={'green.800'}
-                                                onPress={() => {
-                                                    showDatepicker()
-                                                }} size="xs" p={3}>
-                                                <Icon as={Ionicons} name="calendar" backgroundColor={'orange'} size={5}
-                                                      color={`white`}/>
+                                                variant="outline"
+                                                borderColor="orange.500"
+                                                _text={{ color: "orange.500" }}
+                                                onPress={showDatepicker}
+                                                size="xs"
+                                                p={3}
+                                            >
+                                                <Icon
+                                                    as={Ionicons}
+                                                    name="calendar"
+                                                    size={5}
+                                                    color="orange.500"
+                                                />
                                             </Button>
+
                                         }
                                     />
                                 </FormControl>
