@@ -32,6 +32,7 @@ export type AuthTextType =
     | 'clearLocalDataQuestionText'
     | 'logoutQuestionText'
     | 'deleteAccount'
+    | 'privacyPolicy'
     | 'deleteAccountRequiredText'
     | 'thisActionCannotBeUndone'
     | 'pleaseEnterTextToConfirm'
@@ -174,6 +175,10 @@ export const AuthTextKey: AuthTextKeyType = {
     'deleteAccount': {
         german: 'Account löschen',
         english: 'Delete account',
+    },
+    'privacyPolicy': {
+        german: 'Privacy Policy',
+        english: 'Privacy Policy',
     },
     'deleteAccountRequiredText': {
         german: '[username] Löschen',

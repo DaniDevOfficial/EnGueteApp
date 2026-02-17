@@ -26,9 +26,9 @@ import {FRONTEND_ERRORS, useErrorText} from "../utility/Errors";
 import {CustomButton} from "../components/UI/CustomButton";
 
 export function Signup() {
-    const [username, setUsername] = useState('Dani1-123');
+    const [username, setUsername] = useState('Home2');
     const [password, setPassword] = useState('Dani1-123');
-    const [email, setEmail] = useState('1232@gmail.com');
+    const [email, setEmail] = useState('david.bischof.db@gmail.com');
     const [error, setError] = useState('');
     const [inviteToken, setInviteToken] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);

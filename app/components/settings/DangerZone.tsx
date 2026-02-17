@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+
+import { Linking } from 'react-native'
 import {
     Box, HStack, Icon, Pressable, Text, useToast, VStack
 } from "native-base";
@@ -71,7 +73,13 @@ export function DangerZone() {
             setIsSaving(false);
         }
     }
+    function openPrivacyPolicy () {
+        const url = process.env.EXPO_PUBLIC_WEB_URL + '#/privacy/'
 
+        Linking.openURL(url).catch(() => {
+            console.warn('Could not open privacy policy')
+        })
+    }
     const options: Option[] = [
         {
             label: useText('clearLocalData'),
@@ -86,12 +94,19 @@ export function DangerZone() {
             iconColor: 'blue.400',
         },
         {
+            label: useText('privacyPolicy'),
+            icon: 'article',
+            onPress: () => openPrivacyPolicy(),
+            textColor: 'gray.500',
+            iconColor: 'gray.500',
+        },
+        {
             label: useText('deleteAccount'),
             icon: 'delete-forever',
             onPress: () => setDeleteModalVisible(true),
             textColor: 'red.500',
             iconColor: 'red.500',
-        }
+        },
     ];
 
     return (

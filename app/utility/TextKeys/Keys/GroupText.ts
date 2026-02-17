@@ -38,13 +38,15 @@ export type GroupTextType =
     | 'updateGroupName'
     | 'noActiveInviteTokens'
     | 'createInvite'
-    | 'whenTheMealWillTakePlace'
+    | 'whenTheInviteWillBeInvalid'
     | 'voidToken'
     | 'invitation'
     | 'shareInvitationLink'
     | 'groupInvite'
     | 'youWereInvited'
     | 'joinGroup'
+    | 'joinGroupInfoText'
+    | 'inviteToken'
     | 'maybeLater'
     | 'noGroupsFound'
     | 'groupInformation'
@@ -209,9 +211,9 @@ export const GroupTextKey: GroupTextKeyType = {
         german: 'Einladung erstellen',
         english: 'Create invite',
     },
-    'whenTheMealWillTakePlace': {
-        german: 'Wann die Mahlzeit stattfinden wird',
-        english: 'When the meal will take place',
+    'whenTheInviteWillBeInvalid': {
+        german: 'Wann die Einladung ablaufen wird',
+        english: 'When the invite will be disabled',
     },
     'voidToken': {
         german: 'Einladung ungültig machen',
@@ -236,6 +238,14 @@ export const GroupTextKey: GroupTextKeyType = {
     'joinGroup': {
         german: 'Gruppe beitreten',
         english: 'Join group',
+    },
+    'joinGroupInfoText': {
+        german: 'Den Einaldungstoken eingeben und der Gruppe beitreten',
+        english: 'Enter the invite token and join the group',
+    },
+    'inviteToken': {
+        german: 'Einladung',
+        english: 'Invite Token',
     },
     'maybeLater': {
         german: 'Vielleicht später',
