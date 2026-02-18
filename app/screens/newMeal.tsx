@@ -203,12 +203,20 @@ export function NewMeal() {
                         p={3}
                         placeholder={text.scheduledAtPlaceholder}
                         InputRightElement={
+
                             <Button
-                                backgroundColor="green.800"
-                                onPress={() => {
-                                    showDatepickerSequencing()
-                                }} size="xs" p={3}>
-                                <Icon as={Ionicons} name="calendar" size={5} color={`white`}/>
+                                variant="outline"
+                                borderColor="orange.500"
+                                _text={{color: "orange.500"}} onPress={() => {
+                                showDatepickerSequencing()
+                            }} size="xs" p={3}>
+                                <Icon
+                                    as={Ionicons}
+
+                                    name="calendar"
+                                    size={5}
+                                    color="orange.500"
+                                />
                             </Button>
                         }
                     />
