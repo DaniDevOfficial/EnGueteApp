@@ -1,8 +1,8 @@
 {
   "expo": {
     "scheme": "enguete",
-    "name": "EnGuete",
-    "slug": "EnGuete",
+    "name": "EnGueteApp",
+    "slug": "EnGueteApp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/appIcon.jpeg",
