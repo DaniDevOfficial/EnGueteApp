@@ -1,25 +1,25 @@
 {
   "expo": {
     "scheme": "enguete",
-    "name": "EnGueteApp",
-    "slug": "EnGueteApp",
+    "name": "EnGuete",
+    "slug": "EnGuete",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/appIcon.jpeg",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/appIcon.jpeg",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FF9333"
     },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/appIcon.jpeg",
+        "backgroundColor": "#FF9333"
       },
       "package": "com.danidevofficial.EnGuete"
     },
