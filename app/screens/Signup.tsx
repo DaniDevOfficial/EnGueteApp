@@ -1,29 +1,14 @@
 import React, {useState} from 'react';
-import {
-    Box,
-    Button,
-    Center,
-    Divider,
-    Flex,
-    FormControl,
-    Heading,
-    HStack,
-    Input,
-    Pressable,
-    Text,
-    useToast,
-    VStack
-} from "native-base";
+import {Flex, FormControl, Input, ScrollView, Text, useToast, VStack} from "native-base";
 import {CreateNewAccount} from "../repo/Auth";
 import {useNavigation} from "@react-navigation/native";
-import {resetToUserScreen} from "../utility/navigation";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 
 import {getPendingInviteToken} from "../utility/DeepLinking";
-import {TokenPopupHandler} from "../components/Utility/JoinGroupPopup";
 import {showToast} from "../components/UI/Toast";
 import {FRONTEND_ERRORS, useErrorText} from "../utility/Errors";
 import {CustomButton} from "../components/UI/CustomButton";
+import {KeyboardAvoidingView, Platform} from "react-native";
 
 export function Signup() {
     const [username, setUsername] = useState('Home2');
@@ -74,92 +59,101 @@ export function Signup() {
     }
 
     return (
-
         <>
-            <Flex
-                justifyContent="center"
-                alignItems="center"
-                py={10}
+            <KeyboardAvoidingView
+                style={{flex: 1}}
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
             >
+                <ScrollView
+                    contentContainerStyle={{flexGrow: 1}}
+                    keyboardShouldPersistTaps="handled"
+                >
+                    <Flex
+                        justifyContent="center"
+                        alignItems="center"
+                        py={10}
+                    >
 
-                <VStack space={10} alignItems="center" w={'100%'}>
-                    <VStack space={2} alignItems="center" w={'100%'}>
+                        <VStack space={10} alignItems="center" w={'100%'}>
+                            <VStack space={2} alignItems="center" w={'100%'}>
 
-                        <Text
-                            fontSize={'3xl'}
-                            fontWeight={'bold'}
-                        >
-                            {text.createNewAccountSlogan}!
-                        </Text>
-                        <Text
-                            width={'90%'}
-                            textAlign="center"
-                        >
-                            {text.createNewAccountInfoText}!
-                        </Text>
-                    </VStack>
+                                <Text
+                                    fontSize={'3xl'}
+                                    fontWeight={'bold'}
+                                >
+                                    {text.createNewAccountSlogan}!
+                                </Text>
+                                <Text
+                                    width={'90%'}
+                                    textAlign="center"
+                                >
+                                    {text.createNewAccountInfoText}!
+                                </Text>
+                            </VStack>
 
-                    <VStack space={2} alignItems="center" w={'100%'}>
-                        <FormControl>
-                            <FormControl.Label>{text.username}</FormControl.Label>
-                            <Input
-                                value={username}
-                                onChangeText={(text) => setUsername(text)}
-                                p={3}
-                                placeholder={text.enterUsername}
-                                rounded="md"
-                            />
-                        </FormControl>
-                        <FormControl>
-                            <FormControl.Label>{text.email}</FormControl.Label>
-                            <Input
-                                value={email}
-                                onChangeText={(text) => setEmail(text)}
-                                p={3}
-                                placeholder={text.enterEmail}
-                                type="text"
-                                rounded="md"
-                            />
-                        </FormControl>
-                        <FormControl>
-                            <FormControl.Label>{text.password}</FormControl.Label>
-                            <Input
-                                value={password}
-                                onChangeText={(text) => setPassword(text)}
-                                p={3}
-                                placeholder={text.enterPassword}
-                                type="password"
-                                rounded="md"
-                            />
-                        </FormControl>
-                    </VStack>
-                    <VStack space={5} alignItems="center" w={'100%'}>
-                        <CustomButton
-                            w={'100%'}
-                            onPress={handleSubmit}
-                        >
-                            {text.createNewAccount}
-                        </CustomButton>
+                            <VStack space={2} alignItems="center" w={'100%'}>
+                                <FormControl>
+                                    <FormControl.Label>{text.username}</FormControl.Label>
+                                    <Input
+                                        value={username}
+                                        onChangeText={(text) => setUsername(text)}
+                                        p={3}
+                                        placeholder={text.enterUsername}
+                                        rounded="md"
+                                    />
+                                </FormControl>
+                                <FormControl>
+                                    <FormControl.Label>{text.email}</FormControl.Label>
+                                    <Input
+                                        value={email}
+                                        onChangeText={(text) => setEmail(text)}
+                                        p={3}
+                                        placeholder={text.enterEmail}
+                                        type="text"
+                                        rounded="md"
+                                    />
+                                </FormControl>
+                                <FormControl>
+                                    <FormControl.Label>{text.password}</FormControl.Label>
+                                    <Input
+                                        value={password}
+                                        onChangeText={(text) => setPassword(text)}
+                                        p={3}
+                                        placeholder={text.enterPassword}
+                                        type="password"
+                                        rounded="md"
+                                    />
+                                </FormControl>
+                            </VStack>
+                            <VStack space={5} alignItems="center" w={'100%'}>
+                                <CustomButton
+                                    w={'100%'}
+                                    onPress={handleSubmit}
+                                >
+                                    {text.createNewAccount}
+                                </CustomButton>
 
-                        <Text>
-                            {text.or}
-                        </Text>
+                                <Text>
+                                    {text.or}
+                                </Text>
 
-                        <CustomButton w={'100%'}
-                                      onPress={() => {
-                                          navigation.navigate('login')
-                                      }}
-                                      onlyOutline={true}
-                                      backgroundColor={'coolGray.100'}
-                        >
-                            <Text>
-                                {text.orLogin}
-                            </Text>
-                        </CustomButton>
-                    </VStack>
+                                <CustomButton w={'100%'}
+                                              onPress={() => {
+                                                  navigation.navigate('login')
+                                              }}
+                                              onlyOutline={true}
+                                              backgroundColor={'coolGray.100'}
+                                >
+                                    <Text>
+                                        {text.orLogin}
+                                    </Text>
+                                </CustomButton>
+                            </VStack>
 
-                </VStack>
-            </Flex>
+                        </VStack>
+                    </Flex>
+                </ScrollView>
+            </KeyboardAvoidingView>
         </>
 
     );

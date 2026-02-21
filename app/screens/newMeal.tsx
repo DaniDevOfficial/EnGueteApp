@@ -25,6 +25,11 @@ import {handleLogoutProcedure} from "../Util";
 import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
 import {CustomButton} from "../components/UI/CustomButton";
 import newMealIcon from "../assets/PopupIcons/newMealIcon.png";
+import {
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView
+} from "react-native";
 
 export interface NewMealType {
     title: string,
@@ -151,6 +156,14 @@ export function NewMeal() {
 
     return (
         <>
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+            >
+                <ScrollView
+                    contentContainerStyle={{ flexGrow: 1 }}
+                    keyboardShouldPersistTaps="handled"
+                >
             <BackButton/>
             <VStack space={4} padding={4} alignItems={'center'} width={'100%'}>
 
@@ -239,6 +252,9 @@ export function NewMeal() {
                     {text.createNewMeal}
                 </CustomButton>
             </VStack>
+
+            </ScrollView>
+        </KeyboardAvoidingView>
         </>
 
     );

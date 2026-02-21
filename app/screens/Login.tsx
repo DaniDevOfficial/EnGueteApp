@@ -1,29 +1,15 @@
 import React, {useState} from 'react';
-import {
-    Box,
-    Button,
-    Center,
-    Divider,
-    Flex,
-    FormControl,
-    Heading,
-    HStack,
-    Input,
-    Pressable,
-    Text,
-    useToast,
-    VStack
-} from "native-base";
+import {Flex, FormControl, Input, Pressable, ScrollView, Text, useToast, VStack} from "native-base";
 import {SignIntoAccount} from "../repo/Auth";
 import {useNavigation} from "@react-navigation/native";
 import {resetToUserScreen} from "../utility/navigation";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 
 import {getPendingInviteToken} from "../utility/DeepLinking";
-import {TokenPopupHandler} from "../components/Utility/JoinGroupPopup";
 import {useErrorText} from "../utility/Errors";
 import {showToast} from "../components/UI/Toast";
 import {CustomButton} from "../components/UI/CustomButton";
+import {KeyboardAvoidingView, Platform} from "react-native";
 
 export function Login() {
     const [username, setUsername] = useState('Dani1-123');
@@ -69,86 +55,96 @@ export function Login() {
 
     return (
         <>
-            <Flex
-                justifyContent="center"
-                alignItems="center"
-                py={10}
+            <KeyboardAvoidingView
+                style={{flex: 1}}
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
             >
+                <ScrollView
+                    contentContainerStyle={{flexGrow: 1}}
+                    keyboardShouldPersistTaps="handled"
+                >
+                    <Flex
+                        justifyContent="center"
+                        alignItems="center"
+                        py={10}
+                    >
 
-                <VStack space={5} alignItems="center" w={'100%'}>
-                    <VStack space={2} alignItems="center" w={'90%'}>
+                        <VStack space={5} alignItems="center" w={'100%'}>
+                            <VStack space={2} alignItems="center" w={'90%'}>
 
-                        <Text
-                            fontSize={'3xl'}
-                            fontWeight={'bold'}
-                        >
-                            {text.welcomeBack}!
-                        </Text>
-                        <Text
-                            textAlign="center"
-                        >
-                            {text.welcomeBackInfoText}!
-                        </Text>
-                    </VStack>
+                                <Text
+                                    fontSize={'3xl'}
+                                    fontWeight={'bold'}
+                                >
+                                    {text.welcomeBack}!
+                                </Text>
+                                <Text
+                                    textAlign="center"
+                                >
+                                    {text.welcomeBackInfoText}!
+                                </Text>
+                            </VStack>
 
-                    <VStack space={2} alignItems="center" w={'100%'}>
-                        <FormControl>
-                            <FormControl.Label>{text.username}</FormControl.Label>
-                            <Input
-                                value={username}
-                                onChangeText={(text) => setUsername(text)}
-                                p={3}
-                                placeholder={text.enterUsername}
-                                rounded="md"
-                            />
-                        </FormControl>
-                        <FormControl>
-                            <FormControl.Label>{text.password}</FormControl.Label>
-                            <Input
-                                value={password}
-                                onChangeText={(text) => setPassword(text)}
-                                p={3}
-                                placeholder={text.enterPassword}
-                                type="password"
-                                rounded="md"
-                            />
-                        </FormControl>
-                        <Pressable
-                            onPress={() => {
-                                navigation.navigate('forgotPassword')
-                            }}>
-                            <Text color={'gray.500'} underline={true} fontSize={'xs'}>
-                                forgot password?
-                            </Text>
-                        </Pressable>
-                    </VStack>
-                    <VStack space={5} alignItems="center" w={'100%'}>
-                        <CustomButton
-                            w={'100%'}
-                            onPress={handleSubmit}
-                        >
-                            {text.login}
-                        </CustomButton>
+                            <VStack space={2} alignItems="center" w={'100%'}>
+                                <FormControl>
+                                    <FormControl.Label>{text.username}</FormControl.Label>
+                                    <Input
+                                        value={username}
+                                        onChangeText={(text) => setUsername(text)}
+                                        p={3}
+                                        placeholder={text.enterUsername}
+                                        rounded="md"
+                                    />
+                                </FormControl>
+                                <FormControl>
+                                    <FormControl.Label>{text.password}</FormControl.Label>
+                                    <Input
+                                        value={password}
+                                        onChangeText={(text) => setPassword(text)}
+                                        p={3}
+                                        placeholder={text.enterPassword}
+                                        type="password"
+                                        rounded="md"
+                                    />
+                                </FormControl>
+                                <Pressable
+                                    onPress={() => {
+                                        navigation.navigate('forgotPassword')
+                                    }}>
+                                    <Text color={'gray.500'} underline={true} fontSize={'xs'}>
+                                        forgot password?
+                                    </Text>
+                                </Pressable>
+                            </VStack>
+                            <VStack space={5} alignItems="center" w={'100%'}>
+                                <CustomButton
+                                    w={'100%'}
+                                    onPress={handleSubmit}
+                                >
+                                    {text.login}
+                                </CustomButton>
 
-                        <Text>
-                            {text.or}
-                        </Text>
+                                <Text>
+                                    {text.or}
+                                </Text>
 
-                        <CustomButton w={'100%'}
-                                      onPress={() => {
-                                          navigation.navigate('signup')
-                                      }}
-                                      onlyOutline={true}
-                                      backgroundColor={'coolGray.100'}
-                        >
-                            <Text>
-                                {text.createAnAccount}
-                            </Text>
-                        </CustomButton>
-                    </VStack>
+                                <CustomButton w={'100%'}
+                                              onPress={() => {
+                                                  navigation.navigate('signup')
+                                              }}
+                                              onlyOutline={true}
+                                              backgroundColor={'coolGray.100'}
+                                >
+                                    <Text>
+                                        {text.createAnAccount}
+                                    </Text>
+                                </CustomButton>
+                            </VStack>
 
-                </VStack>
-            </Flex>
+                        </VStack>
+                    </Flex>
+                </ScrollView>
+            </KeyboardAvoidingView>
         </>
     );
 }

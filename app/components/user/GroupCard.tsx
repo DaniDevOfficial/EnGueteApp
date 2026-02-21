@@ -36,7 +36,7 @@ export function GroupCard({group, color}: GroupCardProps) {
     const images = [];
 
     for (let i = 0; i < group.userCount; i++) {
-        images.push('https://i0.wp.com/picjumbo.com/wp-content/uploads/palm-tree-and-sky-in-early-evening-free-image.jpg?w=600&quality=80')
+        images.push('https://imebehavioralhealth.com/wp-content/uploads/2021/10/user-icon-placeholder-1.png')
     }
 
 
