@@ -11,7 +11,8 @@ export function ConfirmationModal({
                                       title,
                                       message,
                                       isLoading = false,
-                                      requiredText = undefined
+                                      requiredText = undefined,
+                                      furtherInformationText = undefined,
                                   }: {
     isOpen: boolean;
     onClose: () => void;
@@ -20,6 +21,7 @@ export function ConfirmationModal({
     message: string;
     isLoading?: boolean,
     requiredText?: string;
+    furtherInformationText?: string;
 }) {
     const text = useTexts(['cancel', 'confirm', 'error']);
     const toast = useToast();
@@ -66,6 +68,12 @@ export function ConfirmationModal({
                                             placeholder={`${requiredText}`}
                                         />
                                     </FormControl>
+                                </>
+                            )}
+
+                            {furtherInformationText && (
+                                <>
+                                <Text>{furtherInformationText}</Text>
                                 </>
                             )}
                         </VStack>

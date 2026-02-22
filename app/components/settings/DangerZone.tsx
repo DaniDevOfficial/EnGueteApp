@@ -26,7 +26,7 @@ export function DangerZone() {
 
     const text = useTexts(['logout', 'error', 'errorNoOfflineLogout', 'dataAndPrivacy', 'errorPleaseEnterCorrectText']);
     const requiredText = useText('deleteAccountRequiredText', { username: user.user.userName });
-    const modalText = useTexts(['clearLocalData', 'logout', 'deleteAccount', 'clearLocalDataQuestionText', 'logoutQuestionText']);
+    const modalText = useTexts(['clearLocalData', 'logout', 'deleteAccount', 'clearLocalDataQuestionText', 'logoutQuestionText', 'deleteAccountInfo']);
 
     const [isLogoutModalVisible, setLogoutModalVisible] = useState(false);
     const [isClearDataModalVisible, setClearDataModalVisible] = useState(false);
@@ -143,7 +143,8 @@ export function DangerZone() {
                     setDeleteModalVisible(false);
                 }}
                 isLoading={isSaving}
-                title={modalText.logout}
+                title={modalText.deleteAccount}
+                furtherInformationText={modalText.deleteAccountInfo}
                 message={useText('pleaseEnterTextToConfirm', {'text': requiredText})}
                 requiredText={requiredText}
 

@@ -1,5 +1,3 @@
-
-
 export type AuthTextType =
     | 'login'
     | 'signup'
@@ -32,6 +30,7 @@ export type AuthTextType =
     | 'clearLocalDataQuestionText'
     | 'logoutQuestionText'
     | 'deleteAccount'
+    | 'deleteAccountInfo'
     | 'privacyPolicy'
     | 'deleteAccountRequiredText'
     | 'thisActionCannotBeUndone'
@@ -175,6 +174,10 @@ export const AuthTextKey: AuthTextKeyType = {
     'deleteAccount': {
         german: 'Account löschen',
         english: 'Delete account',
+    },
+    'deleteAccountInfo': {
+        german: 'Der Account wird als gelöscht markiert und nach 30 Tagen endgültig gelöscht. Wenn Sie sich innerhalb dieses Zeitraums erneut anmelden, wird die Löschmarkierung aufgehoben.',
+        english: 'Your account will be marked for deletion and permanently removed after 30 days. If you log in again during this period, the deletion request will be canceled.',
     },
     'privacyPolicy': {
         german: 'Privacy Policy',
