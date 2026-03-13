@@ -1,4 +1,4 @@
-import {Option, SettingsSectionStack} from "../../UI/SettingSectionStack";
+import {Option, SettingsSectionStack} from "../../Ui/SettingSectionStack";
 import {useTexts} from "../../../utility/TextKeys/TextKeys";
 import React from "react";
 

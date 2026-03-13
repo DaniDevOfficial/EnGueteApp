@@ -6,7 +6,7 @@ import {MealCard} from "./MealCard";
 import {addDaysToDate, getWednesdayOfWeek, MealFilterSection} from "./MealFilterSection";
 import {useGroup} from "../../context/groupContext";
 import {PanGestureHandler, RefreshControl, State} from "react-native-gesture-handler";
-import {showToast} from "../UI/Toast";
+import {showToast} from "../Ui/Toast";
 import {NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {handleLogoutProcedure} from "../../Util";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";

@@ -1,16 +1,16 @@
 import {useText, useTexts} from "../../../utility/TextKeys/TextKeys";
 import {useNavigation} from "@react-navigation/native";
-import {Option, SettingsSectionStack} from "../../UI/SettingSectionStack";
+import {Option, SettingsSectionStack} from "../../Ui/SettingSectionStack";
 import {PERMISSIONS} from "../../../utility/Roles";
 import {useGroup} from "../../../context/groupContext";
 import React, {useState} from "react";
 import {DeleteGroupRequest, LeaveGroupRequest} from "../../../repo/Group";
 import {resetToUserScreen} from "../../../utility/navigation";
-import {showToast} from "../../UI/Toast";
+import {showToast} from "../../Ui/Toast";
 import {useToast} from "native-base";
 import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../../../utility/Errors";
 import {handleLogoutProcedure} from "../../../Util";
-import {ConfirmationModal} from "../../UI/ConfirmationModal";
+import {ConfirmationModal} from "../../Ui/ConfirmationModal";
 
 export function GroupActions() {
     const {group} = useGroup();

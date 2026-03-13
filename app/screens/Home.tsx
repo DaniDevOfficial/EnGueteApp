@@ -7,7 +7,7 @@ import eatIcon from '../assets/icons/eatIcon.png';
 import React, {useEffect, useState} from 'react'
 import {useNavigation} from "@react-navigation/native";
 import {checkAuth} from "../repo/Auth";
-import {PageSpinner} from "../components/UI/PageSpinner";
+import {PageSpinner} from "../components/Ui/PageSpinner";
 import {voidAuthToken} from "../Util";
 
 import {getPendingInviteToken} from "../utility/DeepLinking";

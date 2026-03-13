@@ -8,8 +8,8 @@ import {
     useToast
 } from "native-base";
 import {useNavigation} from "@react-navigation/native";
-import {CustomButton} from "../components/UI/CustomButton";
-import {showToast} from "../components/UI/Toast";
+import {CustomButton} from "../components/Ui/CustomButton";
+import {showToast} from "../components/Ui/Toast";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 import {resetPassword} from "../repo/Auth";
 

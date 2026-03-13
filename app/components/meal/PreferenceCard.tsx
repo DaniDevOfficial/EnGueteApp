@@ -17,11 +17,11 @@ import {MealPreference, saveMealPreference} from "../../repo/Meal";
 import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {useNavigation} from "@react-navigation/native";
 import {handleLogoutProcedure} from "../../Util";
-import {PillTag} from "../UI/Pilltag";
+import {PillTag} from "../Ui/Pilltag";
 import {mealPreferenceText, useTexts} from "../../utility/TextKeys/TextKeys";
-import {showToast} from "../UI/Toast";
+import {showToast} from "../Ui/Toast";
 import {resetToUserScreen} from "../../utility/navigation";
-import {CustomButton} from "../UI/CustomButton";
+import {CustomButton} from "../Ui/CustomButton";
 
 export function PreferenceCard({mealParticipants, forceRefresh}: {
     mealParticipants: MealPreference,

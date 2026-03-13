@@ -1,5 +1,5 @@
 import {useTexts} from "../../../utility/TextKeys/TextKeys";
-import {Option, SettingsSectionStack} from "../../UI/SettingSectionStack";
+import {Option, SettingsSectionStack} from "../../Ui/SettingSectionStack";
 import React from "react";
 import {useNavigation} from "@react-navigation/native";
 import {CanPerformAction, PERMISSIONS} from "../../../utility/Roles";

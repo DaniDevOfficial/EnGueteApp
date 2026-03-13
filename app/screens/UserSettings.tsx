@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {BackButton} from "../components/UI/BackButton";
+import {BackButton} from "../components/Ui/BackButton";
 import {Box, Icon, Image, ScrollView, Text, useToast, VStack} from "native-base";
 import {useUser} from "../context/userContext";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -10,10 +10,10 @@ import {updateUsername} from "../repo/settings/User";
 import {LanguageSelector} from "../components/settings/LanguageSelector";
 import {ThemeSelector} from "../components/settings/ThemeSelector";
 import {DangerZone} from "../components/settings/DangerZone";
-import {PageTitleSection} from "../components/UI/PageTitleSection";
+import {PageTitleSection} from "../components/Ui/PageTitleSection";
 import {UnauthorizedError, useErrorText} from "../utility/Errors";
 import {useNavigation} from "@react-navigation/native";
-import {showToast} from "../components/UI/Toast";
+import {showToast} from "../components/Ui/Toast";
 import {handleLogoutProcedure} from "../Util";
 import {AccountSection} from "../components/settings/AccountSection";
 

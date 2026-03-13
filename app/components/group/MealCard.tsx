@@ -3,10 +3,10 @@ import {Box, Flex, HStack, Icon, Pressable, Text, VStack} from 'native-base';
 import {useNavigation} from "@react-navigation/native";
 import {MealCard as MealCardType} from "../../repo/Group";
 import {getTime, shortDate} from "../../utility/Dates";
-import {PillTag} from "../UI/Pilltag";
+import {PillTag} from "../Ui/Pilltag";
 import {mealPreferenceText, useTexts} from "../../utility/TextKeys/TextKeys";
 import {MaterialIcons} from "@expo/vector-icons";
-import {ProfilePictureList} from "../UI/ProfilePictureList";
+import {ProfilePictureList} from "../Ui/ProfilePictureList";
 
 type MealCardProps = {
     meal: MealCardType;

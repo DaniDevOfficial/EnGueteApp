@@ -6,14 +6,14 @@ import {GetGroupInformation, Group as GroupInformationType} from "../repo/Group"
 import {useGroup} from "../context/groupContext";
 import {PERMISSIONS} from "../utility/Roles";
 import {UnauthorizedError, useErrorText} from "../utility/Errors";
-import {BackButton} from "../components/UI/BackButton";
+import {BackButton} from "../components/Ui/BackButton";
 import {useTexts} from "../utility/TextKeys/TextKeys";
-import {EditButton} from "../components/UI/EditButton";
-import {PageSpinner} from "../components/UI/PageSpinner";
+import {EditButton} from "../components/Ui/EditButton";
+import {PageSpinner} from "../components/Ui/PageSpinner";
 import {MealList} from "../components/group/MealList";
-import {Title} from "../components/UI/Icons/Title";
-import {showToast} from "../components/UI/Toast";
-import {CustomButton} from "../components/UI/CustomButton";
+import {Title} from "../components/Ui/Icons/Title";
+import {showToast} from "../components/Ui/Toast";
+import {CustomButton} from "../components/Ui/CustomButton";
 
 export function Group() {
     const route = useRoute();

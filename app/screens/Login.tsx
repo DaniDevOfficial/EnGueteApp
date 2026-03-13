@@ -7,8 +7,8 @@ import {useTexts} from "../utility/TextKeys/TextKeys";
 
 import {getPendingInviteToken} from "../utility/DeepLinking";
 import {useErrorText} from "../utility/Errors";
-import {showToast} from "../components/UI/Toast";
-import {CustomButton} from "../components/UI/CustomButton";
+import {showToast} from "../components/Ui/Toast";
+import {CustomButton} from "../components/Ui/CustomButton";
 import {KeyboardAvoidingView, Platform} from "react-native";
 
 export function Login() {

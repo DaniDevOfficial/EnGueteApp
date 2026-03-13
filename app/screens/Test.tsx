@@ -5,7 +5,7 @@ import {SetStateAction, useEffect, useState} from "react";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 import {useNavigation} from "@react-navigation/native";
 import {getLanguageFromAsyncStorage} from "../context/settingsContext";
-import {showToast} from "../components/UI/Toast";
+import {showToast} from "../components/Ui/Toast";
 import {createTable, db, dropAllTables} from "../utility/database";
 
 import {getAllGroups, SyncAllGroups} from "../repo/sync/user/AllGroups";

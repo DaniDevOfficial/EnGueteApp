@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Button, FormControl, Input, VStack} from "native-base";
 import {StackActions, useNavigation} from "@react-navigation/native";
-import {BackButton} from "../components/UI/BackButton";
+import {BackButton} from "../components/Ui/BackButton";
 import {CreateNewGroup, NewGroupType} from "../repo/Group";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 

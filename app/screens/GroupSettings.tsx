@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {BackButton} from "../components/UI/BackButton";
+import {BackButton} from "../components/Ui/BackButton";
 import {Button, ScrollView, useToast, VStack} from "native-base";
 import {useUser} from "../context/userContext";
 import {TextUpdate} from "../components/settings/TextUpdate";
@@ -8,8 +8,8 @@ import {useGroup} from "../context/groupContext";
 import {UpdateGroupName, UpdateGroupNameType} from "../repo/Group";
 import {CanPerformAction, PERMISSIONS} from "../utility/Roles";
 import {useNavigation} from "@react-navigation/native";
-import {PageTitleSection} from "../components/UI/PageTitleSection";
-import {showToast} from "../components/UI/Toast";
+import {PageTitleSection} from "../components/Ui/PageTitleSection";
+import {showToast} from "../components/Ui/Toast";
 import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../utility/Errors";
 import {handleLogoutProcedure} from "../Util";
 import {resetToUserScreen} from "../utility/navigation";

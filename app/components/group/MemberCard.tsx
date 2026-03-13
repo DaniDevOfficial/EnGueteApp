@@ -4,8 +4,8 @@ import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {ACTIONS, MemberActions} from "./MemberActions";
 import {ChangeRole, KickUserFromGroup, KickUserRequest, RoleChange, RoleChangeRequest} from "../../repo/Group";
 import {useGroup} from "../../context/groupContext";
-import {KebabIcon} from "../UI/Icons/KebabIcon";
-import {showToast} from "../UI/Toast";
+import {KebabIcon} from "../Ui/Icons/KebabIcon";
+import {showToast} from "../Ui/Toast";
 
 interface MemberCardProps {
     userId: string;

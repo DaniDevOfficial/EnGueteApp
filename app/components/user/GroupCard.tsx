@@ -6,8 +6,8 @@ import eatIcon from "../../assets/icons/eatIcon.png";
 import arrowGoOn from '../../assets/icons/arrow-up-right.png';
 import backgroundWithHeart from '../../assets/background/plateWithHeart.png';
 
-import {ProfilePictureList} from "../UI/ProfilePictureList";
-import {PillTag} from "../UI/Pilltag";
+import {ProfilePictureList} from "../Ui/ProfilePictureList";
+import {PillTag} from "../Ui/Pilltag";
 import {green, red} from "react-native-reanimated/lib/typescript/Colors";
 
 type GroupCardProps = {

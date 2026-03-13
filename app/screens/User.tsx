@@ -7,10 +7,10 @@ import {useUser} from "../context/userContext";
 import {UserCard} from "../components/user/UserCard";
 import {UnauthorizedError, useErrorText} from "../utility/Errors";
 import {useTexts} from "../utility/TextKeys/TextKeys";
-import {EditButton} from "../components/UI/EditButton";
-import {PageSpinner} from "../components/UI/PageSpinner";
+import {EditButton} from "../components/Ui/EditButton";
+import {PageSpinner} from "../components/Ui/PageSpinner";
 import {GroupList} from "../components/user/GroupList";
-import {showToast} from "../components/UI/Toast";
+import {showToast} from "../components/Ui/Toast";
 
 export function User() {
     const [userInformation, setUserInformation] = useState<UserType | undefined>()

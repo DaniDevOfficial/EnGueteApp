@@ -19,7 +19,7 @@ import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import {GetUserGroups, Group} from "../../repo/User";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {UnauthorizedError, useErrorText} from "../../utility/Errors";
-import {showToast} from "../UI/Toast";
+import {showToast} from "../Ui/Toast";
 import {handleLogoutProcedure} from "../../Util";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {CreateGroup} from "../group/CreateGroup";

@@ -5,7 +5,7 @@ import React, {useState} from "react";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {useNavigation} from "@react-navigation/native";
 import {UnauthorizedError, useErrorText} from "../../utility/Errors";
-import {showToast} from "../UI/Toast";
+import {showToast} from "../Ui/Toast";
 import {handleLogoutProcedure} from "../../Util";
 import {TextModalUpdate} from "./TextModalUpdate";
 

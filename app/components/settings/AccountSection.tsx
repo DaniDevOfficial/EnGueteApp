@@ -8,9 +8,9 @@ import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {useNavigation} from "@react-navigation/native";
 import {updateUsername} from "../../repo/settings/User";
-import {showToast} from "../UI/Toast";
+import {showToast} from "../Ui/Toast";
 import {handleLogoutProcedure} from "../../Util";
-import {Option, SettingsSectionStack} from "../UI/SettingSectionStack";
+import {Option, SettingsSectionStack} from "../Ui/SettingSectionStack";
 import {TextModalUpdate} from "./TextModalUpdate";
 import {PasswordModalUpdate} from "./PasswordModalUpdate";
 

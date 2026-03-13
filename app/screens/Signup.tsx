@@ -5,9 +5,9 @@ import {useNavigation} from "@react-navigation/native";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 
 import {getPendingInviteToken} from "../utility/DeepLinking";
-import {showToast} from "../components/UI/Toast";
+import {showToast} from "../components/Ui/Toast";
 import {FRONTEND_ERRORS, useErrorText} from "../utility/Errors";
-import {CustomButton} from "../components/UI/CustomButton";
+import {CustomButton} from "../components/Ui/CustomButton";
 import {KeyboardAvoidingView, Platform} from "react-native";
 
 export function Signup() {

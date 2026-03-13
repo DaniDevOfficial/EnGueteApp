@@ -12,17 +12,17 @@ import {
     useToast,
     VStack
 } from "native-base";
-import {KebabIcon} from "../UI/Icons/KebabIcon";
+import {KebabIcon} from "../Ui/Icons/KebabIcon";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {getFancyTimeDisplay} from "../../utility/Dates";
 import * as Clipboard from 'expo-clipboard';
-import {showToast} from "../UI/Toast";
+import {showToast} from "../Ui/Toast";
 import {DeleteInviteToken} from "../../repo/group/Invites";
 import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {handleLogoutProcedure} from "../../Util";
 import {resetToUserScreen} from "../../utility/navigation";
 import {useNavigation} from "@react-navigation/native";
-import {CustomButton} from "../UI/CustomButton";
+import {CustomButton} from "../Ui/CustomButton";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import QRCode from "react-native-qrcode-svg";
 

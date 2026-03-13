@@ -1,11 +1,11 @@
 import {Box, HStack, Icon, Image, Input, Modal, Pressable, Text, useToast, VStack} from "native-base";
 import {useText, useTexts} from "../../utility/TextKeys/TextKeys";
 import React, {useState} from "react";
-import {CustomButton} from "../UI/CustomButton";
+import {CustomButton} from "../Ui/CustomButton";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {StackActions, useNavigation} from "@react-navigation/native";
 import {CreateNewGroup, NewGroupType} from "../../repo/Group";
-import {showToast} from "../UI/Toast";
+import {showToast} from "../Ui/Toast";
 import {FRONTEND_ERRORS, UnauthorizedError, useErrorText} from "../../utility/Errors";
 import inviteIcon from "../../assets/PopupIcons/inviteIcon.png";
 import {handleLogoutProcedure} from "../../Util";

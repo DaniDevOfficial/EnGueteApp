@@ -8,10 +8,10 @@ import {RefreshControl} from "react-native-gesture-handler";
 import {MealHeader} from "../components/meal/MealHeader";
 import {PreferenceCard} from "../components/meal/PreferenceCard";
 import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../utility/Errors";
-import {BackButton} from "../components/UI/BackButton";
-import {PageSpinner} from "../components/UI/PageSpinner";
+import {BackButton} from "../components/Ui/BackButton";
+import {PageSpinner} from "../components/Ui/PageSpinner";
 import {useTexts} from "../utility/TextKeys/TextKeys";
-import {showToast} from "../components/UI/Toast";
+import {showToast} from "../components/Ui/Toast";
 import {resetToUserScreen} from "../utility/navigation";
 
 export function Meal() {

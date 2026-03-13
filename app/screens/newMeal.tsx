@@ -17,13 +17,13 @@ import {useGroup} from "../context/groupContext";
 import {PERMISSIONS} from "../utility/Roles";
 import {getSwissDateTimeDisplay} from "../utility/Dates";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import {BackButton} from "../components/UI/BackButton";
+import {BackButton} from "../components/Ui/BackButton";
 import {showDatePicker} from "../components/Utility/DatePicker";
 import {useTexts} from "../utility/TextKeys/TextKeys";
-import {showToast} from "../components/UI/Toast";
+import {showToast} from "../components/Ui/Toast";
 import {handleLogoutProcedure} from "../Util";
 import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
-import {CustomButton} from "../components/UI/CustomButton";
+import {CustomButton} from "../components/Ui/CustomButton";
 import newMealIcon from "../assets/PopupIcons/newMealIcon.png";
 import {
     KeyboardAvoidingView,

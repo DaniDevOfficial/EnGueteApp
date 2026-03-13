@@ -5,8 +5,8 @@ import {getFancyTimeDisplay, getSwissDateTimeDisplay} from "../../utility/Dates"
 import {DateTimePickerAndroid} from "@react-native-community/datetimepicker";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {CreateInviteToken, CreateInviteTokenRequest} from "../../repo/group/Invites";
-import {CustomButton} from "../UI/CustomButton";
-import {showToast} from "../UI/Toast";
+import {CustomButton} from "../Ui/CustomButton";
+import {showToast} from "../Ui/Toast";
 import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {handleLogoutProcedure} from "../../Util";
 import {resetToUserScreen} from "../../utility/navigation";

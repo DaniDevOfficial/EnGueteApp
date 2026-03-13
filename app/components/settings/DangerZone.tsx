@@ -10,11 +10,11 @@ import { useText, useTexts } from "../../utility/TextKeys/TextKeys";
 import { deleteCurrentUser, handleBackendLogout } from "../../repo/settings/User";
 import { handleLogoutProcedure } from "../../Util";
 import { TimeoutError, useErrorText } from "../../utility/Errors";
-import { showToast } from "../UI/Toast";
+import { showToast } from "../Ui/Toast";
 import { useUser } from "../../context/userContext";
-import {ConfirmationModal} from "../UI/ConfirmationModal";
+import {ConfirmationModal} from "../Ui/ConfirmationModal";
 import {clearDatabase} from "../../utility/database";
-import {Option, SettingsSectionStack} from "../UI/SettingSectionStack";
+import {Option, SettingsSectionStack} from "../Ui/SettingSectionStack";
 
 
 
