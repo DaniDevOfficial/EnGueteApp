@@ -1,11 +1,2 @@
-module.exports = {
-    presets: ['babel-preset-expo'],
-    plugins: [
-        ['module:react-native-dotenv', {
-            moduleName: '@env',
-            path: '.env',
-            allowUndefined: true,
-            safe: false
-        }]
-    ]
-};
+export const presets = ['babel-preset-expo'];
+export const plugins = [];
