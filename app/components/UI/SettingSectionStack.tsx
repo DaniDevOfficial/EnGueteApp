@@ -1,6 +1,6 @@
-import {Box, HStack, Icon, Pressable, Text, VStack} from "native-base";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import React from "react";
+import {Pressable, Text, View} from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import {MaterialIcons} from "@expo/vector-icons";
 
 export interface Option {
@@ -12,54 +12,38 @@ export interface Option {
 }
 
 export function SettingsSectionStack({options, title}: { options: Option[], title: string }) {
-
     return (
-        <VStack space={2}>
-            <Box>
-                <Text fontWeight="bold" fontSize="xl">{title}</Text>
-            </Box>
-            <VStack
-                borderColor="coolGray.300"
-                borderWidth={1}
-                borderRadius="md"
-                px={2}
-                py={2}
-            >
+        <View className="gap-2">
+            <Text className="text-xl font-bold text-black">{title}</Text>
+            <View className="rounded-md border border-gray-300 px-2 py-2">
                 {options.map((option, index) => (
                     <Pressable key={index} onPress={option.onPress}>
-                        <HStack justifyContent="space-between" alignItems="center">
-                            <HStack
-                                alignItems="center"
-                                space={2}
-                                p={2}
-                                borderRadius="md"
-                                bg="coolGray.100"
-                            >
-                                <Icon
-                                    color={option.iconColor || 'coolGray.500'}
-                                    size={6}
-                                    as={MaterialIcons}
-                                    name={option.icon}
+                        <View className="flex-row items-center justify-between">
+                            <View className="flex-row items-center gap-2 rounded-md p-2">
+                                <MaterialIcons
+                                    name={option.icon as any}
+                                    size={24}
+                                    color={option.iconColor || '#71717a'}
                                 />
                                 <Text
-                                    color={option.textColor || 'coolGray.800'}
-                                    fontWeight="medium"
+                                    className="font-medium"
+                                    style={{color: option.textColor || '#27272a'}}
                                 >
                                     {option.label}
                                 </Text>
-                            </HStack>
-                            <Icon
-                                as={Ionicons}
+                            </View>
+                            <Ionicons
                                 name="chevron-forward-outline"
-                                size={5}
+                                size={20}
+                                color="#71717a"
                             />
-                        </HStack>
+                        </View>
                         {index < options.length - 1 && (
-                            <Box height="1px" bg="coolGray.200" mx={2} my={1}/>
+                            <View className="mx-2 my-1 h-px bg-gray-200"/>
                         )}
                     </Pressable>
                 ))}
-            </VStack>
-        </VStack>
+            </View>
+        </View>
     )
 }

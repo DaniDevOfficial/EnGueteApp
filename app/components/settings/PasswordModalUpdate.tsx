@@ -1,14 +1,11 @@
-import {Button, FormControl, HStack, Icon, Input, Modal, Text, VStack} from "native-base";
-import {TouchableOpacity} from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import React, {useState} from "react";
+import {ActivityIndicator, Modal, Pressable, Text, View} from "react-native";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {useNavigation} from "@react-navigation/native";
 import {UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {showToast} from "../Ui/Toast";
 import {handleLogoutProcedure} from "../../Util";
 import {PasswordInput} from "../Ui/PasswordInput";
-import {CustomButton} from "../Ui/CustomButton";
 
 interface PasswordModalUpdateProps {
     isOpen: boolean;
@@ -22,14 +19,12 @@ export function PasswordModalUpdate({onSuccess, isOpen, onClose}: PasswordModalU
 
     const text = useTexts(['save', 'cancel', 'error', 'allFieldsAreRequired', 'passwordDoesNotMatchError', 'enterYourOldPassword', 'enterYourNewPassword', 'confirmYourNewPassword', 'editPassword']);
 
-    const [oldPassword, setOldPassword] = useState<string>('');
-    const [newPassword, setNewPassword] = useState<string>('');
-    const [confirmNewPassword, setConfirmNewPassword] = useState<string>('');
-
+    const [oldPassword, setOldPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [isSaving, setIsSaving] = useState(false);
 
     async function handleSave() {
-
         if (!oldPassword || !newPassword || !confirmNewPassword) {
             showToast({
                 title: text.error,
@@ -53,7 +48,6 @@ export function PasswordModalUpdate({onSuccess, isOpen, onClose}: PasswordModalU
             await onSuccess(oldPassword, newPassword);
             handleClose();
         } catch (e) {
-
             showToast({
                 title: text.error,
                 description: getError(e.message),
@@ -77,82 +71,69 @@ export function PasswordModalUpdate({onSuccess, isOpen, onClose}: PasswordModalU
     }
 
     return (
-        <>
-            <Modal isOpen={isOpen} onClose={() => handleClose()}>
-                <Modal.Content>
-                    <Modal.Body>
+        <Modal visible={isOpen} transparent animationType="fade" onRequestClose={handleClose}>
+            <View className="flex-1 items-center justify-center bg-black/40 px-6">
+                <View className="w-full max-w-md rounded-xl bg-white p-5">
+                    <View className="w-full items-center gap-4">
+                        <Text className="text-xl font-bold text-black">
+                            {text.editPassword}
+                        </Text>
 
-                        <VStack space={4}>
-                            <VStack space={4} alignItems="center" width='100%'>
+                        <View className="w-full gap-2">
+                            <Text className="my-2 text-base text-black">
+                                {text.enterYourOldPassword}
+                            </Text>
+                            <PasswordInput
+                                value={oldPassword}
+                                onChangeText={setOldPassword}
+                                placeholder={text.enterYourOldPassword}
+                            />
 
-                                <Text
-                                    fontSize={'xl'}
-                                    fontWeight={'bold'}
-                                >
-                                    {text.editPassword}
-                                </Text>
+                            <Text className="my-2 text-base text-black">
+                                {text.enterYourNewPassword}
+                            </Text>
+                            <PasswordInput
+                                value={newPassword}
+                                onChangeText={setNewPassword}
+                                placeholder={text.enterYourNewPassword}
+                            />
 
-                                <VStack
-                                    space={2}
-                                >
+                            <Text className="my-2 text-base text-black">
+                                {text.confirmYourNewPassword}
+                            </Text>
+                            <PasswordInput
+                                value={confirmNewPassword}
+                                onChangeText={setConfirmNewPassword}
+                                placeholder={text.confirmYourNewPassword}
+                            />
+                        </View>
+                    </View>
 
-                                    <FormControl>
-
-                                        <Text my={2}>
-                                            {text.enterYourOldPassword}
-                                        </Text>
-                                        <PasswordInput
-
-                                            value={oldPassword}
-                                            onChangeText={setOldPassword}
-                                            placeholder={text.enterYourOldPassword}
-                                        />
-                                    </FormControl>
-                                    <FormControl>
-                                        <Text my={2}>
-                                            {text.enterYourNewPassword}
-                                        </Text>
-                                        <PasswordInput
-                                            value={newPassword}
-                                            onChangeText={setNewPassword}
-                                            placeholder={text.enterYourNewPassword}
-                                        />
-                                    </FormControl>
-                                    <FormControl>
-                                        <Text my={2}>
-                                            {text.confirmYourNewPassword}
-                                        </Text>
-                                        <PasswordInput
-                                            value={confirmNewPassword}
-                                            onChangeText={setConfirmNewPassword}
-                                            placeholder={text.confirmYourNewPassword}
-                                        />
-                                    </FormControl>
-                                </VStack>
-
-                            </VStack>
-                            <VStack space={2} alignItems="center" width='100%'>
-
-                                <CustomButton
-                                    width={'100%'}
-                                    isLoading={isSaving}
-                                    onPress={handleSave}
-                                    colorScheme="primary"
-                                >
+                    <View className="mt-4 w-full items-center gap-2">
+                        <Pressable
+                            className="w-full items-center rounded-[30px] bg-app-orange py-3 active:opacity-60"
+                            onPress={handleSave}
+                            disabled={isSaving}
+                        >
+                            {isSaving ? (
+                                <ActivityIndicator color="#ffffff"/>
+                            ) : (
+                                <Text className="text-base font-medium text-white">
                                     {text.save}
-                                </CustomButton>
-                                <CustomButton width={'100%'} onlyOutline={true} onPress={onClose}>
-                                    <Text>
-                                        {text.cancel}
-                                    </Text>
-                                </CustomButton>
-
-                            </VStack>
-                        </VStack>
-
-                    </Modal.Body>
-                </Modal.Content>
-            </Modal>
-        </>
+                                </Text>
+                            )}
+                        </Pressable>
+                        <Pressable
+                            className="w-full items-center rounded-[30px] border border-app-orange bg-white py-3 active:opacity-60"
+                            onPress={handleClose}
+                        >
+                            <Text className="text-base font-medium text-black">
+                                {text.cancel}
+                            </Text>
+                        </Pressable>
+                    </View>
+                </View>
+            </View>
+        </Modal>
     )
 }

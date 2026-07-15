@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
-import {Button, FormControl, HStack, Input, Modal, Text, VStack} from "native-base";
+import {ActivityIndicator, Modal, Pressable, Text, TextInput, View} from "react-native";
 import {useText, useTexts} from "../../utility/TextKeys/TextKeys";
-import {CustomButton} from "./CustomButton";
 import {showToast} from "./Toast";
 
 export function ConfirmationModal({
@@ -25,7 +24,7 @@ export function ConfirmationModal({
 }) {
     const text = useTexts(['cancel', 'confirm', 'error']);
     const requiredTextInformation = useText('errorPleaseEnterCorrectText', {'text': requiredText ?? ''});
-    const [value, setValue] = useState<string>('');
+    const [value, setValue] = useState('');
 
     function submitConfirmation() {
         if (isLoading) {
@@ -43,60 +42,61 @@ export function ConfirmationModal({
         onConfirm();
     }
 
-    return (<Modal isOpen={isOpen} onClose={onClose}>
-            <Modal.Content>
-                <Modal.Body>
-                    <VStack space={4}>
-                        <VStack space={2} alignItems="center" width='100%'>
+    return (
+        <Modal visible={isOpen} transparent animationType="fade" onRequestClose={onClose}>
+            <View className="flex-1 items-center justify-center bg-black/40 px-6">
+                <View className="w-full max-w-md rounded-xl bg-white p-5">
+                    <View className="w-full items-center gap-2">
+                        <Text className="text-center text-2xl font-bold text-black">
+                            {title}
+                        </Text>
+                        <Text className="text-center text-base text-black">
+                            {message}
+                        </Text>
 
-                            <Text
-                                fontSize={'2xl'}
-                                fontWeight={'bold'}
-                                textAlign={'center'}
-                            >
-                                {title}
+                        {requiredText && (
+                            <TextInput
+                                value={value}
+                                onChangeText={setValue}
+                                placeholder={requiredText}
+                                className="mt-2 w-full rounded-md border border-gray-300 bg-white p-3 text-base text-black"
+                                autoCapitalize="none"
+                                autoCorrect={false}
+                            />
+                        )}
+
+                        {furtherInformationText && (
+                            <Text className="mt-2 text-base text-black">
+                                {furtherInformationText}
                             </Text>
-                            <Text textAlign={'center'}>{message}</Text>
-                            {requiredText && (
-                                <>
-                                    <FormControl>
-                                        <Input
-                                            value={value}
-                                            onChangeText={setValue}
-                                            placeholder={`${requiredText}`}
-                                        />
-                                    </FormControl>
-                                </>
-                            )}
+                        )}
+                    </View>
 
-                            {furtherInformationText && (
-                                <>
-                                <Text>{furtherInformationText}</Text>
-                                </>
-                            )}
-                        </VStack>
-                        <VStack space={2} alignItems="center" width='100%'>
-
-                            <CustomButton
-                                width={'100%'}
-                                isLoading={isLoading}
-                                onPress={submitConfirmation}
-                                colorScheme="primary"
-                            >
-                                {text.confirm}
-                            </CustomButton>
-                            <CustomButton width={'100%'} onlyOutline={true} onPress={onClose}>
-                                <Text>
-                                    {text.cancel}
+                    <View className="mt-4 w-full items-center gap-2">
+                        <Pressable
+                            className="w-full items-center rounded-[30px] bg-app-orange py-3 active:opacity-60"
+                            onPress={submitConfirmation}
+                            disabled={isLoading}
+                        >
+                            {isLoading ? (
+                                <ActivityIndicator color="#ffffff"/>
+                            ) : (
+                                <Text className="text-base font-medium text-white">
+                                    {text.confirm}
                                 </Text>
-                            </CustomButton>
-
-                        </VStack>
-                    </VStack>
-
-                </Modal.Body>
-
-            </Modal.Content>
+                            )}
+                        </Pressable>
+                        <Pressable
+                            className="w-full items-center rounded-[30px] border border-app-orange bg-white py-3 active:opacity-60"
+                            onPress={onClose}
+                        >
+                            <Text className="text-base font-medium text-black">
+                                {text.cancel}
+                            </Text>
+                        </Pressable>
+                    </View>
+                </View>
+            </View>
         </Modal>
     );
 }

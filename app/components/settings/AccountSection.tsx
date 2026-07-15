@@ -1,8 +1,6 @@
-import {Box, Icon, Image, VStack, Text} from "native-base";
-import {TouchableOpacity} from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import {TextUpdate} from "./TextUpdate";
 import React, {useState} from "react";
+import {Image, Pressable, Text, View} from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import {useUser} from "../../context/userContext";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {UnauthorizedError, useErrorText} from "../../utility/Errors";
@@ -14,22 +12,25 @@ import {Option, SettingsSectionStack} from "../Ui/SettingSectionStack";
 import {TextModalUpdate} from "./TextModalUpdate";
 import {PasswordModalUpdate} from "./PasswordModalUpdate";
 
+const PLACEHOLDER_AVATAR =
+    "https://imebehavioralhealth.com/wp-content/uploads/2021/10/user-icon-placeholder-1.png";
+
 export function AccountSection() {
     const user = useUser();
     const text = useTexts(['updateUsername', 'userSettings', 'error', 'username', 'account', 'email', 'password']);
     const getError = useErrorText();
     const navigation = useNavigation();
 
-    const [imageSrc, setImageSrc] = useState(user.user.profilePicture || 'https://imebehavioralhealth.com/wp-content/uploads/2021/10/user-icon-placeholder-1.png');
-    const [editUsernameModalOpen, setEditUsernameModalOpen] = useState<boolean>(false);
-    const [editPasswordModalOpen, setEditPasswordModalOpen] = useState<boolean>(false);
+    const [imageSrc, setImageSrc] = useState(user.user.profilePicture || PLACEHOLDER_AVATAR);
+    const [editUsernameModalOpen, setEditUsernameModalOpen] = useState(false);
+    const [editPasswordModalOpen, setEditPasswordModalOpen] = useState(false);
 
     function handleEditImage() {
     }
 
     async function handleEditUsername(newUsername: string) {
         try {
-            const response = await updateUsername(newUsername)
+            await updateUsername(newUsername)
             user.setUser({
                 ...user.user,
                 userName: newUsername,
@@ -47,16 +48,13 @@ export function AccountSection() {
         }
     }
 
-    async function handleEditPassword(oldPassword: string, newPassword: string) {
-
+    async function handleEditPassword(_oldPassword: string, _newPassword: string) {
     }
 
     const options: Option[] = [
         {
             label: text.username,
-            onPress: () => {
-                setEditUsernameModalOpen(true);
-            },
+            onPress: () => setEditUsernameModalOpen(true),
             icon: 'person-outline'
         },
         {
@@ -67,85 +65,52 @@ export function AccountSection() {
         },
         {
             label: text.password,
-            onPress: () => {
-                setEditPasswordModalOpen(true);
-            },
+            onPress: () => setEditPasswordModalOpen(true),
             icon: 'lock-outline'
         }
-
     ];
 
     return (
-        <>
-            <VStack
-                space={10}
-            >
-                <VStack
-                    justifyContent="center"
-                    alignItems="center"
-                    space={2}
-                >
-
-                    <Box position="relative" width="70px" height="70px">
-                        <Image
-                            source={{uri: imageSrc}}
-                            alt="Profile picture"
-                            onError={() =>
-                                setImageSrc(
-                                    "https://imebehavioralhealth.com/wp-content/uploads/2021/10/user-icon-placeholder-1.png"
-                                )
-                            }
-                            width="70px"
-                            height="70px"
-                            borderRadius="full"
-                        />
-
-                        <TouchableOpacity onPress={handleEditImage}>
-                            <Icon
-                                as={Ionicons}
-                                name="create-outline"
-                                size={5}
-                                color="black"
-                                position="absolute"
-                                bottom={0}
-                                right={-15}
-                            />
-                        </TouchableOpacity>
-                    </Box>
-                    <Text
-                        fontSize={'xl'}
-                        fontWeight={'bold'}
-                    >
-                        {user.user.userName}
-                    </Text>
-                    <Text
-                        fontSize={'sm'}
-                        color={'gray.500'}
-                    >
-                        {user.user.email.trim() !== '' ? user.user.email : 'No email provided'}
-                    </Text>
-                </VStack>
-
-                <SettingsSectionStack title={text.account} options={options} />
-                <Box
-                    height={0}
-                >
-
-                    <TextModalUpdate
-                        initialValue={user.user.userName}
-                        title={text.updateUsername}
-                        isOpen={editUsernameModalOpen}
-                        onClose={() => setEditUsernameModalOpen(false)}
-                        onSuccess={handleEditUsername}
+        <View className="gap-10">
+            <View className="items-center justify-center gap-2">
+                <View className="relative h-[70px] w-[70px]">
+                    <Image
+                        source={{uri: imageSrc}}
+                        accessibilityLabel="Profile picture"
+                        onError={() => setImageSrc(PLACEHOLDER_AVATAR)}
+                        className="h-[70px] w-[70px] rounded-full"
                     />
+                    <Pressable
+                        onPress={handleEditImage}
+                        className="absolute -right-3 bottom-0"
+                        hitSlop={8}
+                    >
+                        <Ionicons name="create-outline" size={20} color="black"/>
+                    </Pressable>
+                </View>
+                <Text className="text-xl font-bold text-black">
+                    {user.user.userName}
+                </Text>
+                <Text className="text-sm text-gray-500">
+                    {user.user.email.trim() !== '' ? user.user.email : 'No email provided'}
+                </Text>
+            </View>
 
-                    <PasswordModalUpdate
-                        isOpen={editPasswordModalOpen}
-                        onClose={() => setEditPasswordModalOpen(false)}
-                        onSuccess={handleEditPassword}
-                    />
-                </Box>
-            </VStack>
-        </>
+            <SettingsSectionStack title={text.account} options={options}/>
+
+            <TextModalUpdate
+                initialValue={user.user.userName}
+                title={text.updateUsername}
+                isOpen={editUsernameModalOpen}
+                onClose={() => setEditUsernameModalOpen(false)}
+                onSuccess={handleEditUsername}
+            />
+
+            <PasswordModalUpdate
+                isOpen={editPasswordModalOpen}
+                onClose={() => setEditPasswordModalOpen(false)}
+                onSuccess={handleEditPassword}
+            />
+        </View>
     )
 }

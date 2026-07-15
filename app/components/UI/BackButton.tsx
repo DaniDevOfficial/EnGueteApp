@@ -1,36 +1,23 @@
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
+import {Pressable, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {Flex, Icon} from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
 
 type BackButtonProps = {
     color?: string;
 };
 
-
 export function BackButton({color = 'black'}: BackButtonProps) {
     const navigation = useNavigation();
     return (
-        <TouchableOpacity
+        <Pressable
             onPress={() => navigation.goBack()}
-            style={{
-                position: 'absolute',
-                top: 30,
-                left: 15,
-                zIndex: 10,
-            }}
-
+            className="absolute left-[15px] top-[30px] z-10"
+            hitSlop={8}
         >
-            <Flex
-                backgroundColor={'gray.300'}
-                borderRadius={'100'}
-                p={'4px'}
-            >
-                <Icon  as={Ionicons} name="arrow-back"
-                      size={6} color={`${color ?? 'black'}`}/>
-            </Flex>
-        </TouchableOpacity>
+            <View className="rounded-full bg-gray-300 p-1">
+                <Ionicons name="arrow-back" size={24} color={color}/>
+            </View>
+        </Pressable>
     );
 }

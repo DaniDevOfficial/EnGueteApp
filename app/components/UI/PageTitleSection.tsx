@@ -1,5 +1,5 @@
-import {Box, Flex, HStack, Text} from "native-base";
 import React from "react";
+import {Text, View} from "react-native";
 
 interface PageTitleSectionProps {
     title: string;
@@ -8,15 +8,17 @@ interface PageTitleSectionProps {
 
 export function PageTitleSection({title, color = "black"}: PageTitleSectionProps) {
     return (
-
-        <Flex alignItems={"center"}>
-            <HStack alignItems="center" space={4} width="90%">
-                <Box flex={1} height="1px" bg={color} width="10px"/>
-                <Text textAlign="center" color={color} fontWeight="bold" fontSize="xl">
+        <View className="items-center">
+            <View className="w-[90%] flex-row items-center gap-4">
+                <View className="h-px flex-1" style={{backgroundColor: color}}/>
+                <Text
+                    className="text-center text-xl font-bold"
+                    style={{color}}
+                >
                     {title}
                 </Text>
-                <Box flex={1} height="1px" bg={color}/>
-            </HStack>
-        </Flex>
+                <View className="h-px flex-1" style={{backgroundColor: color}}/>
+            </View>
+        </View>
     );
 }
