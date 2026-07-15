@@ -1,5 +1,14 @@
 import React, {useState} from 'react';
-import {Flex, FormControl, Input, ScrollView, Text, useToast, VStack} from "native-base";
+import {
+    KeyboardAvoidingView,
+    Platform,
+    Pressable,
+    ScrollView,
+    Text,
+    TextInput,
+    View,
+} from 'react-native';
+import {useToast} from "native-base";
 import {CreateNewAccount} from "../repo/Auth";
 import {useNavigation} from "@react-navigation/native";
 import {useTexts} from "../utility/TextKeys/TextKeys";
@@ -7,8 +16,6 @@ import {useTexts} from "../utility/TextKeys/TextKeys";
 import {getPendingInviteToken} from "../utility/DeepLinking";
 import {showToast} from "../components/Ui/Toast";
 import {FRONTEND_ERRORS, useErrorText} from "../utility/Errors";
-import {CustomButton} from "../components/Ui/CustomButton";
-import {KeyboardAvoidingView, Platform} from "react-native";
 
 export function Signup() {
     const [username, setUsername] = useState('Home2');
@@ -59,102 +66,99 @@ export function Signup() {
     }
 
     return (
-        <>
-            <KeyboardAvoidingView
-                style={{flex: 1}}
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
+        <KeyboardAvoidingView
+            className="flex-1"
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+            <ScrollView
+                contentContainerStyle={{flexGrow: 1}}
+                keyboardShouldPersistTaps="handled"
             >
-                <ScrollView
-                    contentContainerStyle={{flexGrow: 1}}
-                    keyboardShouldPersistTaps="handled"
-                >
-                    <Flex
-                        justifyContent="center"
-                        alignItems="center"
-                        py={10}
-                    >
+                <View className="items-center justify-center py-10" >
+                    <View className="w-full items-center gap-10">
+                        <View className="w-full items-center gap-2">
+                            <Text className="text-3xl font-bold text-black">
+                                {text.createNewAccountSlogan}!
+                            </Text>
+                            <Text className="w-[90%] text-center text-base text-black">
+                                {text.createNewAccountInfoText}!
+                            </Text>
+                        </View>
 
-                        <VStack space={10} alignItems="center" w={'100%'}>
-                            <VStack space={2} alignItems="center" w={'100%'}>
-
-                                <Text
-                                    fontSize={'3xl'}
-                                    fontWeight={'bold'}
-                                >
-                                    {text.createNewAccountSlogan}!
+                        <View className="w-full items-center gap-2">
+                            <View className="w-full gap-1">
+                                <Text className="text-sm font-medium text-gray-700">
+                                    {text.username}
                                 </Text>
-                                <Text
-                                    width={'90%'}
-                                    textAlign="center"
-                                >
-                                    {text.createNewAccountInfoText}!
-                                </Text>
-                            </VStack>
+                                <TextInput
+                                    value={username}
+                                    onChangeText={setUsername}
+                                    placeholder={text.enterUsername}
+                                    className="rounded-md border border-gray-300 bg-white p-3 text-base text-black"
+                                    autoCapitalize="none"
+                                    autoCorrect={false}
+                                />
+                            </View>
 
-                            <VStack space={2} alignItems="center" w={'100%'}>
-                                <FormControl>
-                                    <FormControl.Label>{text.username}</FormControl.Label>
-                                    <Input
-                                        value={username}
-                                        onChangeText={(text) => setUsername(text)}
-                                        p={3}
-                                        placeholder={text.enterUsername}
-                                        rounded="md"
-                                    />
-                                </FormControl>
-                                <FormControl>
-                                    <FormControl.Label>{text.email}</FormControl.Label>
-                                    <Input
-                                        value={email}
-                                        onChangeText={(text) => setEmail(text)}
-                                        p={3}
-                                        placeholder={text.enterEmail}
-                                        type="text"
-                                        rounded="md"
-                                    />
-                                </FormControl>
-                                <FormControl>
-                                    <FormControl.Label>{text.password}</FormControl.Label>
-                                    <Input
-                                        value={password}
-                                        onChangeText={(text) => setPassword(text)}
-                                        p={3}
-                                        placeholder={text.enterPassword}
-                                        type="password"
-                                        rounded="md"
-                                    />
-                                </FormControl>
-                            </VStack>
-                            <VStack space={5} alignItems="center" w={'100%'}>
-                                <CustomButton
-                                    w={'100%'}
-                                    onPress={handleSubmit}
-                                >
+                            <View className="w-full gap-1">
+                                <Text className="text-sm font-medium text-gray-700">
+                                    {text.email}
+                                </Text>
+                                <TextInput
+                                    value={email}
+                                    onChangeText={setEmail}
+                                    placeholder={text.enterEmail}
+                                    className="rounded-md border border-gray-300 bg-white p-3 text-base text-black"
+                                    keyboardType="email-address"
+                                    autoCapitalize="none"
+                                    autoCorrect={false}
+                                />
+                            </View>
+
+                            <View className="w-full gap-1">
+                                <Text className="text-sm font-medium text-gray-700">
+                                    {text.password}
+                                </Text>
+                                <TextInput
+                                    value={password}
+                                    onChangeText={setPassword}
+                                    placeholder={text.enterPassword}
+                                    className="rounded-md border border-gray-300 bg-white p-3 text-base text-black"
+                                    secureTextEntry
+                                    autoCapitalize="none"
+                                    autoCorrect={false}
+                                />
+                            </View>
+                        </View>
+
+                        <View className="w-full items-center gap-5">
+                            <Pressable
+                                className="w-full items-center rounded-[30px] bg-orange-600 py-3 shadow-md active:opacity-60"
+                                onPress={handleSubmit}
+                            >
+                                <Text className="text-base font-medium text-white">
                                     {text.createNewAccount}
-                                </CustomButton>
-
-                                <Text>
-                                    {text.or}
                                 </Text>
+                            </Pressable>
 
-                                <CustomButton w={'100%'}
-                                              onPress={() => {
-                                                  navigation.navigate('login')
-                                              }}
-                                              onlyOutline={true}
-                                              backgroundColor={'coolGray.100'}
-                                >
-                                    <Text>
-                                        {text.orLogin}
-                                    </Text>
-                                </CustomButton>
-                            </VStack>
+                            <Text className="text-base text-black">
+                                {text.or}
+                            </Text>
 
-                        </VStack>
-                    </Flex>
-                </ScrollView>
-            </KeyboardAvoidingView>
-        </>
-
+                            <Pressable
+                                className="w-full items-center rounded-[30px] border border-orange-600 bg-gray-100 py-3 shadow-sm active:opacity-60"
+                                onPress={() => {
+                                    navigation.navigate('login')
+                                }}
+                            >
+                                <Text className="text-base font-medium text-black">
+                                    {text.orLogin}
+                                </Text>
+                            </Pressable>
+                        </View>
+                    </View>
+                </View>
+            </ScrollView>
+        </KeyboardAvoidingView>
     );
 }
