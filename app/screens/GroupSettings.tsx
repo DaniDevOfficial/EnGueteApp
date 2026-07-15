@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {BackButton} from "../components/Ui/BackButton";
-import {Button, ScrollView, useToast, VStack} from "native-base";
+import {Button, ScrollView, VStack} from "native-base";
 import {useUser} from "../context/userContext";
 import {TextUpdate} from "../components/settings/TextUpdate";
 import {useTexts} from "../utility/TextKeys/TextKeys";
@@ -18,12 +18,10 @@ import {MembersAndInvite} from "../components/settings/Group/MembersAndInvites";
 import {GroupActions} from "../components/settings/Group/GroupActions";
 import {TextModalUpdate} from "../components/settings/TextModalUpdate";
 
-
 export function GroupSettings() {
     const group = useGroup();
     const navigation = useNavigation();
     const text = useTexts(['updateGroupName', 'memberList', 'groupSettings', 'invites', 'error']);
-    const toast = useToast();
     const getError = useErrorText();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -41,7 +39,6 @@ export function GroupSettings() {
 
         } catch (e) {
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: "warning",
@@ -79,7 +76,6 @@ export function GroupSettings() {
                     <MembersAndInvite/>
                     <GroupActions/>
                 </VStack>
-
 
             </ScrollView>
         </>

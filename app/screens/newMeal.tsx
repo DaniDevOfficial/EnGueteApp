@@ -1,16 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-    Button,
-    FormControl,
-    Icon,
-    Image,
-    Input,
-    TextArea,
-    useToast,
-    VStack,
-    WarningOutlineIcon,
-    Text
-} from "native-base";
+import {Button, FormControl, Icon, Image, Input, TextArea, VStack, WarningOutlineIcon, Text} from "native-base";
 import {createNewMeal} from "../repo/Meal";
 import {StackActions, useNavigation} from "@react-navigation/native";
 import {useGroup} from "../context/groupContext";
@@ -44,8 +33,6 @@ export function NewMeal() {
     const groupId = group.groupId;
     const navigation = useNavigation();
     const text = useTexts(['mealName', 'mealNamePlaceholder', 'mealType', 'mealTypePlaceholder', 'scheduledAt', 'scheduledAtPlaceholder', 'mealDescription', 'mealDescriptionPlaceholder', 'createNewMeal', 'createMeal', 'isRequired', 'error', 'youAreNotAllowedToPerformThisAction']);
-    const toast = useToast();
-
     const [title, setTitle] = useState<string | undefined>();
     const [type, setType] = useState<string | undefined>();
     const [scheduledAt, setScheduledAt] = useState<string | undefined>();
@@ -106,7 +93,6 @@ export function NewMeal() {
             return;
         } catch (e) {
             showToast({
-                toast,
                 title: text.error,
                 description: text.youAreNotAllowedToPerformThisAction,
                 status: "warning",
@@ -127,7 +113,6 @@ export function NewMeal() {
     useEffect(() => {
         if (!group.userRoleRights || !group.userRoleRights.includes(PERMISSIONS.CAN_CREATE_MEAL)) {
             showToast({
-                toast,
                 title: text.error,
                 description: text.youAreNotAllowedToPerformThisAction,
                 status: "warning",
@@ -166,7 +151,6 @@ export function NewMeal() {
                 >
             <BackButton/>
             <VStack space={4} padding={4} alignItems={'center'} width={'100%'}>
-
 
                 <Image
                     source={newMealIcon}

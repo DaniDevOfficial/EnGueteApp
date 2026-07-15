@@ -1,22 +1,11 @@
-import React, {useState} from "react";
+import React from "react";
 import {BackButton} from "../components/Ui/BackButton";
-import {Box, Icon, Image, ScrollView, Text, useToast, VStack} from "native-base";
-import {useUser} from "../context/userContext";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import {TouchableOpacity} from "react-native";
-import {TextUpdate} from "../components/settings/TextUpdate";
-import {useText, useTexts} from "../utility/TextKeys/TextKeys";
-import {updateUsername} from "../repo/settings/User";
+import {Box, ScrollView, Text, VStack} from "native-base";
+import {useText} from "../utility/TextKeys/TextKeys";
 import {LanguageSelector} from "../components/settings/LanguageSelector";
-import {ThemeSelector} from "../components/settings/ThemeSelector";
 import {DangerZone} from "../components/settings/DangerZone";
 import {PageTitleSection} from "../components/Ui/PageTitleSection";
-import {UnauthorizedError, useErrorText} from "../utility/Errors";
-import {useNavigation} from "@react-navigation/native";
-import {showToast} from "../components/Ui/Toast";
-import {handleLogoutProcedure} from "../Util";
 import {AccountSection} from "../components/settings/AccountSection";
-
 
 export function UserSettings() {
 

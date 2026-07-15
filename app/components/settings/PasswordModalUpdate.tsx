@@ -1,4 +1,4 @@
-import {Button, FormControl, HStack, Icon, Input, Modal, Text, useToast, VStack} from "native-base";
+import {Button, FormControl, HStack, Icon, Input, Modal, Text, VStack} from "native-base";
 import {TouchableOpacity} from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import React, {useState} from "react";
@@ -10,7 +10,6 @@ import {handleLogoutProcedure} from "../../Util";
 import {PasswordInput} from "../Ui/PasswordInput";
 import {CustomButton} from "../Ui/CustomButton";
 
-
 interface PasswordModalUpdateProps {
     isOpen: boolean;
     onClose: () => void;
@@ -18,7 +17,6 @@ interface PasswordModalUpdateProps {
 }
 
 export function PasswordModalUpdate({onSuccess, isOpen, onClose}: PasswordModalUpdateProps) {
-    const toast = useToast();
     const navigation = useNavigation();
     const getError = useErrorText();
 
@@ -34,7 +32,6 @@ export function PasswordModalUpdate({onSuccess, isOpen, onClose}: PasswordModalU
 
         if (!oldPassword || !newPassword || !confirmNewPassword) {
             showToast({
-                toast,
                 title: text.error,
                 description: text.allFieldsAreRequired,
                 status: "error",
@@ -44,14 +41,12 @@ export function PasswordModalUpdate({onSuccess, isOpen, onClose}: PasswordModalU
 
         if (newPassword !== confirmNewPassword) {
             showToast({
-                toast,
                 title: text.error,
                 description: text.passwordDoesNotMatchError,
                 status: "error",
             });
             return;
         }
-
 
         try {
             setIsSaving(true);
@@ -60,7 +55,6 @@ export function PasswordModalUpdate({onSuccess, isOpen, onClose}: PasswordModalU
         } catch (e) {
 
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: "error",
@@ -82,7 +76,6 @@ export function PasswordModalUpdate({onSuccess, isOpen, onClose}: PasswordModalU
         onClose();
     }
 
-
     return (
         <>
             <Modal isOpen={isOpen} onClose={() => handleClose()}>
@@ -98,7 +91,6 @@ export function PasswordModalUpdate({onSuccess, isOpen, onClose}: PasswordModalU
                                 >
                                     {text.editPassword}
                                 </Text>
-
 
                                 <VStack
                                     space={2}

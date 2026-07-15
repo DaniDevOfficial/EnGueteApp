@@ -7,7 +7,7 @@ import React, {useState} from "react";
 import {DeleteGroupRequest, LeaveGroupRequest} from "../../../repo/Group";
 import {resetToUserScreen} from "../../../utility/navigation";
 import {showToast} from "../../Ui/Toast";
-import {useToast} from "native-base";
+
 import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../../../utility/Errors";
 import {handleLogoutProcedure} from "../../../Util";
 import {ConfirmationModal} from "../../Ui/ConfirmationModal";
@@ -15,7 +15,6 @@ import {ConfirmationModal} from "../../Ui/ConfirmationModal";
 export function GroupActions() {
     const {group} = useGroup();
     const navigation = useNavigation();
-    const toast = useToast();
     const getError = useErrorText();
 
     const text = useTexts(['groupActions', 'leaveGroup', 'deleteGroup', 'error']);
@@ -59,7 +58,6 @@ export function GroupActions() {
                 return;
             }
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: 'error',
@@ -68,13 +66,11 @@ export function GroupActions() {
     }
     async function handleDelete() {
 
-
         try {
             await DeleteGroupRequest(group.groupId);
             resetToUserScreen(navigation);
         } catch (e) {
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: "warning",
@@ -94,7 +90,6 @@ export function GroupActions() {
             }
         }
     }
-
 
     return (
         <>

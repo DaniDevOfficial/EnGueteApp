@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 
 import { Linking } from 'react-native'
-import {
-    Box, HStack, Icon, Pressable, Text, useToast, VStack
-} from "native-base";
+import {Box, HStack, Icon, Pressable, Text, VStack} from "native-base";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import { useText, useTexts } from "../../utility/TextKeys/TextKeys";
@@ -16,11 +14,8 @@ import {ConfirmationModal} from "../Ui/ConfirmationModal";
 import {clearDatabase} from "../../utility/database";
 import {Option, SettingsSectionStack} from "../Ui/SettingSectionStack";
 
-
-
 export function DangerZone() {
     const navigation = useNavigation();
-    const toast = useToast();
     const user = useUser();
     const getError = useErrorText();
 
@@ -40,7 +35,6 @@ export function DangerZone() {
         } catch (e) {
             if (e instanceof TimeoutError) {
                 showToast({
-                    toast,
                     title: text.error,
                     description: text.errorNoOfflineLogout,
                     status: 'error',
@@ -48,7 +42,6 @@ export function DangerZone() {
                 return;
             }
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: 'error',
@@ -64,7 +57,6 @@ export function DangerZone() {
             await handleLogoutProcedure(navigation);
         } catch (e) {
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: 'error',

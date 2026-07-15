@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useFocusEffect, useNavigation, useRoute} from '@react-navigation/native';
-import {Box, Button, useToast} from 'native-base';
+import {Box, Button} from "native-base";
 import {handleLogoutProcedure} from "../Util";
 import {GetGroupInformation, Group as GroupInformationType} from "../repo/Group";
 import {useGroup} from "../context/groupContext";
@@ -18,7 +18,6 @@ import {CustomButton} from "../components/Ui/CustomButton";
 export function Group() {
     const route = useRoute();
     const text = useTexts(['createNewMeal', 'member', 'members', 'error']);
-    const toast = useToast();
     const getError = useErrorText();
     // @ts-ignore
     const {groupId} = route.params;
@@ -38,7 +37,6 @@ export function Group() {
             };
         }, [])
     );
-
 
     async function getGroupData() {
         try {
@@ -65,7 +63,6 @@ export function Group() {
         } catch (e) {
 
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: "warning",
@@ -79,18 +76,15 @@ export function Group() {
         }
     }
 
-
     if (loading || groupInformation === undefined) {
         return <PageSpinner/>
     }
-
 
     function handleNavigate() {
 
         // @ts-ignore
         navigation.navigate('newMeal');
     }
-
 
     return (
         <>

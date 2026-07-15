@@ -1,4 +1,4 @@
-import {Box, Flex, HStack, ScrollView, Text, useToast, VStack} from "native-base";
+import {Box, Flex, HStack, ScrollView, Text, VStack} from "native-base";
 import React, {useCallback, useEffect, useState} from "react";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {GetGroupMeals, MealCard as MealCardType} from "../../repo/Group";
@@ -21,8 +21,6 @@ export function MealList({tempMeals}: MealListProps) {
     const text = useTexts(['error']);
 
     const weekdayNames = useTexts(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']);
-
-    const toast = useToast();
     const getError = useErrorText();
     const {group, setGroup} = useGroup();
     const navigation = useNavigation();
@@ -38,7 +36,6 @@ export function MealList({tempMeals}: MealListProps) {
                 setMeals(meals);
             } catch (e) {
                 showToast({
-                    toast,
                     title: text.error,
                     description: getError(e.message),
                     status: "warning",
@@ -69,7 +66,6 @@ export function MealList({tempMeals}: MealListProps) {
         setLoading(false);
     }
 
-
     useEffect(() => {
         if (!shouldReload) {
             return;
@@ -90,8 +86,6 @@ export function MealList({tempMeals}: MealListProps) {
     useEffect(() => {
         loadMeals(date);
     }, []);
-
-
 
     return (
         <PanGestureHandler
@@ -134,7 +128,6 @@ export function MealList({tempMeals}: MealListProps) {
         </PanGestureHandler>
     )
 }
-
 
 function List({meals = []}: { meals: MealCardType[] }) {
     let lastDayName = '';

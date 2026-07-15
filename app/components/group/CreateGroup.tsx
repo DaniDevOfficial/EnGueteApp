@@ -1,4 +1,4 @@
-import {Box, HStack, Icon, Image, Input, Modal, Text, useToast, VStack} from "native-base";
+import {Box, HStack, Icon, Image, Input, Modal, Text, VStack} from "native-base";
 import groupIcon from '../../assets/PopupIcons/groupIcon.png';
 import {useText, useTexts} from "../../utility/TextKeys/TextKeys";
 import React, {useState} from "react";
@@ -18,8 +18,6 @@ export function CreateGroup() {
     const text = useTexts(['createNewGroup', 'createNewGroupInformationText', 'groupName', 'error']);
     const navigation = useNavigation();
     const getError = useErrorText();
-    const toast = useToast();
-
     async function handleSubmit() {
         setLoading(true);
         try {
@@ -41,7 +39,6 @@ export function CreateGroup() {
             return;
         } catch (e) {
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: "warning",
@@ -100,7 +97,6 @@ export function CreateGroup() {
                                 width="170px"
                                 height="150px"
                             />
-
 
                             <Text fontSize={'xl'} fontWeight='bold'>
                                 {text.createNewGroup}

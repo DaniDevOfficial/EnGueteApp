@@ -1,32 +1,21 @@
 import React, {useState} from 'react';
-import {
-    Flex,
-    VStack,
-    Text,
-    FormControl,
-    Input,
-    useToast
-} from "native-base";
+import {Flex, VStack, Text, FormControl, Input} from "native-base";
 import {useNavigation} from "@react-navigation/native";
 import {CustomButton} from "../components/Ui/CustomButton";
 import {showToast} from "../components/Ui/Toast";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 import {resetPassword} from "../repo/Auth";
 
-
 export function ForgotPassword() {
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
 
     const navigation = useNavigation();
-    const toast = useToast();
     const text = useTexts(['somethingWentWrong', 'pleaseTryAgain', 'checkYourInbox', 'ifAnAccountExistsYouWillRecieveAResetEmail', 'forgotPassword', 'pleaseEnterEmailForResetLink', 'sendResetLink', 'back', 'enterEmail', 'missingEmail'])
-
 
     async function handleSubmit() {
         if (!email) {
             showToast({
-                toast,
                 title: text.missingEmail,
                 description: text.enterEmail,
                 status: 'warning',
@@ -41,7 +30,6 @@ export function ForgotPassword() {
             await new Promise(resolve => setTimeout(resolve, 800));
 
             showToast({
-                toast,
                 title: text.checkYourInbox,
                 description: text.ifAnAccountExistsYouWillRecieveAResetEmail,
                 status: 'success',
@@ -50,7 +38,6 @@ export function ForgotPassword() {
             navigation.goBack();
         } catch (e) {
             showToast({
-                toast,
                 title: text.somethingWentWrong,
                 description: text.pleaseTryAgain,
                 status: 'error',

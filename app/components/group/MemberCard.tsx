@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Box, IconButton, Popover, Text, useToast} from "native-base";
+import {Box, IconButton, Popover, Text} from "native-base";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {ACTIONS, MemberActions} from "./MemberActions";
 import {ChangeRole, KickUserFromGroup, KickUserRequest, RoleChange, RoleChangeRequest} from "../../repo/Group";
@@ -33,9 +33,6 @@ export function MemberCard({
     const {group} = useGroup();
     const [prettyRoles, setPrettyRoles] = useState<string[]>([]);
     const text = useTexts(['member', 'admin', 'manager', 'actions', 'error', 'youAreNotAllowedToPerformThisAction'])
-
-    const toast = useToast();
-
     useEffect(() => {
         setPrettyRoles([]);
         const tmpRoles: string[] = [];
@@ -86,7 +83,6 @@ export function MemberCard({
         } catch (error) {
             console.error(`❌ Failed to handle action "${action}" for user ${userId}:`, error);
             showToast({
-                toast,
                 title: text.error,
                 description: text.youAreNotAllowedToPerformThisAction,
                 status: 'error',

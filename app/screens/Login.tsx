@@ -8,7 +8,7 @@ import {
     TextInput,
     View,
 } from 'react-native';
-import {useToast} from "native-base";
+
 import {SignIntoAccount} from "../repo/Auth";
 import {useNavigation} from "@react-navigation/native";
 import {resetToUserScreen} from "../utility/navigation";
@@ -27,14 +27,12 @@ export function Login() {
     const navigation = useNavigation()
 
     const text = useTexts(['error', 'welcomeBack', 'welcomeBackInfoText', 'pleaseSignIn', 'username', 'or', 'enterUsername', 'password', 'enterPassword', 'login', 'createAnAccount', 'allFieldsAreRequired']);
-    const toast = useToast();
     const getError = useErrorText();
 
     async function handleSubmit() {
         setLoading(true);
         if (!username || !password) {
             showToast({
-                toast,
                 title: text.error,
                 description: text.allFieldsAreRequired,
                 status: "warning",
@@ -51,7 +49,6 @@ export function Login() {
 
         } catch (e) {
             showToast({
-                toast,
                 title: text.login,
                 description: getError(e.message),
                 status: "error",

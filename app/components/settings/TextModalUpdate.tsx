@@ -1,4 +1,4 @@
-import {FormControl, Input, Modal, Text, useToast, VStack} from "native-base";
+import {FormControl, Input, Modal, Text, VStack} from "native-base";
 import React, {useState} from "react";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {useNavigation} from "@react-navigation/native";
@@ -6,7 +6,6 @@ import {UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {showToast} from "../Ui/Toast";
 import {handleLogoutProcedure} from "../../Util";
 import {CustomButton} from "../Ui/CustomButton";
-
 
 interface TextUpdateProps {
     title: string;
@@ -17,7 +16,6 @@ interface TextUpdateProps {
 }
 
 export function TextModalUpdate({title, initialValue, onSuccess, isOpen, onClose}: TextUpdateProps) {
-    const toast = useToast();
     const navigation = useNavigation();
     const getError = useErrorText();
 
@@ -28,7 +26,6 @@ export function TextModalUpdate({title, initialValue, onSuccess, isOpen, onClose
 
     async function handleSave() {
 
-
         try {
             setIsSaving(true);
             await onSuccess(value);
@@ -36,7 +33,6 @@ export function TextModalUpdate({title, initialValue, onSuccess, isOpen, onClose
         } catch (e) {
 
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: "error",

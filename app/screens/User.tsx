@@ -1,4 +1,4 @@
-import {Box, Button, Pressable, useToast} from 'native-base'
+import {Box, Button, Pressable} from "native-base";
 import React, {useEffect, useState} from 'react'
 import {Environment, handleLogoutProcedure} from "../Util";
 import {useNavigation} from "@react-navigation/native";
@@ -18,7 +18,6 @@ export function User() {
     const [loading, setLoading] = useState(true)
 
     const text = useTexts(['youAreInNoGroup', 'startByJoiningOrCreating', 'yourGroups', 'createNewGroup', 'error']);
-    const toast = useToast();
     const getError = useErrorText();
     const navigation = useNavigation();
     const {user, setUser: setUser} = useUser();
@@ -38,7 +37,6 @@ export function User() {
                 await handleLogoutProcedure(navigation)
             }
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: "warning",
@@ -64,7 +62,6 @@ export function User() {
         });
     }, [userInformation]);
 
-
     if (loading || !userInformation || !user) {
         return <PageSpinner/>
     }
@@ -84,7 +81,6 @@ export function User() {
             </Box>
 
             {process.env.ENV === Environment.DEVELOPMENT && (
-
 
                 <Button
                     onPress={() => {

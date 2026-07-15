@@ -1,17 +1,5 @@
 import React, {useState} from "react";
-import {
-    Box,
-    Icon,
-    IconButton,
-    Image,
-    Input,
-    Modal,
-    Popover,
-    Pressable,
-    Text,
-    useToast,
-    VStack
-} from "native-base";
+import {Box, Icon, IconButton, Image, Input, Modal, Popover, Pressable, Text, VStack} from "native-base";
 import {KebabIcon} from "../Ui/Icons/KebabIcon";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {getFancyTimeDisplay} from "../../utility/Dates";
@@ -36,7 +24,6 @@ interface InviteCardProps {
 
 export function InviteCard({inviteToken, expiryDate, inviteLink, canVoid, onVoid}: InviteCardProps) {
     const text = useTexts(['voidToken', 'actions', 'expiresAt', 'copyLink', 'copiedLink', 'showInformation', 'qrCode', 'close', 'invitation', 'shareInvitationLink']);
-    const toast = useToast();
     const navigation = useNavigation();
     const getError = useErrorText();
 
@@ -61,7 +48,6 @@ export function InviteCard({inviteToken, expiryDate, inviteLink, canVoid, onVoid
             await DeleteInviteToken(inviteToken);
             await onVoid();
             showToast({
-                toast,
                 title: text.voidToken,
                 description: text.voidToken,
                 status: "success",
@@ -69,7 +55,6 @@ export function InviteCard({inviteToken, expiryDate, inviteLink, canVoid, onVoid
         } catch (e) {
 
             showToast({
-                toast,
                 title: text.voidToken,
                 description: getError(e.message),
                 status: "error",
@@ -92,7 +77,6 @@ export function InviteCard({inviteToken, expiryDate, inviteLink, canVoid, onVoid
     async function copyLink() {
         await Clipboard.setStringAsync(inviteLink);
         showToast({
-            toast,
             title: text.copiedLink,
             description: text.copiedLink,
             status: "success",
@@ -150,7 +134,6 @@ export function InviteCard({inviteToken, expiryDate, inviteLink, canVoid, onVoid
                 </Popover.Content>
             </Popover>
 
-
             <Modal isOpen={showInformation} onClose={() => setShowInformation(false)}>
                 <Modal.Content>
                     <Modal.Body width='100%' p={'5'}>
@@ -165,7 +148,6 @@ export function InviteCard({inviteToken, expiryDate, inviteLink, canVoid, onVoid
                         />
                         <VStack space={2}>
 
-
                             <VStack
                                 height='auto'
                                 width={'100%'}
@@ -173,7 +155,6 @@ export function InviteCard({inviteToken, expiryDate, inviteLink, canVoid, onVoid
                                 alignItems='center'
                                 space={'3'}
                             >
-
 
                                 <Text fontSize={'xl'} fontWeight='bold'>
                                     {text.invitation}
@@ -189,7 +170,6 @@ export function InviteCard({inviteToken, expiryDate, inviteLink, canVoid, onVoid
                                     value={inviteLink}
                                 />
                             </VStack>
-
 
                             <CustomButton width={'100%'} onPress={copyLink}>
                                 {text.copyLink}

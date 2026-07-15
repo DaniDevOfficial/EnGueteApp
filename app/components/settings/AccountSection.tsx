@@ -1,4 +1,4 @@
-import {Box, Icon, Image, useToast, VStack, Text} from "native-base";
+import {Box, Icon, Image, VStack, Text} from "native-base";
 import {TouchableOpacity} from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {TextUpdate} from "./TextUpdate";
@@ -17,7 +17,6 @@ import {PasswordModalUpdate} from "./PasswordModalUpdate";
 export function AccountSection() {
     const user = useUser();
     const text = useTexts(['updateUsername', 'userSettings', 'error', 'username', 'account', 'email', 'password']);
-    const toast = useToast();
     const getError = useErrorText();
     const navigation = useNavigation();
 
@@ -37,7 +36,6 @@ export function AccountSection() {
             });
         } catch (e) {
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: "warning",

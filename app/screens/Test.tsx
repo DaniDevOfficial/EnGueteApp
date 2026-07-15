@@ -1,4 +1,4 @@
-import {Button, Input, Text, useToast} from "native-base";
+import {Button, Input, Text} from "native-base";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {DateTimePickerAndroid} from "@react-native-community/datetimepicker";
 import {SetStateAction, useEffect, useState} from "react";
@@ -16,7 +16,6 @@ export function Test() {
     const [language, setLanguage] = useState('none');
     const [value, setValue] = useState('');
     const navigation = useNavigation();
-    const toast = useToast();
     const onChange = (event: any, selectedDate: SetStateAction<Date>) => {
         setDate(selectedDate);
     };
@@ -48,7 +47,6 @@ export function Test() {
             title: popupTexts.maybeLater,
             description: popupTexts.joinGroup,
             status: 'info',
-            toast
         })
     }
 
@@ -62,7 +60,6 @@ export function Test() {
                 title: popupTexts.maybeLater,
                 description: popupTexts.groupInvite,
                 status: 'error',
-                toast
             })
         }
     }
@@ -125,8 +122,6 @@ export function Test() {
         const groups = await db.getAllAsync('SELECT * FROM groups')
         console.log({user_groups, groups})
     }
-
-
 
     async function logEntireLogTable() {
         const logEntries = await db.getAllAsync('SELECT * FROM log');

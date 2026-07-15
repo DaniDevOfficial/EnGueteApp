@@ -1,18 +1,5 @@
 import React, {useState} from 'react';
-import {
-    Box,
-    Button,
-    Flex,
-    FormControl,
-    HStack,
-    Image,
-    Input,
-    Modal,
-    Pressable,
-    Switch,
-    Text,
-    useToast, VStack
-} from 'native-base';
+import {Box, Button, Flex, FormControl, HStack, Image, Input, Modal, Pressable, Switch, Text, VStack} from "native-base";
 import {MealPreference, saveMealPreference} from "../../repo/Meal";
 import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {useNavigation} from "@react-navigation/native";
@@ -27,7 +14,6 @@ export function PreferenceCard({mealParticipants, forceRefresh}: {
     mealParticipants: MealPreference,
     forceRefresh: (arg0: boolean) => Promise<void>
 }) {
-    const toast = useToast();
     const getError = useErrorText();
     const text = useTexts(['error', 'errorPleaseEnterCorrectText', 'save', 'cancel', 'editPreferences', 'newPreference', 'isCook']);
     const navigation = useNavigation();
@@ -62,7 +48,6 @@ export function PreferenceCard({mealParticipants, forceRefresh}: {
             await forceRefresh(true)
         } catch (e) {
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: "warning",
@@ -79,7 +64,6 @@ export function PreferenceCard({mealParticipants, forceRefresh}: {
                 return;
             }
         }
-
 
         setModalVisible(false);
     }
@@ -119,7 +103,6 @@ export function PreferenceCard({mealParticipants, forceRefresh}: {
                     </VStack>
                 </HStack>
             </Box>
-
 
             <Modal isOpen={isModalVisible} onClose={() => setModalVisible(false)}>
                 <Modal.Content>

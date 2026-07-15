@@ -1,4 +1,4 @@
-import {Box, ScrollView, Text, useToast, VStack} from "native-base";
+import {Box, ScrollView, Text, VStack} from "native-base";
 import React, {useEffect, useState} from "react";
 import {useGroup} from "../context/groupContext";
 import {BackButton} from "../components/Ui/BackButton";
@@ -20,7 +20,6 @@ export function GroupMemberList() {
     const {group} = useGroup();
     const {user} = useUser();
     const text = useTexts(['memberList', 'noMembers', 'ifYouSeeThisPleaseReport', 'error']);
-    const toast = useToast();
     const getError = useErrorText();
     const navigation = useNavigation();
     const [loading, setLoading] = useState(true);
@@ -38,7 +37,6 @@ export function GroupMemberList() {
             setGroupMembers(groupMembers);
         } catch (e) {
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: "warning",
@@ -63,7 +61,6 @@ export function GroupMemberList() {
     }
 
     useEffect(() => {
-
 
         setCanPerformAction({
             canKickUser: CanPerformAction(group.userRoleRights, PERMISSIONS.CAN_KICK_USERS),

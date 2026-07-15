@@ -8,7 +8,7 @@ import {
     TextInput,
     View,
 } from 'react-native';
-import {useToast} from "native-base";
+
 import {CreateNewAccount} from "../repo/Auth";
 import {useNavigation} from "@react-navigation/native";
 import {useTexts} from "../utility/TextKeys/TextKeys";
@@ -27,7 +27,6 @@ export function Signup() {
 
     const navigation = useNavigation();
     const text = useTexts(['error', 'newAccountGreetingsText', 'or', 'createNewAccount', 'createNewAccountSlogan', 'createNewAccountInfoText', 'username', 'enterUsername', 'email', 'enterEmail', 'password', 'enterPassword', 'createNewAccount', 'orLogin', 'bothFieldsAreRequired', 'info']);
-    const toast = useToast();
     const getError = useErrorText();
 
     async function handleSubmit() {
@@ -35,7 +34,6 @@ export function Signup() {
         setError('');
         if (!username || !password) {
             showToast({
-                toast,
                 title: text.error,
                 description: text.bothFieldsAreRequired,
                 status: "error",
@@ -49,14 +47,12 @@ export function Signup() {
                 setInviteToken(token);
             }
             showToast({
-                toast,
                 title: text.info,
                 description: getError(FRONTEND_ERRORS.HAS_TO_VERIFY_EMAIL_ERROR),
                 status: "info",
             })
         } catch (e) {
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: "error",

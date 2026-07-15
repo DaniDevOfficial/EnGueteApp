@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useText, useTexts} from "../../utility/TextKeys/TextKeys";
-import {Box, Button, FormControl, Icon, Image, Input, Modal, Text, useToast, VStack} from "native-base";
+import {Box, Button, FormControl, Icon, Image, Input, Modal, Text, VStack} from "native-base";
 import {getFancyTimeDisplay, getSwissDateTimeDisplay} from "../../utility/Dates";
 import {DateTimePickerAndroid} from "@react-native-community/datetimepicker";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -12,16 +12,13 @@ import {handleLogoutProcedure} from "../../Util";
 import {resetToUserScreen} from "../../utility/navigation";
 import {useNavigation} from "@react-navigation/native";
 
-
 interface CreateInviteProps {
     groupId: string;
     onSuccess: () => Promise<void>;
 }
 
-
 export function CreateInvite({groupId, onSuccess}: CreateInviteProps) {
     const text = useTexts(['createInvite', 'whenTheInviteWillBeInvalid']);
-    const toast = useToast();
     const navigation = useNavigation();
     const getError = useErrorText();
 
@@ -70,7 +67,6 @@ export function CreateInvite({groupId, onSuccess}: CreateInviteProps) {
         } catch (e) {
 
             showToast({
-                toast,
                 title: text.createInvite,
                 description: getError(e.message),
                 status: "error",

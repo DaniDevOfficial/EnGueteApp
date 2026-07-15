@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Heading, ScrollView, Text, useToast, VStack} from "native-base";
+import {Box, Heading, ScrollView, Text, VStack} from "native-base";
 import {useGroup} from "../context/groupContext";
 import {useNavigation, useRoute} from "@react-navigation/native";
 import {handleLogoutProcedure} from "../Util";
@@ -19,7 +19,6 @@ export function Meal() {
     const [loading, setLoading] = useState(true)
     const [refreshing, setRefreshing] = useState(false)
     const text = useTexts(['error', 'noParticipants', 'participants']);
-    const toast = useToast();
     const getError = useErrorText();
 
     const route = useRoute();
@@ -40,7 +39,6 @@ export function Meal() {
             setLoading(false)
         } catch (e) {
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: "warning",
@@ -85,7 +83,6 @@ export function Meal() {
                 <VStack space={6}>
 
                     <MealHeader mealInformation={mealInformation.mealInformation}/>
-
 
                     <VStack
                         space={3}

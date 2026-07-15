@@ -1,4 +1,4 @@
-import {Box, HStack, Icon, Image, Input, Modal, Pressable, Text, useToast, VStack} from "native-base";
+import {Box, HStack, Icon, Image, Input, Modal, Pressable, Text, VStack} from "native-base";
 import {useText, useTexts} from "../../utility/TextKeys/TextKeys";
 import React, {useState} from "react";
 import {CustomButton} from "../Ui/CustomButton";
@@ -21,8 +21,6 @@ export function JoinGroup() {
     const text = useTexts(['joinGroup', 'joinGroupInfoText', 'inviteToken', 'error']);
     const navigation = useNavigation();
     const getError = useErrorText();
-    const toast = useToast();
-
     async function handleJoin() {
         setLoading(true);
         try {
@@ -44,7 +42,6 @@ export function JoinGroup() {
             );
         } catch (e) {
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: "warning",
@@ -72,7 +69,6 @@ export function JoinGroup() {
                     </Pressable>
                 </HStack>
             </CustomButton>
-
 
             <Modal
                 _backdrop={{
@@ -110,7 +106,6 @@ export function JoinGroup() {
                                 width="100px"
                                 height="110px"
                             />
-
 
                             <Text fontSize={'xl'} fontWeight='bold'>
                                 {text.joinGroup}

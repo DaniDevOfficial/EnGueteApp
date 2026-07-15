@@ -1,17 +1,4 @@
-import {
-    Box,
-    Button,
-    Flex,
-    HStack,
-    Icon,
-    Input,
-    InputGroup,
-    Pressable,
-    ScrollView,
-    Text,
-    useToast,
-    VStack
-} from "native-base";
+import {Box, Button, Flex, HStack, Icon, Input, InputGroup, Pressable, ScrollView, Text, VStack} from "native-base";
 import {RefreshControl} from "react-native-gesture-handler";
 import {GroupCard} from "./GroupCard";
 import React, {useCallback, useEffect, useState} from "react";
@@ -28,7 +15,6 @@ import {JoinGroup} from "../group/JoinGroup";
 export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
     const navigation = useNavigation();
     const text = useTexts(['youAreInNoGroup', 'startByJoiningOrCreating', 'groups', 'createNewGroup', 'searchForGroup', 'error', 'noGroupsFound']);
-    const toast = useToast();
     const getError = useErrorText();
 
     const [refreshing, setRefreshing] = useState(false);
@@ -36,7 +22,6 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
     const [filteredGroups, setFilteredGroups] = useState(groups);
     const [searchQuery, setSearchQuery] = useState('');
     const [shouldReload, setShouldReload] = useState(false);
-
 
     async function onRefresh() {
         setRefreshing(true);
@@ -46,7 +31,6 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
         } catch (e) {
 
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: "warning",
@@ -147,7 +131,6 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
                         >
                             <JoinGroup />
 
-
                             <CreateGroup/>
                         </HStack>
                     </Flex>
@@ -187,7 +170,6 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
 
                     </ScrollView>
                 </VStack>
-
 
             </VStack>
         </Box>

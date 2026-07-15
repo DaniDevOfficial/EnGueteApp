@@ -1,4 +1,4 @@
-import {Button, FormControl, HStack, Icon, Input, Modal, Text, useToast} from "native-base";
+import {Button, FormControl, HStack, Icon, Input, Modal, Text} from "native-base";
 import {TouchableOpacity} from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import React, {useState} from "react";
@@ -9,7 +9,6 @@ import {showToast} from "../Ui/Toast";
 import {handleLogoutProcedure} from "../../Util";
 import {TextModalUpdate} from "./TextModalUpdate";
 
-
 interface TextUpdateProps {
     title: string;
     initialValue: string;
@@ -18,7 +17,6 @@ interface TextUpdateProps {
 }
 
 export function TextUpdate({title, initialValue, onSuccess, readonly = false}: TextUpdateProps) {
-    const toast = useToast();
     const navigation = useNavigation();
     const getError = useErrorText();
 
@@ -36,7 +34,6 @@ export function TextUpdate({title, initialValue, onSuccess, readonly = false}: T
         } catch (e) {
 
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: "error",

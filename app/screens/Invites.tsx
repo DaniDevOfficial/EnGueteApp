@@ -4,7 +4,7 @@ import {useTexts} from "../utility/TextKeys/TextKeys";
 import {PageTitleSection} from "../components/Ui/PageTitleSection";
 import {GetAllInviteTokensOfAGroup, InviteToken} from "../repo/group/Invites";
 import {useGroup} from "../context/groupContext";
-import {Box, ScrollView, Text, useToast, VStack} from "native-base";
+import {Box, ScrollView, Text, VStack} from "native-base";
 import {RefreshControl} from "react-native-gesture-handler";
 import {useNavigation} from "@react-navigation/native";
 import {CreateInvite} from "../components/group/CreateInvite";
@@ -19,7 +19,6 @@ import {resetToUserScreen} from "../utility/navigation";
 export function Invites() {
     const text = useTexts(['invites', 'createNewGroup', 'noActiveInviteTokens', 'error']);
     const navigation = useNavigation();
-    const toast = useToast();
     const getError = useErrorText();
     const {group} = useGroup();
 
@@ -35,7 +34,6 @@ export function Invites() {
             setInviteTokens(response);
         } catch (e) {
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: "warning",
