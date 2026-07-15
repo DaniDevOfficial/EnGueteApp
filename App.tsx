@@ -1,3 +1,4 @@
+import "./global.css";
 import React, {useEffect} from 'react';
 import {NativeBaseProvider} from 'native-base';
 import {RouterWrapper} from './app/Router';
