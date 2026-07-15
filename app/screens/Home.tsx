@@ -1,4 +1,4 @@
-import {Box, Flex, HStack, Image, Pressable, StatusBar, Text, VStack} from 'native-base'
+import {Image, Pressable, StatusBar, Text, View} from 'react-native'
 import pizzaLanding from '../assets/flags/test.png';
 import bigLanding from '../assets/flags/test2.png';
 import continueOnIcon from '../assets/icons/continueOnIcon.png';
@@ -55,15 +55,15 @@ export function Home() {
             </>
         )
     }
+
     const renderLandingImage = () => {
         switch (showWhichImage) {
             case ImageTypes.Pizza:
                 return (
                     <Image
-                        width={'85%'}
-                        height={'80%'}
+                        className="h-[80%] w-[85%]"
                         source={pizzaLanding}
-                        alt="Pizza with hands"
+                        accessibilityLabel="Pizza with hands"
                         resizeMode="contain"
                     />
                 );
@@ -71,12 +71,10 @@ export function Home() {
             case ImageTypes.BigWithPhone:
                 return (
                     <Image
-                        width={'100%'}
-                        height={'80%'}
-                        bottom={0}
+                        className="absolute bottom-0 h-[80%] w-full"
                         source={bigLanding}
-                        alt="Big food table with phone"
-                        position={'absolute'}
+                        accessibilityLabel="Big food table with phone"
+                        resizeMode="contain"
                     />
                 );
 
@@ -86,90 +84,60 @@ export function Home() {
     };
 
     return (
-
-        <Box flex={1} bg="#ffd043">
-
+        <View className="flex-1 bg-[#ffd043]">
             <StatusBar
                 backgroundColor="#ffd043"
                 barStyle="dark-content"
             />
-            <Box marginTop={79} marginLeft={5}>
-                <VStack space={0}>
-                    <Box>
-                        <Text fontSize={'5xl'} fontWeight={'bold'}>
-                            Plan meals.
-                        </Text>
-                    </Box>
-                    <HStack
-                        alignItems={'center'}
-                        space={4}
-                    >
 
-                        <Text fontSize={'5xl'} fontWeight={'bold'}>
-                            Eat
-                        </Text>
-                        <Box>
-                            {getPilltagWithLeftIcon('together')}
-                        </Box>
-                    </HStack>
-                    <Box>
-                        <Text fontSize={'5xl'} fontWeight={'bold'}>
-                            Enjoy more.
-                        </Text>
-                    </Box>
+            <View className="ml-5 mt-[79px]">
+                <View>
+                    <Text className="text-5xl font-bold text-black">
+                        Plan meals.
+                    </Text>
+                </View>
+                <View className="flex-row items-center gap-4">
+                    <Text className="text-5xl font-bold text-black">
+                        Eat
+                    </Text>
+                    {getPilltagWithLeftIcon('together')}
+                </View>
+                <View>
+                    <Text className="text-5xl font-bold text-black">
+                        Enjoy more.
+                    </Text>
+                </View>
+            </View>
 
-                </VStack>
-            </Box>
-            <Box flex={1} alignItems={'center'}>
+            <View className="flex-1 items-center">
                 {renderLandingImage()}
-            </Box>
-            <Box
-                position="absolute"
-                bottom={0}
-                left={0}
-                right={0}
-                alignItems="center"
-                mb={8}
-            >
+            </View>
+
+            <View className="absolute bottom-0 left-0 right-0 mb-8 items-center">
                 <Pressable
-                    width="80%"
-                    justifyContent="center"
-                    backgroundColor="black"
-                    alignItems="center"
-                    p={4}
-                    borderRadius="100"
+                    className="w-[80%] items-center justify-center rounded-full bg-black p-4"
                     onPress={() => {
                         navigation.navigate('signup')
                     }}
                 >
-                    <Flex
-                        justifyContent="space-between"
-                        flexDir={'row'}
-                        alignItems="center"
-                        width="90%"
-                    >
-                        <Text color="white">Get Started</Text>
+                    <View className="w-[90%] flex-row items-center justify-between">
+                        <Text className="text-base text-white">Get Started</Text>
                         <Image
                             source={continueOnIcon}
-                            alt="goOn"
-                            height={'70%'}
-                            width={'10%'}
+                            accessibilityLabel="goOn"
+                            className="h-7 w-8"
                             resizeMode="contain"
                         />
-
-                    </Flex>
+                    </View>
                 </Pressable>
-            </Box>
-        </Box>
-
-
+            </View>
+        </View>
     )
 }
 
 enum ImageTypes {
     Pizza,
     BigWithPhone,
-
 }
 
 function getLandingScreenRandomImage(): ImageTypes {
@@ -181,56 +149,19 @@ function getLandingScreenRandomImage(): ImageTypes {
 }
 
 function getPilltagWithLeftIcon(text: string): React.JSX.Element {
-
     return (
-        <HStack
-            justifyContent="center"
-            backgroundColor="black"
-            alignItems="center"
-            borderRadius="100"
-            p={4}
-            py={1}
-            space={4}
-        >
-            <Text color={'white'} fontSize={'2xl'}>
+        <View className="flex-row items-center justify-center gap-4 rounded-full bg-black px-4 py-1">
+            <Text className="text-2xl text-white">
                 {text}
             </Text>
-            <Box
-                padding={'8px'}
-                backgroundColor={'#ffd043'}
-                borderRadius="100"
-            >
-
+            <View className="rounded-full bg-[#ffd043] p-2">
                 <Image
-                    w={'36px'}
-                    h={'36px'}
+                    className="h-9 w-9"
                     source={eatIcon}
-                    alt="Eat Icon"
+                    accessibilityLabel="Eat Icon"
                     resizeMode="contain"
                 />
-            </Box>
-
-        </HStack>
+            </View>
+        </View>
     )
-
-
 }
-
-
-/**
- <Box flex={1} justifyContent="center" alignItems="center" p={4}>
- {inviteToken && (
- <TokenPopupHandler
- token={inviteToken}
- />
- )}
- <Text fontSize="2xl" mb={4}>Welcome to EnGuete!</Text>
- <Button onPress={() => navigation.navigate('login')} my={2}>
- <Text>{text.login}</Text>
- </Button>
- <Button onPress={() => navigation.navigate('signup')} my={2}>
- <Text>{text.signup}</Text>
- </Button>
- </Box>
-
- */
