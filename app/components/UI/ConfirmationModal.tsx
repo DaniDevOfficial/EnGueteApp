@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, FormControl, HStack, Input, Modal, Text, useToast, VStack} from 'native-base';
+import {Button, FormControl, HStack, Input, Modal, Text, VStack} from "native-base";
 import {useText, useTexts} from "../../utility/TextKeys/TextKeys";
 import {CustomButton} from "./CustomButton";
 import {showToast} from "./Toast";
@@ -24,7 +24,6 @@ export function ConfirmationModal({
     furtherInformationText?: string;
 }) {
     const text = useTexts(['cancel', 'confirm', 'error']);
-    const toast = useToast();
     const requiredTextInformation = useText('errorPleaseEnterCorrectText', {'text': requiredText ?? ''});
     const [value, setValue] = useState<string>('');
 
@@ -35,7 +34,6 @@ export function ConfirmationModal({
 
         if (requiredText && requiredText !== value) {
             showToast({
-                toast,
                 title: text.error,
                 description: requiredTextInformation,
                 status: 'warning',
