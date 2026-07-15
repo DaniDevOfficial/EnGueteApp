@@ -133,7 +133,6 @@ export function Login() {
                                                   navigation.navigate('signup')
                                               }}
                                               onlyOutline={true}
-                                              backgroundColor={'coolGray.100'}
                                 >
                                     <Text>
                                         {text.createAnAccount}

@@ -84,7 +84,7 @@ export function Home() {
     };
 
     return (
-        <View className="flex-1 bg-[#ffd043]">
+        <View className="flex-1 bg-app-yellow">
             <StatusBar
                 backgroundColor="#ffd043"
                 barStyle="dark-content"
@@ -154,7 +154,7 @@ function getPilltagWithLeftIcon(text: string): React.JSX.Element {
             <Text className="text-2xl text-white">
                 {text}
             </Text>
-            <View className="rounded-full bg-[#ffd043] p-2">
+            <View className="rounded-full bg-app-yellow p-2">
                 <Image
                     className="h-9 w-9"
                     source={eatIcon}

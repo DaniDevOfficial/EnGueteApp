@@ -133,7 +133,7 @@ export function Signup() {
 
                         <View className="w-full items-center gap-5">
                             <Pressable
-                                className="w-full items-center rounded-[30px] bg-orange-600 py-3 shadow-md active:opacity-60"
+                                className="w-full items-center rounded-[30px] bg-app-orange py-3 shadow-md active:opacity-60"
                                 onPress={handleSubmit}
                             >
                                 <Text className="text-base font-medium text-white">
@@ -146,7 +146,7 @@ export function Signup() {
                             </Text>
 
                             <Pressable
-                                className="w-full items-center rounded-[30px] border border-orange-600 bg-gray-100 py-3 shadow-sm active:opacity-60"
+                                className="w-full items-center rounded-[30px] bg-white border border-app-orange py-3 shadow-sm active:opacity-60"
                                 onPress={() => {
                                     navigation.navigate('login')
                                 }}
