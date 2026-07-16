@@ -1,10 +1,10 @@
-import {Box, Spinner} from "native-base";
 import React from "react";
+import {ActivityIndicator, View} from "react-native";
 
-export function PageSpinner(){
+export function PageSpinner() {
     return (
-        <Box flex={1} alignItems="center" justifyContent="center">
-            <Spinner size="lg" color="orange.500"/>
-        </Box>
+        <View className="flex-1 items-center justify-center">
+            <ActivityIndicator size="large" color="#f97316"/>
+        </View>
     )
 }

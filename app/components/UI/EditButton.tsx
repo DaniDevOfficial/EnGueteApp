@@ -1,29 +1,22 @@
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
+import {Pressable} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {Icon} from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-
-type BackButtonProps = {
+type EditButtonProps = {
     color?: string;
     navigateTo: string;
 };
 
-
-export function EditButton({color = 'black', navigateTo}: BackButtonProps) {
+export function EditButton({color = 'black', navigateTo}: EditButtonProps) {
     const navigation = useNavigation();
     return (
-        <TouchableOpacity
+        <Pressable
             onPress={() => navigation.navigate(navigateTo)}
-            style={{
-                position: 'absolute',
-                top: 30,
-                right: 15,
-                zIndex: 10,
-            }}
+            className="absolute right-[15px] top-[30px] z-10"
+            hitSlop={8}
         >
-            <Icon as={Ionicons} name="settings-outline" size={6} color={`${color ?? 'black'}`} />
-        </TouchableOpacity>
+            <Ionicons name="settings-outline" size={24} color={color}/>
+        </Pressable>
     );
 }
