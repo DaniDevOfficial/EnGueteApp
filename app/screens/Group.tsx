@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {useFocusEffect, useNavigation, useRoute} from '@react-navigation/native';
-import {Box, Button} from "native-base";
 import {handleLogoutProcedure} from "../Util";
 import {GetGroupInformation, Group as GroupInformationType} from "../repo/Group";
 import {useGroup} from "../context/groupContext";
@@ -14,6 +13,7 @@ import {MealList} from "../components/group/MealList";
 import {Title} from "../components/Ui/Icons/Title";
 import {showToast} from "../components/Ui/Toast";
 import {CustomButton} from "../components/Ui/CustomButton";
+import {View} from "react-native";
 
 export function Group() {
     const route = useRoute();
@@ -88,16 +88,18 @@ export function Group() {
 
     return (
         <>
-            <BackButton color={'green'}/>
+            <BackButton color={'black'}/>
             <EditButton navigateTo={'groupSettings'}/>
             <Title title={groupInformation.groupInfo.groupName} />
             <MealList tempMeals={groupInformation.meals ?? []}/>
             {groupInformation.groupInfo.userRoleRights.includes(PERMISSIONS.CAN_CREATE_MEAL) && (
-                <Box position="absolute" bottom={4} left={4} right={4}>
+                <View
+                    className="absolute bottom-4 left-4 right-4"
+                >
                     <CustomButton onPress={handleNavigate}>
                         {text.createNewMeal}
                     </CustomButton>
-                </Box>
+                </View>
             )}
         </>
     );
