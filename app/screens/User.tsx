@@ -1,5 +1,5 @@
-import {Box, Button, Pressable} from "native-base";
 import React, {useEffect, useState} from 'react'
+import {Pressable, Text, View} from 'react-native'
 import {Environment, handleLogoutProcedure} from "../Util";
 import {useNavigation} from "@react-navigation/native";
 import {GetUserInformation, Group, User as UserType} from "../repo/User";
@@ -23,16 +23,13 @@ export function User() {
     const {user, setUser: setUser} = useUser();
 
     async function getUserData() {
-
         try {
-
             const userInformationRes = await GetUserInformation();
 
             setUserInformation(userInformationRes)
             setGroupInformation(userInformationRes.groups)
             setLoading(false)
         } catch (e) {
-
             if (e instanceof UnauthorizedError) {
                 await handleLogoutProcedure(navigation)
             }
@@ -49,7 +46,6 @@ export function User() {
     }, [])
 
     useEffect(() => {
-
         if (userInformation === undefined) {
             return
         }
@@ -66,30 +62,24 @@ export function User() {
         return <PageSpinner/>
     }
 
-    function handleNavigate() {
-
-        // @ts-ignore
-        navigation.navigate('newGroup');
-    }
-
     return (
-        <>
+        <View className="flex-1">
             <EditButton navigateTo={'userSettings'}/>
-            <Box flex={1} alignItems="center" p={"10px 5px"}>
+            <View className="flex-1 items-center px-1 py-2.5">
                 <UserCard user={user}/>
                 <GroupList groupsDefault={groupInformation}/>
-            </Box>
+            </View>
 
             {process.env.ENV === Environment.DEVELOPMENT && (
-
-                <Button
+                <Pressable
+                    className="mx-4 mb-4 items-center rounded-[30px] bg-app-orange py-3 active:opacity-60"
                     onPress={() => {
                         navigation.navigate('test')
                     }}
                 >
-                    Test
-                </Button>
+                    <Text className="font-medium text-white">Test</Text>
+                </Pressable>
             )}
-        </>
+        </View>
     )
 }

@@ -1,8 +1,7 @@
-import {Box, HStack, Icon, Image, Input, Modal, Text, VStack} from "native-base";
+import React, {useState} from "react";
+import {ActivityIndicator, Image, Modal, Pressable, Text, TextInput, View} from "react-native";
 import groupIcon from '../../assets/PopupIcons/groupIcon.png';
 import {useText, useTexts} from "../../utility/TextKeys/TextKeys";
-import React, {useState} from "react";
-import {CustomButton} from "../Ui/CustomButton";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {StackActions, useNavigation} from "@react-navigation/native";
 import {CreateNewGroup, NewGroupType} from "../../repo/Group";
@@ -16,8 +15,10 @@ export function CreateGroup() {
     const [title, setTitle] = useState<string | undefined>();
 
     const text = useTexts(['createNewGroup', 'createNewGroupInformationText', 'groupName', 'error']);
+    const createLabel = useText('createNewGroup');
     const navigation = useNavigation();
     const getError = useErrorText();
+
     async function handleSubmit() {
         setLoading(true);
         try {
@@ -49,72 +50,73 @@ export function CreateGroup() {
             }
         }
         setLoading(false);
-
     }
 
     return (
         <>
-
-            <CustomButton onPress={() => setModalVisible(true)}>
-                <HStack flexDir='row' space={2} justifyContent='space-between' alignItems='center'>
-                    <Text color='white' fontWeight='bold' fontSize='xl'>
-                        {' '} + {' '}
-                    </Text>
-                </HStack>
-            </CustomButton>
-            <Modal
-                _backdrop={{
-                    bg: "coolGray.900", // backdrop color
-                    opacity: 0.6,       // makes it see-through
-
-                }}
-                isOpen={isModalVisible}
-                onClose={() => setModalVisible(false)}
+            <Pressable
+                className="items-center justify-center rounded-[30px] bg-app-orange px-4 py-2 active:opacity-60"
+                onPress={() => setModalVisible(true)}
             >
-                <Modal.Content borderRadius={'xl'}>
+                <Text className="text-xl font-bold text-white">
+                    {' '} + {' '}
+                </Text>
+            </Pressable>
 
-                    <Modal.Body width='100%' p={'5'}>
-                        <Icon
-                            as={<Ionicons name="close"/>}
-                            size={7}
-                            position={'absolute'}
-                            top={'5%'}
-                            right={'5%'}
-                            color="gray.400"
+            <Modal
+                visible={isModalVisible}
+                transparent
+                animationType="fade"
+                onRequestClose={() => setModalVisible(false)}
+            >
+                <View className="flex-1 items-center justify-center bg-black/60 px-6">
+                    <View className="w-full max-w-md rounded-xl bg-white p-5">
+                        <Pressable
+                            className="absolute right-[5%] top-[5%] z-10"
                             onPress={() => setModalVisible(false)}
-                        />
-
-                        <VStack
-                            height='auto'
-                            width={'100%'}
-                            justifyContent={'center'}
-                            alignItems='center'
-                            space={'3'}
+                            hitSlop={8}
                         >
+                            <Ionicons name="close" size={28} color="#9ca3af"/>
+                        </Pressable>
+
+                        <View className="w-full items-center justify-center gap-3">
                             <Image
                                 source={groupIcon}
-                                alt="Profile picture"
-                                width="170px"
-                                height="150px"
+                                accessibilityLabel="group icon"
+                                className="h-[150px] w-[170px]"
+                                resizeMode="contain"
                             />
 
-                            <Text fontSize={'xl'} fontWeight='bold'>
+                            <Text className="text-xl font-bold text-black">
                                 {text.createNewGroup}
                             </Text>
-                            <Text textAlign={'center'} fontSize={'md'} fontWeight={'light'}>
+                            <Text className="text-center text-base font-light text-black">
                                 {text.createNewGroupInformationText}
                             </Text>
-                            <Input
+                            <TextInput
                                 placeholder={text.groupName}
                                 value={title}
                                 onChangeText={setTitle}
+                                className="w-full rounded-md border border-gray-300 bg-white p-3 text-base text-black"
+                                autoCapitalize="none"
+                                autoCorrect={false}
                             />
-                            <CustomButton width={'100%'} isLoading={isLoading} onPress={() => handleSubmit()}>
-                                {useText('createNewGroup')}
-                            </CustomButton>
-                        </VStack>
-                    </Modal.Body>
-                </Modal.Content>
+                            <Pressable
+                                className="w-full items-center rounded-[30px] bg-app-orange py-3 active:opacity-60"
+                                onPress={handleSubmit}
+                                disabled={isLoading}
+                            >
+                                {isLoading ? (
+                                    <ActivityIndicator color="#ffffff"/>
+                                ) : (
+                                    <Text className="text-base font-medium text-white">
+                                        {createLabel}
+                                    </Text>
+                                )}
+                            </Pressable>
+                        </View>
+                    </View>
+                </View>
             </Modal>
         </>
     )
