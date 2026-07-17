@@ -3,7 +3,6 @@ import {useTexts} from "../../../utility/TextKeys/TextKeys";
 import React from "react";
 
 export function GroupInformation() {
-
     const text = useTexts(['editGroupInformation', 'groupInformation']);
 
     const options: Option[] = [
@@ -16,9 +15,6 @@ export function GroupInformation() {
     ];
 
     return (
-        <>
-            <SettingsSectionStack title={text.groupInformation} options={options}/>
-        </>
-
+        <SettingsSectionStack title={text.groupInformation} options={options}/>
     );
 }

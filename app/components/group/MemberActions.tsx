@@ -1,5 +1,5 @@
 import React from "react";
-import {Divider, Pressable, Text, VStack} from "native-base";
+import {Pressable, Text, View} from "react-native";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 
 interface MemberActionsProps {
@@ -8,6 +8,7 @@ interface MemberActionsProps {
     canPromoteToManager: boolean;
     userRoles: string[];
     onActionPress: (action: string) => Promise<void>;
+    onDone?: () => void;
 }
 
 export const ACTIONS = {
@@ -24,12 +25,13 @@ export function MemberActions({
                                   canPromoteToManager,
                                   userRoles,
                                   onActionPress,
+                                  onDone,
                               }: MemberActionsProps) {
     const isAdmin = userRoles.includes("admin");
     const isManager = userRoles.includes("manager");
     const text = useTexts(['promoteAdmin', 'promoteToManager', 'demoteAdmin', 'demoteManager', 'kickFromGroup']);
 
-    const actions: { label: string; action: string }[] = [];
+    const actions: { label: string; action: string; destructive?: boolean }[] = [];
 
     if (canPromoteToAdmin) {
         actions.push({
@@ -46,24 +48,25 @@ export function MemberActions({
     }
 
     if (canKickUser) {
-        actions.push({ label: text.kickFromGroup, action: ACTIONS.KICK });
+        actions.push({label: text.kickFromGroup, action: ACTIONS.KICK, destructive: true});
     }
 
     return (
-        <VStack space={2} divider={<Divider />}>
-             {actions.map(({ label, action }, index) => (
-                <Pressable key={index} onPress={() => onActionPress(action)}>
-                    {({ isPressed }) => (
-                        <Text
-                            fontSize="sm"
-                            color={isPressed ? "primary.600" : "gray.700"}
-                            opacity={isPressed ? 0.8 : 1}
-                        >
-                            {label}
-                        </Text>
-                    )}
+        <View className="w-full gap-1">
+            {actions.map(({label, action, destructive}, index) => (
+                <Pressable
+                    key={index}
+                    className="rounded-lg px-3 py-3 active:bg-gray-100"
+                    onPress={async () => {
+                        await onActionPress(action);
+                        onDone?.();
+                    }}
+                >
+                    <Text className={`text-base ${destructive ? 'font-medium text-red-500' : 'text-gray-800'}`}>
+                        {label}
+                    </Text>
                 </Pressable>
             ))}
-        </VStack>
+        </View>
     );
 }

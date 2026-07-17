@@ -7,7 +7,6 @@ import React, {useState} from "react";
 import {DeleteGroupRequest, LeaveGroupRequest} from "../../../repo/Group";
 import {resetToUserScreen} from "../../../utility/navigation";
 import {showToast} from "../../Ui/Toast";
-
 import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../../../utility/Errors";
 import {handleLogoutProcedure} from "../../../Util";
 import {ConfirmationModal} from "../../Ui/ConfirmationModal";
@@ -32,7 +31,7 @@ export function GroupActions() {
                 setLeaveGroupModalOpen(true);
             },
             icon: 'exit-to-app',
-            iconColor: 'yellow.500',
+            iconColor: '#eab308',
         },
     ];
 
@@ -43,8 +42,8 @@ export function GroupActions() {
                 setDeleteGroupModalOpen(true);
             },
             icon: 'delete-forever',
-            iconColor: 'red.500',
-            textColor: 'red.500',
+            iconColor: '#ef4444',
+            textColor: '#ef4444',
         });
     }
 
@@ -64,8 +63,8 @@ export function GroupActions() {
             });
         }
     }
-    async function handleDelete() {
 
+    async function handleDelete() {
         try {
             await DeleteGroupRequest(group.groupId);
             resetToUserScreen(navigation);
@@ -111,7 +110,6 @@ export function GroupActions() {
                 onConfirm={handleDelete}
                 requiredText={deleteConfirmText}
             />
-
         </>
     );
 }

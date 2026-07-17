@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
+import {ScrollView, Text, View} from "react-native";
 import {BackButton} from "../components/Ui/BackButton";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 import {PageTitleSection} from "../components/Ui/PageTitleSection";
 import {GetAllInviteTokensOfAGroup, InviteToken} from "../repo/group/Invites";
 import {useGroup} from "../context/groupContext";
-import {Box, ScrollView, Text, VStack} from "native-base";
 import {RefreshControl} from "react-native-gesture-handler";
 import {useNavigation} from "@react-navigation/native";
 import {CreateInvite} from "../components/group/CreateInvite";
@@ -75,30 +75,42 @@ export function Invites() {
         <>
             <BackButton/>
             <PageTitleSection title={text.invites}/>
+
             <ScrollView
-                w={'100%'}
-                contentContainerStyle={{flexGrow: 1}}
+                className="flex-1"
+                contentContainerStyle={{flexGrow: 1, paddingHorizontal: 16, paddingBottom: 100}}
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
                 }
             >
-                <VStack alignItems="center" w={'100%'}>
-                    {inviteTokens.length > 0 ? (inviteTokens.map((inviteToken, key) => (
-                            <InviteCard key={key} inviteToken={inviteToken.inviteToken}
-                                        inviteLink={process.env.EXPO_PUBLIC_WEB_URL + '#/invite/' + inviteToken.inviteToken}
-                                        canVoid={canVoid} expiryDate={inviteToken.expiresAt} onVoid={onRefresh}/>
-                        ))
-                    ) : (
-                        <Box mt={5}>
-                            <Text color={"gray.500"} textAlign={"center"}>
-                                {text.noActiveInviteTokens}
-                            </Text>
-                        </Box>
-                    )}
-                </VStack>
+                {inviteTokens.length > 0 ? (
+                    <View className="mt-4 gap-3">
+                        {inviteTokens.map((inviteToken) => (
+                            <InviteCard
+                                key={inviteToken.inviteToken}
+                                inviteToken={inviteToken.inviteToken}
+                                inviteLink={process.env.EXPO_PUBLIC_WEB_URL + '#/invite/' + inviteToken.inviteToken}
+                                canVoid={canVoid}
+                                expiryDate={inviteToken.expiresAt}
+                                onVoid={onRefresh}
+                            />
+                        ))}
+                    </View>
+                ) : (
+                    <View className="mt-16 items-center px-6">
+                        <View className="mb-4 h-16 w-16 items-center justify-center rounded-full bg-orange-50">
+                            <Text className="text-2xl">🔗</Text>
+                        </View>
+                        <Text className="text-center text-base text-gray-500">
+                            {text.noActiveInviteTokens}
+                        </Text>
+                    </View>
+                )}
             </ScrollView>
-            <CreateInvite groupId={group.groupId} onSuccess={onRefresh}/>
-        </>
 
+            <View className="absolute bottom-4 left-4 right-4">
+                <CreateInvite groupId={group.groupId} onSuccess={onRefresh}/>
+            </View>
+        </>
     )
 }

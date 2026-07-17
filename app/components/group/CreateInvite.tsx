@@ -1,11 +1,10 @@
 import React, {useState} from "react";
+import {ActivityIndicator, Modal, Pressable, Text, TextInput, View} from "react-native";
 import {useText, useTexts} from "../../utility/TextKeys/TextKeys";
-import {Box, Button, FormControl, Icon, Image, Input, Modal, Text, VStack} from "native-base";
-import {getFancyTimeDisplay, getSwissDateTimeDisplay} from "../../utility/Dates";
+import {getSwissDateTimeDisplay} from "../../utility/Dates";
 import {DateTimePickerAndroid} from "@react-native-community/datetimepicker";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {CreateInviteToken, CreateInviteTokenRequest} from "../../repo/group/Invites";
-import {CustomButton} from "../Ui/CustomButton";
 import {showToast} from "../Ui/Toast";
 import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {handleLogoutProcedure} from "../../Util";
@@ -18,7 +17,8 @@ interface CreateInviteProps {
 }
 
 export function CreateInvite({groupId, onSuccess}: CreateInviteProps) {
-    const text = useTexts(['createInvite', 'whenTheInviteWillBeInvalid']);
+    const text = useTexts(['createInvite', 'whenTheInviteWillBeInvalid', 'cancel']);
+    const cancelLabel = useText('cancel');
     const navigation = useNavigation();
     const getError = useErrorText();
 
@@ -31,8 +31,7 @@ export function CreateInvite({groupId, onSuccess}: CreateInviteProps) {
         if (!selectedDate) return;
 
         setExpiresAtDate(selectedDate);
-        const text = getSwissDateTimeDisplay(selectedDate);
-        setExpiresAt(text);
+        setExpiresAt(getSwissDateTimeDisplay(selectedDate));
     }
 
     function showMode(currentMode: "date" | "time", onChange = onChangeDatePicker, selectedDate: Date) {
@@ -40,10 +39,9 @@ export function CreateInvite({groupId, onSuccess}: CreateInviteProps) {
             value: selectedDate,
             onChange,
             mode: currentMode,
-
             is24Hour: true,
         });
-    };
+    }
 
     function showDatepicker() {
         showMode("date", (event, selectedDate) => {
@@ -65,7 +63,6 @@ export function CreateInvite({groupId, onSuccess}: CreateInviteProps) {
             await onSuccess();
             setModalVisible(false)
         } catch (e) {
-
             showToast({
                 title: text.createInvite,
                 description: getError(e.message),
@@ -81,85 +78,92 @@ export function CreateInvite({groupId, onSuccess}: CreateInviteProps) {
                     resetToUserScreen(navigation)
                     return;
                 }
-                return;
             }
         }
         setIsSaving(false)
         setExpiresAt('')
         setExpiresAtDate(new Date());
-
-    };
+    }
 
     return (
         <>
-            <CustomButton onPress={() => setModalVisible(true)} my={4}>
-                {text.createInvite}
-            </CustomButton>
-            <Modal isOpen={isModalVisible} onClose={() => setModalVisible(false)}>
-                <Modal.Content>
-                    <Modal.Body>
-                        <Icon
-                            as={<Ionicons name="close"/>}
-                            size={7}
-                            position={'absolute'}
-                            top={'5%'}
-                            right={'5%'}
-                            color="gray.400"
+            <Pressable
+                className="w-full items-center rounded-[30px] bg-app-orange py-3 shadow-md active:opacity-60"
+                onPress={() => setModalVisible(true)}
+            >
+                <Text className="text-base font-medium text-white">
+                    {text.createInvite}
+                </Text>
+            </Pressable>
+
+            <Modal
+                visible={isModalVisible}
+                transparent
+                animationType="fade"
+                onRequestClose={() => setModalVisible(false)}
+            >
+                <Pressable
+                    className="flex-1 items-center justify-center bg-black/40 px-6"
+                    onPress={() => setModalVisible(false)}
+                >
+                    <Pressable
+                        className="w-full max-w-md rounded-xl bg-white p-5"
+                        onPress={(e) => e.stopPropagation()}
+                    >
+                        <Pressable
+                            className="absolute right-4 top-4 z-10"
                             onPress={() => setModalVisible(false)}
-                        />
-                        <VStack space={2}>
-                            <VStack
-                                height='auto'
-                                width={'100%'}
-                                justifyContent={'center'}
-                                alignItems='center'
-                                space={'3'}
-                            >
-                                <Text fontSize={'xl'} fontWeight='bold'>
-                                    {text.createInvite}
-                                </Text>
+                            hitSlop={8}
+                        >
+                            <Ionicons name="close" size={28} color="#9ca3af"/>
+                        </Pressable>
 
-                                <FormControl>
-                                    <Input
-                                        value={expiresAt}
-                                        isReadOnly={true}
-                                        p={3}
-                                        placeholder={text.whenTheInviteWillBeInvalid}
-                                        InputRightElement={
-                                            <Button
-                                                variant="outline"
-                                                borderColor="orange.500"
-                                                _text={{ color: "orange.500" }}
-                                                onPress={showDatepicker}
-                                                size="xs"
-                                                p={3}
-                                            >
-                                                <Icon
-                                                    as={Ionicons}
-                                                    name="calendar"
-                                                    size={5}
-                                                    color="orange.500"
-                                                />
-                                            </Button>
-
-                                        }
-                                    />
-                                </FormControl>
-                            </VStack>
-
-                            <CustomButton width={'100%'} onPress={handleSave} isLoading={isSaving}>
+                        <View className="w-full items-center gap-3 pt-2">
+                            <Text className="text-xl font-bold text-black">
                                 {text.createInvite}
-                            </CustomButton>
-                            <CustomButton onlyOutline={true} onPress={() => setModalVisible(false)}>
-                                <Text>
-                                    {useText('cancel')}
+                            </Text>
+
+                            <View className="w-full flex-row items-center rounded-md border border-gray-300 bg-white">
+                                <TextInput
+                                    value={expiresAt}
+                                    editable={false}
+                                    placeholder={text.whenTheInviteWillBeInvalid}
+                                    className="flex-1 p-3 text-base text-black"
+                                    pointerEvents="none"
+                                />
+                                <Pressable
+                                    className="m-1 items-center justify-center rounded-md border border-app-orange px-3 py-2 active:opacity-60"
+                                    onPress={showDatepicker}
+                                >
+                                    <Ionicons name="calendar" size={20} color="#f97316"/>
+                                </Pressable>
+                            </View>
+
+                            <Pressable
+                                className="mt-2 w-full items-center rounded-[30px] bg-app-orange py-3 active:opacity-60"
+                                onPress={handleSave}
+                                disabled={isSaving}
+                            >
+                                {isSaving ? (
+                                    <ActivityIndicator color="#ffffff"/>
+                                ) : (
+                                    <Text className="text-base font-medium text-white">
+                                        {text.createInvite}
+                                    </Text>
+                                )}
+                            </Pressable>
+                            <Pressable
+                                className="w-full items-center rounded-[30px] border border-app-orange bg-white py-3 active:opacity-60"
+                                onPress={() => setModalVisible(false)}
+                            >
+                                <Text className="text-base font-medium text-black">
+                                    {cancelLabel}
                                 </Text>
-                            </CustomButton>
-                        </VStack>
-                    </Modal.Body>
-                </Modal.Content>
+                            </Pressable>
+                        </View>
+                    </Pressable>
+                </Pressable>
             </Modal>
         </>
     );
-
 }

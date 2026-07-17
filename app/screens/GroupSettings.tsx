@@ -1,12 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
+import {ScrollView, View} from "react-native";
 import {BackButton} from "../components/Ui/BackButton";
-import {Button, ScrollView, VStack} from "native-base";
-import {useUser} from "../context/userContext";
 import {TextUpdate} from "../components/settings/TextUpdate";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 import {useGroup} from "../context/groupContext";
 import {UpdateGroupName, UpdateGroupNameType} from "../repo/Group";
-import {CanPerformAction, PERMISSIONS} from "../utility/Roles";
+import {PERMISSIONS} from "../utility/Roles";
 import {useNavigation} from "@react-navigation/native";
 import {PageTitleSection} from "../components/Ui/PageTitleSection";
 import {showToast} from "../components/Ui/Toast";
@@ -16,14 +15,12 @@ import {resetToUserScreen} from "../utility/navigation";
 import {GroupInformation} from "../components/settings/Group/GroupInformation";
 import {MembersAndInvite} from "../components/settings/Group/MembersAndInvites";
 import {GroupActions} from "../components/settings/Group/GroupActions";
-import {TextModalUpdate} from "../components/settings/TextModalUpdate";
 
 export function GroupSettings() {
     const group = useGroup();
     const navigation = useNavigation();
     const text = useTexts(['updateGroupName', 'memberList', 'groupSettings', 'invites', 'error']);
     const getError = useErrorText();
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
     async function handleEditGroupName(newGroupName: string) {
         const params: UpdateGroupNameType = {
@@ -31,12 +28,11 @@ export function GroupSettings() {
             groupName: newGroupName,
         }
         try {
-            const response = await UpdateGroupName(params)
+            await UpdateGroupName(params)
             group.setGroup({
                 ...group.group,
                 groupName: newGroupName,
             });
-
         } catch (e) {
             showToast({
                 title: text.error,
@@ -63,20 +59,22 @@ export function GroupSettings() {
         <>
             <BackButton/>
             <PageTitleSection title={text.groupSettings}/>
-            <ScrollView>
-                <VStack space={6}>
-                    <VStack maxH={'100%'} flex={1} alignItems="center" p={"10px 5px"}>
-                        <TextUpdate initialValue={group.group.groupName} title={text.updateGroupName}
-                                    onSuccess={handleEditGroupName}
-                                    readonly={!group.group.userRoleRights.includes(PERMISSIONS.CAN_UPDATE_GROUP)}/>
-                    </VStack>
+            <ScrollView className="flex-1" contentContainerStyle={{paddingBottom: 32}}>
+                <View className="gap-6 px-1 py-4">
+                    <View className="items-center">
+                        <TextUpdate
+                            initialValue={group.group.groupName}
+                            title={text.updateGroupName}
+                            onSuccess={handleEditGroupName}
+                            readonly={!group.group.userRoleRights.includes(PERMISSIONS.CAN_UPDATE_GROUP)}
+                        />
+                    </View>
                     {group.group.userRoleRights.includes(PERMISSIONS.CAN_UPDATE_GROUP) && (
                         <GroupInformation/>
                     )}
                     <MembersAndInvite/>
                     <GroupActions/>
-                </VStack>
-
+                </View>
             </ScrollView>
         </>
     )

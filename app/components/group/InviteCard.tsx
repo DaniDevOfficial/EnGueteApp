@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-import {Box, Icon, IconButton, Image, Input, Modal, Popover, Pressable, Text, VStack} from "native-base";
-import {KebabIcon} from "../Ui/Icons/KebabIcon";
+import {Modal, Pressable, Text, TextInput, View} from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {getFancyTimeDisplay} from "../../utility/Dates";
 import * as Clipboard from 'expo-clipboard';
@@ -10,8 +10,6 @@ import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from ".
 import {handleLogoutProcedure} from "../../Util";
 import {resetToUserScreen} from "../../utility/navigation";
 import {useNavigation} from "@react-navigation/native";
-import {CustomButton} from "../Ui/CustomButton";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import QRCode from "react-native-qrcode-svg";
 
 interface InviteCardProps {
@@ -28,18 +26,27 @@ export function InviteCard({inviteToken, expiryDate, inviteLink, canVoid, onVoid
     const getError = useErrorText();
 
     const [showInformation, setShowInformation] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
 
     const actions = [
         {
             title: text.showInformation,
-            action: () => setShowInformation(true),
+            action: () => {
+                setMenuOpen(false);
+                setShowInformation(true);
+            },
+            destructive: false,
         },
     ];
 
     if (canVoid) {
         actions.push({
             title: text.voidToken,
-            action: voidToken,
+            action: async () => {
+                setMenuOpen(false);
+                await voidToken();
+            },
+            destructive: true,
         })
     }
 
@@ -53,7 +60,6 @@ export function InviteCard({inviteToken, expiryDate, inviteLink, canVoid, onVoid
                 status: "success",
             })
         } catch (e) {
-
             showToast({
                 title: text.voidToken,
                 description: getError(e.message),
@@ -69,7 +75,6 @@ export function InviteCard({inviteToken, expiryDate, inviteLink, canVoid, onVoid
                     resetToUserScreen(navigation)
                     return;
                 }
-                return;
             }
         }
     }
@@ -84,104 +89,123 @@ export function InviteCard({inviteToken, expiryDate, inviteLink, canVoid, onVoid
     }
 
     return (
-        <Box
-            flexDirection="row"
-            justifyContent="space-between"
-            padding={3}
-            borderBottomWidth={1}
-            borderColor="gray.200"
-        >
-            <VStack w={'90%'}>
-                <Text fontSize={'sm'} isTruncated>
-                    {inviteToken}
-                </Text>
-                <Text fontSize={'sm'} color="gray.500" isTruncated>
-                    {text.expiresAt}: {getFancyTimeDisplay(expiryDate)}
-                </Text>
-            </VStack>
+        <>
+            <View className="w-full flex-row items-center rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-sm">
+                <View className="mr-3 h-11 w-11 items-center justify-center rounded-full bg-orange-50">
+                    <Ionicons name="link" size={20} color="#f97316"/>
+                </View>
 
-            <Popover trigger={(triggerProps) => (
-                <IconButton
-                    {...triggerProps}
-                    icon={<KebabIcon size={5}/>}
-                    borderRadius="full"
-                    _icon={{color: "gray.600"}}
-                    _pressed={{bg: "gray.200"}}
+                <View className="flex-1 pr-2">
+                    <Text className="mb-0.5 text-sm font-semibold text-black" numberOfLines={1}>
+                        {inviteToken}
+                    </Text>
+                    <View className="flex-row items-center gap-1">
+                        <Ionicons name="time-outline" size={14} color="#6b7280"/>
+                        <Text className="text-xs text-gray-500" numberOfLines={1}>
+                            {text.expiresAt}: {getFancyTimeDisplay(expiryDate)}
+                        </Text>
+                    </View>
+                </View>
+
+                <Pressable
+                    className="h-9 w-9 items-center justify-center rounded-full active:bg-gray-100"
+                    onPress={() => setMenuOpen(true)}
+                    hitSlop={8}
                     accessibilityLabel="More options"
-                />
-            )}>
-                <Popover.Content accessibilityLabel="User Actions" w="64">
-                    <Popover.Arrow/>
-                    <Popover.CloseButton/>
-                    <Popover.Header>{text.actions}</Popover.Header>
-                    <Popover.Body>
-                        <VStack space={2}>
-                            {actions.map((action, index) => (
-                                <Pressable key={index} onPress={action.action}>
-                                    {({isPressed}) => (
-                                        <Text
-                                            fontSize="sm"
-                                            color={isPressed ? "primary.600" : "gray.700"}
-                                            opacity={isPressed ? 0.8 : 1}
-                                        >
-                                            {action.title}
-                                        </Text>
-                                    )}
-                                </Pressable>
-                            ))}
-                        </VStack>
-                    </Popover.Body>
-                </Popover.Content>
-            </Popover>
+                >
+                    <Ionicons name="ellipsis-vertical" size={20} color="#4b5563"/>
+                </Pressable>
+            </View>
 
-            <Modal isOpen={showInformation} onClose={() => setShowInformation(false)}>
-                <Modal.Content>
-                    <Modal.Body width='100%' p={'5'}>
-                        <Icon
-                            as={<Ionicons name="close"/>}
-                            size={7}
-                            position={'absolute'}
-                            top={'5%'}
-                            right={'5%'}
-                            color="gray.400"
-                            onPress={() => setShowInformation(false)}
-                        />
-                        <VStack space={2}>
-
-                            <VStack
-                                height='auto'
-                                width={'100%'}
-                                justifyContent={'center'}
-                                alignItems='center'
-                                space={'3'}
+            <Modal
+                visible={menuOpen}
+                transparent
+                animationType="fade"
+                onRequestClose={() => setMenuOpen(false)}
+            >
+                <Pressable
+                    className="flex-1 justify-end bg-black/40"
+                    onPress={() => setMenuOpen(false)}
+                >
+                    <Pressable
+                        className="rounded-t-3xl bg-white px-5 pb-8 pt-4"
+                        onPress={(e) => e.stopPropagation()}
+                    >
+                        <View className="mb-3 items-center">
+                            <View className="mb-3 h-1 w-10 rounded-full bg-gray-300"/>
+                            <Text className="text-lg font-bold text-black">{text.actions}</Text>
+                        </View>
+                        {actions.map((action, index) => (
+                            <Pressable
+                                key={index}
+                                className="rounded-lg px-3 py-3 active:bg-gray-100"
+                                onPress={action.action}
                             >
-
-                                <Text fontSize={'xl'} fontWeight='bold'>
-                                    {text.invitation}
+                                <Text className={`text-base ${action.destructive ? 'font-medium text-red-500' : 'text-gray-800'}`}>
+                                    {action.title}
                                 </Text>
-                                <Text textAlign={'center'} fontSize={'md'} fontWeight={'light'}>
-                                    {text.shareInvitationLink}
+                            </Pressable>
+                        ))}
+                    </Pressable>
+                </Pressable>
+            </Modal>
+
+            <Modal
+                visible={showInformation}
+                transparent
+                animationType="fade"
+                onRequestClose={() => setShowInformation(false)}
+            >
+                <Pressable
+                    className="flex-1 items-center justify-center bg-black/40 px-6"
+                    onPress={() => setShowInformation(false)}
+                >
+                    <Pressable
+                        className="w-full max-w-md rounded-xl bg-white p-5"
+                        onPress={(e) => e.stopPropagation()}
+                    >
+                        <Pressable
+                            className="absolute right-4 top-4 z-10"
+                            onPress={() => setShowInformation(false)}
+                            hitSlop={8}
+                        >
+                            <Ionicons name="close" size={28} color="#9ca3af"/>
+                        </Pressable>
+
+                        <View className="w-full items-center gap-3 pt-2">
+                            <Text className="text-xl font-bold text-black">
+                                {text.invitation}
+                            </Text>
+                            <Text className="text-center text-base font-light text-black">
+                                {text.shareInvitationLink}
+                            </Text>
+
+                            <View className="my-2 items-center justify-center rounded-xl bg-white p-3">
+                                <QRCode value={inviteLink} size={120}/>
+                            </View>
+
+                            <TextInput
+                                value={inviteLink}
+                                editable={false}
+                                className="w-full rounded-md border border-gray-300 bg-gray-50 p-3 text-sm text-black"
+                            />
+
+                            <Pressable
+                                className="w-full items-center rounded-[30px] bg-app-orange py-3 active:opacity-60"
+                                onPress={copyLink}
+                            >
+                                <Text className="text-base font-medium text-white">
+                                    {text.copyLink}
                                 </Text>
+                            </Pressable>
 
-                                <Box display="block" justifyContent="center" alignItems="center">
-                                    <QRCode value={inviteLink} size={100}/>
-                                </Box>
-                                <Input
-                                    value={inviteLink}
-                                />
-                            </VStack>
-
-                            <CustomButton width={'100%'} onPress={copyLink}>
-                                {text.copyLink}
-                            </CustomButton>
-                            <Text fontSize={'sm'} color="gray.500" textAlign={'center'} isTruncated>
+                            <Text className="text-center text-sm text-gray-500" numberOfLines={1}>
                                 {getFancyTimeDisplay(expiryDate)}
                             </Text>
-                        </VStack>
-
-                    </Modal.Body>
-                </Modal.Content>
+                        </View>
+                    </Pressable>
+                </Pressable>
             </Modal>
-        </Box>
+        </>
     );
 }
