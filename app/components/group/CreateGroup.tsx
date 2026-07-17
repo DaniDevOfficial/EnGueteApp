@@ -69,8 +69,14 @@ export function CreateGroup() {
                 animationType="fade"
                 onRequestClose={() => setModalVisible(false)}
             >
-                <View className="flex-1 items-center justify-center bg-black/60 px-6">
-                    <View className="w-full max-w-md rounded-xl bg-white p-5">
+                <Pressable
+                    className="flex-1 items-center justify-center bg-black/60 px-6"
+                    onPress={() => setModalVisible(false)}
+                >
+                    <Pressable
+                        className="w-full max-w-md rounded-xl bg-white p-5"
+                        onPress={(e) => e.stopPropagation()}
+                    >
                         <Pressable
                             className="absolute right-[5%] top-[5%] z-10"
                             onPress={() => setModalVisible(false)}
@@ -115,8 +121,8 @@ export function CreateGroup() {
                                 )}
                             </Pressable>
                         </View>
-                    </View>
-                </View>
+                    </Pressable>
+                </Pressable>
             </Modal>
         </>
     )

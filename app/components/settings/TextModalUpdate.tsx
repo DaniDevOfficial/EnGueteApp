@@ -51,8 +51,14 @@ export function TextModalUpdate({title, initialValue, onSuccess, isOpen, onClose
 
     return (
         <Modal visible={isOpen} transparent animationType="fade" onRequestClose={onClose}>
-            <View className="flex-1 items-center justify-center bg-black/40 px-6">
-                <View className="w-full max-w-md rounded-xl bg-white p-5">
+            <Pressable
+                className="flex-1 items-center justify-center bg-black/40 px-6"
+                onPress={onClose}
+            >
+                <Pressable
+                    className="w-full max-w-md rounded-xl bg-white p-5"
+                    onPress={(e) => e.stopPropagation()}
+                >
                     <View className="w-full items-center gap-8">
                         <Text className="text-xl font-bold text-black">
                             {title}
@@ -90,8 +96,8 @@ export function TextModalUpdate({title, initialValue, onSuccess, isOpen, onClose
                             </Text>
                         </Pressable>
                     </View>
-                </View>
-            </View>
+                </Pressable>
+            </Pressable>
         </Modal>
     )
 }

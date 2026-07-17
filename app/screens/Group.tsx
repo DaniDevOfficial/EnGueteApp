@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useFocusEffect, useNavigation, useRoute} from '@react-navigation/native';
+import {Pressable, Text, View} from "react-native";
 import {handleLogoutProcedure} from "../Util";
 import {GetGroupInformation, Group as GroupInformationType} from "../repo/Group";
 import {useGroup} from "../context/groupContext";
@@ -12,8 +13,6 @@ import {PageSpinner} from "../components/Ui/PageSpinner";
 import {MealList} from "../components/group/MealList";
 import {Title} from "../components/Ui/Icons/Title";
 import {showToast} from "../components/Ui/Toast";
-import {CustomButton} from "../components/Ui/CustomButton";
-import {View} from "react-native";
 
 export function Group() {
     const route = useRoute();
@@ -40,7 +39,6 @@ export function Group() {
 
     async function getGroupData() {
         try {
-
             const groupInformation = await GetGroupInformation(groupId);
 
             if (groupInformation) {
@@ -61,7 +59,6 @@ export function Group() {
                 })
             }
         } catch (e) {
-
             showToast({
                 title: text.error,
                 description: getError(e.message),
@@ -81,26 +78,28 @@ export function Group() {
     }
 
     function handleNavigate() {
-
         // @ts-ignore
         navigation.navigate('newMeal');
     }
 
     return (
-        <>
+        <View className="flex-1">
             <BackButton color={'black'}/>
             <EditButton navigateTo={'groupSettings'}/>
-            <Title title={groupInformation.groupInfo.groupName} />
+            <Title title={groupInformation.groupInfo.groupName}/>
             <MealList tempMeals={groupInformation.meals ?? []}/>
             {groupInformation.groupInfo.userRoleRights.includes(PERMISSIONS.CAN_CREATE_MEAL) && (
-                <View
-                    className="absolute bottom-4 left-4 right-4"
-                >
-                    <CustomButton onPress={handleNavigate}>
-                        {text.createNewMeal}
-                    </CustomButton>
+                <View className="absolute bottom-4 left-4 right-4">
+                    <Pressable
+                        className="w-full items-center rounded-[30px] bg-app-orange py-3 shadow-md active:opacity-60"
+                        onPress={handleNavigate}
+                    >
+                        <Text className="text-base font-medium text-white">
+                            {text.createNewMeal}
+                        </Text>
+                    </Pressable>
                 </View>
             )}
-        </>
+        </View>
     );
 }

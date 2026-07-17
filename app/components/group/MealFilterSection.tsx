@@ -1,6 +1,6 @@
-import {Box, Flex, Icon, IconButton, Pressable, Text} from "native-base";
 import {MaterialIcons} from "@expo/vector-icons";
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
+import {Pressable, Text, View} from "react-native";
 import {getDateDurationWeek, getFancyWeekDisplay} from "../../utility/Dates";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {showDatePicker} from "../Utility/DatePicker";
@@ -33,12 +33,12 @@ export function MealFilterSection({onDateChange, setDate, defaultDate}: Props) {
             setSecondaryText(null)
         }
     }
+
     async function handleWeekChange(amount: number) {
         const newDate = addDaysToDate(currentDate, amount);
         setDate(newDate)
         await handleDateChange(newDate);
     }
-
 
     async function handleDateChange(date: Date) {
         if (loading) return;
@@ -53,62 +53,49 @@ export function MealFilterSection({onDateChange, setDate, defaultDate}: Props) {
         }
     }
 
-
     useEffect(() => {
         handleTextChange(currentDate);
     }, [currentDate]);
+
     return (
-        <Box
-            background="white"
-            borderRadius="full"
-            shadow={2}
-            paddingX={2}
-            width="95%"
-            alignSelf="center"
-            height={60}
+        <View
+            className="h-[60px] w-[95%] self-center rounded-full bg-white px-2 shadow-md"
         >
-            <Flex
-                direction="row"
-                align="center"
-                justify="space-between"
-                height="100%"
-            >
-                <IconButton
-                    icon={<Icon as={MaterialIcons} name="chevron-left"/>}
-                    borderRadius="full"
-                    colorScheme={'orange'}
-                    variant="ghost"
+            <View className="h-full flex-row items-center justify-between">
+                <Pressable
+                    className="rounded-full p-2 active:opacity-60"
                     onPress={() => !loading && handleWeekChange(-7)}
-                />
+                    hitSlop={8}
+                >
+                    <MaterialIcons name="chevron-left" size={28} color="#f97316"/>
+                </Pressable>
+
                 <Pressable
                     onPress={() => !loading && showDatePicker("date", (e: any, date: Date) => {
                         handleDateChange(date)
                     }, currentDate)
                     }
-                    alignItems="center"
-                    flexGrow={1}
-                    height="100%"
-                    justifyContent="center"
+                    className="h-full flex-1 items-center justify-center"
                 >
-                    <Text fontSize="md" fontWeight="bold">
+                    <Text className="text-base font-bold text-black">
                         {primaryText}
                     </Text>
                     {secondaryText && (
-                        <Text fontSize="sm" color="gray.500">
+                        <Text className="text-sm text-gray-500">
                             {secondaryText}
                         </Text>
                     )}
                 </Pressable>
-                <IconButton
-                    icon={<Icon as={MaterialIcons} name="chevron-right"/>}
-                    borderRadius="full"
-                    variant="ghost"
-                    colorScheme={'orange'}
-                    onPress={() => handleWeekChange(7)}
-                />
-            </Flex>
-        </Box>
 
+                <Pressable
+                    className="rounded-full p-2 active:opacity-60"
+                    onPress={() => handleWeekChange(7)}
+                    hitSlop={8}
+                >
+                    <MaterialIcons name="chevron-right" size={28} color="#f97316"/>
+                </Pressable>
+            </View>
+        </View>
     );
 }
 

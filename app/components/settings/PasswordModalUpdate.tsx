@@ -72,8 +72,14 @@ export function PasswordModalUpdate({onSuccess, isOpen, onClose}: PasswordModalU
 
     return (
         <Modal visible={isOpen} transparent animationType="fade" onRequestClose={handleClose}>
-            <View className="flex-1 items-center justify-center bg-black/40 px-6">
-                <View className="w-full max-w-md rounded-xl bg-white p-5">
+            <Pressable
+                className="flex-1 items-center justify-center bg-black/40 px-6"
+                onPress={handleClose}
+            >
+                <Pressable
+                    className="w-full max-w-md rounded-xl bg-white p-5"
+                    onPress={(e) => e.stopPropagation()}
+                >
                     <View className="w-full items-center gap-4">
                         <Text className="text-xl font-bold text-black">
                             {text.editPassword}
@@ -132,8 +138,8 @@ export function PasswordModalUpdate({onSuccess, isOpen, onClose}: PasswordModalU
                             </Text>
                         </Pressable>
                     </View>
-                </View>
-            </View>
+                </Pressable>
+            </Pressable>
         </Modal>
     )
 }
