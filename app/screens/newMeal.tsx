@@ -1,5 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {Button, FormControl, Icon, Image, Input, TextArea, VStack, WarningOutlineIcon, Text} from "native-base";
+import {
+    ActivityIndicator,
+    Image,
+    KeyboardAvoidingView,
+    Platform,
+    Pressable,
+    ScrollView,
+    Text,
+    TextInput,
+    View,
+} from "react-native";
 import {createNewMeal} from "../repo/Meal";
 import {StackActions, useNavigation} from "@react-navigation/native";
 import {useGroup} from "../context/groupContext";
@@ -12,13 +22,7 @@ import {useTexts} from "../utility/TextKeys/TextKeys";
 import {showToast} from "../components/Ui/Toast";
 import {handleLogoutProcedure} from "../Util";
 import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
-import {CustomButton} from "../components/Ui/CustomButton";
 import newMealIcon from "../assets/PopupIcons/newMealIcon.png";
-import {
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView
-} from "react-native";
 
 export interface NewMealType {
     title: string,
@@ -28,7 +32,6 @@ export interface NewMealType {
 }
 
 export function NewMeal() {
-
     const {group} = useGroup()
     const groupId = group.groupId;
     const navigation = useNavigation();
@@ -104,9 +107,8 @@ export function NewMeal() {
             if (e instanceof ForbiddenError) {
                 navigation.goBack();
             }
-
         }
-        setLoading(true);
+        setLoading(false);
         setTouched({type: false, title: false, scheduledAt: false});
     }
 
@@ -125,8 +127,8 @@ export function NewMeal() {
         if (!selectedDate) return;
 
         setScheduledAtDate(selectedDate);
-        const text = getSwissDateTimeDisplay(selectedDate);
-        setScheduledAt(text);
+        const display = getSwissDateTimeDisplay(selectedDate);
+        setScheduledAt(display);
     }
 
     function showDatepickerSequencing() {
@@ -140,106 +142,123 @@ export function NewMeal() {
     }
 
     return (
-        <>
-            <KeyboardAvoidingView
-                style={{ flex: 1 }}
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
+        <KeyboardAvoidingView
+            className="flex-1"
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+            <ScrollView
+                contentContainerStyle={{flexGrow: 1}}
+                keyboardShouldPersistTaps="handled"
             >
-                <ScrollView
-                    contentContainerStyle={{ flexGrow: 1 }}
-                    keyboardShouldPersistTaps="handled"
-                >
-            <BackButton/>
-            <VStack space={4} padding={4} alignItems={'center'} width={'100%'}>
-
-                <Image
-                    source={newMealIcon}
-                    alt="Profile picture"
-                    width="200px"
-                    height="200px"
-                />
-                <Text
-                    fontSize={'2xl'}
-                    fontWeight={'bold'}
-                >
-                    {text.createMeal}
-                </Text>
-
-                <FormControl isRequired isInvalid={Boolean(errors.title)}>
-                    <FormControl.Label>{text.mealName}</FormControl.Label>
-                    <Input
-                        value={title}
-                        onChangeText={(text) => setTitle(text)}
-                        onBlur={() => setTouched((prev) => ({...prev, title: true}))}
-                        p={3}
-                        placeholder={text.mealNamePlaceholder}
+                <BackButton/>
+                <View className="w-full items-center gap-4 p-4">
+                    <Image
+                        source={newMealIcon}
+                        accessibilityLabel="new meal icon"
+                        className="h-[200px] w-[200px]"
+                        resizeMode="contain"
                     />
-                    {errors.title ? (
-                        <FormControl.ErrorMessage
-                            leftIcon={<WarningOutlineIcon size="xs"/>}>{errors.title}</FormControl.ErrorMessage>
-                    ) : null}
-                </FormControl>
-                <FormControl isRequired isInvalid={errors.type !== ''}>
-                    <FormControl.Label>{text.mealType}</FormControl.Label>
-                    <Input
-                        value={type}
-                        onChangeText={setType}
-                        p={3}
-                        placeholder={text.mealTypePlaceholder}
-                    />
-                    {errors.type ? (
-                        <FormControl.ErrorMessage
-                            leftIcon={<WarningOutlineIcon size="xs"/>}>{errors.type}</FormControl.ErrorMessage>
-                    ) : null}
-                </FormControl>
-                <FormControl isRequired isInvalid={Boolean(errors.scheduledAt)}>
-                    <FormControl.Label>{text.scheduledAt}</FormControl.Label>
-                    <Input
-                        value={scheduledAt /*TODO DatePicker */}
-                        isReadOnly={true}
-                        p={3}
-                        placeholder={text.scheduledAtPlaceholder}
-                        InputRightElement={
+                    <Text className="text-2xl font-bold text-black">
+                        {text.createMeal}
+                    </Text>
 
-                            <Button
-                                variant="outline"
-                                borderColor="orange.500"
-                                _text={{color: "orange.500"}} onPress={() => {
-                                showDatepickerSequencing()
-                            }} size="xs" p={3}>
-                                <Icon
-                                    as={Ionicons}
+                    <View className="w-full gap-1">
+                        <Text className="text-sm font-medium text-gray-700">
+                            {text.mealName} *
+                        </Text>
+                        <TextInput
+                            value={title}
+                            onChangeText={setTitle}
+                            onBlur={() => setTouched((prev) => ({...prev, title: true}))}
+                            placeholder={text.mealNamePlaceholder}
+                            className={`rounded-md border bg-white p-3 text-base text-black ${errors.title ? 'border-red-500' : 'border-gray-300'}`}
+                        />
+                        {!!errors.title && (
+                            <View className="flex-row items-center gap-1">
+                                <Ionicons name="warning-outline" size={14} color="#ef4444"/>
+                                <Text className="text-sm text-red-500">{errors.title}</Text>
+                            </View>
+                        )}
+                    </View>
 
-                                    name="calendar"
-                                    size={5}
-                                    color="orange.500"
-                                />
-                            </Button>
-                        }
-                    />
-                    {errors.scheduledAt ? (
-                        <FormControl.ErrorMessage
-                            leftIcon={<WarningOutlineIcon size="xs"/>}>{errors.scheduledAt}</FormControl.ErrorMessage>
-                    ) : null}
-                </FormControl>
-                <FormControl>
-                    <FormControl.Label>{text.mealDescription}</FormControl.Label>
-                    <TextArea
-                        value={notes}
-                        onChangeText={setNotes}
-                        placeholder={text.mealDescriptionPlaceholder}
-                        tvParallaxProperties={undefined}
-                        onTextInput={undefined}
-                        autoCompleteType={undefined}/>
-                </FormControl>
-                <CustomButton width={'100%'} onPress={handleSubmit} isDisabled={isDisabledSubmit} isLoading={loading}>
-                    {text.createNewMeal}
-                </CustomButton>
-            </VStack>
+                    <View className="w-full gap-1">
+                        <Text className="text-sm font-medium text-gray-700">
+                            {text.mealType} *
+                        </Text>
+                        <TextInput
+                            value={type}
+                            onChangeText={setType}
+                            onBlur={() => setTouched((prev) => ({...prev, type: true}))}
+                            placeholder={text.mealTypePlaceholder}
+                            className={`rounded-md border bg-white p-3 text-base text-black ${errors.type ? 'border-red-500' : 'border-gray-300'}`}
+                        />
+                        {!!errors.type && (
+                            <View className="flex-row items-center gap-1">
+                                <Ionicons name="warning-outline" size={14} color="#ef4444"/>
+                                <Text className="text-sm text-red-500">{errors.type}</Text>
+                            </View>
+                        )}
+                    </View>
 
+                    <View className="w-full gap-1">
+                        <Text className="text-sm font-medium text-gray-700">
+                            {text.scheduledAt} *
+                        </Text>
+                        <View
+                            className={`flex-row items-center rounded-md border bg-white ${errors.scheduledAt ? 'border-red-500' : 'border-gray-300'}`}
+                        >
+                            <TextInput
+                                value={scheduledAt}
+                                editable={false}
+                                placeholder={text.scheduledAtPlaceholder}
+                                className="flex-1 p-3 text-base text-black"
+                                pointerEvents="none"
+                            />
+                            <Pressable
+                                className="m-1 items-center justify-center rounded-md border border-app-orange px-3 py-2 active:opacity-60"
+                                onPress={showDatepickerSequencing}
+                            >
+                                <Ionicons name="calendar" size={20} color="#f97316"/>
+                            </Pressable>
+                        </View>
+                        {!!errors.scheduledAt && (
+                            <View className="flex-row items-center gap-1">
+                                <Ionicons name="warning-outline" size={14} color="#ef4444"/>
+                                <Text className="text-sm text-red-500">{errors.scheduledAt}</Text>
+                            </View>
+                        )}
+                    </View>
+
+                    <View className="w-full gap-1">
+                        <Text className="text-sm font-medium text-gray-700">
+                            {text.mealDescription}
+                        </Text>
+                        <TextInput
+                            value={notes}
+                            onChangeText={setNotes}
+                            placeholder={text.mealDescriptionPlaceholder}
+                            multiline
+                            numberOfLines={4}
+                            textAlignVertical="top"
+                            className="min-h-[100px] rounded-md border border-gray-300 bg-white p-3 text-base text-black"
+                        />
+                    </View>
+
+                    <Pressable
+                        className={`w-full items-center rounded-[30px] py-3 ${isDisabledSubmit || loading ? 'bg-orange-300' : 'bg-app-orange active:opacity-60'}`}
+                        onPress={handleSubmit}
+                        disabled={isDisabledSubmit || loading}
+                    >
+                        {loading ? (
+                            <ActivityIndicator color="#ffffff"/>
+                        ) : (
+                            <Text className="text-base font-medium text-white">
+                                {text.createNewMeal}
+                            </Text>
+                        )}
+                    </Pressable>
+                </View>
             </ScrollView>
         </KeyboardAvoidingView>
-        </>
-
     );
 }
