@@ -14,7 +14,6 @@ import {Meal} from "./screens/Meal";
 import {Test} from "./screens/Test";
 import {UserSettings} from "./screens/UserSettings";
 import {SettingsProvider} from "./context/settingsContext";
-import {NewGroup} from "./screens/newGroup";
 import {GroupSettings} from "./screens/GroupSettings";
 import {GroupMemberList} from "./screens/GroupMemberList";
 import {Invites} from "./screens/Invites";
@@ -59,7 +58,6 @@ const SignupScreen = withBaseLayout(Signup);
 const ForgotPasswordScreen = withBaseLayout(ForgotPassword);
 const UserScreen = withBaseLayout(User);
 const UserSettingsScreen = withBaseLayout(UserSettings);
-const NewGroupScreen = withBaseLayout(NewGroup);
 
 export function RouterWrapper() {
     return (
@@ -118,7 +116,6 @@ export function Router() {
                 <Stack.Screen name="forgotPassword" component={ForgotPasswordScreen}/>
                 <Stack.Screen name="user" component={UserScreen}/>
                 <Stack.Screen name="userSettings" component={UserSettingsScreen}/>
-                <Stack.Screen name="newGroup" component={NewGroupScreen}/>
                 <Stack.Screen name="test" component={Test}/>
                 <Stack.Screen name="group" component={GroupContextStack}/>
             </Stack.Navigator>

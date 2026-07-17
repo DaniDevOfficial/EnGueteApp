@@ -9,7 +9,7 @@ import {AccountSection} from "../components/settings/AccountSection";
 
 export function UserSettings() {
     return (
-        <View className="flex-1">
+        <>
             <BackButton/>
             <PageTitleSection title={useText('userSettings')}/>
 
@@ -26,6 +26,6 @@ export function UserSettings() {
                     EnGuete v1.0.0
                 </Text>
             </View>
-        </View>
+        </>
     )
 }

@@ -10,10 +10,10 @@ import {useTexts} from "../utility/TextKeys/TextKeys";
 import {EditButton} from "../components/Ui/EditButton";
 import {PageSpinner} from "../components/Ui/PageSpinner";
 import {MealList} from "../components/group/MealList";
-import {Title} from "../components/Ui/Icons/Title";
 import {showToast} from "../components/Ui/Toast";
 import {CustomButton} from "../components/Ui/CustomButton";
 import {View} from "react-native";
+import {PageTitleSection} from "../components/Ui/PageTitleSection";
 
 export function Group() {
     const route = useRoute();
@@ -61,6 +61,7 @@ export function Group() {
                 })
             }
         } catch (e) {
+
             showToast({
                 title: text.error,
                 description: getError(e.message),
@@ -88,7 +89,7 @@ export function Group() {
         <>
             <BackButton color={'black'}/>
             <EditButton navigateTo={'groupSettings'}/>
-            <Title title={groupInformation.groupInfo.groupName} />
+            <PageTitleSection title={groupInformation.groupInfo.groupName} showLine={false}/>
             <MealList tempMeals={groupInformation.meals ?? []}/>
             {groupInformation.groupInfo.userRoleRights.includes(PERMISSIONS.CAN_CREATE_MEAL) && (
                 <View

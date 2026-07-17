@@ -7,17 +7,19 @@ type BackButtonProps = {
     color?: string;
 };
 
-export function BackButton({color = 'black'}: BackButtonProps) {
+export function BackButton({color = '#111827'}: BackButtonProps) {
     const navigation = useNavigation();
     return (
         <Pressable
             onPress={() => navigation.goBack()}
-            className="absolute left-[15px] top-[30px] z-10"
-            hitSlop={8}
+            className="absolute left-4 top-7 z-10 h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white"
+            hitSlop={12}
         >
-            <View className="rounded-full bg-gray-300 p-1">
-                <Ionicons name="arrow-back" size={24} color={color}/>
-            </View>
+            <Ionicons
+                name="chevron-back"
+                size={22}
+                color={color}
+            />
         </Pressable>
     );
 }

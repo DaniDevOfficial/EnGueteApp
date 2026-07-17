@@ -1,7 +1,15 @@
 import React, {useState} from 'react';
-import {Flex, VStack, Text, FormControl, Input} from "native-base";
+import {
+    ActivityIndicator,
+    KeyboardAvoidingView,
+    Platform,
+    Pressable,
+    ScrollView,
+    Text,
+    TextInput,
+    View,
+} from "react-native";
 import {useNavigation} from "@react-navigation/native";
-import {CustomButton} from "../components/Ui/CustomButton";
 import {showToast} from "../components/Ui/Toast";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 import {resetPassword} from "../repo/Auth";
@@ -48,47 +56,62 @@ export function ForgotPassword() {
     }
 
     return (
-        <Flex justifyContent="center" alignItems="center" py={10}>
-            <VStack space={6} w="90%" alignItems="center">
-                <VStack space={2} alignItems="center">
-                    <Text fontSize="3xl" fontWeight="bold">
-                        {text.forgotPassword}? 🔐
-                    </Text>
-                    <Text textAlign="center" color="gray.500">
-                        {text.pleaseEnterEmailForResetLink}
-                    </Text>
-                </VStack>
+        <KeyboardAvoidingView
+            className="flex-1"
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+            <ScrollView
+                contentContainerStyle={{flexGrow: 1}}
+                keyboardShouldPersistTaps="handled"
+            >
+                <View className="flex-1 items-center justify-center px-6 py-10">
+                    <View className="w-full max-w-md items-center gap-6">
+                        <View className="items-center gap-2">
+                            <Text className="text-center text-3xl font-bold text-black">
+                                {text.forgotPassword}?
+                            </Text>
+                            <Text className="text-center text-base text-gray-500">
+                                {text.pleaseEnterEmailForResetLink}
+                            </Text>
+                        </View>
 
-                <FormControl w="100%">
-                    <FormControl.Label>Email</FormControl.Label>
-                    <Input
-                        value={email}
-                        onChangeText={(text) => setEmail(text)}
-                        placeholder="Enter your email"
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                        p={3}
-                        rounded="md"
-                    />
-                </FormControl>
+                        <View className="w-full gap-1">
+                            <Text className="text-sm font-medium text-gray-700">
+                                Email
+                            </Text>
+                            <TextInput
+                                value={email}
+                                onChangeText={setEmail}
+                                placeholder={text.enterEmail}
+                                keyboardType="email-address"
+                                autoCapitalize="none"
+                                autoCorrect={false}
+                                className="rounded-md border border-gray-300 bg-white p-3 text-base text-black"
+                            />
+                        </View>
 
-                <CustomButton
-                    w="100%"
-                    onPress={handleSubmit}
-                    isLoading={loading}
-                >
-                    {text.sendResetLink}
-                </CustomButton>
+                        <Pressable
+                            className="w-full items-center rounded-[30px] bg-app-orange py-3 shadow-md active:opacity-60"
+                            onPress={handleSubmit}
+                            disabled={loading}
+                        >
+                            {loading ? (
+                                <ActivityIndicator color="#ffffff"/>
+                            ) : (
+                                <Text className="text-base font-medium text-white">
+                                    {text.sendResetLink}
+                                </Text>
+                            )}
+                        </Pressable>
 
-                <Text
-                    fontSize="sm"
-                    color="gray.500"
-                    underline
-                    onPress={() => navigation.goBack()}
-                >
-                    {text.back}
-                </Text>
-            </VStack>
-        </Flex>
+                        <Pressable onPress={() => navigation.goBack()} hitSlop={8}>
+                            <Text className="text-sm text-gray-500 underline">
+                                {text.back}
+                            </Text>
+                        </Pressable>
+                    </View>
+                </View>
+            </ScrollView>
+        </KeyboardAvoidingView>
     );
 }
