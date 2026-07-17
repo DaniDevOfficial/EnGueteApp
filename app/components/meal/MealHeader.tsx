@@ -1,78 +1,53 @@
 import React from 'react';
-import {Box, Flex, Heading, HStack, Icon, ScrollView, Text, VStack} from "native-base";
+import {ScrollView, Text, View} from "react-native";
 import {MealCard} from "../../repo/Group";
-import {getTime, semiNormalDateTime, toNormalDateTime} from "../../utility/Dates";
+import {getTime, semiNormalDateTime} from "../../utility/Dates";
 import {useText} from "../../utility/TextKeys/TextKeys";
 import {Ionicons} from "@expo/vector-icons";
 
 export function MealHeader({mealInformation}: { mealInformation: MealCard }) {
     const whenText = semiNormalDateTime(mealInformation.dateTime)
     const time = getTime(mealInformation.dateTime);
+    const noNotes = useText('noNotes');
 
     return (
-        <VStack paddingTop={5} space={2}>
-
-            <Heading>
+        <View className="gap-2 pt-5">
+            <Text className="text-2xl font-bold text-black">
                 {mealInformation.title}
-            </Heading>
+            </Text>
 
-            <HStack
-                space={5}
-            >
-
-                <HStack space={2}>
-                    <Icon
-                        as={Ionicons}
-                        name={'calendar-outline'}
-                        size={5}
-                    />
-                    <Text>
+            <View className="flex-row gap-5">
+                <View className="flex-row items-center gap-2">
+                    <Ionicons name="calendar-outline" size={20} color="#000000"/>
+                    <Text className="text-black">
                         {whenText}
                     </Text>
-                </HStack>
+                </View>
 
-                <HStack space={2}>
-                    <Icon
-                        as={Ionicons}
-                        name={'time-outline'}
-                        size={5}
-                    />
-                    <Text>
+                <View className="flex-row items-center gap-2">
+                    <Ionicons name="time-outline" size={20} color="#000000"/>
+                    <Text className="text-black">
                         {time}
                     </Text>
-                </HStack>
-            </HStack>
+                </View>
+            </View>
 
-            <HStack space={2}>
-                <Icon
-                    as={Ionicons}
-                    name={'bulb-outline'}
-                    size={5}
-                />
-                <Text>
+            <View className="flex-row items-center gap-2">
+                <Ionicons name="bulb-outline" size={20} color="#000000"/>
+                <Text className="text-black">
                     {mealInformation.mealType}
                 </Text>
-            </HStack>
+            </View>
 
-
-            <Box
-                p={2}
-                backgroundColor="coolGray.200"
-                borderRadius={5}
-                maxHeight={150}
-            >
-                <ScrollView>
+            <View className="max-h-[150px] rounded-[5px] bg-gray-200 p-2">
+                <ScrollView nestedScrollEnabled>
                     <Text
-                        fontStyle={mealInformation.notes ? "normal" : "italic"}
-                        color={mealInformation.notes ? "black" : "gray.500"}
+                        className={mealInformation.notes ? 'text-black' : 'italic text-gray-500'}
                     >
-                        {mealInformation.notes || useText('noNotes')}
+                        {mealInformation.notes || noNotes}
                     </Text>
                 </ScrollView>
-            </Box>
-
-
-        </VStack>
+            </View>
+        </View>
     );
 }
-
