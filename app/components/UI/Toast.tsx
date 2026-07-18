@@ -2,12 +2,7 @@ import React, {ReactNode, useCallback, useEffect, useRef, useState} from "react"
 import {Pressable, Text, View} from "react-native";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import Animated, {
-    Easing,
-    FadeInDown,
-    FadeOutUp,
-    LinearTransition,
-} from "react-native-reanimated";
+import Animated, {Easing, FadeInDown, FadeOutUp, LinearTransition,} from "react-native-reanimated";
 import {colors} from "../../theme/colors";
 
 export type ToastStatus = "info" | "success" | "warning" | "error";

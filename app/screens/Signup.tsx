@@ -1,13 +1,5 @@
 import React, {useState} from 'react';
-import {
-    KeyboardAvoidingView,
-    Platform,
-    Pressable,
-    ScrollView,
-    Text,
-    TextInput,
-    View,
-} from 'react-native';
+import {KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View,} from 'react-native';
 
 import {CreateNewAccount} from "../repo/Auth";
 import {useNavigation} from "@react-navigation/native";

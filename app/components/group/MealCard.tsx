@@ -33,8 +33,6 @@ export function MealCard({meal}: MealCardProps) {
 
     return (
         <Pressable onPress={handleNavigate} className="w-[95%] active:opacity-90">
-
-            // w-full flex-row items-center overflow-hidden rounded-2xl border border-surface-border px-4 py-3 bg-gray-100
             <View className="relative my-2 w-full rounded-2xl overflow-hidden border border-surface-border  bg-gray-100 px-4 py-4 shadow-sm">
                 <View className="absolute bottom-0 left-0 top-0 w-1 bg-brand-orange-soft z-10"/>
 

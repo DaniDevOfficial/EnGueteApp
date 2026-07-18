@@ -1,13 +1,12 @@
 import {SafeAreaView} from "react-native-safe-area-context";
 import {DateTimePickerAndroid} from "@react-native-community/datetimepicker";
 import {SetStateAction, useEffect, useState} from "react";
-import {Pressable, ScrollView, Text, TextInput, View} from "react-native";
+import {Pressable, ScrollView, Text, TextInput} from "react-native";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 import {getLanguageFromAsyncStorage} from "../context/settingsContext";
 import {showToast} from "../components/Ui/Toast";
 import {createTable, db, dropAllTables} from "../utility/database";
 import {getAllGroups, SyncAllGroups} from "../repo/sync/user/AllGroups";
-import {getMeals} from "../repo/sync/meal/AllMealsInGroup";
 
 function DevButton({label, onPress}: { label: string; onPress: () => void }) {
     return (

@@ -1,10 +1,5 @@
 import React, {useCallback, useEffect, useState} from "react";
-import {
-    View,
-    Text,
-    ScrollView,
-    RefreshControl,
-} from "react-native";
+import {RefreshControl, ScrollView, Text, View,} from "react-native";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {GetGroupMeals, MealCard as MealCardType} from "../../repo/Group";
 import {MealCard} from "./MealCard";
