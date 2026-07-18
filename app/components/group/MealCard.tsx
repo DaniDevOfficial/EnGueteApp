@@ -6,7 +6,6 @@ import {getTime, shortDate} from "../../utility/Dates";
 import {PillTag} from "../Ui/Pilltag";
 import {mealPreferenceText, useTexts} from "../../utility/TextKeys/TextKeys";
 import {MaterialIcons} from "@expo/vector-icons";
-import {ProfilePictureList} from "../Ui/ProfilePictureList";
 import {colors} from "../../theme/colors";
 import arrowGoOn from '../../assets/icons/arrow-up-right.png';
 
