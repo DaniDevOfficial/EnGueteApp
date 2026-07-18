@@ -10,6 +10,7 @@ import {showToast} from "../../Ui/Toast";
 import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../../../utility/Errors";
 import {handleLogoutProcedure} from "../../../Util";
 import {ConfirmationModal} from "../../Ui/ConfirmationModal";
+import {colors} from "../../../theme/colors";
 
 export function GroupActions() {
     const {group} = useGroup();
@@ -31,7 +32,7 @@ export function GroupActions() {
                 setLeaveGroupModalOpen(true);
             },
             icon: 'exit-to-app',
-            iconColor: '#eab308',
+            iconColor: colors.status.warning,
         },
     ];
 
@@ -42,8 +43,8 @@ export function GroupActions() {
                 setDeleteGroupModalOpen(true);
             },
             icon: 'delete-forever',
-            iconColor: '#ef4444',
-            textColor: '#ef4444',
+            iconColor: colors.status.error,
+            textColor: colors.status.error,
         });
     }
 

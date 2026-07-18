@@ -11,6 +11,7 @@ import {handleLogoutProcedure} from "../../Util";
 import {resetToUserScreen} from "../../utility/navigation";
 import {useNavigation} from "@react-navigation/native";
 import QRCode from "react-native-qrcode-svg";
+import {colors} from '../../theme/colors';
 
 interface InviteCardProps {
     inviteToken: string;
@@ -92,7 +93,7 @@ export function InviteCard({inviteToken, expiryDate, inviteLink, canVoid, onVoid
         <>
             <View className="w-full flex-row items-center rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-sm">
                 <View className="mr-3 h-11 w-11 items-center justify-center rounded-full bg-orange-50">
-                    <Ionicons name="link" size={20} color="#f97316"/>
+                    <Ionicons name="link" size={20} color={colors.brand.orangeLight}/>
                 </View>
 
                 <View className="flex-1 pr-2">
@@ -100,7 +101,7 @@ export function InviteCard({inviteToken, expiryDate, inviteLink, canVoid, onVoid
                         {inviteToken}
                     </Text>
                     <View className="flex-row items-center gap-1">
-                        <Ionicons name="time-outline" size={14} color="#6b7280"/>
+                        <Ionicons name="time-outline" size={14} color={colors.ink.muted}/>
                         <Text className="text-xs text-gray-500" numberOfLines={1}>
                             {text.expiresAt}: {getFancyTimeDisplay(expiryDate)}
                         </Text>
@@ -113,7 +114,7 @@ export function InviteCard({inviteToken, expiryDate, inviteLink, canVoid, onVoid
                     hitSlop={8}
                     accessibilityLabel="More options"
                 >
-                    <Ionicons name="ellipsis-vertical" size={20} color="#4b5563"/>
+                    <Ionicons name="ellipsis-vertical" size={20} color={colors.ink.soft}/>
                 </Pressable>
             </View>
 
@@ -169,7 +170,7 @@ export function InviteCard({inviteToken, expiryDate, inviteLink, canVoid, onVoid
                             onPress={() => setShowInformation(false)}
                             hitSlop={8}
                         >
-                            <Ionicons name="close" size={28} color="#9ca3af"/>
+                            <Ionicons name="close" size={28} color={colors.ink.faint}/>
                         </Pressable>
 
                         <View className="w-full items-center gap-3 pt-2">

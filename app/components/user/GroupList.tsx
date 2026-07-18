@@ -11,6 +11,7 @@ import {handleLogoutProcedure} from "../../Util";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {CreateGroup} from "../group/CreateGroup";
 import {JoinGroup} from "../group/JoinGroup";
+import {colors} from '../../theme/colors';
 
 export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
     const navigation = useNavigation();
@@ -78,7 +79,7 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
         <View className="flex-1 w-full">
             <View className="w-full flex-1 gap-6 pb-[60px]">
                 <View className="w-full flex-row items-center rounded-full border border-gray-300 bg-white px-2 py-2">
-                    <Ionicons name="search" size={20} color="#9ca3af" style={{marginLeft: 8}}/>
+                    <Ionicons name="search" size={20} color={colors.ink.faint} style={{marginLeft: 8}}/>
                     <TextInput
                         className="flex-1 px-2 text-base text-black"
                         onChangeText={(textValue) => {

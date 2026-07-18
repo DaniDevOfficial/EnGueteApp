@@ -8,6 +8,7 @@ import {FRONTEND_ERRORS, UnauthorizedError, useErrorText} from "../../utility/Er
 import inviteIcon from "../../assets/PopupIcons/inviteIcon.png";
 import {handleLogoutProcedure} from "../../Util";
 import {JoinGroupWithToken} from "../../repo/group/Invites";
+import {colors} from '../../theme/colors';
 
 export function JoinGroup() {
     const [isModalVisible, setModalVisible] = useState(false);
@@ -56,7 +57,7 @@ export function JoinGroup() {
                 className="items-center justify-center rounded-[30px] border border-app-orange bg-white px-3 py-2 active:opacity-60"
                 onPress={() => setModalVisible(true)}
             >
-                <Ionicons name="enter-outline" size={24} color="#f97316"/>
+                <Ionicons name="enter-outline" size={24} color={colors.brand.orangeLight}/>
             </Pressable>
 
             <Modal
@@ -78,7 +79,7 @@ export function JoinGroup() {
                             onPress={() => setModalVisible(false)}
                             hitSlop={8}
                         >
-                            <Ionicons name="close" size={28} color="#9ca3af"/>
+                            <Ionicons name="close" size={28} color={colors.ink.faint}/>
                         </Pressable>
 
                         <View className="w-full items-center justify-center gap-3">
@@ -109,7 +110,7 @@ export function JoinGroup() {
                                 disabled={isLoading}
                             >
                                 {isLoading ? (
-                                    <ActivityIndicator color="#ffffff"/>
+                                    <ActivityIndicator color={colors.surface.DEFAULT}/>
                                 ) : (
                                     <Text className="text-base font-medium text-white">
                                         {text.joinGroup}

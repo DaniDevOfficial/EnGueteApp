@@ -3,6 +3,7 @@ import pizzaLanding from '../assets/flags/test.png';
 import bigLanding from '../assets/flags/test2.png';
 import continueOnIcon from '../assets/icons/continueOnIcon.png';
 import eatIcon from '../assets/icons/eatIcon.png';
+import {colors} from '../theme/colors';
 
 import React, {useEffect, useState} from 'react'
 import {useNavigation} from "@react-navigation/native";
@@ -86,7 +87,7 @@ export function Home() {
     return (
         <View className="flex-1 bg-app-yellow">
             <StatusBar
-                backgroundColor="#ffd043"
+                backgroundColor={colors.brand.yellow}
                 barStyle="dark-content"
             />
 

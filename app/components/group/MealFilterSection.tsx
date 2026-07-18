@@ -4,6 +4,7 @@ import {Pressable, Text, View} from "react-native";
 import {getDateDurationWeek, getFancyWeekDisplay} from "../../utility/Dates";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {showDatePicker} from "../Utility/DatePicker";
+import {colors} from "../../theme/colors";
 
 interface Props {
     onDateChange: (date: Date) => Promise<void>;
@@ -59,7 +60,7 @@ export function MealFilterSection({onDateChange, setDate, defaultDate}: Props) {
 
     return (
         <View
-            className="h-[60px] w-[95%] self-center rounded-full bg-white px-2 shadow-md"
+            className="h-[60px] w-[95%] self-center rounded-full bg-surface px-2 shadow-md"
         >
             <View className="h-full flex-row items-center justify-between">
                 <Pressable
@@ -67,7 +68,7 @@ export function MealFilterSection({onDateChange, setDate, defaultDate}: Props) {
                     onPress={() => !loading && handleWeekChange(-7)}
                     hitSlop={8}
                 >
-                    <MaterialIcons name="chevron-left" size={28} color="#f97316"/>
+                    <MaterialIcons name="chevron-left" size={28} color={colors.brand.orangeLight}/>
                 </Pressable>
 
                 <Pressable
@@ -77,11 +78,11 @@ export function MealFilterSection({onDateChange, setDate, defaultDate}: Props) {
                     }
                     className="h-full flex-1 items-center justify-center"
                 >
-                    <Text className="text-base font-bold text-black">
+                    <Text className="text-base font-bold text-ink">
                         {primaryText}
                     </Text>
                     {secondaryText && (
-                        <Text className="text-sm text-gray-500">
+                        <Text className="text-sm text-ink-muted">
                             {secondaryText}
                         </Text>
                     )}
@@ -92,7 +93,7 @@ export function MealFilterSection({onDateChange, setDate, defaultDate}: Props) {
                     onPress={() => handleWeekChange(7)}
                     hitSlop={8}
                 >
-                    <MaterialIcons name="chevron-right" size={28} color="#f97316"/>
+                    <MaterialIcons name="chevron-right" size={28} color={colors.brand.orangeLight}/>
                 </Pressable>
             </View>
         </View>

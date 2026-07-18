@@ -10,6 +10,7 @@ import {useUser} from "../../context/userContext";
 import {ConfirmationModal} from "../Ui/ConfirmationModal";
 import {clearDatabase} from "../../utility/database";
 import {Option, SettingsSectionStack} from "../Ui/SettingSectionStack";
+import {colors} from "../../theme/colors";
 
 export function DangerZone() {
     const navigation = useNavigation();
@@ -80,27 +81,27 @@ export function DangerZone() {
             label: clearLocalDataLabel,
             icon: 'delete-sweep',
             onPress: () => setClearDataModalVisible(true),
-            iconColor: '#eab308',
+            iconColor: colors.status.warning,
         },
         {
             label: logoutLabel,
             icon: 'logout',
             onPress: () => setLogoutModalVisible(true),
-            iconColor: '#60a5fa',
+            iconColor: colors.status.info,
         },
         {
             label: privacyPolicyLabel,
             icon: 'article',
             onPress: () => openPrivacyPolicy(),
-            textColor: '#6b7280',
-            iconColor: '#6b7280',
+            textColor: colors.ink.muted,
+            iconColor: colors.ink.muted,
         },
         {
             label: deleteAccountLabel,
             icon: 'delete-forever',
             onPress: () => setDeleteModalVisible(true),
-            textColor: '#ef4444',
-            iconColor: '#ef4444',
+            textColor: colors.status.error,
+            iconColor: colors.status.error,
         },
     ];
 

@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {ActivityIndicator, Modal, Pressable, Text, TextInput, View} from "react-native";
 import {useText, useTexts} from "../../utility/TextKeys/TextKeys";
 import {showToast} from "./Toast";
+import {colors} from '../../theme/colors';
 
 export function ConfirmationModal({
                                       isOpen,
@@ -79,7 +80,7 @@ export function ConfirmationModal({
                             disabled={isLoading}
                         >
                             {isLoading ? (
-                                <ActivityIndicator color="#ffffff"/>
+                                <ActivityIndicator color={colors.surface.DEFAULT}/>
                             ) : (
                                 <Text className="text-base font-medium text-white">
                                     {text.confirm}

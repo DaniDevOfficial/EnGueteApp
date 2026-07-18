@@ -8,6 +8,7 @@ import Animated, {
     FadeOutUp,
     LinearTransition,
 } from "react-native-reanimated";
+import {colors} from "../../theme/colors";
 
 export type ToastStatus = "info" | "success" | "warning" | "error";
 export type ToastVariant = "left-accent" | "top-accent" | "solid" | "subtle" | "outline";
@@ -34,27 +35,27 @@ const STATUS_STYLES: Record<
 > = {
     error: {
         icon: "alert-circle",
-        accent: "#ef4444",
-        bg: "#fef2f2",
-        solidBg: "#ef4444",
+        accent: colors.status.error,
+        bg: colors.status.errorSoft,
+        solidBg: colors.status.error,
     },
     warning: {
         icon: "warning",
-        accent: "#f59e0b",
-        bg: "#fffbeb",
-        solidBg: "#f59e0b",
+        accent: colors.status.warning,
+        bg: colors.status.warningSoft,
+        solidBg: colors.status.warning,
     },
     success: {
         icon: "checkmark-circle",
-        accent: "#22c55e",
-        bg: "#f0fdf4",
-        solidBg: "#22c55e",
+        accent: colors.status.success,
+        bg: colors.status.successSoft,
+        solidBg: colors.status.success,
     },
     info: {
         icon: "information-circle",
-        accent: "#3b82f6",
-        bg: "#eff6ff",
-        solidBg: "#3b82f6",
+        accent: colors.status.info,
+        bg: colors.status.infoSoft,
+        solidBg: colors.status.info,
     },
 };
 
@@ -149,13 +150,13 @@ function ToastAlert({
     const style = STATUS_STYLES[status];
     const isSolid = variant === "solid";
     const isOutline = variant === "outline";
-    const textColor = isSolid ? "text-white" : "text-gray-900";
-    const iconColor = isSolid ? "#ffffff" : style.accent;
+    const textColor = isSolid ? "text-white" : "text-ink";
+    const iconColor = isSolid ? colors.surface.DEFAULT : style.accent;
 
     const backgroundColor = isSolid
         ? style.solidBg
         : isOutline
-            ? "#ffffff"
+            ? colors.surface.DEFAULT
             : style.bg;
 
     const accentBorderStyle =
@@ -191,7 +192,7 @@ function ToastAlert({
                             <Ionicons
                                 name="close"
                                 size={18}
-                                color={isSolid ? "#ffffff" : "#374151"}
+                                color={isSolid ? colors.surface.DEFAULT : colors.ink.soft}
                             />
                         </Pressable>
                     </View>

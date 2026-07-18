@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {Pressable, TextInput, View} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
+import {colors} from '../../theme/colors';
 
 export function PasswordInput({
                                   value,
@@ -28,7 +29,7 @@ export function PasswordInput({
                 <Ionicons
                     name={isVisible ? "eye" : "eye-off"}
                     size={20}
-                    color="#9ca3af"
+                    color={colors.ink.faint}
                 />
             </Pressable>
         </View>

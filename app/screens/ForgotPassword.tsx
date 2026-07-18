@@ -13,6 +13,7 @@ import {useNavigation} from "@react-navigation/native";
 import {showToast} from "../components/Ui/Toast";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 import {resetPassword} from "../repo/Auth";
+import {colors} from '../theme/colors';
 
 export function ForgotPassword() {
     const [email, setEmail] = useState('');
@@ -96,7 +97,7 @@ export function ForgotPassword() {
                             disabled={loading}
                         >
                             {loading ? (
-                                <ActivityIndicator color="#ffffff"/>
+                                <ActivityIndicator color={colors.surface.DEFAULT}/>
                             ) : (
                                 <Text className="text-base font-medium text-white">
                                     {text.sendResetLink}

@@ -23,6 +23,7 @@ import {showToast} from "../components/Ui/Toast";
 import {handleLogoutProcedure} from "../Util";
 import {ForbiddenError, UnauthorizedError} from "../utility/Errors";
 import newMealIcon from "../assets/PopupIcons/newMealIcon.png";
+import {colors} from '../theme/colors';
 
 export interface NewMealType {
     title: string,
@@ -175,7 +176,7 @@ export function NewMeal() {
                         />
                         {!!errors.title && (
                             <View className="flex-row items-center gap-1">
-                                <Ionicons name="warning-outline" size={14} color="#ef4444"/>
+                                <Ionicons name="warning-outline" size={14} color={colors.status.error}/>
                                 <Text className="text-sm text-red-500">{errors.title}</Text>
                             </View>
                         )}
@@ -194,7 +195,7 @@ export function NewMeal() {
                         />
                         {!!errors.type && (
                             <View className="flex-row items-center gap-1">
-                                <Ionicons name="warning-outline" size={14} color="#ef4444"/>
+                                <Ionicons name="warning-outline" size={14} color={colors.status.error}/>
                                 <Text className="text-sm text-red-500">{errors.type}</Text>
                             </View>
                         )}
@@ -218,12 +219,12 @@ export function NewMeal() {
                                 className="m-1 items-center justify-center rounded-md border border-app-orange px-3 py-2 active:opacity-60"
                                 onPress={showDatepickerSequencing}
                             >
-                                <Ionicons name="calendar" size={20} color="#f97316"/>
+                                <Ionicons name="calendar" size={20} color={colors.brand.orangeLight}/>
                             </Pressable>
                         </View>
                         {!!errors.scheduledAt && (
                             <View className="flex-row items-center gap-1">
-                                <Ionicons name="warning-outline" size={14} color="#ef4444"/>
+                                <Ionicons name="warning-outline" size={14} color={colors.status.error}/>
                                 <Text className="text-sm text-red-500">{errors.scheduledAt}</Text>
                             </View>
                         )}
@@ -250,7 +251,7 @@ export function NewMeal() {
                         disabled={isDisabledSubmit || loading}
                     >
                         {loading ? (
-                            <ActivityIndicator color="#ffffff"/>
+                            <ActivityIndicator color={colors.surface.DEFAULT}/>
                         ) : (
                             <Text className="text-base font-medium text-white">
                                 {text.createNewMeal}

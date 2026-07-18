@@ -8,6 +8,7 @@ import {CreateNewGroup, NewGroupType} from "../../repo/Group";
 import {showToast} from "../Ui/Toast";
 import {UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {handleLogoutProcedure} from "../../Util";
+import {colors} from '../../theme/colors';
 
 export function CreateGroup() {
     const [isModalVisible, setModalVisible] = useState(false);
@@ -82,7 +83,7 @@ export function CreateGroup() {
                             onPress={() => setModalVisible(false)}
                             hitSlop={8}
                         >
-                            <Ionicons name="close" size={28} color="#9ca3af"/>
+                            <Ionicons name="close" size={28} color={colors.ink.faint}/>
                         </Pressable>
 
                         <View className="w-full items-center justify-center gap-3">
@@ -113,7 +114,7 @@ export function CreateGroup() {
                                 disabled={isLoading}
                             >
                                 {isLoading ? (
-                                    <ActivityIndicator color="#ffffff"/>
+                                    <ActivityIndicator color={colors.surface.DEFAULT}/>
                                 ) : (
                                     <Text className="text-base font-medium text-white">
                                         {createLabel}

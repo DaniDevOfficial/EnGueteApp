@@ -1,5 +1,5 @@
 import React from 'react';
-import {Pressable, Text, View} from 'react-native';
+import {Image, Pressable, Text, View} from 'react-native';
 import {useNavigation} from "@react-navigation/native";
 import {MealCard as MealCardType} from "../../repo/Group";
 import {getTime, shortDate} from "../../utility/Dates";
@@ -7,6 +7,8 @@ import {PillTag} from "../Ui/Pilltag";
 import {mealPreferenceText, useTexts} from "../../utility/TextKeys/TextKeys";
 import {MaterialIcons} from "@expo/vector-icons";
 import {ProfilePictureList} from "../Ui/ProfilePictureList";
+import {colors} from "../../theme/colors";
+import arrowGoOn from '../../assets/icons/arrow-up-right.png';
 
 type MealCardProps = {
     meal: MealCardType;
@@ -30,38 +32,48 @@ export function MealCard({meal}: MealCardProps) {
     const whenTimeDisplay = getTime(meal.dateTime);
 
     return (
-        <Pressable onPress={handleNavigate} className="w-[95%]">
-            <View
-                className={`relative my-2 w-full items-center rounded-md p-4 shadow-md ${meal.closed ? 'bg-gray-300' : 'bg-gray-200'}`}
-            >
+        <Pressable onPress={handleNavigate} className="w-[95%] active:opacity-90">
+
+            <View className="relative my-2 w-full rounded-2xl border border-surface-border bg-surface px-4 py-4 shadow-sm">
+
                 {meal.fulfilled && (
-                    <View className="absolute -right-2.5 -top-2.5">
-                        <MaterialIcons name="check-circle" size={28} color="#22c55e"/>
+                    <View className="absolute right-3 top-3">
+                        <MaterialIcons name="check-circle" size={22} color={colors.status.success}/>
                     </View>
                 )}
-                <View className="w-full flex-row justify-between gap-4">
-                    <View className="w-[45%] gap-5">
+
+                <View className="w-full flex-row justify-between gap-3">
+                    <View className="max-w-[75%] flex-1 gap-2.5">
                         <View>
-                            <Text numberOfLines={1} className="text-xl font-bold text-black">
+                            <Text numberOfLines={1} className="text-lg font-bold text-ink">
                                 {meal.title}
                             </Text>
-                            <View className="flex-row gap-2">
-                                <Text numberOfLines={1} className="text-black">{whenDate}</Text>
-                                <Text className="text-black">|</Text>
-                                <Text numberOfLines={1} className="text-black">{whenTimeDisplay}</Text>
-                            </View>
+                            <Text numberOfLines={1} className="mt-0.5 text-sm text-ink-muted">
+                                {whenDate} · {whenTimeDisplay}
+                            </Text>
                         </View>
-                        <View className="flex-row items-center">
-                            {meal.isCook && <PillTag text={'‍👨‍🍳'}/>}
-                            <PillTag text={mealPreferenceText(meal.userPreference)} colorScheme={'orange'}/>
+
+                        <View className="flex-row flex-wrap items-center gap-1">
+                            {meal.isCook && <PillTag text={'👨‍🍳'} colorScheme="orange"/>}
+                            <PillTag text={mealPreferenceText(meal.userPreference)} colorScheme="orange"/>
                         </View>
-                    </View>
-                    <View className="w-[45%] items-end justify-between">
-                        <PillTagBasedOnMealOpenAndFinished meal={meal} textKeys={textsForMeal}/>
+
                         <ProfilePictureList
                             profilePictures={images}
                             totalAmount={meal.participantCount}
                         />
+                    </View>
+
+                    <View className="items-end justify-between py-0.5">
+                        <PillTagBasedOnMealOpenAndFinished meal={meal} textKeys={textsForMeal}/>
+                        <View className="rounded-full bg-surface-muted p-2.5">
+                            <Image
+                                className="h-5 w-5"
+                                source={arrowGoOn}
+                                accessibilityLabel="open meal"
+                                resizeMode="contain"
+                            />
+                        </View>
                     </View>
                 </View>
             </View>
@@ -76,16 +88,12 @@ interface PillTagBasedOnMealOpenAndFinishedProps {
 
 function PillTagBasedOnMealOpenAndFinished({meal, textKeys}: PillTagBasedOnMealOpenAndFinishedProps) {
     if (meal.closed) {
-        return (<PillTag text={textKeys.closed} colorScheme={'blueGray'}/>)
+        return <PillTag text={textKeys.closed} colorScheme="closed"/>
     }
 
     if (meal.fulfilled) {
-        return (
-            <PillTag text={textKeys.finished} colorScheme={'orange'}/>
-        )
+        return <PillTag text={textKeys.finished} colorScheme="orange"/>
     }
 
-    return (
-        <PillTag text={textKeys.open} colorScheme={'green'}/>
-    )
+    return <PillTag text={textKeys.open} colorScheme="success"/>
 }

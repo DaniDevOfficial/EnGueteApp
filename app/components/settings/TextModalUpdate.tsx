@@ -5,6 +5,7 @@ import {useNavigation} from "@react-navigation/native";
 import {UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {showToast} from "../Ui/Toast";
 import {handleLogoutProcedure} from "../../Util";
+import {colors} from '../../theme/colors';
 
 interface TextUpdateProps {
     title: string;
@@ -80,7 +81,7 @@ export function TextModalUpdate({title, initialValue, onSuccess, isOpen, onClose
                             disabled={isSaving}
                         >
                             {isSaving ? (
-                                <ActivityIndicator color="#ffffff"/>
+                                <ActivityIndicator color={colors.surface.DEFAULT}/>
                             ) : (
                                 <Text className="text-base font-medium text-white">
                                     {text.save}

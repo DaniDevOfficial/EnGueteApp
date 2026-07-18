@@ -35,8 +35,7 @@ export function GroupCard({group, color}: GroupCardProps) {
         <View className="p-2">
             <Pressable onPress={handleNavigate}>
                 <View
-                    className="w-full overflow-hidden rounded-[20px] px-4 py-5 shadow-sm"
-                    style={{backgroundColor: color === 'orange' ? '#FFDAC2' : '#FFEAAD'}}
+                    className={`w-full overflow-hidden rounded-[20px] px-4 py-5 shadow-sm ${color === 'orange' ? 'bg-brand-orange-soft' : 'bg-brand-yellow-soft'}`}
                 >
                     <Image
                         source={backgroundWithHeart}
@@ -47,7 +46,7 @@ export function GroupCard({group, color}: GroupCardProps) {
 
                     <View className="z-10 flex-row justify-between">
                         <View className="max-w-[240px] items-start justify-center gap-3">
-                            <View className="rounded-full bg-white p-2">
+                            <View className="rounded-full bg-surface p-2">
                                 <Image
                                     className="h-[35px] w-[35px]"
                                     source={eatIcon}
@@ -57,10 +56,10 @@ export function GroupCard({group, color}: GroupCardProps) {
                             </View>
 
                             <View className="px-2">
-                                <Text className="text-base text-black">
+                                <Text className="text-base text-ink">
                                     Home
                                 </Text>
-                                <Text className="text-xl font-bold text-black">
+                                <Text className="text-xl font-bold text-ink">
                                     {group.groupName}
                                 </Text>
                             </View>
@@ -74,7 +73,7 @@ export function GroupCard({group, color}: GroupCardProps) {
                         <View className="items-end justify-between">
                             <PillTag text={'Soon'} colorScheme={'orange'}/>
 
-                            <View className="rounded-full bg-white p-3">
+                            <View className="rounded-full bg-surface p-3">
                                 <Image
                                     className="h-[25px] w-[25px]"
                                     source={arrowGoOn}

@@ -1,3 +1,5 @@
+const {colors} = require('./app/theme/colors');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -8,22 +10,44 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // NativeBase-style gray scale (gray.100 etc.)
+        brand: {
+          yellow: colors.brand.yellow,
+          orange: colors.brand.orange,
+          'orange-light': colors.brand.orangeLight,
+          'orange-soft': colors.brand.orangeSoft,
+          'orange-muted': colors.brand.orangeMuted,
+          'yellow-soft': colors.brand.yellowSoft,
+          'yellow-muted': colors.brand.yellowMuted,
+        },
+        ink: {
+          DEFAULT: colors.ink.DEFAULT,
+          soft: colors.ink.soft,
+          muted: colors.ink.muted,
+          faint: colors.ink.faint,
+        },
+        surface: {
+          DEFAULT: colors.surface.DEFAULT,
+          soft: colors.surface.soft,
+          muted: colors.surface.muted,
+          border: colors.surface.border,
+        },
+        status: {
+          success: colors.status.success,
+          'success-soft': colors.status.successSoft,
+          warning: colors.status.warning,
+          'warning-soft': colors.status.warningSoft,
+          error: colors.status.error,
+          'error-soft': colors.status.errorSoft,
+          info: colors.status.info,
+          'info-soft': colors.status.infoSoft,
+          closed: colors.status.closed,
+          'closed-soft': colors.status.closedSoft,
+        },
+        // Back-compat aliases used across the app
         app: {
-          gray: {
-            50: "#fafafa",
-            100: "#f5f5f5",
-            200: "#e4e4e7",
-            300: "#d4d4d8",
-            400: "#a1a1aa",
-            500: "#71717a",
-            600: "#52525b",
-            700: "#3f3f46",
-            800: "#27272a",
-            900: "#18181b",
-          },
-          yellow: "#ffd043",
-          orange: "#ea580c",
+          gray: colors.gray,
+          yellow: colors.brand.yellow,
+          orange: colors.brand.orange,
         },
       },
     },

@@ -72,7 +72,7 @@ export function PreferenceCard({mealParticipants, forceRefresh}: {
     return (
         <>
             <Pressable onPress={handlePress} className="active:opacity-90">
-                <View className="w-full flex-row items-center overflow-hidden rounded-2xl border border-surface-border bg-surface px-4 py-3 shadow-sm">
+                <View className="w-full flex-row items-center overflow-hidden rounded-2xl border border-surface-border px-4 py-3 bg-gray-100">
                     <View className="absolute bottom-0 left-0 top-0 w-1 bg-brand-orange-soft"/>
                     <View className="mr-3 h-12 w-12 items-center justify-center rounded-full bg-brand-orange-muted">
                         <Text className="text-lg font-bold text-brand-orange">{initial}</Text>

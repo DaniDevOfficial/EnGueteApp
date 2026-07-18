@@ -71,11 +71,14 @@ export function Meal() {
         return <PageSpinner/>
     }
 
+    const participantCount = mealInformation.mealPreferences?.length ?? 0;
+
     return (
         <>
             <BackButton/>
             <ScrollView
-                contentContainerStyle={{flexGrow: 1}}
+                className="flex-1"
+                contentContainerStyle={{flexGrow: 1, paddingHorizontal: 16, paddingTop: 56, paddingBottom: 32}}
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
                 }
@@ -84,21 +87,33 @@ export function Meal() {
                     <MealHeader mealInformation={mealInformation.mealInformation}/>
 
                     <View className="gap-3">
-                        <Text className="text-xl font-bold text-black">
-                            {text.participants}
-                        </Text>
-                        {mealInformation.mealPreferences && mealInformation.mealPreferences.length > 0 ? (
-                            mealInformation.mealPreferences.map((participant) => (
-                                <PreferenceCard
-                                    mealParticipants={participant}
-                                    forceRefresh={getMealInformation}
-                                    key={participant.userId}
-                                />
-                            ))
-                        ) : (
-                            <Text className="text-center text-gray-500">
-                                {text.noParticipants}
+                        <View className="flex-row items-end justify-between px-1">
+                            <Text className="text-xl font-bold text-ink">
+                                {text.participants}
                             </Text>
+                            <View className="rounded-full bg-brand-orange-muted px-2.5 py-1">
+                                <Text className="text-sm font-semibold text-brand-orange">
+                                    {participantCount}
+                                </Text>
+                            </View>
+                        </View>
+
+                        {participantCount > 0 ? (
+                            <View className="gap-3">
+                                {mealInformation.mealPreferences.map((participant) => (
+                                    <PreferenceCard
+                                        mealParticipants={participant}
+                                        forceRefresh={getMealInformation}
+                                        key={participant.userId}
+                                    />
+                                ))}
+                            </View>
+                        ) : (
+                            <View className="items-center rounded-2xl border border-dashed border-surface-border bg-surface-muted px-4 py-10">
+                                <Text className="text-center text-ink-muted">
+                                    {text.noParticipants}
+                                </Text>
+                            </View>
                         )}
                     </View>
                 </View>

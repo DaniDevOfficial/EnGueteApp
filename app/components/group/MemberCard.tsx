@@ -6,6 +6,7 @@ import {ACTIONS, MemberActions} from "./MemberActions";
 import {ChangeRole, KickUserFromGroup, KickUserRequest, RoleChange, RoleChangeRequest} from "../../repo/Group";
 import {useGroup} from "../../context/groupContext";
 import {showToast} from "../Ui/Toast";
+import {colors} from "../../theme/colors";
 
 interface MemberCardProps {
     userId: string;
@@ -19,9 +20,9 @@ interface MemberCardProps {
 }
 
 const ROLE_STYLES: Record<string, { bg: string; text: string }> = {
-    admin: {bg: '#ffedd5', text: '#c2410c'},
-    manager: {bg: '#dbeafe', text: '#1d4ed8'},
-    member: {bg: '#f3f4f6', text: '#4b5563'},
+    admin: {bg: colors.brand.orangeMuted, text: colors.brand.orange},
+    manager: {bg: colors.status.infoSoft, text: colors.status.info},
+    member: {bg: colors.surface.muted, text: colors.ink.muted},
 };
 
 export function MemberCard({
@@ -142,7 +143,7 @@ export function MemberCard({
                         hitSlop={8}
                         accessibilityLabel="More options"
                     >
-                        <Ionicons name="ellipsis-vertical" size={20} color="#4b5563"/>
+                        <Ionicons name="ellipsis-vertical" size={20} color={colors.ink.muted}/>
                     </Pressable>
                 )}
             </View>

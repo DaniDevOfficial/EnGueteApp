@@ -2,6 +2,7 @@ import React from "react";
 import {Pressable, Text, View} from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {MaterialIcons} from "@expo/vector-icons";
+import {colors} from "../../theme/colors";
 
 export interface Option {
     label: string;
@@ -14,8 +15,8 @@ export interface Option {
 export function SettingsSectionStack({options, title}: { options: Option[], title: string }) {
     return (
         <View className="gap-2">
-            <Text className="text-xl font-bold text-black">{title}</Text>
-            <View className="rounded-md border border-gray-300 px-2 py-2">
+            <Text className="text-xl font-bold text-ink">{title}</Text>
+            <View className="rounded-md border border-surface-border px-2 py-2">
                 {options.map((option, index) => (
                     <Pressable key={index} onPress={option.onPress}>
                         <View className="flex-row items-center justify-between">
@@ -23,11 +24,11 @@ export function SettingsSectionStack({options, title}: { options: Option[], titl
                                 <MaterialIcons
                                     name={option.icon as any}
                                     size={24}
-                                    color={option.iconColor || '#71717a'}
+                                    color={option.iconColor || colors.ink.muted}
                                 />
                                 <Text
                                     className="font-medium"
-                                    style={{color: option.textColor || '#27272a'}}
+                                    style={{color: option.textColor || colors.gray[800]}}
                                 >
                                     {option.label}
                                 </Text>
@@ -35,11 +36,11 @@ export function SettingsSectionStack({options, title}: { options: Option[], titl
                             <Ionicons
                                 name="chevron-forward-outline"
                                 size={20}
-                                color="#71717a"
+                                color={colors.ink.muted}
                             />
                         </View>
                         {index < options.length - 1 && (
-                            <View className="mx-2 my-1 h-px bg-gray-200"/>
+                            <View className="mx-2 my-1 h-px bg-surface-border"/>
                         )}
                     </Pressable>
                 ))}

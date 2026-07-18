@@ -6,6 +6,7 @@ import {UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {showToast} from "../Ui/Toast";
 import {handleLogoutProcedure} from "../../Util";
 import {PasswordInput} from "../Ui/PasswordInput";
+import {colors} from '../../theme/colors';
 
 interface PasswordModalUpdateProps {
     isOpen: boolean;
@@ -122,7 +123,7 @@ export function PasswordModalUpdate({onSuccess, isOpen, onClose}: PasswordModalU
                             disabled={isSaving}
                         >
                             {isSaving ? (
-                                <ActivityIndicator color="#ffffff"/>
+                                <ActivityIndicator color={colors.surface.DEFAULT}/>
                             ) : (
                                 <Text className="text-base font-medium text-white">
                                     {text.save}

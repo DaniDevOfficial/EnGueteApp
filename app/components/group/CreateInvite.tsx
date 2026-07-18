@@ -10,6 +10,7 @@ import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from ".
 import {handleLogoutProcedure} from "../../Util";
 import {resetToUserScreen} from "../../utility/navigation";
 import {useNavigation} from "@react-navigation/native";
+import {colors} from '../../theme/colors';
 
 interface CreateInviteProps {
     groupId: string;
@@ -115,7 +116,7 @@ export function CreateInvite({groupId, onSuccess}: CreateInviteProps) {
                             onPress={() => setModalVisible(false)}
                             hitSlop={8}
                         >
-                            <Ionicons name="close" size={28} color="#9ca3af"/>
+                            <Ionicons name="close" size={28} color={colors.ink.faint}/>
                         </Pressable>
 
                         <View className="w-full items-center gap-3 pt-2">
@@ -135,7 +136,7 @@ export function CreateInvite({groupId, onSuccess}: CreateInviteProps) {
                                     className="m-1 items-center justify-center rounded-md border border-app-orange px-3 py-2 active:opacity-60"
                                     onPress={showDatepicker}
                                 >
-                                    <Ionicons name="calendar" size={20} color="#f97316"/>
+                                    <Ionicons name="calendar" size={20} color={colors.brand.orangeLight}/>
                                 </Pressable>
                             </View>
 
@@ -145,7 +146,7 @@ export function CreateInvite({groupId, onSuccess}: CreateInviteProps) {
                                 disabled={isSaving}
                             >
                                 {isSaving ? (
-                                    <ActivityIndicator color="#ffffff"/>
+                                    <ActivityIndicator color={colors.surface.DEFAULT}/>
                                 ) : (
                                     <Text className="text-base font-medium text-white">
                                         {text.createInvite}

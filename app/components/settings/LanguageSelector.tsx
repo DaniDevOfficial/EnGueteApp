@@ -6,6 +6,7 @@ import germanFlag from '../../assets/flags/german.png';
 // @ts-ignore
 import englishFlag from '../../assets/flags/english.png';
 import {Language, useSettings} from "../../context/settingsContext";
+import {colors} from '../../theme/colors';
 
 function LanguageOption({
                             languageCode,
@@ -39,7 +40,7 @@ function LanguageOption({
 
     const backgroundColor = bgAnim.interpolate({
         inputRange: [0, 1],
-        outputRange: ['transparent', '#bfdbfe'],
+        outputRange: ['transparent', colors.status.infoSoft],
     });
 
     return (

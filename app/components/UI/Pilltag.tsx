@@ -1,26 +1,30 @@
 import React from 'react';
 import {Text, View} from 'react-native';
 
+type PillScheme = 'orange' | 'yellow' | 'black' | 'success' | 'closed' | 'info' | string;
+
 type PillProps = {
     text: string;
-    colorScheme?: 'orange' | 'yellow' | 'black' | string;
+    colorScheme?: PillScheme;
 };
 
-const SCHEME_STYLES: Record<string, { border: string; background: string }> = {
-    orange: {border: '#f97316', background: '#ffedd5'},
-    yellow: {border: '#eab308', background: '#fef9c3'},
-    black: {border: '#000000', background: '#f3f4f6'},
+const SCHEME_CLASS: Record<string, string> = {
+    orange: 'border-brand-orange-light bg-brand-orange-muted',
+    yellow: 'border-brand-yellow bg-brand-yellow-muted',
+    black: 'border-ink bg-surface-muted',
+    success: 'border-status-success bg-status-success-soft',
+    closed: 'border-status-closed bg-status-closed-soft',
+    info: 'border-status-info bg-status-info-soft',
+    green: 'border-status-success bg-status-success-soft',
+    blueGray: 'border-status-closed bg-status-closed-soft',
 };
 
 export function PillTag({text, colorScheme = 'black'}: PillProps) {
-    const colors = SCHEME_STYLES[colorScheme] ?? SCHEME_STYLES.black;
+    const schemeClass = SCHEME_CLASS[colorScheme] ?? SCHEME_CLASS.black;
 
     return (
-        <View
-            className="mx-1 rounded-full border px-2 py-0.5"
-            style={{borderColor: colors.border, backgroundColor: colors.background}}
-        >
-            <Text numberOfLines={1} className="text-black">
+        <View className={`mx-0.5 rounded-full border px-2.5 py-0.5 ${schemeClass}`}>
+            <Text numberOfLines={1} className="text-xs font-medium text-ink">
                 {text}
             </Text>
         </View>
