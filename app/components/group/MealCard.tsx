@@ -34,7 +34,9 @@ export function MealCard({meal}: MealCardProps) {
     return (
         <Pressable onPress={handleNavigate} className="w-[95%] active:opacity-90">
 
-            <View className="relative my-2 w-full rounded-2xl border border-surface-border bg-surface px-4 py-4 shadow-sm">
+            // w-full flex-row items-center overflow-hidden rounded-2xl border border-surface-border px-4 py-3 bg-gray-100
+            <View className="relative my-2 w-full rounded-2xl overflow-hidden border border-surface-border  bg-gray-100 px-4 py-4 shadow-sm">
+                <View className="absolute bottom-0 left-0 top-0 w-1 bg-brand-orange-soft z-10"/>
 
                 {meal.fulfilled && (
                     <View className="absolute right-3 top-3">
@@ -57,16 +59,11 @@ export function MealCard({meal}: MealCardProps) {
                             {meal.isCook && <PillTag text={'👨‍🍳'} colorScheme="orange"/>}
                             <PillTag text={mealPreferenceText(meal.userPreference)} colorScheme="orange"/>
                         </View>
-
-                        <ProfilePictureList
-                            profilePictures={images}
-                            totalAmount={meal.participantCount}
-                        />
                     </View>
 
                     <View className="items-end justify-between py-0.5">
                         <PillTagBasedOnMealOpenAndFinished meal={meal} textKeys={textsForMeal}/>
-                        <View className="rounded-full bg-surface-muted p-2.5">
+                        <View className="rounded-full border-gray-200 p-2.5 border-2">
                             <Image
                                 className="h-5 w-5"
                                 source={arrowGoOn}
