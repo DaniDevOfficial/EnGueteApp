@@ -96,15 +96,22 @@ export function toNormalDateTime(dateTimeString: string) {
     })}`;
 }
 
-export function semiNormalDateTime(dateTimeString: string, withTime: boolean = false): string {
+export function semiNormalDateTimeCore(
+    dateTimeString: string,
+    dayNames: string[],
+    monthNames: string[],
+    withTime: boolean = false,
+): string {
     const now = new Date();
     const target = new Date(dateTimeString);
-    const weekDay = useText(dayNames[target.getDay()]);
-    const month = useText(monthNames[target.getMonth()]);
+
+    const weekDay = dayNames[target.getDay()];
+    const month = monthNames[target.getMonth()];
     const day = target.getDate();
     const year = target.getFullYear();
 
-    let response = '';
+    let response = "";
+
     if (now.getFullYear() === year) {
         response = `${weekDay}, ${day} ${month}`;
     } else {
@@ -117,11 +124,31 @@ export function semiNormalDateTime(dateTimeString: string, withTime: boolean = f
             minute: "2-digit",
             hour12: false,
         };
+
         response += ` ${target.toLocaleTimeString([], options)}`;
     }
 
     return response;
 }
+
+export function useSemiNormalDateTime() {
+    const translatedDayNames = dayNames.map((dayName) => useText(dayName));
+    const translatedMonthNames = monthNames.map((monthName) => useText(monthName));
+
+    return function semiNormalDateTime(
+        dateTimeString: string,
+        withTime: boolean = false,
+    ): string {
+        return semiNormalDateTimeCore(
+            dateTimeString,
+            translatedDayNames,
+            translatedMonthNames,
+            withTime,
+        );
+    };
+}
+
+
 
 export function getTime(dateTimeString: string): string {
     const target = new Date(dateTimeString);

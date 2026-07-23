@@ -1,20 +1,17 @@
 import React from 'react';
+import {Image, Pressable, Text, View} from 'react-native';
 import {Group} from '../../repo/User';
-import {Box, HStack, Image, Pressable, Text, VStack} from 'native-base';
 import {useNavigation} from "@react-navigation/native";
 import eatIcon from "../../assets/icons/eatIcon.png";
 import arrowGoOn from '../../assets/icons/arrow-up-right.png';
 import backgroundWithHeart from '../../assets/background/plateWithHeart.png';
-
-import {ProfilePictureList} from "../UI/ProfilePictureList";
-import {PillTag} from "../UI/Pilltag";
-import {green, red} from "react-native-reanimated/lib/typescript/Colors";
+import {ProfilePictureList} from "../Ui/ProfilePictureList";
+import {PillTag} from "../Ui/Pilltag";
 
 type GroupCardProps = {
     group: Group;
     color: 'orange' | 'yellow';
 };
-
 
 export function GroupCard({group, color}: GroupCardProps) {
     const navigation = useNavigation();
@@ -27,120 +24,67 @@ export function GroupCard({group, color}: GroupCardProps) {
                 groupId: group.groupId,
             },
         });
-
     }
 
-
-    const iconSize = '35px';
-    const iconSizeSmoll = '25px';
     const images = [];
-
     for (let i = 0; i < group.userCount; i++) {
         images.push('https://imebehavioralhealth.com/wp-content/uploads/2021/10/user-icon-placeholder-1.png')
     }
 
-
     return (
-        <Box p={2}>
-
+        <View className="p-2">
             <Pressable onPress={handleNavigate}>
-                <Box
-                    width="100%"
-                    backgroundColor={color === 'orange' ? "#FFDAC2" : '#FFEAAD'}
-                    padding={5}
-                    px={4}
-                    shadow={1}
-                    borderRadius={20}
-                    overflow="hidden"
+                <View
+                    className={`w-full overflow-hidden rounded-[20px] px-4 py-5 shadow-sm ${color === 'orange' ? 'bg-brand-orange-soft' : 'bg-brand-yellow-soft'}`}
                 >
                     <Image
                         source={backgroundWithHeart}
-                        alt="backgroundWithHeart"
-                        style={{
-                            position: 'absolute',
-                            bottom: 0,
-                            right: 0,
-                            zIndex: -1,
-                        }}
-                        width={'200px'}
-                        height={'160px'}
-                        resizeMethod={'scale'}
-                        resizeMode={'contain'}
+                        accessibilityLabel="backgroundWithHeart"
+                        className="absolute bottom-0 right-0 z-0 h-[160px] w-[200px]"
+                        resizeMode="contain"
                     />
 
-                    <HStack  justifyContent="space-between">
-                        <VStack
-                            space={3}
-                            maxW={'240px'}
-                            justifyContent="center"
-                            alignItems="flex-start"
-                        >
-                            {/** Icon */}
-                            <Box
-                                padding={'8px'}
-                                backgroundColor={'white'}
-                                borderRadius="100"
-                            >
-
+                    <View className="z-10 flex-row justify-between">
+                        <View className="max-w-[240px] items-start justify-center gap-3">
+                            <View className="rounded-full bg-surface p-2">
                                 <Image
-                                    w={iconSize}
-                                    h={iconSize}
+                                    className="h-[35px] w-[35px]"
                                     source={eatIcon}
-                                    alt="eatIcon"
+                                    accessibilityLabel="eatIcon"
                                     resizeMode="contain"
                                 />
-                            </Box>
-                            {/** Name And Group Type */}
-                            <Box paddingX={2}>
+                            </View>
 
-                                <Box>
-                                    <Text
-                                        fontSize={16}
-                                    >
-                                        Home
-                                    </Text>
-                                    <Text
-                                        fontSize={20}
-                                        fontWeight={'bold'}
-                                    >
-                                        {group.groupName}
-                                    </Text>
-                                </Box>
-                            </Box>
-                            {/** Users in group image */}
+                            <View className="px-2">
+                                <Text className="text-base text-ink">
+                                    Home
+                                </Text>
+                                <Text className="text-xl font-bold text-ink">
+                                    {group.groupName}
+                                </Text>
+                            </View>
+
                             <ProfilePictureList
                                 profilePictures={images}
-                                totalAmount={group.userCount}/>
+                                totalAmount={group.userCount}
+                            />
+                        </View>
 
-                        </VStack>
+                        <View className="items-end justify-between">
+                            <PillTag text={'Soon'} colorScheme={'orange'}/>
 
-                        <VStack justifyContent="space-between" alignItems="flex-end">
-
-                            <PillTag text={'Soon'} colorScheme={'orange'} />
-
-                            <Box
-                                padding={'12px'}
-                                backgroundColor={'white'}
-                                borderRadius="100"
-                            >
-
+                            <View className="rounded-full bg-surface p-3">
                                 <Image
-                                    w={iconSizeSmoll}
-                                    h={iconSizeSmoll}
+                                    className="h-[25px] w-[25px]"
                                     source={arrowGoOn}
-                                    alt="arrowGoOn"
+                                    accessibilityLabel="arrowGoOn"
                                     resizeMode="contain"
                                 />
-                            </Box>
-                        </VStack>
-
-                    </HStack>
-
-                </Box>
+                            </View>
+                        </View>
+                    </View>
+                </View>
             </Pressable>
-        </Box>
-
+        </View>
     );
 }
-
-

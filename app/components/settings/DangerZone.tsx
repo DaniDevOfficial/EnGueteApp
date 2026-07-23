@@ -1,32 +1,30 @@
-import React, { useState } from "react";
-
-import { Linking } from 'react-native'
-import {
-    Box, HStack, Icon, Pressable, Text, useToast, VStack
-} from "native-base";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import { useNavigation } from "@react-navigation/native";
-import { useText, useTexts } from "../../utility/TextKeys/TextKeys";
-import { deleteCurrentUser, handleBackendLogout } from "../../repo/settings/User";
-import { handleLogoutProcedure } from "../../Util";
-import { TimeoutError, useErrorText } from "../../utility/Errors";
-import { showToast } from "../UI/Toast";
-import { useUser } from "../../context/userContext";
-import {ConfirmationModal} from "../UI/ConfirmationModal";
+import React, {useState} from "react";
+import {Linking} from 'react-native'
+import {useNavigation} from "@react-navigation/native";
+import {useText, useTexts} from "../../utility/TextKeys/TextKeys";
+import {deleteCurrentUser, handleBackendLogout} from "../../repo/settings/User";
+import {handleLogoutProcedure} from "../../Util";
+import {TimeoutError, useErrorText} from "../../utility/Errors";
+import {showToast} from "../Ui/Toast";
+import {useUser} from "../../context/userContext";
+import {ConfirmationModal} from "../Ui/ConfirmationModal";
 import {clearDatabase} from "../../utility/database";
-import {Option, SettingsSectionStack} from "../UI/SettingSectionStack";
-
-
+import {Option, SettingsSectionStack} from "../Ui/SettingSectionStack";
+import {colors} from "../../theme/colors";
 
 export function DangerZone() {
     const navigation = useNavigation();
-    const toast = useToast();
     const user = useUser();
     const getError = useErrorText();
 
     const text = useTexts(['logout', 'error', 'errorNoOfflineLogout', 'dataAndPrivacy', 'errorPleaseEnterCorrectText']);
-    const requiredText = useText('deleteAccountRequiredText', { username: user.user.userName });
+    const requiredText = useText('deleteAccountRequiredText', {username: user.user.userName});
     const modalText = useTexts(['clearLocalData', 'logout', 'deleteAccount', 'clearLocalDataQuestionText', 'logoutQuestionText', 'deleteAccountInfo']);
+    const clearLocalDataLabel = useText('clearLocalData');
+    const logoutLabel = useText('logout');
+    const privacyPolicyLabel = useText('privacyPolicy');
+    const deleteAccountLabel = useText('deleteAccount');
+    const confirmDeleteMessage = useText('pleaseEnterTextToConfirm', {'text': requiredText});
 
     const [isLogoutModalVisible, setLogoutModalVisible] = useState(false);
     const [isClearDataModalVisible, setClearDataModalVisible] = useState(false);
@@ -40,7 +38,6 @@ export function DangerZone() {
         } catch (e) {
             if (e instanceof TimeoutError) {
                 showToast({
-                    toast,
                     title: text.error,
                     description: text.errorNoOfflineLogout,
                     status: 'error',
@@ -48,7 +45,6 @@ export function DangerZone() {
                 return;
             }
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: 'error',
@@ -57,14 +53,12 @@ export function DangerZone() {
     }
 
     async function handleDeletingAccount() {
-
         try {
             setIsSaving(true);
             await deleteCurrentUser();
             await handleLogoutProcedure(navigation);
         } catch (e) {
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: 'error',
@@ -73,45 +67,47 @@ export function DangerZone() {
             setIsSaving(false);
         }
     }
-    function openPrivacyPolicy () {
+
+    function openPrivacyPolicy() {
         const url = process.env.EXPO_PUBLIC_WEB_URL + '#/privacy/'
 
         Linking.openURL(url).catch(() => {
             console.warn('Could not open privacy policy')
         })
     }
+
     const options: Option[] = [
         {
-            label: useText('clearLocalData'),
+            label: clearLocalDataLabel,
             icon: 'delete-sweep',
             onPress: () => setClearDataModalVisible(true),
-            iconColor: 'yellow.500',
+            iconColor: colors.status.warning,
         },
         {
-            label: useText('logout'),
+            label: logoutLabel,
             icon: 'logout',
             onPress: () => setLogoutModalVisible(true),
-            iconColor: 'blue.400',
+            iconColor: colors.status.info,
         },
         {
-            label: useText('privacyPolicy'),
+            label: privacyPolicyLabel,
             icon: 'article',
             onPress: () => openPrivacyPolicy(),
-            textColor: 'gray.500',
-            iconColor: 'gray.500',
+            textColor: colors.ink.muted,
+            iconColor: colors.ink.muted,
         },
         {
-            label: useText('deleteAccount'),
+            label: deleteAccountLabel,
             icon: 'delete-forever',
             onPress: () => setDeleteModalVisible(true),
-            textColor: 'red.500',
-            iconColor: 'red.500',
+            textColor: colors.status.error,
+            iconColor: colors.status.error,
         },
     ];
 
     return (
         <>
-            <SettingsSectionStack title={text.dataAndPrivacy} options={options} />
+            <SettingsSectionStack title={text.dataAndPrivacy} options={options}/>
 
             <ConfirmationModal
                 isOpen={isClearDataModalVisible}
@@ -145,11 +141,9 @@ export function DangerZone() {
                 isLoading={isSaving}
                 title={modalText.deleteAccount}
                 furtherInformationText={modalText.deleteAccountInfo}
-                message={useText('pleaseEnterTextToConfirm', {'text': requiredText})}
+                message={confirmDeleteMessage}
                 requiredText={requiredText}
-
             />
-
         </>
     );
 }

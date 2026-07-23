@@ -1,17 +1,14 @@
-import {Box, HStack, Icon, Image, Input, Modal, Pressable, Text, useToast, VStack} from "native-base";
-import {useText, useTexts} from "../../utility/TextKeys/TextKeys";
 import React, {useState} from "react";
-import {CustomButton} from "../UI/CustomButton";
+import {ActivityIndicator, Image, Modal, Pressable, Text, TextInput, View} from "react-native";
+import {useTexts} from "../../utility/TextKeys/TextKeys";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {StackActions, useNavigation} from "@react-navigation/native";
-import {CreateNewGroup, NewGroupType} from "../../repo/Group";
-import {showToast} from "../UI/Toast";
+import {showToast} from "../Ui/Toast";
 import {FRONTEND_ERRORS, UnauthorizedError, useErrorText} from "../../utility/Errors";
 import inviteIcon from "../../assets/PopupIcons/inviteIcon.png";
 import {handleLogoutProcedure} from "../../Util";
-
-import {handleJoiningGroup} from "../Utility/JoinGroupPopup";
 import {JoinGroupWithToken} from "../../repo/group/Invites";
+import {colors} from '../../theme/colors';
 
 export function JoinGroup() {
     const [isModalVisible, setModalVisible] = useState(false);
@@ -21,12 +18,10 @@ export function JoinGroup() {
     const text = useTexts(['joinGroup', 'joinGroupInfoText', 'inviteToken', 'error']);
     const navigation = useNavigation();
     const getError = useErrorText();
-    const toast = useToast();
 
     async function handleJoin() {
         setLoading(true);
         try {
-
             if (token === undefined) {
                 throw new Error(FRONTEND_ERRORS.INVALID_INVITE_TOKEN_ERROR);
             }
@@ -44,7 +39,6 @@ export function JoinGroup() {
             );
         } catch (e) {
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: "warning",
@@ -55,80 +49,77 @@ export function JoinGroup() {
             }
         }
         setLoading(false);
-
     }
 
     return (
         <>
-
-            <CustomButton onlyOutline={true} onPress={() => setModalVisible(true)} >
-                <HStack flexDir='row' space={2} justifyContent='center' alignItems='center'>
-                    <Pressable>
-                        <Icon
-                            as={<Ionicons name="enter-outline"/>}
-                            size={6}
-                            color="orange.500"
-                        />
-                    </Pressable>
-                </HStack>
-            </CustomButton>
-
+            <Pressable
+                className="items-center justify-center rounded-[30px] border border-app-orange bg-white px-3 py-2 active:opacity-60"
+                onPress={() => setModalVisible(true)}
+            >
+                <Ionicons name="enter-outline" size={24} color={colors.brand.orangeLight}/>
+            </Pressable>
 
             <Modal
-                _backdrop={{
-                    bg: "coolGray.900", // backdrop color
-                    opacity: 0.6,       // makes it see-through
-
-                }}
-                isOpen={isModalVisible}
-                onClose={() => setModalVisible(false)}
+                visible={isModalVisible}
+                transparent
+                animationType="fade"
+                onRequestClose={() => setModalVisible(false)}
             >
-                <Modal.Content borderRadius={'xl'}>
-
-                    <Modal.Body width='100%' p={'5'}>
-                        <Icon
-                            as={<Ionicons name="close"/>}
-                            size={7}
-                            position={'absolute'}
-                            top={'5%'}
-                            right={'5%'}
-                            color="gray.400"
+                <Pressable
+                    className="flex-1 items-center justify-center bg-black/60 px-6"
+                    onPress={() => setModalVisible(false)}
+                >
+                    <Pressable
+                        className="w-full max-w-md rounded-xl bg-white p-5"
+                        onPress={(e) => e.stopPropagation()}
+                    >
+                        <Pressable
+                            className="absolute right-[5%] top-[5%] z-10"
                             onPress={() => setModalVisible(false)}
-                        />
-
-                        <VStack
-                            height='auto'
-                            width={'100%'}
-                            justifyContent={'center'}
-                            alignItems='center'
-                            space={'3'}
+                            hitSlop={8}
                         >
+                            <Ionicons name="close" size={28} color={colors.ink.faint}/>
+                        </Pressable>
 
+                        <View className="w-full items-center justify-center gap-3">
                             <Image
                                 source={inviteIcon}
-                                alt="inviteIcon"
-                                width="100px"
-                                height="110px"
+                                accessibilityLabel="inviteIcon"
+                                className="h-[110px] w-[100px]"
+                                resizeMode="contain"
                             />
 
-
-                            <Text fontSize={'xl'} fontWeight='bold'>
+                            <Text className="text-xl font-bold text-black">
                                 {text.joinGroup}
                             </Text>
-                            <Text textAlign={'center'} fontSize={'md'} fontWeight={'light'}>
+                            <Text className="text-center text-base font-light text-black">
                                 {text.joinGroupInfoText}
                             </Text>
-                            <Input
+                            <TextInput
                                 placeholder={text.inviteToken}
                                 value={token}
                                 onChangeText={setToken}
+                                className="w-full rounded-md border border-gray-300 bg-white p-3 text-base text-black"
+                                autoCapitalize="none"
+                                autoCorrect={false}
                             />
-                            <CustomButton width={'100%'} isLoading={isLoading} onPress={() => handleJoin()}>
-                                {text.joinGroup}
-                            </CustomButton>
-                        </VStack>
-                    </Modal.Body>
-                </Modal.Content>
+                            <Pressable
+                                className="w-full items-center rounded-[30px] bg-app-orange py-3 active:opacity-60"
+                                onPress={handleJoin}
+                                disabled={isLoading}
+                            >
+                                {isLoading ? (
+                                    <ActivityIndicator color={colors.surface.DEFAULT}/>
+                                ) : (
+                                    <Text className="text-base font-medium text-white">
+                                        {text.joinGroup}
+                                    </Text>
+                                )}
+                            </Pressable>
+                        </View>
+                    </Pressable>
+                </Pressable>
             </Modal>
         </>
     )

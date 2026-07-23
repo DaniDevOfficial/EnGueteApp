@@ -1,33 +1,19 @@
 import React, {useState} from 'react';
-import {
-    Box,
-    Button,
-    Flex,
-    FormControl,
-    HStack,
-    Image,
-    Input,
-    Modal,
-    Pressable,
-    Switch,
-    Text,
-    useToast, VStack
-} from 'native-base';
+import {Modal, Pressable, Switch, Text, TextInput, View} from "react-native";
 import {MealPreference, saveMealPreference} from "../../repo/Meal";
 import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {useNavigation} from "@react-navigation/native";
 import {handleLogoutProcedure} from "../../Util";
-import {PillTag} from "../UI/Pilltag";
+import {PillTag} from "../Ui/Pilltag";
 import {mealPreferenceText, useTexts} from "../../utility/TextKeys/TextKeys";
-import {showToast} from "../UI/Toast";
+import {showToast} from "../Ui/Toast";
 import {resetToUserScreen} from "../../utility/navigation";
-import {CustomButton} from "../UI/CustomButton";
+import {colors} from "../../theme/colors";
 
 export function PreferenceCard({mealParticipants, forceRefresh}: {
     mealParticipants: MealPreference,
     forceRefresh: (arg0: boolean) => Promise<void>
 }) {
-    const toast = useToast();
     const getError = useErrorText();
     const text = useTexts(['error', 'errorPleaseEnterCorrectText', 'save', 'cancel', 'editPreferences', 'newPreference', 'isCook']);
     const navigation = useNavigation();
@@ -41,7 +27,6 @@ export function PreferenceCard({mealParticipants, forceRefresh}: {
     }
 
     async function handleSave() {
-
         if (mealParticipants.isCook === newIsCook && mealParticipants.preference === newPreference) {
             setModalVisible(false);
             return;
@@ -58,11 +43,10 @@ export function PreferenceCard({mealParticipants, forceRefresh}: {
         }
 
         try {
-            const res = await saveMealPreference(mealParticipants.userId, mealParticipants.mealId, preferenceParam, isCookParam);
+            await saveMealPreference(mealParticipants.userId, mealParticipants.mealId, preferenceParam, isCookParam);
             await forceRefresh(true)
         } catch (e) {
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: "warning",
@@ -80,100 +64,103 @@ export function PreferenceCard({mealParticipants, forceRefresh}: {
             }
         }
 
-
         setModalVisible(false);
     }
 
+    const initial = (mealParticipants.username?.trim()?.[0] || '?').toUpperCase();
+
     return (
-        <Pressable onPress={handlePress}>
+        <>
+            <Pressable onPress={handlePress} className="active:opacity-90">
+                <View className="w-full flex-row items-center overflow-hidden rounded-2xl border border-surface-border px-4 py-3 bg-gray-100">
+                    <View className="absolute bottom-0 left-0 top-0 w-1 bg-brand-orange-soft"/>
+                    <View className="mr-3 h-12 w-12 items-center justify-center rounded-full bg-brand-orange-muted">
+                        <Text className="text-lg font-bold text-brand-orange">{initial}</Text>
+                    </View>
 
-            <Box
-                shadow={"1"}
-                borderColor={"orange.200"}
-                borderWidth={1}
-                borderRadius="md"
-                backgroundColor="coolGray.100"
-                p={2}
+                    <View className="flex-1">
+                        <View className="mb-1 flex-row flex-wrap items-center gap-2">
+                            <Text className="text-base font-bold text-ink" numberOfLines={1}>
+                                {mealParticipants.username}
+                            </Text>
+                            {mealParticipants.isCook && <PillTag text={'👨‍🍳'} colorScheme="orange"/>}
+                        </View>
+                        <Text className="text-sm text-ink-muted" numberOfLines={2}>
+                            {mealParticipants.preference
+                                ? mealPreferenceText(mealParticipants.preference)
+                                : text.errorPleaseEnterCorrectText}
+                        </Text>
+                    </View>
+                </View>
+            </Pressable>
+
+            <Modal
+                visible={isModalVisible}
+                transparent
+                animationType="fade"
+                onRequestClose={() => setModalVisible(false)}
             >
-                <HStack
-                    space={3}
-                    alignItems={'center'}
+                <Pressable
+                    className="flex-1 items-center justify-center bg-black/40 px-6"
+                    onPress={() => setModalVisible(false)}
                 >
-                    <Image
-                        source={{uri: "https://imebehavioralhealth.com/wp-content/uploads/2021/10/user-icon-placeholder-1.png"}}
-                        alt="Profile picture"
-                        width="50px"
-                        height="50px"
-                        borderRadius="full"
-                    />
-                    <VStack>
+                    <Pressable
+                        className="w-full max-w-md rounded-xl bg-surface p-5"
+                        onPress={(e) => e.stopPropagation()}
+                    >
+                        <View className="w-full items-center gap-2">
+                            <Text className="text-center text-2xl font-bold text-ink">
+                                {text.editPreferences}
+                            </Text>
 
-                        <HStack
-                            space={3}
-                        >
-                            <Text fontSize="xl" fontWeight="bold">{mealParticipants.username}</Text>
-                            {mealParticipants.isCook && <PillTag text={'👨‍🍳'} colorScheme={'orange'}/>}
-                        </HStack>
-                        <Text
-                            color="coolGray.600">{mealParticipants.preference ? mealPreferenceText(mealParticipants.preference) : text.errorPleaseEnterCorrectText}</Text>
-                    </VStack>
-                </HStack>
-            </Box>
-
-
-            <Modal isOpen={isModalVisible} onClose={() => setModalVisible(false)}>
-                <Modal.Content>
-                    <Modal.Body>
-
-                        <VStack space={4}>
-                            <VStack space={2} alignItems="center" width='100%'>
-
-                                <Text
-                                    fontSize={'2xl'}
-                                    fontWeight={'bold'}
-                                    textAlign={'center'}
-                                >
-                                    {text.editPreferences}
+                            <View className="w-full gap-1">
+                                <Text className="text-sm font-medium text-ink-soft">
+                                    {text.newPreference}
                                 </Text>
-                                <FormControl>
-                                    <FormControl.Label>{text.newPreference}</FormControl.Label>
-                                    <Input
-                                        value={newPreference}
-                                        onChangeText={setNewPreference}
-                                        placeholder={text.newPreference}
-                                    />
-                                </FormControl>
-                                <FormControl display={'flex'} alignItems={'center'}  justifyContent={'space-between'} flexDir={'row'}>
-                                    <FormControl.Label>{text.isCook}</FormControl.Label>
-                                    <Switch
-                                        colorScheme={'orange'}
-                                        isChecked={newIsCook ?? false}
-                                        onChange={(e) => setNewIsCook(e.nativeEvent.value)}
-                                    />
-                                </FormControl>
-                            </VStack>
-                            <VStack space={2} alignItems="center" width='100%'>
+                                <TextInput
+                                    value={newPreference}
+                                    onChangeText={setNewPreference}
+                                    placeholder={text.newPreference}
+                                    className="w-full rounded-md border border-surface-border bg-surface p-3 text-base text-ink"
+                                    autoCapitalize="none"
+                                    autoCorrect={false}
+                                />
+                            </View>
 
-                                <CustomButton
-                                    width={'100%'}
-                                    isLoading={false}
-                                    onPress={handleSave}
-                                    colorScheme="primary"
-                                >
+                            <View className="w-full flex-row items-center justify-between py-2">
+                                <Text className="text-sm font-medium text-ink-soft">
+                                    {text.isCook}
+                                </Text>
+                                <Switch
+                                    value={newIsCook ?? false}
+                                    onValueChange={setNewIsCook}
+                                    trackColor={{false: colors.gray[300], true: colors.brand.orangeMuted}}
+                                    thumbColor={(newIsCook ?? false) ? colors.brand.orangeLight : colors.surface.muted}
+                                />
+                            </View>
+                        </View>
+
+                        <View className="mt-4 w-full items-center gap-2">
+                            <Pressable
+                                className="w-full items-center rounded-[30px] bg-brand-orange py-3 active:opacity-60"
+                                onPress={handleSave}
+                            >
+                                <Text className="text-base font-medium text-white">
                                     {text.save}
-                                </CustomButton>
-                                <CustomButton width={'100%'} onlyOutline={true} onPress={() => setModalVisible(false)}>
-                                    <Text>
-                                        {text.cancel}
-                                    </Text>
-                                </CustomButton>
-
-                            </VStack>
-                        </VStack>
-
-                    </Modal.Body>
-                </Modal.Content>
+                                </Text>
+                            </Pressable>
+                            <Pressable
+                                className="w-full items-center rounded-[30px] border border-brand-orange bg-surface py-3 active:opacity-60"
+                                onPress={() => setModalVisible(false)}
+                            >
+                                <Text className="text-base font-medium text-ink">
+                                    {text.cancel}
+                                </Text>
+                            </Pressable>
+                        </View>
+                    </Pressable>
+                </Pressable>
             </Modal>
-        </Pressable>
+        </>
     );
 }

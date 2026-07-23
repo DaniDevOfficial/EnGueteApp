@@ -1,17 +1,17 @@
-import {Box, ScrollView, Text, useToast, VStack} from "native-base";
 import React, {useEffect, useState} from "react";
+import {ScrollView, Text, View} from "react-native";
 import {useGroup} from "../context/groupContext";
-import {BackButton} from "../components/UI/BackButton";
-import {PageTitleSection} from "../components/UI/PageTitleSection";
+import {BackButton} from "../components/Ui/BackButton";
+import {PageTitleSection} from "../components/Ui/PageTitleSection";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 import {GetGroupMemberList, GroupMember} from "../repo/Group";
 import {MemberCard} from "../components/group/MemberCard";
 import {CanPerformAction, PERMISSIONS} from "../utility/Roles";
 import {RefreshControl} from "react-native-gesture-handler";
 import {useUser} from "../context/userContext";
-import {PageSpinner} from "../components/UI/PageSpinner";
+import {PageSpinner} from "../components/Ui/PageSpinner";
 import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../utility/Errors";
-import {showToast} from "../components/UI/Toast";
+import {showToast} from "../components/Ui/Toast";
 import {handleLogoutProcedure} from "../Util";
 import {resetToUserScreen} from "../utility/navigation";
 import {useNavigation} from "@react-navigation/native";
@@ -20,7 +20,6 @@ export function GroupMemberList() {
     const {group} = useGroup();
     const {user} = useUser();
     const text = useTexts(['memberList', 'noMembers', 'ifYouSeeThisPleaseReport', 'error']);
-    const toast = useToast();
     const getError = useErrorText();
     const navigation = useNavigation();
     const [loading, setLoading] = useState(true);
@@ -31,14 +30,13 @@ export function GroupMemberList() {
         canPromoteToManager: false,
     });
     const [refreshing, setRefreshing] = useState(false);
-    
+
     async function loadGroupMembers() {
         try {
-            const groupMembers = await GetGroupMemberList(group.groupId);
-            setGroupMembers(groupMembers);
+            const members = await GetGroupMemberList(group.groupId);
+            setGroupMembers(members);
         } catch (e) {
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: "warning",
@@ -63,8 +61,6 @@ export function GroupMemberList() {
     }
 
     useEffect(() => {
-
-
         setCanPerformAction({
             canKickUser: CanPerformAction(group.userRoleRights, PERMISSIONS.CAN_KICK_USERS),
             canPromoteToAdmin: CanPerformAction(group.userRoleRights, PERMISSIONS.CAN_PROMOTE_TO_ADMINS),
@@ -82,39 +78,49 @@ export function GroupMemberList() {
     if (loading) {
         return <PageSpinner/>
     }
+
     return (
         <>
             <BackButton/>
             <PageTitleSection title={text.memberList}/>
+
             <ScrollView
-                contentContainerStyle={{flexGrow: 1}}
+                className="flex-1"
+                contentContainerStyle={{flexGrow: 1, paddingHorizontal: 16, paddingTop: 16, paddingBottom: 24}}
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
                 }
             >
-                <VStack alignItems="center" space={4}>
-                    {groupMembers && groupMembers.length > 0 ? (groupMembers.map((member, index) => {
+                {groupMembers && groupMembers.length > 0 ? (
+                    <View className="gap-3">
+                        {groupMembers.map((member) => {
                             const isCurrentUser = member.userId === user.userId;
                             return (
-                                <MemberCard {...member} key={index}
-                                            canKickUser={canPerformAction.canKickUser}
-                                            canPromoteToAdmin={canPerformAction.canPromoteToAdmin}
-                                            canPromoteToManager={canPerformAction.canPromoteToManager}
-                                            isCurrentUser={isCurrentUser}
+                                <MemberCard
+                                    {...member}
+                                    key={member.userId}
+                                    canKickUser={canPerformAction.canKickUser}
+                                    canPromoteToAdmin={canPerformAction.canPromoteToAdmin}
+                                    canPromoteToManager={canPerformAction.canPromoteToManager}
+                                    isCurrentUser={isCurrentUser}
+                                    onChanged={loadGroupMembers}
                                 />
                             )
-                        })
-                    ) : (
-                        <Box mt={5}>
-                            <Text color={"gray.500"} textAlign={"center"}>
-                                {text.noMembers}
-                            </Text>
-                            <Text color={"gray.500"} textAlign={"center"}>
-                                {text.ifYouSeeThisPleaseReport}
-                            </Text>
-                        </Box>
-                    )}
-                </VStack>
+                        })}
+                    </View>
+                ) : (
+                    <View className="mt-16 items-center px-6">
+                        <View className="mb-4 h-16 w-16 items-center justify-center rounded-full bg-gray-100">
+                            <Text className="text-2xl">👥</Text>
+                        </View>
+                        <Text className="mb-1 text-center text-base font-semibold text-gray-700">
+                            {text.noMembers}
+                        </Text>
+                        <Text className="text-center text-sm text-gray-500">
+                            {text.ifYouSeeThisPleaseReport}
+                        </Text>
+                    </View>
+                )}
             </ScrollView>
         </>
     )

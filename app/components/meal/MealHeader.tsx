@@ -1,78 +1,56 @@
 import React from 'react';
-import {Box, Flex, Heading, HStack, Icon, ScrollView, Text, VStack} from "native-base";
+import {ScrollView, Text, View} from "react-native";
 import {MealCard} from "../../repo/Group";
-import {getTime, semiNormalDateTime, toNormalDateTime} from "../../utility/Dates";
+import {getTime, useSemiNormalDateTime} from "../../utility/Dates";
 import {useText} from "../../utility/TextKeys/TextKeys";
 import {Ionicons} from "@expo/vector-icons";
+import {colors} from "../../theme/colors";
+import {PillTag} from "../Ui/Pilltag";
 
 export function MealHeader({mealInformation}: { mealInformation: MealCard }) {
+
+    const semiNormalDateTime = useSemiNormalDateTime();
     const whenText = semiNormalDateTime(mealInformation.dateTime)
     const time = getTime(mealInformation.dateTime);
+    const noNotes = useText('noNotes');
 
     return (
-        <VStack paddingTop={5} space={2}>
-
-            <Heading>
-                {mealInformation.title}
-            </Heading>
-
-            <HStack
-                space={5}
-            >
-
-                <HStack space={2}>
-                    <Icon
-                        as={Ionicons}
-                        name={'calendar-outline'}
-                        size={5}
-                    />
-                    <Text>
-                        {whenText}
-                    </Text>
-                </HStack>
-
-                <HStack space={2}>
-                    <Icon
-                        as={Ionicons}
-                        name={'time-outline'}
-                        size={5}
-                    />
-                    <Text>
-                        {time}
-                    </Text>
-                </HStack>
-            </HStack>
-
-            <HStack space={2}>
-                <Icon
-                    as={Ionicons}
-                    name={'bulb-outline'}
-                    size={5}
-                />
-                <Text>
-                    {mealInformation.mealType}
+        <View className="gap-4">
+            <View>
+                <Text className="text-3xl font-bold text-ink">
+                    {mealInformation.title}
                 </Text>
-            </HStack>
 
+                <View className="mt-3 flex-row flex-wrap items-center gap-x-4 gap-y-2">
+                    <View className="flex-row items-center gap-1.5">
+                        <Ionicons name="calendar-outline" size={16} color={colors.ink.muted}/>
+                        <Text className="text-sm text-ink-muted">{whenText}</Text>
+                    </View>
+                    <View className="flex-row items-center gap-1.5">
+                        <Ionicons name="time-outline" size={16} color={colors.ink.muted}/>
+                        <Text className="text-sm text-ink-muted">{time}</Text>
+                    </View>
+                    <View className="flex-row items-center gap-1.5">
+                        <Ionicons name="bulb-outline" size={16} color={colors.ink.muted}/>
+                        <Text className="text-sm text-ink-muted">{mealInformation.mealType}</Text>
+                    </View>
+                    {mealInformation.closed && <PillTag text="closed" colorScheme="closed"/>}
+                    {mealInformation.fulfilled && <PillTag text="finished" colorScheme="orange"/>}
+                </View>
+            </View>
 
-            <Box
-                p={2}
-                backgroundColor="coolGray.200"
-                borderRadius={5}
-                maxHeight={150}
-            >
-                <ScrollView>
+            <View className="max-h-[140px] rounded-2xl border border-surface-border bg-surface px-3 py-3">
+                <Text className="mb-1 text-xs font-semibold uppercase tracking-wide text-ink-faint">
+                    Notes
+                </Text>
+                <ScrollView nestedScrollEnabled>
                     <Text
-                        fontStyle={mealInformation.notes ? "normal" : "italic"}
-                        color={mealInformation.notes ? "black" : "gray.500"}
+                        className={mealInformation.notes ? 'text-base text-ink' : 'text-base italic text-ink-muted'}
                     >
-                        {mealInformation.notes || useText('noNotes')}
+                        {mealInformation.notes || noNotes}
                     </Text>
                 </ScrollView>
-            </Box>
-
-
-        </VStack>
+            </View>
+        </View>
     );
 }
-

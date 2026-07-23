@@ -1,14 +1,15 @@
 import React, {ReactNode} from 'react';
-import {Box, StatusBar} from 'native-base';
+import {StatusBar, View} from 'react-native';
+import {colors} from '../theme/colors';
 
 export function BaseLayout({children, noPadding = false}: { children: ReactNode, noPadding?: boolean }) {
     return (
-        <Box flex={1} pt={noPadding ? 0 : 50} px={noPadding ? 0 : 4} bg="gray.100">
+        <View className={noPadding ? 'flex-1 bg-surface' : 'flex-1 bg-surface px-4 pt-[50px]'}>
             <StatusBar
-                backgroundColor="#8D8D8D40"
+                backgroundColor={colors.surface.DEFAULT}
                 barStyle="dark-content"
             />
             {children}
-        </Box>
+        </View>
     );
 }

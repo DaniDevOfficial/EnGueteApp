@@ -1,34 +1,21 @@
-import {
-    Box,
-    Button,
-    Flex,
-    HStack,
-    Icon,
-    Input,
-    InputGroup,
-    Pressable,
-    ScrollView,
-    Text,
-    useToast,
-    VStack
-} from "native-base";
+import React, {useCallback, useEffect, useState} from "react";
+import {ScrollView, Text, TextInput, View} from "react-native";
 import {RefreshControl} from "react-native-gesture-handler";
 import {GroupCard} from "./GroupCard";
-import React, {useCallback, useEffect, useState} from "react";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import {GetUserGroups, Group} from "../../repo/User";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {UnauthorizedError, useErrorText} from "../../utility/Errors";
-import {showToast} from "../UI/Toast";
+import {showToast} from "../Ui/Toast";
 import {handleLogoutProcedure} from "../../Util";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {CreateGroup} from "../group/CreateGroup";
 import {JoinGroup} from "../group/JoinGroup";
+import {colors} from '../../theme/colors';
 
 export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
     const navigation = useNavigation();
     const text = useTexts(['youAreInNoGroup', 'startByJoiningOrCreating', 'groups', 'createNewGroup', 'searchForGroup', 'error', 'noGroupsFound']);
-    const toast = useToast();
     const getError = useErrorText();
 
     const [refreshing, setRefreshing] = useState(false);
@@ -37,16 +24,13 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
     const [searchQuery, setSearchQuery] = useState('');
     const [shouldReload, setShouldReload] = useState(false);
 
-
     async function onRefresh() {
         setRefreshing(true);
         try {
             const groupsResponse = await GetUserGroups()
             setGroups(groupsResponse)
         } catch (e) {
-
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: "warning",
@@ -67,10 +51,6 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
         });
 
         setFilteredGroups(groupsFiltered);
-    }
-
-    function handleNewGroupNavigate() {
-        navigation.navigate('newGroup');
     }
 
     useEffect(() => {
@@ -94,102 +74,72 @@ export function GroupList({groupsDefault}: { groupsDefault: Group[] }) {
     useEffect(() => {
         handleSearch(searchQuery);
     }, [groups]);
-    return (
-        <Box flex={1}>
-            <VStack
-                space={6}
-                w={'100%'}
-                flex={1}
-                pb={60}
-            >
-                <InputGroup w={'100%'} justifyContent={'center'} alignItems={'center'}>
-                    <Input
-                        width={'100%'}
-                        onChangeText={(text) => {
-                            setSearchQuery(text);
-                            handleSearch(text);
-                        }}
-                        fontSize={'md'}
-                        py={2}
-                        px={2}
-                        borderRadius={'100'}
-                        placeholder={text.searchForGroup
-                        }
-                        value={searchQuery}
-                        InputLeftElement={
-                            <Icon
-                                as={<Ionicons name="search"/>}
-                                size={5}
-                                ml="4"
-                                color="gray.400"
-                            />
-                        }
-                    />
-                </InputGroup>
-                <VStack
-                    space={2}
-                >
 
-                    <Flex
-                        flexDir={'row'}
-                        justifyContent={'space-between'}
-                        alignItems={'center'}
-                    >
-                        <Text
-                            fontSize={'lg'}
-                            fontWeight={'bold'}
-                        >
+    return (
+        <View className="flex-1 w-full">
+            <View className="w-full flex-1 gap-6 pb-[60px]">
+                <View className="w-full flex-row items-center rounded-full border border-gray-300 bg-white px-2 py-2">
+                    <Ionicons name="search" size={20} color={colors.ink.faint} style={{marginLeft: 8}}/>
+                    <TextInput
+                        className="flex-1 px-2 text-base text-black"
+                        onChangeText={(textValue) => {
+                            setSearchQuery(textValue);
+                            handleSearch(textValue);
+                        }}
+                        placeholder={text.searchForGroup}
+                        value={searchQuery}
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                    />
+                </View>
+
+                <View className="flex-1 gap-2">
+                    <View className="flex-row items-center justify-between">
+                        <Text className="text-lg font-bold text-black">
                             {text.groups}
                         </Text>
-                        <HStack
-                            space={2}
-                            alignItems={'center'}
-                        >
-                            <JoinGroup />
-
-
+                        <View className="flex-row items-center gap-2">
+                            <JoinGroup/>
                             <CreateGroup/>
-                        </HStack>
-                    </Flex>
+                        </View>
+                    </View>
 
                     <ScrollView
+                        className="w-full flex-1"
                         contentContainerStyle={{flexGrow: 1}}
                         refreshControl={
                             <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
                         }
-                        flex={1}
-                        w={'100%'}
-                        overflowY={'hidden'}
                     >
-                        {filteredGroups && filteredGroups.length > 0 ? (filteredGroups.map((group, index) => (
-                                <GroupCard color={index % 2 === 0 ? 'orange' : 'yellow'} group={group}
-                                           key={group.groupId}/>
+                        {filteredGroups && filteredGroups.length > 0 ? (
+                            filteredGroups.map((group, index) => (
+                                <GroupCard
+                                    color={index % 2 === 0 ? 'orange' : 'yellow'}
+                                    group={group}
+                                    key={group.groupId}
+                                />
                             ))
                         ) : (
-                            <Box mt={5}>
+                            <View className="mt-5">
                                 {groups.length > 0 ? (
-                                    <Text color={"gray.500"} textAlign={"center"}>
+                                    <Text className="text-center text-gray-500">
                                         {text.noGroupsFound}
                                     </Text>
                                 ) : (
-
                                     <>
-                                        <Text color={"gray.500"} textAlign={"center"}>
+                                        <Text className="text-center text-gray-500">
                                             {text.youAreInNoGroup}
                                         </Text>
-                                        <Text color={"gray.500"} textAlign={"center"}>
+                                        <Text className="text-center text-gray-500">
                                             {text.startByJoiningOrCreating}
                                         </Text>
                                     </>
                                 )}
-                            </Box>
+                            </View>
                         )}
-
                     </ScrollView>
-                </VStack>
-
-
-            </VStack>
-        </Box>
+                </View>
+            </View>
+        </View>
     )
 }

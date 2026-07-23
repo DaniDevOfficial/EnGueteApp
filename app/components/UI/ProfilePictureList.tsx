@@ -1,5 +1,5 @@
-import {Box, HStack, Image, Text} from "native-base";
 import React from "react";
+import {Image, Text, View} from "react-native";
 
 export function ProfilePictureList({
                                        profilePictures,
@@ -8,60 +8,35 @@ export function ProfilePictureList({
 
     const visiblePictures = profilePictures.slice(0, 3)
     const remaining = totalAmount
-            ? totalAmount - visiblePictures.length
-            : profilePictures.length > 3
-                ? profilePictures.length - 3
-                : 0
+        ? totalAmount - visiblePictures.length
+        : profilePictures.length > 3
+            ? profilePictures.length - 3
+            : 0
 
-
-    const overlap = -5
-    const radius = '45px';
     return (
-        <HStack>
+        <View className="flex-row items-center">
             {visiblePictures.map((pic, index) => (
-                <Box
+                <View
                     key={index}
-                    ml={index === 0 ? 0 : overlap}
-                    borderWidth={2}
-                    borderColor="white"
-                    borderRadius="full"
-                    overflow="hidden"
-                    alignItems="center"
-                    justifyContent="center"
-                    w={radius}
-                    h={radius}
+                    className={`h-[45px] w-[45px] items-center justify-center overflow-hidden rounded-full border-2 border-white ${index === 0 ? '' : '-ml-[5px]'}`}
                 >
                     <Image
-                        source={{ uri: pic }}
-                        alt={`profile-${index}`}
-                        w={'100%'}
-                        height={'100%'}
-                        borderRadius="full"
+                        source={{uri: pic}}
+                        accessibilityLabel={`profile-${index}`}
+                        className="h-full w-full rounded-full"
                     />
-                </Box>
+                </View>
             ))}
 
             {remaining > 0 && (
-                <Box
-                    key={remaining}
-                    w={radius}
-                    h={radius}
-                    ml={overlap}
-                    borderWidth={2}
-                    borderColor="white"
-                    borderRadius="full"
-                    bg="gray.400"
-                    alignItems="center"
-                    justifyContent="center"
+                <View
+                    className="-ml-[5px] h-[45px] w-[45px] items-center justify-center rounded-full border-2 border-white bg-gray-400"
                 >
-
-                    <Text color="white" fontSize="sm" fontWeight="bold" lineHeight={20}
-
-                    >
+                    <Text className="text-sm font-bold leading-5 text-white">
                         +{remaining}
                     </Text>
-                </Box>
+                </View>
             )}
-        </HStack>
+        </View>
     )
 }

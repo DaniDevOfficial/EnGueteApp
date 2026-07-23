@@ -1,21 +1,20 @@
 import {useText, useTexts} from "../../../utility/TextKeys/TextKeys";
 import {useNavigation} from "@react-navigation/native";
-import {Option, SettingsSectionStack} from "../../UI/SettingSectionStack";
+import {Option, SettingsSectionStack} from "../../Ui/SettingSectionStack";
 import {PERMISSIONS} from "../../../utility/Roles";
 import {useGroup} from "../../../context/groupContext";
 import React, {useState} from "react";
 import {DeleteGroupRequest, LeaveGroupRequest} from "../../../repo/Group";
 import {resetToUserScreen} from "../../../utility/navigation";
-import {showToast} from "../../UI/Toast";
-import {useToast} from "native-base";
+import {showToast} from "../../Ui/Toast";
 import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../../../utility/Errors";
 import {handleLogoutProcedure} from "../../../Util";
-import {ConfirmationModal} from "../../UI/ConfirmationModal";
+import {ConfirmationModal} from "../../Ui/ConfirmationModal";
+import {colors} from "../../../theme/colors";
 
 export function GroupActions() {
     const {group} = useGroup();
     const navigation = useNavigation();
-    const toast = useToast();
     const getError = useErrorText();
 
     const text = useTexts(['groupActions', 'leaveGroup', 'deleteGroup', 'error']);
@@ -33,7 +32,7 @@ export function GroupActions() {
                 setLeaveGroupModalOpen(true);
             },
             icon: 'exit-to-app',
-            iconColor: 'yellow.500',
+            iconColor: colors.status.warning,
         },
     ];
 
@@ -44,8 +43,8 @@ export function GroupActions() {
                 setDeleteGroupModalOpen(true);
             },
             icon: 'delete-forever',
-            iconColor: 'red.500',
-            textColor: 'red.500',
+            iconColor: colors.status.error,
+            textColor: colors.status.error,
         });
     }
 
@@ -59,22 +58,19 @@ export function GroupActions() {
                 return;
             }
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: 'error',
             });
         }
     }
+
     async function handleDelete() {
-
-
         try {
             await DeleteGroupRequest(group.groupId);
             resetToUserScreen(navigation);
         } catch (e) {
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: "warning",
@@ -94,7 +90,6 @@ export function GroupActions() {
             }
         }
     }
-
 
     return (
         <>
@@ -116,7 +111,6 @@ export function GroupActions() {
                 onConfirm={handleDelete}
                 requiredText={deleteConfirmText}
             />
-
         </>
     );
 }

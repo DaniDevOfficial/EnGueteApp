@@ -1,32 +1,30 @@
 import React, {useState} from 'react';
 import {
-    Flex,
-    VStack,
+    ActivityIndicator,
+    KeyboardAvoidingView,
+    Platform,
+    Pressable,
+    ScrollView,
     Text,
-    FormControl,
-    Input,
-    useToast
-} from "native-base";
+    TextInput,
+    View,
+} from "react-native";
 import {useNavigation} from "@react-navigation/native";
-import {CustomButton} from "../components/UI/CustomButton";
-import {showToast} from "../components/UI/Toast";
+import {showToast} from "../components/Ui/Toast";
 import {useTexts} from "../utility/TextKeys/TextKeys";
 import {resetPassword} from "../repo/Auth";
-
+import {colors} from '../theme/colors';
 
 export function ForgotPassword() {
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
 
     const navigation = useNavigation();
-    const toast = useToast();
     const text = useTexts(['somethingWentWrong', 'pleaseTryAgain', 'checkYourInbox', 'ifAnAccountExistsYouWillRecieveAResetEmail', 'forgotPassword', 'pleaseEnterEmailForResetLink', 'sendResetLink', 'back', 'enterEmail', 'missingEmail'])
-
 
     async function handleSubmit() {
         if (!email) {
             showToast({
-                toast,
                 title: text.missingEmail,
                 description: text.enterEmail,
                 status: 'warning',
@@ -41,7 +39,6 @@ export function ForgotPassword() {
             await new Promise(resolve => setTimeout(resolve, 800));
 
             showToast({
-                toast,
                 title: text.checkYourInbox,
                 description: text.ifAnAccountExistsYouWillRecieveAResetEmail,
                 status: 'success',
@@ -50,7 +47,6 @@ export function ForgotPassword() {
             navigation.goBack();
         } catch (e) {
             showToast({
-                toast,
                 title: text.somethingWentWrong,
                 description: text.pleaseTryAgain,
                 status: 'error',
@@ -61,47 +57,62 @@ export function ForgotPassword() {
     }
 
     return (
-        <Flex justifyContent="center" alignItems="center" py={10}>
-            <VStack space={6} w="90%" alignItems="center">
-                <VStack space={2} alignItems="center">
-                    <Text fontSize="3xl" fontWeight="bold">
-                        {text.forgotPassword}? 🔐
-                    </Text>
-                    <Text textAlign="center" color="gray.500">
-                        {text.pleaseEnterEmailForResetLink}
-                    </Text>
-                </VStack>
+        <KeyboardAvoidingView
+            className="flex-1"
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+            <ScrollView
+                contentContainerStyle={{flexGrow: 1}}
+                keyboardShouldPersistTaps="handled"
+            >
+                <View className="flex-1 items-center justify-center px-6 py-10">
+                    <View className="w-full max-w-md items-center gap-6">
+                        <View className="items-center gap-2">
+                            <Text className="text-center text-3xl font-bold text-black">
+                                {text.forgotPassword}?
+                            </Text>
+                            <Text className="text-center text-base text-gray-500">
+                                {text.pleaseEnterEmailForResetLink}
+                            </Text>
+                        </View>
 
-                <FormControl w="100%">
-                    <FormControl.Label>Email</FormControl.Label>
-                    <Input
-                        value={email}
-                        onChangeText={(text) => setEmail(text)}
-                        placeholder="Enter your email"
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                        p={3}
-                        rounded="md"
-                    />
-                </FormControl>
+                        <View className="w-full gap-1">
+                            <Text className="text-sm font-medium text-gray-700">
+                                Email
+                            </Text>
+                            <TextInput
+                                value={email}
+                                onChangeText={setEmail}
+                                placeholder={text.enterEmail}
+                                keyboardType="email-address"
+                                autoCapitalize="none"
+                                autoCorrect={false}
+                                className="rounded-md border border-gray-300 bg-white p-3 text-base text-black"
+                            />
+                        </View>
 
-                <CustomButton
-                    w="100%"
-                    onPress={handleSubmit}
-                    isLoading={loading}
-                >
-                    {text.sendResetLink}
-                </CustomButton>
+                        <Pressable
+                            className="w-full items-center rounded-[30px] bg-app-orange py-3 shadow-md active:opacity-60"
+                            onPress={handleSubmit}
+                            disabled={loading}
+                        >
+                            {loading ? (
+                                <ActivityIndicator color={colors.surface.DEFAULT}/>
+                            ) : (
+                                <Text className="text-base font-medium text-white">
+                                    {text.sendResetLink}
+                                </Text>
+                            )}
+                        </Pressable>
 
-                <Text
-                    fontSize="sm"
-                    color="gray.500"
-                    underline
-                    onPress={() => navigation.goBack()}
-                >
-                    {text.back}
-                </Text>
-            </VStack>
-        </Flex>
+                        <Pressable onPress={() => navigation.goBack()} hitSlop={8}>
+                            <Text className="text-sm text-gray-500 underline">
+                                {text.back}
+                            </Text>
+                        </Pressable>
+                    </View>
+                </View>
+            </ScrollView>
+        </KeyboardAvoidingView>
     );
 }

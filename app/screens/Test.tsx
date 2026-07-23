@@ -1,22 +1,28 @@
-import {Button, Input, Text, useToast} from "native-base";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {DateTimePickerAndroid} from "@react-native-community/datetimepicker";
 import {SetStateAction, useEffect, useState} from "react";
+import {Pressable, ScrollView, Text, TextInput} from "react-native";
 import {useTexts} from "../utility/TextKeys/TextKeys";
-import {useNavigation} from "@react-navigation/native";
 import {getLanguageFromAsyncStorage} from "../context/settingsContext";
-import {showToast} from "../components/UI/Toast";
+import {showToast} from "../components/Ui/Toast";
 import {createTable, db, dropAllTables} from "../utility/database";
-
 import {getAllGroups, SyncAllGroups} from "../repo/sync/user/AllGroups";
-import {getMeals} from "../repo/sync/meal/AllMealsInGroup";
+
+function DevButton({label, onPress}: { label: string; onPress: () => void }) {
+    return (
+        <Pressable
+            className="mb-2 w-full items-center rounded-xl bg-app-orange px-4 py-3 active:opacity-60"
+            onPress={onPress}
+        >
+            <Text className="text-center text-sm font-medium text-white">{label}</Text>
+        </Pressable>
+    );
+}
 
 export function Test() {
     const [date, setDate] = useState(new Date(1598051730000));
     const [language, setLanguage] = useState('none');
     const [value, setValue] = useState('');
-    const navigation = useNavigation();
-    const toast = useToast();
     const onChange = (event: any, selectedDate: SetStateAction<Date>) => {
         setDate(selectedDate);
     };
@@ -48,21 +54,19 @@ export function Test() {
             title: popupTexts.maybeLater,
             description: popupTexts.joinGroup,
             status: 'info',
-            toast
         })
     }
 
     async function getGroupsSync() {
         try {
             await SyncAllGroups();
-            const data = await getAllGroups();
+            await getAllGroups();
         } catch (e) {
             console.log('error', e);
             showToast({
                 title: popupTexts.maybeLater,
                 description: popupTexts.groupInvite,
                 status: 'error',
-                toast
             })
         }
     }
@@ -116,22 +120,17 @@ export function Test() {
         console.log({tmp})
     }
 
-    async function loadMeals() {
-        console.log(await getMeals('f15279d3-d622-475d-ad29-7d4869d10983', new Date()))
-    }
-
     async function getGroups() {
         const user_groups = await db.getAllAsync('SELECT * FROM user_groups')
         const groups = await db.getAllAsync('SELECT * FROM groups')
         console.log({user_groups, groups})
     }
 
-
-
     async function logEntireLogTable() {
         const logEntries = await db.getAllAsync('SELECT * FROM log');
         console.log('Log Entries:', logEntries);
     }
+
     async function addLogEntry() {
         const now = new Date().toISOString();
         await db.runAsync(`
@@ -145,60 +144,38 @@ export function Test() {
     }, []);
 
     return (
-        <SafeAreaView>
-            <Button onPress={showDatepicker}>
-                <Text>Show date picker!</Text>
-            </Button>
-            <Button onPress={showTimepicker}>
-                <Text>Show time picker!</Text>
-            </Button>
-            <Button onPress={showLanguage}>
-                <Text>Get Language: {language}</Text>
-            </Button>
-            <Button onPress={showToastLocal}>
-                <Text>Show Toast</Text>
-            </Button>
-            <Button onPress={getGroupsSync}>
-                <Text>Sync Groups</Text>
-            </Button>
-            <Button onPress={getDataFromSqlite}>
-                <Text>getDataFromSqlite</Text>
-            </Button>
-            <Button onPress={getDatabaseStructure}>
-                <Text>get Database Structure</Text>
-            </Button>
+        <SafeAreaView className="flex-1 bg-white">
+            <ScrollView contentContainerStyle={{padding: 16, paddingBottom: 40}}>
+                <Text className="mb-4 text-xl font-bold text-black">Dev tools</Text>
 
-            <Button onPress={clearDatabase}>
-                <Text>drop Database</Text>
-            </Button>
-            <Button onPress={rebuildDatabse}>
-                <Text>rebuild Database</Text>
-            </Button>
-            <Button onPress={getAllRoles}>
-                <Text>ROLES</Text>
-            </Button>
-            <Input
-                value={value}
-                onChangeText={setValue}
-            >
+                <DevButton label="Show date picker" onPress={showDatepicker}/>
+                <DevButton label="Show time picker" onPress={showTimepicker}/>
+                <DevButton label={`Get Language: ${language}`} onPress={showLanguage}/>
+                <DevButton label="Show Toast" onPress={showToastLocal}/>
+                <DevButton label="Sync Groups" onPress={getGroupsSync}/>
+                <DevButton label="getDataFromSqlite" onPress={getDataFromSqlite}/>
+                <DevButton label="get Database Structure" onPress={getDatabaseStructure}/>
+                <DevButton label="drop Database" onPress={clearDatabase}/>
+                <DevButton label="rebuild Database" onPress={rebuildDatabse}/>
+                <DevButton label="ROLES" onPress={getAllRoles}/>
 
-            </Input>
-            <Button onPress={addTestData}>
-                Add Test Data
-            </Button>
-            <Button onPress={getAllMeals}>
-                GetAllMeals
-            </Button>
-            <Button onPress={getGroups}>
-                load groups
-            </Button>
-            <Button onPress={logEntireLogTable}>
-                log Entire Log Table
-            </Button>
-            <Button onPress={addLogEntry}>
-                add log Entire to Log Table
-            </Button>
-            <Text>selected: {date.toLocaleString()}</Text>
+                <TextInput
+                    value={value}
+                    onChangeText={setValue}
+                    placeholder="Test value"
+                    className="mb-2 rounded-md border border-gray-300 bg-white p-3 text-base text-black"
+                />
+
+                <DevButton label="Add Test Data" onPress={addTestData}/>
+                <DevButton label="GetAllMeals" onPress={getAllMeals}/>
+                <DevButton label="load groups" onPress={getGroups}/>
+                <DevButton label="log Entire Log Table" onPress={logEntireLogTable}/>
+                <DevButton label="add log Entire to Log Table" onPress={addLogEntry}/>
+
+                <Text className="mt-2 text-sm text-gray-600">
+                    selected: {date.toLocaleString()}
+                </Text>
+            </ScrollView>
         </SafeAreaView>
     )
 }

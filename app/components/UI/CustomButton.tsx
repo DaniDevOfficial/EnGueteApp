@@ -1,42 +1,41 @@
-import React, { ReactNode } from 'react'
-import { Button, IButtonProps } from 'native-base'
+import React, {ReactNode} from "react";
+import {Text, TouchableOpacity, TouchableOpacityProps} from "react-native";
 
-interface CustomButtonProps extends IButtonProps {
-    children: ReactNode
-    onlyOutline?: boolean
-    onPress?: () => void
+interface CustomButtonProps extends TouchableOpacityProps {
+    children: ReactNode;
+    onlyOutline?: boolean;
 }
 
-export function CustomButton ({ children, onPress, onlyOutline = false, ...props }: CustomButtonProps) {
-
-    if (onlyOutline) {
-        return (
-            <Button
-                borderRadius={30}
-                borderColor={"orange.600"}
-                backgroundColor={"white"}
-                borderWidth={1}
-                onPress={onPress}
-                _pressed={{ opacity: 0.6 }}
-                {...props}
-                shadow={1}
-            >
-                {children}
-            </Button>
-        )
-    }
-
+export function CustomButton({
+                                 children,
+                                 onlyOutline = false,
+                                 style,
+                                 ...props
+                             }: CustomButtonProps) {
     return (
-        <Button
-            borderRadius={30}
-            background={"orange.600"}
-            onPress={onPress}
-            _pressed={{ opacity: 0.6 }}
+        <TouchableOpacity
+            activeOpacity={0.6}
+            className={
+                onlyOutline
+                    ? "rounded-full border border-orange-600 bg-white shadow px-5 py-3 items-center justify-center"
+                    : "rounded-full bg-orange-600 shadow-lg px-5 py-3 items-center justify-center"
+            }
+            style={style}
             {...props}
-            shadow={5}
         >
-            {children}
-        </Button>
+            {typeof children === "string" ? (
+                <Text
+                    className={
+                        onlyOutline
+                            ? "text-orange-600 font-semibold"
+                            : "text-white font-semibold"
+                    }
+                >
+                    {children}
+                </Text>
+            ) : (
+                children
+            )}
+        </TouchableOpacity>
     );
-
 }

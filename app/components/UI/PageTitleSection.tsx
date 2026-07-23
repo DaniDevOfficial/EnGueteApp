@@ -1,22 +1,49 @@
-import {Box, Flex, HStack, Text} from "native-base";
 import React from "react";
+import {Text, View} from "react-native";
 
 interface PageTitleSectionProps {
     title: string;
     color?: string;
+    showLine?: boolean;
 }
 
-export function PageTitleSection({title, color = "black"}: PageTitleSectionProps) {
+export function PageTitleSection({
+                                     title,
+                                     color = "black",
+                                     showLine = true,
+                                 }: PageTitleSectionProps) {
     return (
+        <View className="items-center">
+            <View className="w-[90%] flex-row items-center gap-4">
+                <View
+                    className="flex-1"
+                >
+                    {showLine && (
+                        <View
+                            className="h-px"
+                            style={{backgroundColor: color}}
+                        />
+                    )}
+                </View>
 
-        <Flex alignItems={"center"}>
-            <HStack alignItems="center" space={4} width="90%">
-                <Box flex={1} height="1px" bg={color} width="10px"/>
-                <Text textAlign="center" color={color} fontWeight="bold" fontSize="xl">
+                <Text
+                    className="text-center text-xl font-bold"
+                    style={{color}}
+                >
                     {title}
                 </Text>
-                <Box flex={1} height="1px" bg={color}/>
-            </HStack>
-        </Flex>
+
+                <View
+                    className="flex-1"
+                >
+                    {showLine && (
+                        <View
+                            className="h-px"
+                            style={{backgroundColor: color}}
+                        />
+                    )}
+                </View>
+            </View>
+        </View>
     );
 }

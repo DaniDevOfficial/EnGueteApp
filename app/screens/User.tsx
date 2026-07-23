@@ -1,5 +1,5 @@
-import {Box, Button, Pressable, useToast} from 'native-base'
 import React, {useEffect, useState} from 'react'
+import {Pressable, Text, View} from 'react-native'
 import {Environment, handleLogoutProcedure} from "../Util";
 import {useNavigation} from "@react-navigation/native";
 import {GetUserInformation, Group, User as UserType} from "../repo/User";
@@ -7,10 +7,10 @@ import {useUser} from "../context/userContext";
 import {UserCard} from "../components/user/UserCard";
 import {UnauthorizedError, useErrorText} from "../utility/Errors";
 import {useTexts} from "../utility/TextKeys/TextKeys";
-import {EditButton} from "../components/UI/EditButton";
-import {PageSpinner} from "../components/UI/PageSpinner";
+import {EditButton} from "../components/Ui/EditButton";
+import {PageSpinner} from "../components/Ui/PageSpinner";
 import {GroupList} from "../components/user/GroupList";
-import {showToast} from "../components/UI/Toast";
+import {showToast} from "../components/Ui/Toast";
 
 export function User() {
     const [userInformation, setUserInformation] = useState<UserType | undefined>()
@@ -18,27 +18,22 @@ export function User() {
     const [loading, setLoading] = useState(true)
 
     const text = useTexts(['youAreInNoGroup', 'startByJoiningOrCreating', 'yourGroups', 'createNewGroup', 'error']);
-    const toast = useToast();
     const getError = useErrorText();
     const navigation = useNavigation();
     const {user, setUser: setUser} = useUser();
 
     async function getUserData() {
-
         try {
-
             const userInformationRes = await GetUserInformation();
 
             setUserInformation(userInformationRes)
             setGroupInformation(userInformationRes.groups)
             setLoading(false)
         } catch (e) {
-
             if (e instanceof UnauthorizedError) {
                 await handleLogoutProcedure(navigation)
             }
             showToast({
-                toast,
                 title: text.error,
                 description: getError(e.message),
                 status: "warning",
@@ -51,7 +46,6 @@ export function User() {
     }, [])
 
     useEffect(() => {
-
         if (userInformation === undefined) {
             return
         }
@@ -64,36 +58,28 @@ export function User() {
         });
     }, [userInformation]);
 
-
     if (loading || !userInformation || !user) {
         return <PageSpinner/>
     }
 
-    function handleNavigate() {
-
-        // @ts-ignore
-        navigation.navigate('newGroup');
-    }
-
     return (
-        <>
+        <View className="flex-1">
             <EditButton navigateTo={'userSettings'}/>
-            <Box flex={1} alignItems="center" p={"10px 5px"}>
+            <View className="flex-1 items-center px-1 py-2.5">
                 <UserCard user={user}/>
                 <GroupList groupsDefault={groupInformation}/>
-            </Box>
+            </View>
 
             {process.env.ENV === Environment.DEVELOPMENT && (
-
-
-                <Button
+                <Pressable
+                    className="mx-4 mb-4 items-center rounded-[30px] bg-app-orange py-3 active:opacity-60"
                     onPress={() => {
                         navigation.navigate('test')
                     }}
                 >
-                    Test
-                </Button>
+                    <Text className="font-medium text-white">Test</Text>
+                </Pressable>
             )}
-        </>
+        </View>
     )
 }
