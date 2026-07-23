@@ -11,7 +11,7 @@ import {NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Erro
 import {handleLogoutProcedure} from "../../Util";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import {resetToUserScreen} from "../../utility/navigation";
-import {getDayName, semiNormalDateTime} from "../../utility/Dates";
+import {getDayName, useSemiNormalDateTime} from "../../utility/Dates";
 
 interface MealListProps {
     tempMeals: MealCardType[];
@@ -130,7 +130,7 @@ export function MealList({tempMeals}: MealListProps) {
 
 function List({meals = []}: { meals: MealCardType[] }) {
     let lastDayName = "";
-
+    const semiNormalDateTime = useSemiNormalDateTime();
     const weekdayNames = useTexts([
         "monday",
         "tuesday",
@@ -154,11 +154,12 @@ function List({meals = []}: { meals: MealCardType[] }) {
     return (
         <>
             {meals.map((meal) => {
+
                 const dayOfWeek = new Date(meal.dateTime).getDay();
                 const currentDayName =
                     weekdayNames[getDayName(dayOfWeek)] || "";
-
                 const showDay = currentDayName !== lastDayName;
+
 
                 if (showDay) {
                     lastDayName = currentDayName;

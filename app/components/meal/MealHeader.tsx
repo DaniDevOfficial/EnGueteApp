@@ -1,13 +1,15 @@
 import React from 'react';
 import {ScrollView, Text, View} from "react-native";
 import {MealCard} from "../../repo/Group";
-import {getTime, semiNormalDateTime} from "../../utility/Dates";
+import {getTime, useSemiNormalDateTime} from "../../utility/Dates";
 import {useText} from "../../utility/TextKeys/TextKeys";
 import {Ionicons} from "@expo/vector-icons";
 import {colors} from "../../theme/colors";
 import {PillTag} from "../Ui/Pilltag";
 
 export function MealHeader({mealInformation}: { mealInformation: MealCard }) {
+
+    const semiNormalDateTime = useSemiNormalDateTime();
     const whenText = semiNormalDateTime(mealInformation.dateTime)
     const time = getTime(mealInformation.dateTime);
     const noNotes = useText('noNotes');
