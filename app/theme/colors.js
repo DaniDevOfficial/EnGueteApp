@@ -1,6 +1,6 @@
 /**
  * EnGuete color tokens — single source of truth.
- * Use Tailwind classes (`bg-brand-orange`, `text-ink-muted`) in UI when possible.
+ * Use Tailwind classes (`bg-brand-orange`, `text-ink-muted`) in Ui when possible.
  * Import from here only when a prop needs a raw hex (icons, Switch, StyleSheet).
  */
 const colors = {
