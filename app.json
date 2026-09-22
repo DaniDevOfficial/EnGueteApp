@@ -5,20 +5,14 @@
     "slug": "EnGueteApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/appIcon.jpeg",
+    "icon": "./assets/appIcon.png",
     "userInterfaceStyle": "light",
-    "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/appIcon.jpeg",
-      "resizeMode": "contain",
-      "backgroundColor": "#FF9333"
-    },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/appIcon.jpeg",
+        "foregroundImage": "./assets/appIcon.png",
         "backgroundColor": "#FF9333"
       },
       "package": "com.danidevofficial.EnGuete"
@@ -43,7 +37,8 @@
           }
         }
       ],
-      "expo-asset"
+      "expo-asset",
+      "expo-font"
     ],
     "owner": "danidevofficial"
   }
