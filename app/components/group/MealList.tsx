@@ -5,7 +5,7 @@ import {GetGroupMeals, MealCard as MealCardType} from "../../repo/Group";
 import {MealCard} from "./MealCard";
 import {addDaysToDate, getWednesdayOfWeek, MealFilterSection} from "./MealFilterSection";
 import {useGroup} from "../../context/groupContext";
-import {PanGestureHandler} from "react-native-gesture-handler";
+import {Gesture, GestureDetector} from "react-native-gesture-handler";
 import {showToast} from "../Ui/Toast";
 import {NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {handleLogoutProcedure} from "../../Util";
@@ -92,16 +92,20 @@ export function MealList({tempMeals}: MealListProps) {
         loadMeals(date);
     }, []);
 
+    const swipeGesture = Gesture.Pan()
+        .runOnJS(true)
+        .activeOffsetX([-20, 20])
+        .failOffsetY([-20, 20])
+        .onEnd(({translationX}) => {
+            if (translationX < -50) {
+                setDate(addDaysToDate(date, 7));
+            } else if (translationX > 50) {
+                setDate(addDaysToDate(date, -7));
+            }
+        });
+
     return (
-        <PanGestureHandler
-            onEnded={({nativeEvent}) => {
-                if (nativeEvent.translationX < -50) {
-                    setDate(addDaysToDate(date, 7));
-                } else if (nativeEvent.translationX > 50) {
-                    setDate(addDaysToDate(date, -7));
-                }
-            }}
-        >
+        <GestureDetector gesture={swipeGesture}>
             <View className="pt-4">
                 <MealFilterSection
                     onDateChange={loadMeals}
@@ -124,7 +128,7 @@ export function MealList({tempMeals}: MealListProps) {
                     </View>
                 </ScrollView>
             </View>
-        </PanGestureHandler>
+        </GestureDetector>
     );
 }
 
