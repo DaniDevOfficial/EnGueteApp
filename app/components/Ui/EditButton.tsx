@@ -14,7 +14,7 @@ export function EditButton({color = colors.ink.DEFAULT, navigateTo}: EditButtonP
     return (
         <Pressable
             onPress={() => navigation.navigate(navigateTo)}
-            className="absolute right-4 top-7 z-10 active:opacity-70"
+            className="absolute right-4 top-10 z-10 active:opacity-70"
             hitSlop={12}
             accessibilityRole="button"
             accessibilityLabel="Settings"

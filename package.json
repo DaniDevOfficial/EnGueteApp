@@ -29,7 +29,7 @@
     "expo-localization": "~57.0.2",
     "expo-sqlite": "~57.0.3",
     "expo-status-bar": "~57.0.1",
-    "nativewind": "4.1.23",
+    "nativewind": "4.2.7",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-native": "^0.86.3",

@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {Modal, Pressable, Text, View} from "react-native";
+import {Pressable, Text, View} from "react-native";
+import {SafeAreaModal as Modal} from '../Ui/SafeAreaModal';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {ACTIONS, MemberActions} from "./MemberActions";

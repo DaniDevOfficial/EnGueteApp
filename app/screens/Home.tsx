@@ -7,6 +7,7 @@ import {colors} from '../theme/colors';
 
 import React, {useEffect, useState} from 'react'
 import {useNavigation} from "@react-navigation/native";
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {checkAuth} from "../repo/Auth";
 import {PageSpinner} from "../components/Ui/PageSpinner";
 import {voidAuthToken} from "../Util";
@@ -17,6 +18,7 @@ import {TokenPopupHandler} from "../components/Utility/JoinGroupPopup";
 import {clearDatabase} from "../utility/database";
 
 export function Home() {
+    const insets = useSafeAreaInsets();
     const [loading, setLoading] = useState(true);
     const [inviteToken, setInviteToken] = useState<string | null>(null);
     const navigation = useNavigation();
@@ -91,7 +93,7 @@ export function Home() {
                 barStyle="dark-content"
             />
 
-            <View className="ml-5 mt-[79px]">
+            <View className="ml-5" style={{marginTop: insets.top + 55}}>
                 <View>
                     <Text className="text-5xl font-bold text-black">
                         Plan meals.
@@ -114,7 +116,10 @@ export function Home() {
                 {renderLandingImage()}
             </View>
 
-            <View className="absolute bottom-0 left-0 right-0 mb-8 items-center">
+            <View
+                className="absolute left-0 right-0 items-center"
+                style={{bottom: insets.bottom + 32}}
+            >
                 <Pressable
                     className="w-[80%] items-center justify-center rounded-full bg-black p-4"
                     onPress={() => {

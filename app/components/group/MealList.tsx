@@ -106,7 +106,7 @@ export function MealList({tempMeals}: MealListProps) {
 
     return (
         <GestureDetector gesture={swipeGesture}>
-            <View className="pt-4">
+            <View className="flex-1 pt-4">
                 <MealFilterSection
                     onDateChange={loadMeals}
                     setDate={setDate}
@@ -114,7 +114,7 @@ export function MealList({tempMeals}: MealListProps) {
                 />
 
                 <ScrollView
-                    className="w-full min-h-full"
+                    className="w-full flex-1"
                     contentContainerStyle={{flexGrow: 1}}
                     refreshControl={
                         <RefreshControl

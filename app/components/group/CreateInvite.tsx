@@ -1,5 +1,6 @@
 import React, {useState} from "react";
-import {ActivityIndicator, Modal, Pressable, Text, TextInput, View} from "react-native";
+import {ActivityIndicator, Pressable, Text, TextInput, View} from "react-native";
+import {SafeAreaModal as Modal} from '../Ui/SafeAreaModal';
 import {useText, useTexts} from "../../utility/TextKeys/TextKeys";
 import {getSwissDateTimeDisplay} from "../../utility/Dates";
 import {DateTimePickerAndroid} from "@react-native-community/datetimepicker";

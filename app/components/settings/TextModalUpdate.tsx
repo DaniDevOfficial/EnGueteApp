@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {ActivityIndicator, Modal, Pressable, Text, TextInput, View} from "react-native";
+import {ActivityIndicator, Pressable, Text, TextInput, View} from "react-native";
+import {SafeAreaModal as Modal} from '../Ui/SafeAreaModal';
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {useNavigation} from "@react-navigation/native";
 import {UnauthorizedError, useErrorText} from "../../utility/Errors";

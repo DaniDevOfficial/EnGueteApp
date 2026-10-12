@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {ActivityIndicator, Modal, Pressable, Text, TextInput, View} from "react-native";
+import {ActivityIndicator, Pressable, Text, TextInput, View} from "react-native";
+import {SafeAreaModal as Modal} from './SafeAreaModal';
 import {useText, useTexts} from "../../utility/TextKeys/TextKeys";
 import {showToast} from "./Toast";
 import {colors} from '../../theme/colors';

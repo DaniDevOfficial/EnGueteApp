@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {Modal, Pressable, Switch, Text, TextInput, View} from "react-native";
+import {Pressable, Switch, Text, TextInput, View} from "react-native";
+import {SafeAreaModal as Modal} from '../Ui/SafeAreaModal';
 import {MealPreference, saveMealPreference} from "../../repo/Meal";
 import {FRONTEND_ERRORS, NotFoundError, UnauthorizedError, useErrorText} from "../../utility/Errors";
 import {useNavigation} from "@react-navigation/native";

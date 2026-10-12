@@ -1,5 +1,6 @@
 import React, {useState} from "react";
-import {Modal, Pressable, Text, TextInput, View} from "react-native";
+import {Pressable, Text, TextInput, View} from "react-native";
+import {SafeAreaModal as Modal} from '../Ui/SafeAreaModal';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import {getFancyTimeDisplay} from "../../utility/Dates";

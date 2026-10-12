@@ -93,7 +93,7 @@ export function Group() {
             <MealList tempMeals={groupInformation.meals ?? []}/>
             {groupInformation.groupInfo.userRoleRights.includes(PERMISSIONS.CAN_CREATE_MEAL) && (
                 <View
-                    className="absolute bottom-4 left-4 right-4"
+                    className="mb-4 mt-3"
                 >
                     <CustomButton onPress={handleNavigate}>
                         {text.createNewMeal}

@@ -1,5 +1,6 @@
 import React, {useState} from "react";
-import {ActivityIndicator, Image, Modal, Pressable, Text, TextInput, View} from "react-native";
+import {ActivityIndicator, Image, Pressable, Text, TextInput, View} from "react-native";
+import {SafeAreaModal as Modal} from '../Ui/SafeAreaModal';
 import {useTexts} from "../../utility/TextKeys/TextKeys";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {StackActions, useNavigation} from "@react-navigation/native";

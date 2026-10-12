@@ -1,5 +1,6 @@
 import React, {useState} from "react";
-import {ActivityIndicator, Image, Modal, Pressable, Text, TextInput, View} from "react-native";
+import {ActivityIndicator, Image, Pressable, Text, TextInput, View} from "react-native";
+import {SafeAreaModal as Modal} from '../Ui/SafeAreaModal';
 import groupIcon from '../../assets/PopupIcons/groupIcon.png';
 import {useText, useTexts} from "../../utility/TextKeys/TextKeys";
 import Ionicons from "react-native-vector-icons/Ionicons";

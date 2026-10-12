@@ -72,6 +72,7 @@ function GroupContextStack () {
             <GroupStack.Navigator
                 screenOptions={{
                     headerShown: false,
+                    navigationBarHidden: true,
                 }}
             >
                 <GroupStack.Screen
@@ -178,6 +179,7 @@ export function Router () {
                 initialRouteName="home"
                 screenOptions={{
                     headerShown: false,
+                    navigationBarHidden: true,
                 }}
             >
                 <Stack.Screen
