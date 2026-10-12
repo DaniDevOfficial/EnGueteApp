@@ -127,7 +127,7 @@ export function Home() {
                     }}
                 >
                     <View className="w-[90%] flex-row items-center justify-between">
-                        <Text className="text-base text-white">Get Started</Text>
+                        <Text className="text-base" style={{color: 'red'}}>Get Started</Text>
                         <Image
                             source={continueOnIcon}
                             accessibilityLabel="goOn"

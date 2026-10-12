@@ -13,7 +13,7 @@ export function BackButton({color = colors.ink.DEFAULT}: BackButtonProps) {
     return (
         <Pressable
             onPress={() => navigation.goBack()}
-            className="absolute left-4 top-20 z-10 h-11 w-11 items-center justify-center rounded-full border border-surface-border bg-surface shadow-sm"
+            className="absolute left-4 top-10 z-10 h-11 w-11 items-center justify-center rounded-full border border-surface-border bg-surface shadow-sm"
             hitSlop={12}
         >
             <Ionicons
