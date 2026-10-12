@@ -100,7 +100,7 @@ export function Home() {
                     </Text>
                 </View>
                 <View className="flex-row items-center gap-4">
-                    <Text className="text-5xl font-bold text-black">
+                    <Text className="text-5xl font-bold" style={{color: 'red'}}>
                         Eat
                     </Text>
                     {getPilltagWithLeftIcon('together')}
@@ -157,7 +157,7 @@ function getLandingScreenRandomImage(): ImageTypes {
 function getPilltagWithLeftIcon(text: string): React.JSX.Element {
     return (
         <View className="flex-row items-center justify-center gap-4 rounded-full bg-black px-4 py-1">
-            <Text className="text-2xl text-white">
+            <Text className="text-2xl" style={{color: 'red'}}>
                 {text}
             </Text>
             <View className="rounded-full bg-app-yellow p-2">
